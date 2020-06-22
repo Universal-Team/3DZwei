@@ -1,0 +1,62 @@
+/*
+*   This file is part of 3DZwei-Core
+*   Copyright (C) 2020 SuperSaiyajinStackZ
+*
+*   This program is free software: you can redistribute it and/or modify
+*   it under the terms of the GNU General Public License as published by
+*   the Free Software Foundation, either version 3 of the License, or
+*   (at your option) any later version.
+*
+*   This program is distributed in the hope that it will be useful,
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*   GNU General Public License for more details.
+*
+*   You should have received a copy of the GNU General Public License
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*
+*   Additional Terms 7.b and 7.c of GPLv3 apply to this file:
+*       * Requiring preservation of specified reasonable legal notices or
+*         author attributions in that material or in the Appropriate Legal
+*         Notices displayed by works containing it.
+*       * Prohibiting misrepresentation of the origin of that material,
+*         or requiring that modified versions of such material be marked in
+*         reasonable ways as different from the original version.
+*/
+
+#ifndef _3DZWEI_CORE_GAME_HPP
+#define _3DZWEI_CORE_GAME_HPP
+
+#include "coreHelper.hpp"
+
+class Game {
+public:
+	Game(int pairs = 10);
+	void generateCards(int pairs);
+	bool returnIfUsed(int index);
+	void setUsed(int index, bool isUsed);
+	bool checkIfMatches();
+	bool setCardPair();
+	bool returnIfShown(int index);
+	void setShown(int index, bool show);
+	bool play(int index);
+	int getCard(int index);
+	int getCurrentPlayer();
+	void setCurrentPlayer(int player);
+	void nextPlayer();
+	int checkOver();
+	void restart();
+	int getPairs(int player);
+	int getCardSelect();
+	void setCardSelect(int cardSelect);
+	int getWins(int player);
+	void setWins(int player, int wins);
+	int getPairs();
+	void setPairs(int pairs);
+private:
+	std::vector<CardStruct> field;
+	std::vector<int> player1, player2;
+	int currentPlayer = 0, cardSelect = 0, card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;
+};
+
+#endif
