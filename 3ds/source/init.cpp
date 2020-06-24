@@ -25,7 +25,6 @@
 */
 
 #include "common.hpp"
-#include "coreHelper.hpp"
 #include "config.hpp"
 #include "init.hpp"
 #include "mainMenu.hpp"
@@ -68,7 +67,6 @@ Result Init::Initialize() {
 Result Init::MainLoop() {
 	// Initialize everything.
 	Initialize();
-	CoreHelper::generateSeed();
 	// Here we set the initial fade effect for fadein.
 	fadealpha = 255;
 	fadein = true;

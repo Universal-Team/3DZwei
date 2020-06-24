@@ -1,5 +1,5 @@
 /*
-*   This file is part of 3DZwei-Core
+*   This file is part of 3DZwei
 *   Copyright (C) 2020 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,14 +24,23 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "coreHelper.hpp"
+#include "credits.hpp"
 
-#include <time.h>
+extern std::unique_ptr<Config> config;
 
-static bool hasSeeded = false;
-void CoreHelper::generateSeed() {
-	if (!hasSeeded) {
-		hasSeeded = true;
-		randomGen.seed(time(NULL));
+void Credits::Draw(void) const {
+	GFX::DrawTop();
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - Credits");
+	GFX::DrawSprite(sprites_stackz_idx, 10, 75);
+	Gui::DrawStringCentered(0, 40, 0.75f, config->textColor(), "Developed by SuperSaiyajinStackZ.", 400);
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	GFX::DrawBottom();
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+}
+
+void Credits::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_B) {
+		Gui::screenBack(true);
+		return;
 	}
 }

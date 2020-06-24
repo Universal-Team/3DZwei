@@ -24,14 +24,30 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "coreHelper.hpp"
+#include "ai.hpp"
 
-#include <time.h>
+AI::AI() {
+	this->clearCards();
+}
 
-static bool hasSeeded = false;
-void CoreHelper::generateSeed() {
-	if (!hasSeeded) {
-		hasSeeded = true;
-		randomGen.seed(time(NULL));
-	}
+void AI::clearCards() {
+	this->cards.clear();
+}
+
+void AI::setLastCards(int index1, int index2) {
+	this->cards.push_back({index1, index2});
+}
+
+int AI::getSize() {
+	return this->cards.size();
+}
+
+int AI::getFirst(int index) {
+	if (index > this->getSize()-1)	return -1;
+	return this->cards[index].first;
+}
+
+int AI::getSecond(int index) {
+	if (index > this->getSize()-1)	return -1;
+	return this->cards[index].second;
 }

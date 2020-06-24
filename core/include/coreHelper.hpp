@@ -34,9 +34,9 @@ inline std::mt19937 randomGen; // Random generation value.
 
 // For the gamefield.
 struct CardStruct {
-	bool used;
-	int cardIndex;
-	bool shown;
+	bool Used;
+	int CardType;
+	bool Shown;
 };
 
 namespace CoreHelper {

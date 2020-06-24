@@ -24,14 +24,22 @@
 *         reasonable ways as different from the original version.
 */
 
+#ifndef _3DZWEI_CORE_AI_HPP
+#define _3DZWEI_CORE_AI_HPP
+
 #include "coreHelper.hpp"
+#include <vector>
 
-#include <time.h>
+class AI {
+public:
+	AI();
+	void clearCards();
+	void setLastCards(int index1, int index2);
+	int getSize();
+	int getFirst(int index);
+	int getSecond(int index);
+private:
+	std::vector<std::pair<int, int>> cards;
+};
 
-static bool hasSeeded = false;
-void CoreHelper::generateSeed() {
-	if (!hasSeeded) {
-		hasSeeded = true;
-		randomGen.seed(time(NULL));
-	}
-}
+#endif

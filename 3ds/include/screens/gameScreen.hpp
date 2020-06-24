@@ -37,37 +37,40 @@ class GameScreen : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-	GameScreen(bool useDelay = true);
+	GameScreen(bool useDelay = true, bool useAI = false);
 private:
 	std::unique_ptr<Game> currentGame;
-	bool useDelay = false;
+	bool useDelay = false, useAI = false;
 	int selectedCard = 0, delay = 70;
+	// Logics.
+	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
+	void AILogic(u32 hDown);
 
 	const std::vector<Structs::ButtonPos> cardPos = {
 		// Row 1.
-		{10, 2, 55, 55},	 // 1.
-		{71, 2, 55, 55},	 // 2.
-		{132, 2, 55, 55},	 // 3.
-		{193, 2, 55, 55},	 // 4.
-		{254, 2, 55, 55},	 // 5.
+		{10, 2, 55, 55}, // 1.
+		{71, 2, 55, 55}, // 2.
+		{132, 2, 55, 55}, // 3.
+		{193, 2, 55, 55}, // 4.
+		{254, 2, 55, 55}, // 5.
 		// Row 2.
-		{10, 61, 55, 55},	 // 1.
-		{71, 61, 55, 55},	 // 2.
-		{132, 61, 55, 55},	 // 3.
-		{193, 61, 55, 55},	 // 4.
-		{254, 61, 55, 55},	 // 5.
+		{10, 61, 55, 55}, // 1.
+		{71, 61, 55, 55}, // 2.
+		{132, 61, 55, 55}, // 3.
+		{193, 61, 55, 55}, // 4.
+		{254, 61, 55, 55}, // 5.
 		// Row 3.
-		{10, 122, 55, 55}, 	// 1.
-		{71, 122, 55, 55}, 	// 2.
+		{10, 122, 55, 55}, // 1.
+		{71, 122, 55, 55}, // 2.
 		{132, 122, 55, 55}, // 3.
 		{193, 122, 55, 55}, // 4.
 		{254, 122, 55, 55}, // 5.
 		// Row 4.
-		{10, 183, 55, 55}, 	// 1.
-		{71, 183, 55, 55}, 	// 2.
+		{10, 183, 55, 55}, // 1.
+		{71, 183, 55, 55}, // 2.
 		{132, 183, 55, 55}, // 3.
 		{193, 183, 55, 55}, // 4.
-		{254, 183, 55, 55}  // 5.
+		{254, 183, 55, 55} // 5.
 	};
 };
 

@@ -1,5 +1,5 @@
 /*
-*   This file is part of 3DZwei-Core
+*   This file is part of 3DZwei
 *   Copyright (C) 2020 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
@@ -24,14 +24,15 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "coreHelper.hpp"
+#ifndef _3DZWEI_CREDITS_HPP
+#define _3DZWEI_CREDITS_HPP
 
-#include <time.h>
+#include "common.hpp"
 
-static bool hasSeeded = false;
-void CoreHelper::generateSeed() {
-	if (!hasSeeded) {
-		hasSeeded = true;
-		randomGen.seed(time(NULL));
-	}
-}
+class Credits : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+};
+
+#endif

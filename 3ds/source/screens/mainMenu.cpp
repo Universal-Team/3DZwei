@@ -25,6 +25,7 @@
 */
 
 #include "config.hpp"
+#include "credits.hpp"
 #include "gameScreen.hpp"
 #include "mainMenu.hpp"
 
@@ -34,7 +35,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.9f, config->textColor(), "3DZwei - MainMenu");
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - MainMenu");
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 	for (int i = 0; i < 4; i++) {
@@ -45,6 +46,7 @@ void MainMenu::Draw(void) const {
 	}
 
 	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), "New Game", 130);
+	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "Credits", 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -62,7 +64,27 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
-		if (this->Selection == 0) Gui::setScreen(std::make_unique<GameScreen>(false), true, true); // For now no delay.
+		if (this->Selection == 0) {
+			if (Msg::promptMsg("Do you like to play against an AI?")) {
+				Gui::setScreen(std::make_unique<GameScreen>(true, true), true, true);
+			} else {
+				Gui::setScreen(std::make_unique<GameScreen>(true, false), true, true);
+			}
+		} else if (this->Selection == 1) {
+			Gui::setScreen(std::make_unique<Credits>(), true, true);
+		}
+	}
+
+	if (hDown & KEY_TOUCH) {
+		if (touching(touch, mainButtons[0])) {
+			if (Msg::promptMsg("Do you like to play against an AI?")) {
+				Gui::setScreen(std::make_unique<GameScreen>(true, true), true, true);
+			} else {
+				Gui::setScreen(std::make_unique<GameScreen>(true, false), true, true);
+			}
+		} else if (touching(touch, mainButtons[1])) {
+			Gui::setScreen(std::make_unique<Credits>(), true, true);
+		}
 	}
 	
 	if (hDown & KEY_START) {

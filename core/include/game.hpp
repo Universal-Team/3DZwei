@@ -27,11 +27,12 @@
 #ifndef _3DZWEI_CORE_GAME_HPP
 #define _3DZWEI_CORE_GAME_HPP
 
+#include "ai.hpp"
 #include "coreHelper.hpp"
 
 class Game {
 public:
-	Game(int pairs = 10);
+	Game(int pairs = 10, bool useAI = true);
 	void generateCards(int pairs);
 	bool returnIfUsed(int index);
 	void setUsed(int index, bool isUsed);
@@ -53,9 +54,14 @@ public:
 	void setWins(int player, int wins);
 	int getPairs();
 	void setPairs(int pairs);
+	int doPredict(int amountToRemember = -1);
+	int doRandom();
+	int doComTurn(bool predict = false, int amountToRemember = -1);
 private:
+	std::unique_ptr<AI> ai;
 	std::vector<CardStruct> field;
 	std::vector<int> player1, player2;
+	bool useAI;
 	int currentPlayer = 0, cardSelect = 0, card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;
 };
 

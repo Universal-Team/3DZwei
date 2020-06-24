@@ -30,9 +30,10 @@
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-GameScreen::GameScreen(bool useDelay) {
+GameScreen::GameScreen(bool useDelay, bool useAI) {
 	this->useDelay = useDelay;
-	this->currentGame = std::make_unique<Game>(); // Create game.
+	this->useAI = useAI;
+	this->currentGame = std::make_unique<Game>(10, this->useAI); // Create game.
 }
 
 
@@ -60,7 +61,7 @@ void GameScreen::Draw(void) const {
 		if (this->currentGame->returnIfShown(i)) {
 			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i].x, cardPos[i].y);
 		} else {
-			Gui::Draw_Rect(cardPos[i].x, cardPos[i].y, cardPos[i].w, cardPos[i].h, CARDCOLOR);
+			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
 		}
 	}
 
@@ -69,10 +70,7 @@ void GameScreen::Draw(void) const {
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
-
-void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (hDown & KEY_B)	Gui::screenBack(true);
-
+void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) {
 		if (hDown & KEY_RIGHT) {
 			if (this->selectedCard < 19)	this->selectedCard++;
@@ -96,7 +94,6 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			}
 		}
 
-
 		if (hDown & KEY_TOUCH) {
 			for (int i = 0; i < 20; i++) {
 				if (touching(touch, cardPos[i])) {
@@ -106,6 +103,55 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					}
 				}
 			}
+		}
+	}
+}
+
+void GameScreen::AILogic(u32 hDown) {
+	if (this->useAI) {
+		if (this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) {
+			if (!this->useDelay) {
+				if (hDown & KEY_Y) {
+					if (this->currentGame->getCardSelect() == 0) {
+						int card1 = this->currentGame->doComTurn();
+						this->currentGame->play(card1);
+					} else if (this->currentGame->getCardSelect() == 1) {
+						int card2 = this->currentGame->doComTurn();
+						this->currentGame->play(card2);
+					}
+				}
+			} else {
+				if (this->delay > 0) {
+					this->delay--;
+					if (this->delay < 1) {
+						if (this->currentGame->getCardSelect() == 0) {
+							int card1 = this->currentGame->doComTurn();
+							this->currentGame->play(card1);
+							this->delay = 70;
+						} else if (this->currentGame->getCardSelect() == 1) {
+							int card2 = this->currentGame->doComTurn();
+							//Msg::DisplayWaitMsg(std::to_string(card2));
+							this->currentGame->play(card2);
+							this->delay = 70;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+	if (hDown & KEY_B)	Gui::screenBack(true);
+
+	if (this->currentGame->getCurrentPlayer() == 0) {
+		this->playerLogic(hDown, hHeld, touch);
+	} else {
+		if (this->useAI) {
+			this->AILogic(hDown);
+		} else {
+			this->playerLogic(hDown, hHeld, touch);
 		}
 	}
 
