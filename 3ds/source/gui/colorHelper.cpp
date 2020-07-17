@@ -24,16 +24,24 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_KEYBOARD_HPP
-#define _3DZWEI_KEYBOARD_HPP
+#include "colorHelper.hpp"
 
-#include <3ds.h>
-#include <string>
+int ColorHelper::getColorValue(int color, int bgr) {
+	char colorName[10];
+	int i;
+	std::stringstream ss;
 
-namespace Keyboard {
-	std::string setkbdString(uint maxLength, std::string Text);
-	int setu8(std::string Text);
-	int setInt(int maxValue, std::string Text);
+	itoa(color, colorName, 16);
+	std::string colorNamePart(colorName, 2*bgr+2, 2);
+	ss << std::hex << colorNamePart.c_str();
+	ss >> i;
+
+	return i;
 }
 
-#endif
+std::string ColorHelper::getColorName(int color, int bgr) {
+	char colorName[10];
+	int i = getColorValue(color, bgr);
+	itoa(i, colorName, 10);
+	return colorName;
+}

@@ -24,16 +24,28 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_KEYBOARD_HPP
-#define _3DZWEI_KEYBOARD_HPP
+#ifndef _3DZWEI_COLOR_CHANGER_HPP
+#define _3DZWEI_COLOR_CHANGER_HPP
 
-#include <3ds.h>
-#include <string>
+#include "common.hpp"
+#include "structs.hpp"
 
-namespace Keyboard {
-	std::string setkbdString(uint maxLength, std::string Text);
-	int setu8(std::string Text);
-	int setInt(int maxValue, std::string Text);
-}
+#include <vector>
+
+class ColorChanger : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+private:
+	void DrawPreview(void) const;
+	int colorMode = 0;
+	const std::vector<Structs::ButtonPos> buttons = {
+		{10, 85, 95, 41},
+		{115, 85, 95, 41},
+		{220, 85, 95, 41}
+	};
+
+	const Structs::ButtonPos btn = { 90, 100, 140, 40 };
+};
 
 #endif

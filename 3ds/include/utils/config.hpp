@@ -37,8 +37,9 @@ public:
 	Config();
 	void save();
 	void initialize();
+	void addMissingThings();
 
-	// Ball Color.
+	// Card Color.
 	u32 cardColor() { return this->v_cardColor; }
 	void cardColor(u32 v) { this->v_cardColor = v; if (!this->changesMade)	this->changesMade = true; }
 	// Bar Color.
@@ -56,6 +57,9 @@ public:
 	// Selector Color.
 	u32 selectorColor() { return this->v_selectorColor; }
 	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
+	// Version.
+	int version() { return this->v_version; }
+	void version(u32 v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
 
 	// Mainly helper.
 	bool getBool(const std::string &key);
@@ -67,14 +71,11 @@ public:
 private:
 	nlohmann::json json; // Our private JSON file.
 	bool changesMade = false;
+	int configVersion = 1;
 
 	// Color variables and more.
-	u32 v_cardColor;
-	u32 v_barColor;
-	u32 v_bgColor;
-	u32 v_textColor;
-	u32 v_buttonColor;
-	u32 v_selectorColor;
+	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
+	int v_version;
 };
 
 #endif

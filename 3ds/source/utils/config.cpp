@@ -33,6 +33,9 @@
 #include <string>
 #include <unistd.h>
 
+// Used to add missing stuff for the JSON.
+void Config::addMissingThings() { }
+
 // In case it doesn't exist.
 void Config::initialize() {
 	// Create through fopen "Write".
@@ -45,9 +48,11 @@ void Config::initialize() {
 	this->setInt("BG_Color", C2D_Color32(160, 160, 220, 255));
 	this->setInt("Button_Color", C2D_Color32(60, 0, 170, 255));
 	this->setInt("Selector_Color", C2D_Color32(0, 0, 255, 255));
+	this->setInt("Version", this->configVersion);
 
 	// Write to file.
-	fwrite(this->json.dump(1, '\t').c_str(), 1, this->json.dump(1, '\t').size(), file);
+	std::string dump = this->json.dump(1, '\t');
+	fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 	fclose(file); // Now we have the file and can properly access it.
 }
 
@@ -55,9 +60,20 @@ Config::Config() {
 	if (access("sdmc:/3ds/3DZwei/Settings.json", F_OK) != 0 ) {
 		this->initialize();
 	}
+
 	FILE* file = fopen("sdmc:/3ds/3DZwei/Settings.json", "r");
 	this->json = nlohmann::json::parse(file, nullptr, false);
 	fclose(file);
+
+	if (!this->json.contains("Version")) {
+		// Let us create a new one.
+		this->initialize();
+	}
+
+	// Here we add the missing things.
+	if (this->json["Version"] < this->configVersion) {
+		this->addMissingThings();
+	}
 
 	// Here we get the initial colors.
 
@@ -97,6 +113,12 @@ Config::Config() {
 		this->selectorColor(this->getInt("Selector_Color"));
 	}
 
+	if (!this->json.contains("Version")) {
+		this->version(this->configVersion);
+	} else {
+		this->version(this->getInt("Version"));
+	}
+
 	this->changesMade = false; // No changes made yet.
 }
 
@@ -104,6 +126,7 @@ Config::Config() {
 void Config::save() {
 	if (this->changesMade) {
 		FILE *file = fopen("sdmc:/3ds/3DZwei/Settings.json", "w");
+
 		// Set values.
 		this->setInt("Card_Color", this->cardColor());
 		this->setInt("Bar_Color", this->barColor());
@@ -111,8 +134,11 @@ void Config::save() {
 		this->setInt("BG_Color", this->bgColor());
 		this->setInt("Button_Color", this->buttonColor());
 		this->setInt("Selector_Color", this->selectorColor());
+		this->setInt("Version", this->version());
+
 		// Write changes to file.
-		fwrite(this->json.dump(1, '\t').c_str(), 1, this->json.dump(1, '\t').size(), file);
+		std::string dump = this->json.dump(1, '\t');
+		fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 		fclose(file);
 	}
 }

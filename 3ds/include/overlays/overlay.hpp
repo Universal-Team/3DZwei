@@ -24,16 +24,13 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_KEYBOARD_HPP
-#define _3DZWEI_KEYBOARD_HPP
+#ifndef _3DZWEI_OVERLAY_HPP
+#define _3DZWEI_OVERLAY_HPP
 
-#include <3ds.h>
-#include <string>
+#include "common.hpp"
 
-namespace Keyboard {
-	std::string setkbdString(uint maxLength, std::string Text);
-	int setu8(std::string Text);
-	int setInt(int maxValue, std::string Text);
+namespace Overlays {
+	u32 SelectRGB(u32 oldColor);
 }
 
 #endif
