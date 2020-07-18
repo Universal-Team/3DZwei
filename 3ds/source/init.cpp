@@ -27,7 +27,7 @@
 #include "common.hpp"
 #include "config.hpp"
 #include "init.hpp"
-#include "mainMenu.hpp"
+#include "splash.hpp"
 
 #include <3ds.h>
 #include <dirent.h>
@@ -38,29 +38,29 @@ touchPosition touch;
 u32 hDown, hHeld;
 std::unique_ptr<Config> config;
 // Include all spritesheet's.
-C2D_SpriteSheet cards;
-C2D_SpriteSheet characters;
-C2D_SpriteSheet sprites;
+C2D_SpriteSheet cards, characters, sprites;
 
 // If button Position pressed -> Do something.
 bool touching(touchPosition touch, Structs::ButtonPos button) {
-	if (touch.px >= button.x && touch.px <= (button.x + button.w) && touch.py >= button.y && touch.py <= (button.y + button.h))	return true;
-	else	return false;
+	if (touch.px >= button.x && touch.px <= (button.x + button.w) && touch.py >= button.y && touch.py <= (button.y + button.h)) return true;
+	else return false;
 }
 
 Result Init::Initialize() {
 	gfxInitDefault();
 	romfsInit();
 	Gui::init();
-	cfguInit(); // Needed for UDS to get the console's config.
-	mkdir("sdmc:/3ds", 0777);	// For DSP dump
+	cfguInit();
+	// Create missing directories.
+	mkdir("sdmc:/3ds", 0777); // For DSP dump.
 	mkdir("sdmc:/3ds/3DZwei", 0777); // main Path.
+
 	config = std::make_unique<Config>();
 	Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 	Gui::loadSheet("romfs:/gfx/chars.t3x", characters);
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
-	osSetSpeedupEnable(true);	// Enable speed-up for New 3DS users.
-	Gui::setScreen(std::make_unique<MainMenu>(), false, true);
+	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.
+	Gui::setScreen(std::make_unique<Splash>(), false, true);
 	return 0;
 }
 

@@ -31,7 +31,7 @@
 extern std::unique_ptr<Config> config;
 
 // Draw.
-static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2) {
+static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int neededWins) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
@@ -47,6 +47,8 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2) {
 	GFX::DrawChar(avatar2, 280, 35);
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), "Wins: " + std::to_string(game->getWins(1)));
 
+	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Needed wins to win: " + std::to_string(neededWins));
+
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 	C3D_FrameEnd(0);
@@ -55,7 +57,7 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2) {
 
 bool Overlays::ResultOverlay(std::unique_ptr<Game> &game, int neededWins, int avatar1, int avatar2) {
 	while(1) {
-		Draw(game, avatar1, avatar2);
+		Draw(game, avatar1, avatar2, neededWins);
 		hidScanInput();
 		if (hidKeysDown()) {
 			if (game->getWins(0) >= neededWins || game->getWins(1) >= neededWins) {

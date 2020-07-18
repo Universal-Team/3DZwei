@@ -26,6 +26,7 @@
 
 #include "config.hpp"
 #include "gameScreen.hpp"
+#include "keyboard.hpp"
 #include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
@@ -39,6 +40,12 @@ GameScreen::GameScreen(bool useDelay, bool useAI) {
 
 	this->avatar1 = Overlays::SelectAvatar(1);
 	this->avatar2 = Overlays::SelectAvatar(2);
+	int tempWins = Keyboard::setInt(99, "Enter the amount of needed wins. 3 is default.");
+	if (tempWins != -1) {
+		this->wins = tempWins;
+	} else {
+		this->wins = 3;
+	}
 }
 
 
@@ -55,8 +62,14 @@ void GameScreen::Draw(void) const {
 
 	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Current Player: " + std::to_string(this->currentGame->getCurrentPlayer()+1));
 
+	// For no delay mode, show that you have to press Y to do the play.
+	if ((this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == 1)) {
+		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press Y to do the play.");
+	}
+
+	// For no delay mode, show that you have to press X to do the play check.
 	if (this->currentGame->getCardSelect() == 2 && !this->useDelay) {
-		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press X to execute the check.");
+		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press X to execute the play check.");
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
@@ -151,7 +164,12 @@ void GameScreen::AILogic(u32 hDown) {
 }
 
 void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (hDown & KEY_B) Gui::screenBack(true);
+	if (hDown & KEY_START) {
+		if (Msg::promptMsg("Do you like to exit the game?")) {
+			Gui::screenBack(true);
+			return;
+		}
+	}
 
 	if (this->currentGame->getCurrentPlayer() == 0) {
 		this->playerLogic(hDown, hHeld, touch);
@@ -180,7 +198,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						else if (checkOver == 2) Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(1)) + "!");
 						else if (checkOver == 3) Msg::DisplayWarnMsg("No one wins!");
 
-						if (Overlays::ResultOverlay(this->currentGame, 3, this->avatar1, this->avatar2)) {
+						if (Overlays::ResultOverlay(this->currentGame, this->wins, this->avatar1, this->avatar2)) {
 							Gui::screenBack(true);
 							return;
 						} else {
@@ -212,7 +230,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							else if (checkOver == 2) Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(1)) + " Pairs!");
 							else if (checkOver == 3) Msg::DisplayWarnMsg("No one wins!");
 
-							if (Overlays::ResultOverlay(this->currentGame, 3, this->avatar1, this->avatar2)) {
+							if (Overlays::ResultOverlay(this->currentGame, this->wins, this->avatar1, this->avatar2)) {
 								Gui::screenBack(true);
 								return;
 							} else {

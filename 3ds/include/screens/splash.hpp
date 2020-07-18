@@ -24,54 +24,17 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_GAME_SCREEN_HPP
-#define _3DZWEI_GAME_SCREEN_HPP
+#ifndef _3DZWEI_SPLASH_HPP
+#define _3DZWEI_SPLASH_HPP
 
 #include "common.hpp"
-#include "game.hpp"
-#include "structs.hpp"
 
-#include <vector>
-
-class GameScreen : public Screen {
+class Splash : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-	GameScreen(bool useDelay = true, bool useAI = false);
 private:
-	std::unique_ptr<Game> currentGame;
-	bool useDelay = false, useAI = false;
-	int selectedCard = 0, delay, avatar1, avatar2, wins;
-	// Logics.
-	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
-	void AILogic(u32 hDown);
-
-	const std::vector<Structs::ButtonPos> cardPos = {
-		// Row 1.
-		{10, 2, 55, 55}, // 1.
-		{71, 2, 55, 55}, // 2.
-		{132, 2, 55, 55}, // 3.
-		{193, 2, 55, 55}, // 4.
-		{254, 2, 55, 55}, // 5.
-		// Row 2.
-		{10, 61, 55, 55}, // 1.
-		{71, 61, 55, 55}, // 2.
-		{132, 61, 55, 55}, // 3.
-		{193, 61, 55, 55}, // 4.
-		{254, 61, 55, 55}, // 5.
-		// Row 3.
-		{10, 122, 55, 55}, // 1.
-		{71, 122, 55, 55}, // 2.
-		{132, 122, 55, 55}, // 3.
-		{193, 122, 55, 55}, // 4.
-		{254, 122, 55, 55}, // 5.
-		// Row 4.
-		{10, 183, 55, 55}, // 1.
-		{71, 183, 55, 55}, // 2.
-		{132, 183, 55, 55}, // 3.
-		{193, 183, 55, 55}, // 4.
-		{254, 183, 55, 55} // 5.
-	};
+	int delay = 130;
 };
 
 #endif

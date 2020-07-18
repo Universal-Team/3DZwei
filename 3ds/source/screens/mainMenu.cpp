@@ -75,14 +75,12 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
+		bool AI = false, delay = false;
 		switch(this->Selection) {
 			case 0:
-				if (Msg::promptMsg("Do you like to play against an AI?")) {
-					Gui::setScreen(std::make_unique<GameScreen>(true, true), true, true);
-				} else {
-					Gui::setScreen(std::make_unique<GameScreen>(true, false), true, true);
-				}
-
+				AI = Msg::promptMsg("Do you like to play against an AI?");
+				delay = Msg::promptMsg("Do you like to play with a delay?");
+				Gui::setScreen(std::make_unique<GameScreen>(delay, AI), true, true);
 				break;
 			case 1:
 				Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
@@ -95,11 +93,9 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, mainButtons[0])) {
-			if (Msg::promptMsg("Do you like to play against an AI?")) {
-				Gui::setScreen(std::make_unique<GameScreen>(true, true), true, true);
-			} else {
-				Gui::setScreen(std::make_unique<GameScreen>(true, false), true, true);
-			}
+			bool AI = Msg::promptMsg("Do you like to play against an AI?");
+			bool delay = Msg::promptMsg("Do you like to play with a delay?");
+			Gui::setScreen(std::make_unique<GameScreen>(delay, AI), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {
