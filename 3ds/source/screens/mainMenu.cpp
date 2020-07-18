@@ -75,12 +75,13 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
-		bool AI = false, delay = false;
+		bool AI = false, delay = false, betterPredict = false;
 		switch(this->Selection) {
 			case 0:
 				AI = Msg::promptMsg("Do you like to play against an AI?");
 				delay = Msg::promptMsg("Do you like to play with a delay?");
-				Gui::setScreen(std::make_unique<GameScreen>(delay, AI), true, true);
+				betterPredict = Msg::promptMsg("Do you like to use the better AI?\nNo would remember the last 2 cards.\nYes would remember all played cards.");
+				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 				break;
 			case 1:
 				Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
@@ -95,7 +96,8 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (touching(touch, mainButtons[0])) {
 			bool AI = Msg::promptMsg("Do you like to play against an AI?");
 			bool delay = Msg::promptMsg("Do you like to play with a delay?");
-			Gui::setScreen(std::make_unique<GameScreen>(delay, AI), true, true);
+			bool betterPredict = Msg::promptMsg("Do you like to use the better AI?\nNo would remember the last 2 cards.\nYes would remember all played cards.");
+			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {

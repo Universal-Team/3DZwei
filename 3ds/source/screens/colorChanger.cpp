@@ -91,11 +91,11 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		return;
 	}
 
-	if (hDown & KEY_LEFT) {
+	if (hDown & KEY_LEFT || hDown & KEY_L) {
 		if (this->colorMode > 0) this->colorMode--;
 	}
 
-	if (hDown & KEY_RIGHT) {
+	if (hDown & KEY_RIGHT || hDown & KEY_R) {
 		if (this->colorMode < 4) this->colorMode++;
 	}
 

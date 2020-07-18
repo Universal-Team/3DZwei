@@ -37,10 +37,10 @@ class GameScreen : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-	GameScreen(bool useDelay = true, bool useAI = false);
+	GameScreen(bool useDelay = true, bool useAI = false, bool doBetterPredict = false);
 private:
 	std::unique_ptr<Game> currentGame;
-	bool useDelay = false, useAI = false;
+	bool useDelay = false, useAI = false, betterPredict = false;
 	int selectedCard = 0, delay, avatar1, avatar2, wins;
 	// Logics.
 	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);

@@ -32,10 +32,11 @@
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-GameScreen::GameScreen(bool useDelay, bool useAI) {
+GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict) {
 	this->useDelay = useDelay;
 	this->useAI = useAI;
-	this->currentGame = std::make_unique<Game>(10, this->useAI); // Create game.
+	this->betterPredict = doBetterPredict;
+	this->currentGame = std::make_unique<Game>(10, this->useAI, this->betterPredict); // Create game.
 	this->delay = config->delay();
 
 	this->avatar1 = Overlays::SelectAvatar(1);
@@ -190,7 +191,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 						int checkOver = this->currentGame->checkOver();
 
-						if (checkOver < 3 || checkOver > 0) {
+						if (checkOver < 3 && checkOver > 0) {
 							this->currentGame->setWins(checkOver-1, this->currentGame->getWins(checkOver-1)+1);
 						}
 
@@ -222,7 +223,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						if (this->currentGame->checkOver() != -1) {
 							int checkOver = this->currentGame->checkOver();
 
-							if (checkOver < 3 || checkOver > 0) {
+							if (checkOver < 3 && checkOver > 0) {
 								this->currentGame->setWins(checkOver-1, this->currentGame->getWins(checkOver-1)+1);
 							}
 

@@ -26,23 +26,45 @@
 
 #include "ai.hpp"
 
-AI::AI() {
+AI::AI(bool rememberLonger) {
+	this->rememberLonger = rememberLonger;
 	this->clearCards();
 }
 
 void AI::clearCards() {
-	this->lastCards = { -1, -1 };
+	if (this->rememberLonger) {
+		this->cards.clear();
+	} else {
+		this->lastCards = { -1, -1 };
+	}
 }
 
 void AI::setLastCards(int index1, int index2) {
-	this->lastCards.first = index1;
-	this->lastCards.second = index2;
+	if (this->rememberLonger) {
+		this->cards.push_back({index1, index2});
+	} else {
+		this->lastCards = { index1, index2 };
+	}
 }
 
-int AI::getFirst() {
-	return this->lastCards.first;
+int AI::getSize() {
+	return (int)this->cards.size();
 }
 
-int AI::getSecond() {
-	return this->lastCards.second;
+int AI::getFirst(int index) {
+	if (this->rememberLonger) {
+		if (index > this->getSize()-1)	return -1;
+		return this->cards[index].first;
+	} else {
+		return this->lastCards.first;
+	}
+}
+
+int AI::getSecond(int index) {
+	if (this->rememberLonger) {
+		if (index > this->getSize()-1)	return -1;
+		return this->cards[index].second;
+	} else {
+		return this->lastCards.second;
+	}
 }

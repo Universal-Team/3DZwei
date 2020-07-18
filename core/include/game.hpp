@@ -32,7 +32,7 @@
 
 class Game {
 public:
-	Game(int pairs = 10, bool useAI = true);
+	Game(int pairs = 10, bool useAI = true, bool rememberMoreAI = false);
 	void generateCards(int pairs);
 	bool returnIfUsed(int index);
 	void setUsed(int index, bool isUsed);
@@ -59,12 +59,13 @@ public:
 	// Other stuff.
 	int doRandomTurn();
 	int doPrediction();
-	int doAITurn(bool predict = false);
+	int doPredictLonger(int amountToRemember = 2);
+	int doAITurn(bool predict = false, int amount = -1);
 private:
 	std::unique_ptr<AI> ai; // Our AI.
 	std::vector<CardStruct> field; // The game's field.
 	std::vector<int> player1, player2;
-	bool useAI;
+	bool useAI, rememberMoreAI = false;
 	int currentPlayer = 0, cardSelect = 0, card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;
 };
 

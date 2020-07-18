@@ -32,14 +32,16 @@
 
 class AI {
 public:
-	AI();
+	AI(bool rememberLonger = false);
 	void clearCards();
 	void setLastCards(int index1, int index2);
-	int getFirst();
-	int getSecond();
+	int getFirst(int index = 0);
+	int getSecond(int index = 0);
+	int getSize();
 private:
 	std::pair<int, int> lastCards = { -1, -1 };
-	std::vector<std::pair<int, int>> cards; // Probably will be replaced through a std::pair for one pair instead of vector of pairs.
+	std::vector<std::pair<int, int>> cards;
+	bool rememberLonger = false;
 };
 
 #endif

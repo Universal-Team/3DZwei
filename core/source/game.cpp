@@ -31,9 +31,10 @@
 #include <vector>
 
 // Constructor.
-Game::Game(int pairs, bool useAI) {
+Game::Game(int pairs, bool useAI, bool rememberMoreAI) {
+	this->rememberMoreAI = rememberMoreAI;
 	this->useAI = useAI;
-	if (this->useAI) ai = std::make_unique<AI>();
+	if (this->useAI) ai = std::make_unique<AI>(this->rememberMoreAI);
 	CoreHelper::generateSeed(); // Seed one time.
 	this->pairs = pairs;
 	this->generateCards(this->pairs);
@@ -260,6 +261,56 @@ int Game::doRandomTurn() {
 	return availableIndexes[((randomGen()) % availableIndexes.size()) + 0];
 }
 
+int Game::doPredictLonger(int amountToRemember) {
+	// Make sure we use the AI and our AI is not an nullptr.
+	if (this->useAI || this->ai != nullptr) {
+		// Check, if amountToRemember size is not larger than our AI size.
+		if (amountToRemember > this->ai->getSize()-1) return this->doRandomTurn(); // Heh, nope. Size is too large.
+
+		// If amountToRemember is not -1.
+		if (amountToRemember != -1) {
+			for (int i = 0; i < this->ai->getSize()-amountToRemember; i++) {
+				// Check for the first card.
+				if (this->getCard(this->ai->getFirst(i)) == this->getCard(this->card1)) {
+					if (!this->returnIfUsed(this->ai->getFirst(i))) {
+						return this->ai->getFirst(i);
+					}
+				}
+
+				// Check for the second card.
+				if (this->getCard(ai->getSecond(i)) == this->getCard(this->card1)) {
+					if (!this->returnIfUsed(this->ai->getSecond(i))) {
+						return this->ai->getSecond(i);
+					}
+				}
+			}
+
+			return this->doRandomTurn();
+			// If we have -1.
+		} else {
+			for (int i = 0; i < ai->getSize(); i++) {
+				// Check for the first card.
+				if (this->getCard(ai->getFirst(i)) == this->getCard(this->card1)) {
+					if (!this->returnIfUsed(ai->getFirst(i))) {
+						return this->ai->getFirst(i);
+					}
+				}
+
+				// Check for the second card.
+				if (this->getCard(ai->getSecond(i)) == this->getCard(this->card1)) {
+					if (!this->returnIfUsed(ai->getSecond(i))) {
+						return this->ai->getSecond(i);
+					}
+				}
+			}
+		}
+
+		return this->doRandomTurn();
+	} else {
+		return this->doRandomTurn(); // Because AI is unused / AI is nullptr.
+	}
+}
+
 // Do some bit of prediction play from the last turn. Is probably not the best, so that's a TODO.
 int Game::doPrediction() {
 	// Make sure the AI is not an nullptr to avoid crashes.
@@ -281,12 +332,16 @@ int Game::doPrediction() {
 }
 
 // Our actual AI turn call.
-int Game::doAITurn(bool predict) {
+int Game::doAITurn(bool predict, int amount) {
 	if (this->cardSelect == 0) {
 		return this->doRandomTurn();
 	} else if (this->cardSelect == 1) {
 		if (predict) {
-			return this->doPrediction();
+			if (this->rememberMoreAI) {
+				return this->doPredictLonger(amount);
+			} else {
+				return this->doPrediction();
+			}
 		} else {
 			return this->doRandomTurn();
 		}
