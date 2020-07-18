@@ -39,6 +39,8 @@ Game::Game(int pairs, bool useAI) {
 	this->generateCards(this->pairs);
 	this->card1 = -1;
 	this->card2 = -1;
+	this->p1Wins = 0;
+	this->p2Wins = 0;
 	this->cardSelect = 0;
 }
 
@@ -171,9 +173,13 @@ void Game::nextPlayer() {
 // Check if all cards are used and return the winner.
 int Game::checkOver() {
 	if ((int)this->player1.size() + (int)this->player2.size() == (this->pairs * 2)) {
-		if (this->player1.size() > this->player2.size()) return 1; // Player 1 wins!
-		else if (this->player2.size() > this->player1.size()) return 2; // Player 2 wins!
-		else if (this->player1.size() == this->player2.size()) return 3; // No one wins!
+		if (this->player1.size() > this->player2.size()) {
+			return 1; // Player 1 wins!
+		} else if (this->player2.size() > this->player1.size()) {
+			return 2; // Player 2 wins!
+		} else if (this->player1.size() == this->player2.size()) {
+			return 3; // No one wins!
+		}
 	} else {
 		return -1; // Nah, not all used.
 	}
@@ -287,4 +293,15 @@ int Game::doAITurn(bool predict) {
 	} else {
 		return this->doRandomTurn(); // No idea what else to return.
 	}
+}
+
+// Get the proper second card for the pair, cause why not. ;P
+int Game::returnProperPair() {
+	for (int i = 0; i < this->getPairs() * 2; i++) {
+		if ((this->getCard(i) == this->getCard(this->card1)) && (!this->returnIfShown(i))) {
+			return i;
+		}
+	}
+
+	return 0; // Should never happen.
 }

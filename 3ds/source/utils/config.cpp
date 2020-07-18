@@ -49,6 +49,7 @@ void Config::initialize() {
 	this->setInt("Button_Color", C2D_Color32(60, 0, 170, 255));
 	this->setInt("Selector_Color", C2D_Color32(0, 0, 255, 255));
 	this->setInt("Version", this->configVersion);
+	this->setInt("Card_Delay", 70);
 
 	// Write to file.
 	std::string dump = this->json.dump(1, '\t');
@@ -113,6 +114,18 @@ Config::Config() {
 		this->selectorColor(this->getInt("Selector_Color"));
 	}
 
+	if (!this->json.contains("Card_Delay")) {
+		this->delay(70);
+	} else {
+		this->delay(this->getInt("Card_Delay"));
+	}
+
+	if (!this->json.contains("Debug")) {
+		this->v_debug = false;
+	} else {
+		this->v_debug = this->getBool("Debug");
+	}
+
 	if (!this->json.contains("Version")) {
 		this->version(this->configVersion);
 	} else {
@@ -134,6 +147,7 @@ void Config::save() {
 		this->setInt("BG_Color", this->bgColor());
 		this->setInt("Button_Color", this->buttonColor());
 		this->setInt("Selector_Color", this->selectorColor());
+		this->setInt("Card_Delay", this->delay());
 		this->setInt("Version", this->version());
 
 		// Write changes to file.

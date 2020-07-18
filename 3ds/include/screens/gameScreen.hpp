@@ -41,7 +41,7 @@ public:
 private:
 	std::unique_ptr<Game> currentGame;
 	bool useDelay = false, useAI = false;
-	int selectedCard = 0, delay = 70;
+	int selectedCard = 0, delay, avatar1, avatar2;
 	// Logics.
 	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
 	void AILogic(u32 hDown);

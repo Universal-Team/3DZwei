@@ -179,3 +179,9 @@ void Msg::DisplayMsg(std::string Message) {
 void Msg::NotImplementedYet(void) {
 	Msg::DisplayWaitMsg("This is not implemented yet!");
 }
+
+void Msg::DebugMessage(std::string msg) {
+	if (config->debug()) {
+		Msg::DisplayWaitMsg(msg);
+	}
+}

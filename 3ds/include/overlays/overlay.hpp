@@ -28,9 +28,12 @@
 #define _3DZWEI_OVERLAY_HPP
 
 #include "common.hpp"
+#include "game.hpp"
 
 namespace Overlays {
 	u32 SelectRGB(u32 oldColor);
+	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
+	int SelectAvatar(int player = 0);
 }
 
 #endif

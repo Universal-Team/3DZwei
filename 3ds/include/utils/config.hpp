@@ -57,6 +57,11 @@ public:
 	// Selector Color.
 	u32 selectorColor() { return this->v_selectorColor; }
 	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
+	// Card Delay.
+	int delay() { return this->v_delay; }
+	void delay(u32 v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
+	// Debug.
+	bool debug() { return this->v_debug; }
 	// Version.
 	int version() { return this->v_version; }
 	void version(u32 v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
@@ -75,7 +80,8 @@ private:
 
 	// Color variables and more.
 	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
-	int v_version;
+	int v_delay, v_version;
+	bool v_debug;
 };
 
 #endif

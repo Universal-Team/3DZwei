@@ -54,6 +54,7 @@ public:
 	void setWins(int player, int wins);
 	int getPairs();
 	void setPairs(int pairs);
+	int returnProperPair();
 
 	// Other stuff.
 	int doRandomTurn();

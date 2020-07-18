@@ -28,6 +28,7 @@
 #include "config.hpp"
 #include "credits.hpp"
 #include "gameScreen.hpp"
+#include "keyboard.hpp"
 #include "mainMenu.hpp"
 
 extern std::unique_ptr<Config> config;
@@ -64,6 +65,12 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (this->Selection%2) this->Selection--;
 	} else if (hDown & KEY_RIGHT) {
 		if (!(this->Selection%2)) this->Selection++;
+	}
+
+	// For now set delay with SELECT here.
+	if (hDown & KEY_SELECT) {
+		int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
+		if (tempDelay != -1) config->delay(tempDelay);
 	}
 
 
