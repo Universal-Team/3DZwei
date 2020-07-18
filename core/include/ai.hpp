@@ -35,11 +35,11 @@ public:
 	AI();
 	void clearCards();
 	void setLastCards(int index1, int index2);
-	int getSize();
-	int getFirst(int index);
-	int getSecond(int index);
+	int getFirst();
+	int getSecond();
 private:
-	std::vector<std::pair<int, int>> cards;
+	std::pair<int, int> lastCards = { -1, -1 };
+	std::vector<std::pair<int, int>> cards; // Probably will be replaced through a std::pair for one pair instead of vector of pairs.
 };
 
 #endif

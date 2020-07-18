@@ -52,6 +52,8 @@ namespace GFX {
 	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);
 	
 	void DrawCard(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
+	void DrawCardSelector(int x, int y, float ScaleX = 1, float ScaleY = 1);
+
 	void DrawChar(int image, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	void DrawPlayer(int x, int y, float ScaleX, float ScaleY, int player);
 

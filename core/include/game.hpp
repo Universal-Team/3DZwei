@@ -54,12 +54,14 @@ public:
 	void setWins(int player, int wins);
 	int getPairs();
 	void setPairs(int pairs);
-	int doPredict(int amountToRemember = -1);
-	int doRandom();
-	int doComTurn(bool predict = false, int amountToRemember = -1);
+
+	// Other stuff.
+	int doRandomTurn();
+	int doPrediction();
+	int doAITurn(bool predict = false);
 private:
-	std::unique_ptr<AI> ai;
-	std::vector<CardStruct> field;
+	std::unique_ptr<AI> ai; // Our AI.
+	std::vector<CardStruct> field; // The game's field.
 	std::vector<int> player1, player2;
 	bool useAI;
 	int currentPlayer = 0, cardSelect = 0, card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;

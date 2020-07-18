@@ -51,7 +51,7 @@ void GameScreen::Draw(void) const {
 	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Current Player: " + std::to_string(this->currentGame->getCurrentPlayer()+1));
 
 	if (this->currentGame->getCardSelect() == 2 && !this->useDelay) {
-		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Please press X to execute the check.");
+		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press X to execute the check.");
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
@@ -65,15 +65,16 @@ void GameScreen::Draw(void) const {
 		}
 	}
 
-	GFX::DrawCard(cards_card_selector_idx, cardPos[this->selectedCard].x, cardPos[this->selectedCard].y);
+	GFX::DrawCardSelector(cardPos[this->selectedCard].x, cardPos[this->selectedCard].y);
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) {
+
 		if (hDown & KEY_RIGHT) {
-			if (this->selectedCard < 19)	this->selectedCard++;
+			if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
@@ -113,10 +114,10 @@ void GameScreen::AILogic(u32 hDown) {
 			if (!this->useDelay) {
 				if (hDown & KEY_Y) {
 					if (this->currentGame->getCardSelect() == 0) {
-						int card1 = this->currentGame->doComTurn();
+						int card1 = this->currentGame->doAITurn();
 						this->currentGame->play(card1);
 					} else if (this->currentGame->getCardSelect() == 1) {
-						int card2 = this->currentGame->doComTurn();
+						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 						this->currentGame->play(card2);
 					}
 				}
@@ -125,12 +126,11 @@ void GameScreen::AILogic(u32 hDown) {
 					this->delay--;
 					if (this->delay < 1) {
 						if (this->currentGame->getCardSelect() == 0) {
-							int card1 = this->currentGame->doComTurn();
+							int card1 = this->currentGame->doAITurn();
 							this->currentGame->play(card1);
 							this->delay = 70;
 						} else if (this->currentGame->getCardSelect() == 1) {
-							int card2 = this->currentGame->doComTurn();
-							//Msg::DisplayWaitMsg(std::to_string(card2));
+							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 							this->currentGame->play(card2);
 							this->delay = 70;
 						}
@@ -140,7 +140,6 @@ void GameScreen::AILogic(u32 hDown) {
 		}
 	}
 }
-
 
 void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_B)	Gui::screenBack(true);

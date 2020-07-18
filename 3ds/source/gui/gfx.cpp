@@ -52,36 +52,22 @@ void GFX::DrawBottom(bool useBars) {
 	}
 }
 
-extern C2D_SpriteSheet cards;
-extern C2D_SpriteSheet characters;
-extern C2D_SpriteSheet sprites;
+extern C2D_SpriteSheet cards, characters, sprites;
 
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
 }
 
 void GFX::DrawFileBrowseBG(bool isTop) {
-	if (isTop) {
-		Gui::ScreenDraw(Top);
-		Gui::Draw_Rect(0, 0, 400, 27, config->barColor());
-		Gui::Draw_Rect(0, 27, 400, 31, config->bgColor());
-		Gui::Draw_Rect(0, 58, 400, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 89, 400, 31, config->bgColor());
-		Gui::Draw_Rect(0, 120, 400, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 151, 400, 31, config->bgColor());
-		Gui::Draw_Rect(0, 182, 400, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 213, 400, 27, config->barColor());
-	} else {
-		Gui::ScreenDraw(Bottom);
-		Gui::Draw_Rect(0, 0, 320, 27, config->barColor());
-		Gui::Draw_Rect(0, 27, 320, 31, config->bgColor());
-		Gui::Draw_Rect(0, 58, 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 89, 320, 31, config->bgColor());
-		Gui::Draw_Rect(0, 120, 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 151, 320, 31, config->bgColor());
-		Gui::Draw_Rect(0, 182, 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
-		Gui::Draw_Rect(0, 213, 320, 27, config->barColor());
-	}
+	isTop ? Gui::ScreenDraw(Top) : Gui::ScreenDraw(Bottom);
+	Gui::Draw_Rect(0, 0, isTop ? 400 : 320, 27, config->barColor());
+	Gui::Draw_Rect(0, 27, isTop ? 400 : 320, 31, config->bgColor());
+	Gui::Draw_Rect(0, 58, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
+	Gui::Draw_Rect(0, 89, isTop ? 400 : 320, 31, config->bgColor());
+	Gui::Draw_Rect(0, 120, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
+	Gui::Draw_Rect(0, 151, isTop ? 400 : 320, 31, config->bgColor());
+	Gui::Draw_Rect(0, 182, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
+	Gui::Draw_Rect(0, 213, isTop ? 400 : 320, 27, config->barColor());
 }
 
 // Select something from a list.
@@ -96,16 +82,19 @@ int GFX::selectList(std::vector<std::string> content, std::string msg, int oldIn
 		GFX::DrawFileBrowseBG();
 		Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), msg, 400);
 		std::string cnts;
-		for (uint i=(selection<5) ? 0 : (uint)selection-5;i<content.size()&&i<(((uint)selection<5) ? 6 : (uint)selection+1);i++) {
+
+		for (uint i = (selection < 5) ? 0 : (uint)selection - 5; i < content.size() && i < (((uint)selection < 5) ? 6 : (uint)selection + 1); i++) {
 			if (i == (uint)selection) {
 				cnts +=  "> " + content[i] + "\n\n";
 			} else {
 				cnts +=  content[i] + "\n\n";
 			}
 		}
-		for (uint i=0;i<((content.size()<6) ? 6-content.size() : 0);i++) {
+
+		for (uint i = 0; i < ((content.size() < 6) ? 6 - content.size() : 0); i++) {
 			cnts += "\n\n";
 		}
+		
 		Gui::DrawString(26, 32, 0.53f, config->textColor(), cnts);
 		GFX::DrawFileBrowseBG(false);
 		C3D_FrameEnd(0);
@@ -150,11 +139,25 @@ void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY, bool useS
 	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
 	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
 
-	if (useSmall) {
-		C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, sprites_btnSelector2_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
-	} else {
-		C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, sprites_btnSelector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
-	}
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, useSmall ? sprites_btnSelector2_idx : sprites_btnSelector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
+
+	timer += .030;
+}
+
+void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
+	static float timer			= 0.0f;
+	float highlight_multiplier	= fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
+	u8 r						= config->selectorColor() & 0xFF;
+	u8 g						= (config->selectorColor() >> 8) & 0xFF;
+	u8 b						= (config->selectorColor() >> 16) & 0xFF;
+	u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
+	C2D_ImageTint tint;
+	C2D_SetImageTint(&tint, C2D_TopLeft, color, 1);
+	C2D_SetImageTint(&tint, C2D_TopRight, color, 1);
+	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
+	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
+
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(cards, cards_card_selector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
 
 	timer += .030;
 }

@@ -52,6 +52,7 @@ void Game::generateCards(int pairs) {
 	for (int i = 0; i < pairs; i++) {
 		tempCards.push_back(i);
 	}
+
 	// Second card for the pair!
 	for (int i = 0; i < pairs; i++) {
 		tempCards.push_back(i);
@@ -64,11 +65,13 @@ void Game::generateCards(int pairs) {
 	}
 }
 
-// Get and Set used state.
+// Return, if card is used.
 bool Game::returnIfUsed(int index) {
 	if (index > (this->pairs * 2)-1) return true; // Out of scope. No idea what else to return in that case.
 	return this->field[index].Used;
 }
+
+// Set, if card is used.
 void Game::setUsed(int index, bool isUsed) {
 	if (index > (this->pairs * 2)-1) return; // Out of scope.
 	this->field[index].Used = isUsed;
@@ -88,6 +91,7 @@ bool Game::checkIfMatches() {
 bool Game::setCardPair() {
 	if (this->card1 != -1 && this->card2 != -1) {
 		if (this->checkIfMatches()) {
+			// Card matches, so set a win.
 			if (this->currentPlayer == 0) {
 				this->player1.push_back(this->card1);
 				this->player1.push_back(this->card2);
@@ -101,7 +105,7 @@ bool Game::setCardPair() {
 			this->setUsed(this->card2, true);
 			return true;
 		} else {
-			if (this->useAI)	ai->setLastCards(this->card1, this->card2);
+			if (this->useAI) ai->setLastCards(this->card1, this->card2);
 			this->setShown(this->card1, false); this->setShown(this->card2, false);
 			this->setUsed(this->card1, false); this->setUsed(this->card2, false);
 			// Heh, nope.
@@ -113,13 +117,15 @@ bool Game::setCardPair() {
 	}
 }
 
-// Get and Set shown state.
+// Return, if the specific card is shown.
 bool Game::returnIfShown(int index) {
-	if (index > (this->pairs * 2)-1)	return false; // Out of scope.
+	if (index > (this->pairs * 2)-1) return false; // Out of scope.
 	return this->field[index].Shown;
 }
+
+// Set a card's status to shown.
 void Game::setShown(int index, bool show) {
-	if (index > (this->pairs * 2)-1)	return; // Out of scope.
+	if (index > (this->pairs * 2)-1) return; // Out of scope.
 	this->field[index].Shown = show;
 }
 
@@ -148,24 +154,26 @@ bool Game::play(int index) {
 
 // Get a cardtype from an index.
 int Game::getCard(int index) {
-	if (index > (this->pairs * 2)-1)	return -1; // Out of scope.
+	if (index > (this->pairs * 2)-1) return -1; // Out of scope.
 	return this->field[index].CardType;
 }
 
-// Get and Set the current Player.
+// Get Current Player.
 int Game::getCurrentPlayer() { return this->currentPlayer; }
+// Set Current Player.
 void Game::setCurrentPlayer(int player) { this->currentPlayer = player; }
+// Get next player.
 void Game::nextPlayer() {
-	if (this->currentPlayer == 0)	this->currentPlayer = 1;
-	else							this->currentPlayer = 0;
+	if (this->currentPlayer == 0) this->currentPlayer = 1;
+	else this->currentPlayer = 0;
 }
 
 // Check if all cards are used and return the winner.
 int Game::checkOver() {
 	if ((int)this->player1.size() + (int)this->player2.size() == (this->pairs * 2)) {
-		if (this->player1.size() > this->player2.size())	return 1; // Player 1 wins!
-		else if (this->player2.size() > this->player1.size())	return 2; // Player 2 wins!
-		else if (this->player1.size() == this->player2.size())	return 3; // No one wins!
+		if (this->player1.size() > this->player2.size()) return 1; // Player 1 wins!
+		else if (this->player2.size() > this->player1.size()) return 2; // Player 2 wins!
+		else if (this->player1.size() == this->player2.size()) return 3; // No one wins!
 	} else {
 		return -1; // Nah, not all used.
 	}
@@ -177,7 +185,7 @@ int Game::checkOver() {
 void Game::restart() {
 	this->player1.clear();
 	this->player2.clear();
-	if (this->useAI)	ai->clearCards();
+	if (this->useAI) ai->clearCards();
 	this->card1 = -1;
 	this->card2 = -1;
 	this->cardSelect = 0;
@@ -197,11 +205,13 @@ int Game::getPairs(int player) {
 int Game::getCardSelect() {
 	return this->cardSelect;
 }
+
+// Set the CardSelect mode.
 void Game::setCardSelect(int cardSelect) {
 	this->cardSelect = cardSelect;
 }
 
-// Get and Set wins.
+// Get amount of wins.
 int Game::getWins(int player) {
 	if (player == 0) {
 		return this->p1Wins;
@@ -209,6 +219,8 @@ int Game::getWins(int player) {
 		return this->p2Wins;
 	}
 }
+
+// Set amount of wins.
 void Game::setWins(int player, int wins) {
 	if (player == 0) {
 		this->p1Wins = wins;
@@ -217,67 +229,62 @@ void Game::setWins(int player, int wins) {
 	}
 }
 
-// Get and Set pairs.
+// Get amount of pairs.
 int Game::getPairs() {
 	return this->pairs;
 }
+
+// Set amount of pairs. Requires to restart the game.
 void Game::setPairs(int pairs) {
 	this->pairs = pairs; // Because we change it there, we also need to reload the field.
 	this->restart();
 }
 
-// Broken. Needs fixes.
-int Game::doPredict(int amountToRemember) {
-	if (this->useAI) {
-		if (amountToRemember > ai->getSize()-1)	return this->doRandom(); // Heh, nope. Size is too large.
-
-		if (amountToRemember != -1) {
-			for (int i = 0; i < ai->getSize()-amountToRemember; i++) {
-				if (this->getCard(ai->getFirst(i)) == this->card1) {
-					if (!this->returnIfUsed(ai->getFirst(i)))	return this->getCard(ai->getFirst(i));
-					else return this->doRandom();
-				}
-				if (this->getCard(ai->getSecond(i)) == this->card1) {
-					if (!this->returnIfUsed(ai->getSecond(i)))	return this->getCard(ai->getSecond(i));
-					else return this->doRandom();
-				}
-			}
-		} else {
-			for (int i = 0; i < ai->getSize(); i++) {
-				if (this->getCard(ai->getFirst(i)) == this->card1) {
-					if (!this->returnIfUsed(ai->getFirst(i)))	return this->getCard(ai->getFirst(i));
-					else return this->doRandom();
-				}
-				if (this->getCard(ai->getSecond(i)) == this->card1) {
-					if (!this->returnIfUsed(ai->getSecond(i)))	return this->getCard(ai->getSecond(i));
-					else return this->doRandom();
-				}
-			}
+// Do a random turn and return a random index from available cards.
+int Game::doRandomTurn() {
+	std::vector<int> availableIndexes;
+	for (int i = 0; i < this->getPairs() * 2; i++) {
+		// Return available positions.
+		if (!this->returnIfShown(i)) {
+			availableIndexes.push_back({i}); // Push back indexes.
 		}
-		return this->doRandom();
+	}
+
+	// Return a random index from the available indexes here.
+	return availableIndexes[((randomGen()) % availableIndexes.size()) + 0];
+}
+
+// Do some bit of prediction play from the last turn. Is probably not the best, so that's a TODO.
+int Game::doPrediction() {
+	// Make sure the AI is not an nullptr to avoid crashes.
+	if (this->ai != nullptr) {
+		// Check if the first last card matches our first card.
+		if ((this->card1 == this->ai->getFirst()) && !this->returnIfShown(this->ai->getFirst())) {
+			return this->ai->getFirst();
+			// Check if the second last card matches our first card.
+		} else if ((this->card1 == this->ai->getSecond()) && !this->returnIfShown(this->ai->getSecond())) {
+			return this->ai->getSecond();
+			// Well, no one matches, so do a random play.
+		} else {
+			return this->doRandomTurn();
+		}
 	} else {
-		return this->doRandom();
+		// Because the AI is an nullptr, we will do a random play.
+		return this->doRandomTurn();
 	}
 }
 
-int Game::doRandom() {
-	if (this->cardSelect == 0 || this->cardSelect == 1) {
-		std::vector<int> possiblePlays;
-		for (int i = 0; i < (this->getPairs() * 2); i++) {
-			if (!this->returnIfUsed(i))	possiblePlays.push_back({i});
-		}
-
-		if (possiblePlays.size() > 0) {
-			int index = ((randomGen()) % possiblePlays.size()-1) + 0;
-			return possiblePlays[index];
+// Our actual AI turn call.
+int Game::doAITurn(bool predict) {
+	if (this->cardSelect == 0) {
+		return this->doRandomTurn();
+	} else if (this->cardSelect == 1) {
+		if (predict) {
+			return this->doPrediction();
 		} else {
-			return -1;
+			return this->doRandomTurn();
 		}
+	} else {
+		return this->doRandomTurn(); // No idea what else to return.
 	}
-	return -1;
-}
-
-int Game::doComTurn(bool predict, int amountToRemember) {
-	if (predict)	return this->doPredict(amountToRemember);
-	else			return this->doRandom();
 }

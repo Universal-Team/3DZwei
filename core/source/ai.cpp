@@ -31,23 +31,18 @@ AI::AI() {
 }
 
 void AI::clearCards() {
-	this->cards.clear();
+	this->lastCards = { -1, -1 };
 }
 
 void AI::setLastCards(int index1, int index2) {
-	this->cards.push_back({index1, index2});
+	this->lastCards.first = index1;
+	this->lastCards.second = index2;
 }
 
-int AI::getSize() {
-	return this->cards.size();
+int AI::getFirst() {
+	return this->lastCards.first;
 }
 
-int AI::getFirst(int index) {
-	if (index > this->getSize()-1)	return -1;
-	return this->cards[index].first;
-}
-
-int AI::getSecond(int index) {
-	if (index > this->getSize()-1)	return -1;
-	return this->cards[index].second;
+int AI::getSecond() {
+	return this->lastCards.second;
 }
