@@ -265,10 +265,10 @@ int Game::doPrediction() {
 	// Make sure the AI is not an nullptr to avoid crashes.
 	if (this->ai != nullptr) {
 		// Check if the first last card matches our first card.
-		if ((this->card1 == this->ai->getFirst()) && !this->returnIfShown(this->ai->getFirst())) {
+		if ((this->getCard(this->card1) == this->getCard(this->ai->getFirst())) && !this->returnIfShown(this->ai->getFirst())) {
 			return this->ai->getFirst();
 			// Check if the second last card matches our first card.
-		} else if ((this->card1 == this->ai->getSecond()) && !this->returnIfShown(this->ai->getSecond())) {
+		} else if ((this->getCard(this->card1) == this->getCard(this->ai->getSecond())) && !this->returnIfShown(this->ai->getSecond())) {
 			return this->ai->getSecond();
 			// Well, no one matches, so do a random play.
 		} else {
