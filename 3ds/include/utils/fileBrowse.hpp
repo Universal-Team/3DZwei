@@ -24,18 +24,25 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_OVERLAY_HPP
-#define _3DZWEI_OVERLAY_HPP
+#ifndef _3DZWEI_FILE_BROWSE_HPP
+#define _3DZWEI_FILE_BROWSE_HPP
 
-#include "common.hpp"
-#include "game.hpp"
+#include <dirent.h>
+#include <string>
+#include <sys/stat.h>
+#include <vector>
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
-	int SelectAvatar(int player = 0);
+struct DirEntry {
+	std::string name;
+	std::string path;
+	bool isDirectory;
+};
 
-	std::string SelectCardSet();
-}
+bool nameEndsWith(const std::string name, const std::vector<std::string> extensionList);
+void getDirectoryContents(std::vector<DirEntry>& dirContents, const std::vector<std::string> extensionList);
+void getDirectoryContents(std::vector<DirEntry>& dirContents);
+std::vector<std::string> getContents(const std::string name, const std::vector<std::string> extensionList);
+
+bool returnIfExist(const std::string path, const std::vector<std::string> extensionList);
 
 #endif

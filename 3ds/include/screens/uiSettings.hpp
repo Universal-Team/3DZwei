@@ -24,18 +24,26 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_OVERLAY_HPP
-#define _3DZWEI_OVERLAY_HPP
+#ifndef _3DZWEI_UI_SETTINGS_HPP
+#define _3DZWEI_UI_SETTINGS_HPP
 
 #include "common.hpp"
-#include "game.hpp"
+#include "structs.hpp"
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
-	int SelectAvatar(int player = 0);
+#include <vector>
 
-	std::string SelectCardSet();
-}
+class UISettings : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+private:
+	int Selection = 0;
+
+	const std::vector<Structs::ButtonPos> mainButtons = {
+		{10, 70, 140, 40}, // Colors.
+		{170, 70, 140, 40}, // Set Changer.
+		{10, 145, 140, 40} // Delay.
+	};
+};
 
 #endif

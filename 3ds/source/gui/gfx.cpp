@@ -157,7 +157,7 @@ void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
 	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
 	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
 
-	C2D_DrawImageAt(C2D_SpriteSheetGetImage(cards, cards_card_selector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, sprites_card_selector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
 
 	timer += .030;
 }

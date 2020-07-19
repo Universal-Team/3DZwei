@@ -24,18 +24,43 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_OVERLAY_HPP
-#define _3DZWEI_OVERLAY_HPP
+#ifndef _3DZWEI_SET_CHANGER_HPP
+#define _3DZWEI_SET_CHANGER_HPP
 
 #include "common.hpp"
-#include "game.hpp"
+#include "structs.hpp"
+#include <citro2d.h>
+#include <vector>
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
-	int SelectAvatar(int player = 0);
+class SetChanger : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+	SetChanger() { }
+private:
+	C2D_SpriteSheet previewCards;
+	void DrawPreview(void) const;
+	void previewLogic(u32 hDown, u32 hHeld, touchPosition touch);
 
-	std::string SelectCardSet();
-}
+	bool checkForValidate(std::string file);
+	Result loadSet(std::string folder);
+	Result loadDefault();
+	std::string setPath = "";
+	int mode = 0;
+
+	const std::vector<Structs::ButtonPos> cardPos = {
+		{60, 40, 55, 55},
+		{120, 40, 55, 55},
+		{180, 40, 55, 55},
+		{240, 40, 55, 55},
+		{300, 40, 55, 55},
+
+		{60, 100, 55, 55},
+		{120, 100, 55, 55},
+		{180, 100, 55, 55},
+		{240, 100, 55, 55},
+		{300, 100, 55, 55}
+	};
+};
 
 #endif

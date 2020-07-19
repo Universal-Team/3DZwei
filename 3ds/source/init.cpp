@@ -54,9 +54,16 @@ Result Init::Initialize() {
 	// Create missing directories.
 	mkdir("sdmc:/3ds", 0777); // For DSP dump.
 	mkdir("sdmc:/3ds/3DZwei", 0777); // main Path.
-
+	mkdir("sdmc:/3ds/3DZwei/sets", 0777); // Set path.
+	
 	config = std::make_unique<Config>();
-	Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
+
+	if (access(config->cardFile().c_str(), F_OK) != 0 ) {
+		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
+	} else {
+		Gui::loadSheet(config->cardFile().c_str(), cards);
+	}
+
 	Gui::loadSheet("romfs:/gfx/chars.t3x", characters);
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.

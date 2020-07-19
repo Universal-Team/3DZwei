@@ -24,12 +24,11 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "colorChanger.hpp"
 #include "config.hpp"
 #include "credits.hpp"
 #include "gameScreen.hpp"
-#include "keyboard.hpp"
 #include "mainMenu.hpp"
+#include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
 extern bool exiting;
@@ -49,7 +48,7 @@ void MainMenu::Draw(void) const {
 	}
 
 	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), "New Game", 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "Settings", 130);
+	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "UI Settings", 130);
 	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), "Credits", 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
@@ -67,12 +66,6 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (!(this->Selection%2)) this->Selection++;
 	}
 
-	// For now set delay with SELECT here.
-	if (hDown & KEY_SELECT) {
-		int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
-		if (tempDelay != -1) config->delay(tempDelay);
-	}
-
 
 	if (hDown & KEY_A) {
 		bool AI = false, delay = false, betterPredict = false;
@@ -84,7 +77,7 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 				break;
 			case 1:
-				Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
+				Gui::setScreen(std::make_unique<UISettings>(), true, true);
 				break;
 			case 2:
 				Gui::setScreen(std::make_unique<Credits>(), true, true);
@@ -99,7 +92,7 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			bool betterPredict = Msg::promptMsg("Do you like to use the better AI?\nNo would remember the last 2 cards.\nYes would remember all played cards.");
 			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 		} else if (touching(touch, mainButtons[1])) {
-			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
+			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
 		}
