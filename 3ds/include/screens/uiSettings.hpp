@@ -30,6 +30,7 @@
 #include "common.hpp"
 #include "structs.hpp"
 
+#include <citro2d.h>
 #include <vector>
 
 class UISettings : public Screen {
@@ -44,6 +45,8 @@ private:
 		{170, 70, 140, 40}, // Set Changer.
 		{10, 145, 140, 40} // Delay.
 	};
+
+	C2D_SpriteSheet tempSheet;
 };
 
 #endif

@@ -27,9 +27,8 @@
 #include "colorChanger.hpp"
 #include "config.hpp"
 #include "keyboard.hpp"
-#include "setChanger.hpp"
+#include "overlay.hpp"
 #include "uiSettings.hpp"
-
 
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
@@ -59,7 +58,8 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (touching(touch, mainButtons[0])) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[1])) {
-			Gui::setScreen(std::make_unique<SetChanger>(), true, true);
+			const std::string set = Overlays::SelectCardSet();
+			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
 		} else if (touching(touch, mainButtons[2])) {
 			int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
 			if (tempDelay != -1) config->delay(tempDelay);
@@ -86,7 +86,8 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (this->Selection == 0) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (this->Selection == 1) {
-			Gui::setScreen(std::make_unique<SetChanger>(), true, true);
+			const std::string set = Overlays::SelectCardSet();
+			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
 		} else if (this->Selection == 2) {
 			int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
 			if (tempDelay != -1) config->delay(tempDelay);

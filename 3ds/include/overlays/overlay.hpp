@@ -29,13 +29,14 @@
 
 #include "common.hpp"
 #include "game.hpp"
+#include <citro2d.h>
 
 namespace Overlays {
 	u32 SelectRGB(u32 oldColor);
 	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
 	int SelectAvatar(int player = 0);
-
 	std::string SelectCardSet();
+	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
 }
 
 #endif
