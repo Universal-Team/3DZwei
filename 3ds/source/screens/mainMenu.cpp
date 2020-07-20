@@ -36,7 +36,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - MainMenu");
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"));
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
@@ -47,9 +47,9 @@ void MainMenu::Draw(void) const {
 		}
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), "New Game", 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "UI Settings", 130);
-	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), "Credits", 130);
+	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("NEW_GAME"), 130);
+	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("UI_SETTINGS"), 130);
+	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CREDITS"), 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -71,9 +71,9 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		bool AI = false, delay = false, betterPredict = false;
 		switch(this->Selection) {
 			case 0:
-				AI = Msg::promptMsg("Do you like to play against an AI?");
-				delay = Msg::promptMsg("Do you like to play with a delay?");
-				betterPredict = Msg::promptMsg("Do you like to use the better AI?\nNo would remember the last 2 cards.\nYes would remember all played cards.");
+				AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
+				delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
+				betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
 				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 				break;
 			case 1:
@@ -87,9 +87,9 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, mainButtons[0])) {
-			bool AI = Msg::promptMsg("Do you like to play against an AI?");
-			bool delay = Msg::promptMsg("Do you like to play with a delay?");
-			bool betterPredict = Msg::promptMsg("Do you like to use the better AI?\nNo would remember the last 2 cards.\nYes would remember all played cards.");
+			bool AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
+			bool delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
+			bool betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
 			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);

@@ -24,24 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "mainMenu.hpp"
-#include "splash.hpp"
+#ifndef _3DZWEI_LANG_HPP
+#define _3DZWEI_LANG_HPP
 
-void Splash::Draw(void) const {
-	Gui::ScreenDraw(Top);
-	GFX::DrawSprite(sprites_dev_by_idx, 0, 0);
-	Gui::DrawString(395-Gui::GetStringWidth(0.50, "2020"), 218, 0.50, C2D_Color32(255, 255, 255, 255), "2020");
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
-	Gui::ScreenDraw(Bottom);
-	GFX::DrawSprite(sprites_universal_core_idx, 0, 0);
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
+#include "json.hpp"
+
+#include <string>
+
+namespace Lang {
+	std::string get(const std::string &key);
+	void load();
 }
 
-
-void Splash::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	this->delay--;
-	// If the delay is smaller than 1 -> Switch screen.
-	if (this->delay < 1) {
-		Gui::setScreen(std::make_unique<MainMenu>(), true, true);
-	}
-}
+#endif

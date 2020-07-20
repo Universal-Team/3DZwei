@@ -24,21 +24,39 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_COMMON_HPP
-#define _3DZWEI_COMMON_HPP
+#include "overlay.hpp"
 
-#include "config.hpp"
-#include "gfx.hpp"
-#include "gui.hpp"
-#include "lang.hpp"
-#include "msg.hpp"
-#include "screenCommon.hpp"
+static void Draw(void) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	Gui::ScreenDraw(Top);
+	GFX::DrawSprite(sprites_dev_by_idx, 0, 0);
+	Gui::DrawString(395-Gui::GetStringWidth(0.50, "2020"), 218, 0.50, C2D_Color32(255, 255, 255, 255), "2020");
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
+	Gui::ScreenDraw(Bottom);
+	GFX::DrawSprite(sprites_universal_core_idx, 0, 0);
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha)); // Fade in/out effect
+	C3D_FrameEnd(0);
+}
 
-#include <citro2d.h>
+void Overlays::SplashOverlay() {
+	fadein = true;
+	fadealpha = 255;
+	int delay = 200; // The delay for exiting the overlay.
+	bool doOut = false;
+	while(!doOut) {
+		Draw();
+		Gui::fadeEffects(16, 16, false);
+		hidScanInput();
 
-// Card stuff.
-#define CARDCOLOR C2D_Color32(146, 146, 146, 255) // Card Backcolor.
-#define CARDSIZE 55 // 55x55 cardsize.
-#define MAXCARDS 20 // 20 -> Default max cards.
+		if (delay > 0) {
+			delay--;
 
-#endif
+			if (delay == 0) doOut = true;
+		}
+
+		if (hidKeysDown()) doOut = true;
+	}
+}

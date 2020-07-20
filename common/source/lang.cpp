@@ -24,17 +24,38 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_SPLASH_HPP
-#define _3DZWEI_SPLASH_HPP
+#include "config.hpp"
+#include "lang.hpp"
 
-#include "common.hpp"
+#include <stdio.h>
+#include <unistd.h>
 
-class Splash : public Screen {
-public:
-	void Draw(void) const override;
-	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
-private:
-	int delay = 130;
-};
+nlohmann::json appJson;
+extern std::unique_ptr<Config> config;
 
-#endif
+#define LANGPATH "romfs:/lang/"
+
+std::string Lang::get(const std::string &key) {
+	if (!appJson.contains(key)) {
+		return "";
+	}
+	
+	return appJson.at(key).get_ref<const std::string&>();
+}
+
+std::string langs[] = {"de", "en"};
+
+void Lang::load() {
+	FILE* values;
+	if (access((LANGPATH + langs[config->language()]+"/app.json").c_str(), F_OK) == 0 ) {
+		values = fopen((LANGPATH + langs[config->language()]+"/app.json").c_str(), "rt");
+		if (values)	appJson = nlohmann::json::parse(values, nullptr, false);
+		fclose(values);
+
+	} else {
+		// Load English otherwise.
+		values = fopen((LANGPATH + langs[1]+"/app.json").c_str(), "rt");
+		if (values)	appJson = nlohmann::json::parse(values, nullptr, false);
+		fclose(values);
+	}
+}

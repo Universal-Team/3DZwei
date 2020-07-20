@@ -27,7 +27,8 @@
 #include "common.hpp"
 #include "config.hpp"
 #include "init.hpp"
-#include "splash.hpp"
+#include "mainMenu.hpp"
+#include "overlay.hpp"
 
 #include <3ds.h>
 #include <dirent.h>
@@ -64,19 +65,21 @@ Result Init::Initialize() {
 		Gui::loadSheet(config->cardFile().c_str(), cards);
 	}
 
+	Lang::load();
+
 	Gui::loadSheet("romfs:/gfx/chars.t3x", characters);
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.
-	Gui::setScreen(std::make_unique<Splash>(), false, true);
+
+	Overlays::SplashOverlay();
+
+	Gui::setScreen(std::make_unique<MainMenu>(), false, true);
 	return 0;
 }
 
 Result Init::MainLoop() {
 	// Initialize everything.
 	Initialize();
-	// Here we set the initial fade effect for fadein.
-	fadealpha = 255;
-	fadein = true;
 	// Loop as long as the status is not exiting.
 	while (aptMainLoop()) {
 		// Scan all the Inputs.
@@ -93,7 +96,7 @@ Result Init::MainLoop() {
 		C3D_FrameEnd(0);
 
 		if (exiting) {
-			if (!fadeout)	break;
+			if (!fadeout) break;
 		}
 
 		Gui::fadeEffects(16, 16, true);

@@ -35,20 +35,21 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void UISettings::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - UISettings", 390);
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("UI_SETTINGS"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 4; i++) {
 		Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, config->buttonColor());
 		if (this->Selection == i) {
 			GFX::DrawButtonSelector(mainButtons[i].x, mainButtons[i].y);
 		}
 	}
 
-	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), "Color Settings", 130);
-	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), "CardSets", 130);
-	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), "Card Delay", 130);
+	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("COLOR_SETTINGS"), 130);
+	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("CARD_SETS"), 130);
+	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CARD_DELAY"), 130);
+	Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), Lang::get("LANGUAGE"), 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -61,25 +62,27 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			const std::string set = Overlays::SelectCardSet();
 			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
 		} else if (touching(touch, mainButtons[2])) {
-			int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
+			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);
+		} else if (touching(touch, mainButtons[3])) {
+			Overlays::SelectLanguage();
 		}
 	}
 
 	if (hDown & KEY_RIGHT) {
-		if (this->Selection == 0) this->Selection = 1;
+		if (this->Selection < 3) this->Selection++;
 	}
 
 	if (hDown & KEY_UP) {
-		if (this->Selection == 2) this->Selection = 0;
+		if (this->Selection > 1) this->Selection -= 2;
 	}
 
 	if (hDown & KEY_DOWN) {
-		if (this->Selection == 0) this->Selection = 2;
+		if (this->Selection < 2) this->Selection += 2;
 	}
 
 	if (hDown & KEY_LEFT) {
-		if (this->Selection == 1) this->Selection = 0;
+		if (this->Selection > 0) this->Selection--;
 	}
 
 	if (hDown & KEY_A) {
@@ -89,8 +92,10 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			const std::string set = Overlays::SelectCardSet();
 			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
 		} else if (this->Selection == 2) {
-			int tempDelay = Keyboard::setInt(999, "Enter the Card Delay. 70 is default.");
+			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);
+		} else if (this->Selection == 3) {
+			Overlays::SelectLanguage();
 		}
 	}
 

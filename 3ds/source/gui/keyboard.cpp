@@ -53,7 +53,8 @@ int Keyboard::setInt(int maxValue, std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 2, 0.7f, config->textColor(), Text, 400);
+	Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2-10, 0.8f, config->textColor(), Text, 390, 90);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);
@@ -77,7 +78,8 @@ int Keyboard::setu8(std::string Text) {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 255));
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 2, 0.7f, config->textColor(), Text, 400);
+	Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2-10, 0.8f, config->textColor(), Text, 390, 90);
 	C3D_FrameEnd(0);
 	SwkbdState state;
 	swkbdInit(&state, SWKBD_TYPE_NUMPAD, 2, 3);

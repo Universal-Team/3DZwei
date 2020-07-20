@@ -75,8 +75,8 @@ static void Draw(u8 r, u8 g, u8 b) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "Select your RGB Color.", 390);
-	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, "Press START to select.\n\uE001 to cancel.\nTouch to control the RGB.\nD-Pad to control the RGB."))/2, 0.7f, config->textColor(), "Press START to select.\n\uE001 to cancel.\nTouch to control the RGB.\nD-Pad to control the RGB.", 390, 70);
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("SELECT_RGB_COLOR"), 390);
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, Lang::get("UI_COLOR_BEHAVIOUR")))/2, 0.7f, config->textColor(), Lang::get("UI_COLOR_BEHAVIOUR"), 390, 70);
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, config->bgColor() + C2D_Color32(0, 0, 0, 190));
 	DrawRGBColor(r, g, b);
@@ -159,17 +159,17 @@ u32 Overlays::SelectRGB(u32 oldColor) {
 		// Change RGB Value on the next button!
 		if (hidKeysDown() & KEY_TOUCH) {
 			if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 30 && touch.py <= 30 + 20) {
-				int temp = Keyboard::setu8("Enter the Red RGB.");
+				int temp = Keyboard::setu8(Lang::get("ENTER_RED_RGB"));
 				if (temp != -1) {
 					r = temp;
 				}
 			} else if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 80 && touch.py <= 80 + 20) {
-				int temp = Keyboard::setu8("Enter the Green RGB.");
+				int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
 				if (temp != -1) {
 					g = temp;
 				}
 			} else if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 130 && touch.py <= 130 + 20) {
-				int temp = Keyboard::setu8("Enter the Blue RGB.");
+				int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
 				if (temp != -1) {
 					b = temp;
 				}

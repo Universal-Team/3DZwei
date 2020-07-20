@@ -30,110 +30,74 @@
 
 extern touchPosition touch;
 extern std::unique_ptr<Config> config;
+extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-static void Draw(int page, int selection, int player) {
+static const std::vector<Structs::ButtonPos> langBlocks = {
+	{37, 32, 20, 20},
+	{37, 72, 20, 20}
+};
+
+static void Draw(int selection) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	
-	char buffer[100];
-	snprintf(buffer, sizeof(buffer), Lang::get("SELECT_AVATAR").c_str(), player);
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), buffer, 390, 30);
-
-	if (page == 1) {
-		GFX::DrawPlayer(-5, 35, 1, 1, 0);
-		GFX::DrawPlayer(95, 35, 1, 1, 1);
-		GFX::DrawPlayer(195, 35, 1, 1, 2);
-		GFX::DrawPlayer(295, 35, 1, 1, 3);
-	} else if (page == 2) {
-		GFX::DrawPlayer(-5, 35, 1, 1, 4);
-		GFX::DrawPlayer(95, 35, 1, 1, 5);
-		GFX::DrawPlayer(195, 35, 1, 1, 6);
-		GFX::DrawPlayer(295, 35, 1, 1, 7);
-	}
-
-	Gui::Draw_Rect(10, 160, 80, 30, config->buttonColor());
-	Gui::Draw_Rect(110, 160, 80, 30, config->buttonColor());
-	Gui::Draw_Rect(210, 160, 80, 30, config->buttonColor());
-	Gui::Draw_Rect(310, 160, 80, 30, config->buttonColor());
-		
-	if (page == 1) {
-		GFX::DrawButtonSelector(10 + (selection * 100), 160, 1, 1, true);
-	} else {
-		GFX::DrawButtonSelector(10 + ((selection-4) * 100), 160, 1, 1, true);
-	}
-		
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("SELECT_LANG"), 390);
+	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
+
+	for (int language = 0; language < 2; language++) {
+		Gui::Draw_Rect(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, config->buttonColor());
+	}
+
+	Gui::Draw_Rect(langBlocks[selection].x, langBlocks[selection].y, langBlocks[selection].w, langBlocks[selection].h, config->selectorColor());
+
+	Gui::DrawString(langBlocks[0].x+25, langBlocks[0].y, 0.7f, config->textColor(), "Deutsch", 320);
+	Gui::DrawString(langBlocks[1].x+25, langBlocks[1].y, 0.7f, config->textColor(), "English", 320);
 	C3D_FrameEnd(0);
 }
 
-// Select an avatar.
-int Overlays::SelectAvatar(int player) {
-	int selection = 0;
-	int page = 1;
+// Select a Language.
+void Overlays::SelectLanguage() {
+	int selection = config->language();
 
 	while(1) {
-		Draw(page, selection, player);
+		Draw(selection);
 
 		// The input part.
 		hidScanInput();
 		hidTouchRead(&touch);
 
-		// Page Switches.
-		if (hidKeysDown() & KEY_R) {
-			if (page == 1) {
-				page = 2;
-				selection += 4;
-			}
-		}
-
-		if (hidKeysDown() & KEY_L) {
-			if (page == 2) {
-				page = 1;
-				selection -= 4;
-			}
-		}
-
-		if (hidKeysDown() & KEY_RIGHT) {
-			if (page == 1) {
-				if (selection > 2) {
-					selection++;
-					page++;
-				} else {
-					selection++;
-				}
-			} else if (page == 2) {
-				if (selection < 7) {
-					selection++;
+		if (hidKeysDown() & KEY_TOUCH) {
+			for(int language = 0; language < 2; language++) {
+				if (touching(touch, langBlocks[language])) {
+					config->language(language);
+					Lang::load();
+					return; // Exit overlay.
 				}
 			}
 		}
 
-		if (hidKeysDown() & KEY_LEFT) {
-			if (page == 1) {
-				if (selection > 0) {
-					selection--;
-				}
-			} else if (page == 2) {
-				if (selection < 5) {
-					selection--;
-					page--;
-				} else {
-					selection--;
-				}
-			}
+		if (hidKeysDown() & KEY_DOWN) {
+			if (selection < 1) selection++;
+		}
+
+		if (hidKeysDown() & KEY_UP) {
+			if (selection > 0) selection--;
 		}
 
 		if (hidKeysDown() & KEY_A) {
-			return selection;
+			config->language(selection);
+			Lang::load();
+			return; // Exit overlay.
 		}
 
 		if (hidKeysDown() & KEY_B) {
-			return 0;
+			return; // Exit overlay.
 		}
 	}
 }

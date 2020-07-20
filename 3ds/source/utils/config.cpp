@@ -34,7 +34,11 @@
 #include <unistd.h>
 
 // Used to add missing stuff for the JSON.
-void Config::addMissingThings() { }
+void Config::addMissingThings() {
+	if (this->json["Version"] < 2) {
+		this->setInt("Language", 1);
+	}
+}
 
 // In case it doesn't exist.
 void Config::initialize() {
@@ -51,6 +55,7 @@ void Config::initialize() {
 	this->setInt("Version", this->configVersion);
 	this->setInt("Card_Delay", 70);
 	this->setString("Card_File", "romfs:/gfx/cards.t3x");
+	this->setInt("Language", 1);
 
 	// Write to file.
 	std::string dump = this->json.dump(1, '\t');
@@ -133,6 +138,12 @@ Config::Config() {
 		this->cardFile(this->getString("Card_File"));
 	}
 
+	if (!this->json.contains("Language")) {
+		this->language(1);
+	} else {
+		this->language(this->getInt("Language"));
+	}
+
 	if (!this->json.contains("Version")) {
 		this->version(this->configVersion);
 	} else {
@@ -156,6 +167,7 @@ void Config::save() {
 		this->setInt("Selector_Color", this->selectorColor());
 		this->setInt("Card_Delay", this->delay());
 		this->setString("Card_File", this->cardFile());
+		this->setInt("Language", this->language());
 		this->setInt("Version", this->version());
 
 		// Write changes to file.

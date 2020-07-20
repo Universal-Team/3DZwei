@@ -37,6 +37,8 @@ namespace Overlays {
 	int SelectAvatar(int player = 0);
 	std::string SelectCardSet();
 	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
+	void SelectLanguage();
+	void SplashOverlay();
 }
 
 #endif

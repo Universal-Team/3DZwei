@@ -42,7 +42,8 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	GFX::DrawFileBrowseBG();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "Select your Cardset.", 390);
+	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("CARDSET_SELECT"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
 		if (i == Selection) {
@@ -57,13 +58,14 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	}
 
 	Gui::DrawString(26, 32, 0.53f, config->textColor(), sets, 360);
-	Gui::DrawStringCentered(0, 215, 0.6f, config->textColor(), "Press START to refresh the filebrowse.", 390);
+	Gui::DrawStringCentered(0, 215, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 static void DrawBottom() {
 	GFX::DrawFileBrowseBG(false);
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), "Press \uE002 to load the default set.", 390);
+	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
+	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("X_DEFAULT_SET"), 390);
 	C3D_FrameEnd(0);
 }
 
@@ -125,7 +127,7 @@ std::string Overlays::SelectCardSet() {
 		}
 		
 		if (hDown & KEY_B) {
-			if (Msg::promptMsg("Do you like to cancel the selection?")) {
+			if (Msg::promptMsg(Lang::get("CANCEL_SELECTION"))) {
 				return "";
 			}
 		}

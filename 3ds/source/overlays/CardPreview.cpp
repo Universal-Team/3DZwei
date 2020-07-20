@@ -53,7 +53,8 @@ static void Draw(C2D_SpriteSheet &sheet) {
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - CardSet Preview", 390);
+	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
 
 	// Preview cards.
 	if (sheet) {
@@ -65,7 +66,8 @@ static void Draw(C2D_SpriteSheet &sheet) {
 	}
 
 	GFX::DrawBottom();
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), "Press \uE000 to use and \uE001 to cancel.", 390);
+	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
+	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 390);
 	C3D_FrameEnd(0);
 }
 
@@ -81,9 +83,9 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 	if (folder == "3DZWEI_DEFAULT_ROMFS") {
 		// ROMFS logic.
 		char message [100];
-		snprintf(message, sizeof(message), "Would you like to load this set?\n\n%s", "3DZWEI_DEFAULT");
+		snprintf(message, sizeof(message), Lang::get("LOADING_SET_PROMPT").c_str(), "3DZWEI_DEFAULT");
 		if (Msg::promptMsg2(message)) {
-			Msg::DisplayMsg("Loading SpriteSheet...");
+			Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 			// Load.
 			Gui::loadSheet("romfs:/gfx/cards.t3x", sheet);
 			return 0; // All good.
@@ -95,9 +97,9 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 	if (checkForValidate(folder)) {
 		if (checkForValidate(folder + "/cards.t3x")) {
 			char message [100];
-			snprintf(message, sizeof(message), "Would you like to load this set?\n\n%s", folder.c_str());
+			snprintf(message, sizeof(message), Lang::get("LOADING_SET_PROMPT").c_str(), folder.c_str());
 			if (Msg::promptMsg2(message)) {
-				Msg::DisplayMsg("Loading SpriteSheet...");
+				Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 				// Load.
 				Gui::loadSheet((folder + "/cards.t3x").c_str(), sheet);
 				return 0; // All good.
@@ -106,7 +108,7 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 			}
 		} else {
 			char message [100];
-			snprintf(message, sizeof(message), "%s does not exist!", "cards.t3x");
+			snprintf(message, sizeof(message), Lang::get("FILE_NOT_EXIST").c_str(), "cards.t3x");
 			Msg::DisplayWaitMsg(message);
 			return -1; // Not all good.
 		}
@@ -117,12 +119,12 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 
 static void finalize(const std::string folder) {
 	if (folder == "3DZWEI_DEFAULT_ROMFS") {
-		Msg::DisplayMsg("Loading SpriteSheet...");
+		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 		Gui::unloadSheet(cards);
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 		config->cardFile("romfs:/gfx/cards.t3x");
 	} else {
-		Msg::DisplayMsg("Loading SpriteSheet...");
+		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 		Gui::unloadSheet(cards);
 		Gui::loadSheet((folder + "/cards.t3x").c_str(), cards);
 		config->cardFile((folder + "/cards.t3x"));

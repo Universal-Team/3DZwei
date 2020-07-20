@@ -43,7 +43,8 @@ private:
 	const std::vector<Structs::ButtonPos> mainButtons = {
 		{10, 70, 140, 40}, // Colors.
 		{170, 70, 140, 40}, // Set Changer.
-		{10, 145, 140, 40} // Delay.
+		{10, 145, 140, 40}, // Delay.
+		{170, 145, 140, 40} // Language.
 	};
 
 	C2D_SpriteSheet tempSheet;
