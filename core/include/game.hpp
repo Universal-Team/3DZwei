@@ -42,16 +42,16 @@ public:
 	void setShown(int index, bool show);
 	bool play(int index);
 	int getCard(int index);
-	int getCurrentPlayer();
-	void setCurrentPlayer(int player);
+	Players getCurrentPlayer();
+	void setCurrentPlayer(Players player);
 	void nextPlayer();
-	int checkOver();
+	GameWinner checkOver();
 	void restart();
-	int getPairs(int player);
-	int getCardSelect();
-	void setCardSelect(int cardSelect);
-	int getWins(int player);
-	void setWins(int player, int wins);
+	int getPairs(Players player);
+	CardSelectMode getCardSelect();
+	void setCardSelect(CardSelectMode cardSelect);
+	int getWins(Players player);
+	void setWins(Players player, int wins);
 	int getPairs();
 	void setPairs(int pairs);
 	int returnProperPair();
@@ -66,7 +66,9 @@ private:
 	std::vector<CardStruct> field; // The game's field.
 	std::vector<int> player1, player2;
 	bool useAI, rememberMoreAI = false;
-	int currentPlayer = 0, cardSelect = 0, card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;
+	Players currentPlayer = Players::Player1;
+	int card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;
+	CardSelectMode cardSelect = CardSelectMode::DrawFirst;
 };
 
 #endif

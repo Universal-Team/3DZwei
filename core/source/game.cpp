@@ -42,7 +42,7 @@ Game::Game(int pairs, bool useAI, bool rememberMoreAI) {
 	this->card2 = -1;
 	this->p1Wins = 0;
 	this->p2Wins = 0;
-	this->cardSelect = 0;
+	this->cardSelect = CardSelectMode::DrawFirst;
 }
 
 // Generate new field.
@@ -82,7 +82,7 @@ void Game::setUsed(int index, bool isUsed) {
 
 // Return if both cards matches.
 bool Game::checkIfMatches() {
-	if (this->card1 < 20 && this->card2 < 20 && this->card1 != -1 && this->card2 != -1) {
+	if (this->card1 < (this->pairs * 2) && this->card2 < (this->pairs * 2) && this->card1 != -1 && this->card2 != -1) {
 		if (this->field[this->card1].CardType == this->field[this->card2].CardType)	return true;
 		else return false;
 	} else {
@@ -95,14 +95,17 @@ bool Game::setCardPair() {
 	if (this->card1 != -1 && this->card2 != -1) {
 		if (this->checkIfMatches()) {
 			// Card matches, so set a win.
-			if (this->currentPlayer == 0) {
-				this->player1.push_back(this->card1);
-				this->player1.push_back(this->card2);
-			} else {
-				this->player2.push_back(this->card1);
-				this->player2.push_back(this->card2);
+			switch(this->currentPlayer) {
+				case Players::Player1:
+					this->player1.push_back(this->card1);
+					this->player1.push_back(this->card2);
+					break;
+				case Players::Player2:
+					this->player2.push_back(this->card1);
+					this->player2.push_back(this->card2);
+					break;	
 			}
-
+			
 			// Set that we used it.
 			this->setUsed(this->card1, true);
 			this->setUsed(this->card2, true);
@@ -135,17 +138,17 @@ void Game::setShown(int index, bool show) {
 // Play if you can.
 bool Game::play(int index) {
 	if (this->returnIfUsed(index) != true) {
-		if (this->cardSelect == 0) {
+		if (this->cardSelect == CardSelectMode::DrawFirst) {
 			this->setShown(index, true);
 			this->setUsed(index, true);
 			this->card1 = index;
-			this->cardSelect = 1;
+			this->cardSelect = CardSelectMode::DrawSecond;
 			return true;
-		} else if (this->cardSelect == 1) {
+		} else if (this->cardSelect == CardSelectMode::DrawSecond) {
 			this->setShown(index, true);
 			this->setUsed(index, true);
 			this->card2 = index;
-			this->cardSelect = 2;
+			this->cardSelect = CardSelectMode::DoCheck;
 			return true;
 		}
 	} else {
@@ -162,30 +165,39 @@ int Game::getCard(int index) {
 }
 
 // Get Current Player.
-int Game::getCurrentPlayer() { return this->currentPlayer; }
+Players Game::getCurrentPlayer() { return this->currentPlayer; }
+
 // Set Current Player.
-void Game::setCurrentPlayer(int player) { this->currentPlayer = player; }
+void Game::setCurrentPlayer(Players player) { this->currentPlayer = player; }
+
 // Get next player.
 void Game::nextPlayer() {
-	if (this->currentPlayer == 0) this->currentPlayer = 1;
-	else this->currentPlayer = 0;
+	switch(this->currentPlayer) {
+		case Players::Player1:
+			this->currentPlayer = Players::Player2;
+			break;
+		case Players::Player2:
+			this->currentPlayer = Players::Player1;
+			break;
+	}
 }
 
 // Check if all cards are used and return the winner.
-int Game::checkOver() {
+GameWinner Game::checkOver() {
+	// The Checkover is only valid, if the Player 1 & 2 cards matches the full size.
 	if ((int)this->player1.size() + (int)this->player2.size() == (this->pairs * 2)) {
 		if (this->player1.size() > this->player2.size()) {
-			return 1; // Player 1 wins!
+			return GameWinner::Player1; // Player 1 wins!
 		} else if (this->player2.size() > this->player1.size()) {
-			return 2; // Player 2 wins!
+			return GameWinner::Player2; // Player 2 wins!
 		} else if (this->player1.size() == this->player2.size()) {
-			return 3; // No one wins!
+			return GameWinner::None; // No one wins!
 		}
 	} else {
-		return -1; // Nah, not all used.
+		return GameWinner::NotOver; // Nah, not all used.
 	}
 
-	return -1; // To not cause compile conflicts.
+	return GameWinner::NotOver; // To not cause compile conflicts.
 }
 
 // Restart the game.
@@ -195,32 +207,36 @@ void Game::restart() {
 	if (this->useAI) ai->clearCards();
 	this->card1 = -1;
 	this->card2 = -1;
-	this->cardSelect = 0;
+	this->cardSelect = CardSelectMode::DrawFirst;
+	this->currentPlayer = Players::Player1;
 	this->generateCards(this->pairs);
 }
 
 // Get the amount of pairs from the players.
-int Game::getPairs(int player) {
-	if (player == 0) {
-		return this->player1.size() / 2;
-	} else {
-		return this->player2.size() / 2;
+int Game::getPairs(Players player) {
+	switch(player) {
+		case Players::Player1:
+			return this->player1.size() / 2;
+		case Players::Player2:
+			return this->player2.size() / 2;
 	}
+
+	return 0;
 }
 
 // Get and Set the current card selection.
-int Game::getCardSelect() {
+CardSelectMode Game::getCardSelect() {
 	return this->cardSelect;
 }
 
 // Set the CardSelect mode.
-void Game::setCardSelect(int cardSelect) {
+void Game::setCardSelect(CardSelectMode cardSelect) {
 	this->cardSelect = cardSelect;
 }
 
 // Get amount of wins.
-int Game::getWins(int player) {
-	if (player == 0) {
+int Game::getWins(Players player) {
+	if (player == Players::Player1) {
 		return this->p1Wins;
 	} else {
 		return this->p2Wins;
@@ -228,8 +244,8 @@ int Game::getWins(int player) {
 }
 
 // Set amount of wins.
-void Game::setWins(int player, int wins) {
-	if (player == 0) {
+void Game::setWins(Players player, int wins) {
+	if (player == Players::Player1) {
 		this->p1Wins = wins;
 	} else {
 		this->p2Wins = wins;
@@ -333,20 +349,21 @@ int Game::doPrediction() {
 
 // Our actual AI turn call.
 int Game::doAITurn(bool predict, int amount) {
-	if (this->cardSelect == 0) {
+	if (this->cardSelect == CardSelectMode::DrawFirst) {
 		return this->doRandomTurn();
-	} else if (this->cardSelect == 1) {
+	} else if (this->cardSelect == CardSelectMode::DrawSecond) {
 		if (predict) {
 			if (this->rememberMoreAI) {
 				return this->doPredictLonger(amount);
 			} else {
 				return this->doPrediction();
 			}
+		// because we don't predict here, we'd do random.
 		} else {
 			return this->doRandomTurn();
 		}
 	} else {
-		return this->doRandomTurn(); // No idea what else to return.
+		return this->doRandomTurn(); // No idea what else to return if cardSelect is 2.
 	}
 }
 

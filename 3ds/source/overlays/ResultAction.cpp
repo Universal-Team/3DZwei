@@ -42,10 +42,10 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int need
 
 	// Player 1.
 	GFX::DrawChar(avatar1, 10, 35);
-	Gui::DrawString(16, 170, 0.6f, config->textColor(), "Wins: " + std::to_string(game->getWins(0)));
+	Gui::DrawString(16, 170, 0.6f, config->textColor(), "Wins: " + std::to_string(game->getWins(Players::Player1)));
 	// Player 2.
 	GFX::DrawChar(avatar2, 280, 35);
-	Gui::DrawString(286, 170, 0.6f, config->textColor(), "Wins: " + std::to_string(game->getWins(1)));
+	Gui::DrawString(286, 170, 0.6f, config->textColor(), "Wins: " + std::to_string(game->getWins(Players::Player2)));
 
 	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Needed wins to win: " + std::to_string(neededWins));
 
@@ -60,7 +60,7 @@ bool Overlays::ResultOverlay(std::unique_ptr<Game> &game, int neededWins, int av
 		Draw(game, avatar1, avatar2, neededWins);
 		hidScanInput();
 		if (hidKeysDown()) {
-			if (game->getWins(0) >= neededWins || game->getWins(1) >= neededWins) {
+			if (game->getWins(Players::Player1) >= neededWins || game->getWins(Players::Player2) >= neededWins) {
 				return true; // Max wins reached, no plays needed.
 			} else {
 				return false; // We need to play again! ;P

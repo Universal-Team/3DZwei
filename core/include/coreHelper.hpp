@@ -32,6 +32,27 @@
 
 inline std::mt19937 randomGen; // Random generation value.
 
+// The CardSelect Mode.
+enum class CardSelectMode {
+	DrawFirst,
+	DrawSecond,
+	DoCheck
+};
+
+// The winner of the match.
+enum class GameWinner {
+	Player1,
+	Player2,
+	None,
+	NotOver
+};
+
+// The current Player.
+enum class Players {
+	Player1,
+	Player2
+};
+
 // For the gamefield.
 struct CardStruct {
 	bool Used;

@@ -56,20 +56,20 @@ void GameScreen::Draw(void) const {
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), "Card Pairs: " + std::to_string(this->currentGame->getPairs()));
 	// Player 1.
 	GFX::DrawChar(this->avatar1, 10, 35);
-	Gui::DrawString(16, 170, 0.6f, config->textColor(), "Pairs: " + std::to_string(this->currentGame->getPairs(0)));
+	Gui::DrawString(16, 170, 0.6f, config->textColor(), "Pairs: " + std::to_string(this->currentGame->getPairs(Players::Player1)));
 	// Player 2.
 	GFX::DrawChar(this->avatar2, 280, 35);
-	Gui::DrawString(286, 170, 0.6f, config->textColor(), "Pairs: " + std::to_string(this->currentGame->getPairs(1)));
+	Gui::DrawString(286, 170, 0.6f, config->textColor(), "Pairs: " + std::to_string(this->currentGame->getPairs(Players::Player2)));
 
-	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Current Player: " + std::to_string(this->currentGame->getCurrentPlayer()+1));
+	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), "Current Player: " + std::to_string((int)this->currentGame->getCurrentPlayer()+1));
 
 	// For no delay mode, show that you have to press Y to do the play.
-	if ((this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == 1)) {
+	if ((this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == Players::Player2)) {
 		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press Y to do the play.");
 	}
 
 	// For no delay mode, show that you have to press X to do the play check.
-	if (this->currentGame->getCardSelect() == 2 && !this->useDelay) {
+	if (this->currentGame->getCardSelect() == CardSelectMode::DoCheck && !this->useDelay) {
 		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), "Press X to execute the play check.");
 	}
 
@@ -90,7 +90,7 @@ void GameScreen::Draw(void) const {
 }
 
 void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) {
+	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
 			if (this->selectedCard < 19) this->selectedCard++;
@@ -129,14 +129,14 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 void GameScreen::AILogic(u32 hDown) {
 	if (this->useAI) {
-		if (this->currentGame->getCardSelect() == 0 || this->currentGame->getCardSelect() == 1) {
+		if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 			if (!this->useDelay) {
 				if (hDown & KEY_Y) {
-					if (this->currentGame->getCardSelect() == 0) {
+					if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst) {
 						Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 						int card1 = this->currentGame->doAITurn();
 						this->currentGame->play(card1);
-					} else if (this->currentGame->getCardSelect() == 1) {
+					} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 						Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 						this->currentGame->play(card2);
@@ -146,12 +146,12 @@ void GameScreen::AILogic(u32 hDown) {
 				if (this->delay > 0) {
 					this->delay--;
 					if (this->delay < 1) {
-						if (this->currentGame->getCardSelect() == 0) {
+						if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst) {
 							Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 							int card1 = this->currentGame->doAITurn();
 							this->currentGame->play(card1);
 							this->delay = config->delay();
-						} else if (this->currentGame->getCardSelect() == 1) {
+						} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 							Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 							this->currentGame->play(card2);
@@ -172,7 +172,7 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		}
 	}
 
-	if (this->currentGame->getCurrentPlayer() == 0) {
+	if (this->currentGame->getCurrentPlayer() == Players::Player1) {
 		this->playerLogic(hDown, hHeld, touch);
 	} else {
 		if (this->useAI) {
@@ -182,22 +182,30 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		}
 	}
 
-	if (this->currentGame->getCardSelect() == 2) {
+	if (this->currentGame->getCardSelect() == CardSelectMode::DoCheck) {
 		if (!this->useDelay) {
 			if (hDown & KEY_X) {
 				if (this->currentGame->setCardPair()) {
 					// Check if over.
-					if (this->currentGame->checkOver() != -1) {
+					if (this->currentGame->checkOver() != GameWinner::NotOver) {
 
-						int checkOver = this->currentGame->checkOver();
+						const GameWinner checkOver = this->currentGame->checkOver();
 
-						if (checkOver < 3 && checkOver > 0) {
-							this->currentGame->setWins(checkOver-1, this->currentGame->getWins(checkOver-1)+1);
+						switch(checkOver) {
+							case GameWinner::Player1:
+								this->currentGame->setWins(Players::Player1, this->currentGame->getWins(Players::Player1)+1);
+								Msg::DisplayWarnMsg("Player 1 wins with " + std::to_string(this->currentGame->getPairs(Players::Player1)) + "!");
+								break;
+							case GameWinner::Player2:
+								this->currentGame->setWins(Players::Player2, this->currentGame->getWins(Players::Player2)+1);
+								Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(Players::Player2)) + "!");
+								break;
+							case GameWinner::None:
+								Msg::DisplayWarnMsg("No one wins!");
+								break;
+							case GameWinner::NotOver:
+								break;
 						}
-
-						if (checkOver == 1)	Msg::DisplayWarnMsg("Player 1 wins with " + std::to_string(this->currentGame->getPairs(0)) + "!");
-						else if (checkOver == 2) Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(1)) + "!");
-						else if (checkOver == 3) Msg::DisplayWarnMsg("No one wins!");
 
 						if (Overlays::ResultOverlay(this->currentGame, this->wins, this->avatar1, this->avatar2)) {
 							Gui::screenBack(true);
@@ -208,10 +216,10 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						}
 					}
 
-					this->currentGame->setCardSelect(0);
+					this->currentGame->setCardSelect(CardSelectMode::DrawFirst);
 				} else {
 					this->currentGame->nextPlayer();
-					this->currentGame->setCardSelect(0);
+					this->currentGame->setCardSelect(CardSelectMode::DrawFirst);
 				}
 			}
 		} else {
@@ -220,16 +228,25 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				if (this->delay < 1) {
 					if (this->currentGame->setCardPair()) {
 						// Check if over.
-						if (this->currentGame->checkOver() != -1) {
-							int checkOver = this->currentGame->checkOver();
+						if (this->currentGame->checkOver() != GameWinner::NotOver) {
 
-							if (checkOver < 3 && checkOver > 0) {
-								this->currentGame->setWins(checkOver-1, this->currentGame->getWins(checkOver-1)+1);
+							const GameWinner checkOver = this->currentGame->checkOver();
+
+							switch(checkOver) {
+								case GameWinner::Player1:
+									this->currentGame->setWins(Players::Player1, this->currentGame->getWins(Players::Player1)+1);
+									Msg::DisplayWarnMsg("Player 1 wins with " + std::to_string(this->currentGame->getPairs(Players::Player1)) + " Pairs!");
+									break;
+								case GameWinner::Player2:
+									this->currentGame->setWins(Players::Player2, this->currentGame->getWins(Players::Player2)+1);
+									Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(Players::Player2)) + " Pairs!");
+									break;
+								case GameWinner::None:
+									Msg::DisplayWarnMsg("No one wins!");
+									break;
+								case GameWinner::NotOver:
+									break;
 							}
-
-							if (checkOver == 1)	Msg::DisplayWarnMsg("Player 1 wins with " + std::to_string(this->currentGame->getPairs(0)) + " Pairs!");
-							else if (checkOver == 2) Msg::DisplayWarnMsg("Player 2 wins with " + std::to_string(this->currentGame->getPairs(1)) + " Pairs!");
-							else if (checkOver == 3) Msg::DisplayWarnMsg("No one wins!");
 
 							if (Overlays::ResultOverlay(this->currentGame, this->wins, this->avatar1, this->avatar2)) {
 								Gui::screenBack(true);
@@ -241,11 +258,11 @@ void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							}
 						}
 
-						this->currentGame->setCardSelect(0);
+						this->currentGame->setCardSelect(CardSelectMode::DrawFirst);
 						this->delay = config->delay();
 					} else {
 						this->currentGame->nextPlayer();
-						this->currentGame->setCardSelect(0);
+						this->currentGame->setCardSelect(CardSelectMode::DrawFirst);
 						this->delay = config->delay();
 					}
 				}
