@@ -29,7 +29,6 @@
 #include "json.hpp"
 
 #include <3ds.h>
-#include <citro2d.h>
 #include <string>
 #include <unistd.h>
 

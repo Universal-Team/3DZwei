@@ -42,12 +42,12 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int need
 
 	// Player 1.
 	GFX::DrawChar(avatar1, 10, 35);
-	Gui::DrawString(16, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player1)));
+	Gui::DrawString(16, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player1)), 110);
 	// Player 2.
 	GFX::DrawChar(avatar2, 280, 35);
-	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player2)));
+	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player2)), 110);
 
-	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("NEEDED_WINS") + std::to_string(neededWins));
+	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("NEEDED_WINS") + std::to_string(neededWins), 390);
 
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));

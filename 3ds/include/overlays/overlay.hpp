@@ -39,6 +39,7 @@ namespace Overlays {
 	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
 	void SelectLanguage();
 	void SplashOverlay();
+	void ShowRules();
 }
 
 #endif

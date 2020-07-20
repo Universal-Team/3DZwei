@@ -65,7 +65,7 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 static void DrawBottom() {
 	GFX::DrawFileBrowseBG(false);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("X_DEFAULT_SET"), 390);
+	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("X_DEFAULT_SET"), 310);
 	C3D_FrameEnd(0);
 }
 

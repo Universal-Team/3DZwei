@@ -28,6 +28,7 @@
 #include "credits.hpp"
 #include "gameScreen.hpp"
 #include "mainMenu.hpp"
+#include "overlay.hpp"
 #include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
@@ -36,7 +37,8 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"));
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"), 390);
+	
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
@@ -50,20 +52,27 @@ void MainMenu::Draw(void) const {
 	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("NEW_GAME"), 130);
 	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("UI_SETTINGS"), 130);
 	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CREDITS"), 130);
+	Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), Lang::get("GAME_RULES"), 130);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	// Navigation.
+	if (hDown & KEY_RIGHT) {
+		if (this->Selection < 3) this->Selection++;
+	}
+
 	if (hDown & KEY_UP) {
-		if (this->Selection > 1)	this->Selection -= 2;
-	} else if (hDown & KEY_DOWN) {
-		if (this->Selection < 3 && this->Selection != 2 && this->Selection != 3)	this->Selection += 2;
-	} else if (hDown & KEY_LEFT) {
-		if (this->Selection%2) this->Selection--;
-	} else if (hDown & KEY_RIGHT) {
-		if (!(this->Selection%2)) this->Selection++;
+		if (this->Selection > 1) this->Selection -= 2;
+	}
+
+	if (hDown & KEY_DOWN) {
+		if (this->Selection < 2) this->Selection += 2;
+	}
+
+	if (hDown & KEY_LEFT) {
+		if (this->Selection > 0) this->Selection--;
 	}
 
 
@@ -82,6 +91,9 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			case 2:
 				Gui::setScreen(std::make_unique<Credits>(), true, true);
 				break;
+			case 3:
+				Overlays::ShowRules();
+				break;
 		}
 	}
 
@@ -95,6 +107,8 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {
 			Gui::setScreen(std::make_unique<Credits>(), true, true);
+		} else if (touching(touch, mainButtons[3])) {
+			Overlays::ShowRules();
 		}
 	}
 	

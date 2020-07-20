@@ -30,7 +30,7 @@ extern std::unique_ptr<Config> config;
 
 void Credits::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"));
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
 	GFX::DrawSprite(sprites_stackz_idx, 2, 75);
 	Gui::DrawStringCentered(0, 40, 0.75f, config->textColor(), Lang::get("DEVELOPED_BY"), 400);
 	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 217, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);

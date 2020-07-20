@@ -33,17 +33,17 @@ extern std::unique_ptr<Config> config;
 extern C2D_SpriteSheet cards; // Our default cards sheet.
 
 static const std::vector<Structs::ButtonPos> cardPos = {
-	{60, 40, 55, 55},
-	{120, 40, 55, 55},
-	{180, 40, 55, 55},
-	{240, 40, 55, 55},
-	{300, 40, 55, 55},
+	{60, 30, 55, 55},
+	{120, 30, 55, 55},
+	{180, 30, 55, 55},
+	{240, 30, 55, 55},
+	{300, 30, 55, 55},
 
-	{60, 100, 55, 55},
-	{120, 100, 55, 55},
-	{180, 100, 55, 55},
-	{240, 100, 55, 55},
-	{300, 100, 55, 55}
+	{60, 90, 55, 55},
+	{120, 90, 55, 55},
+	{180, 90, 55, 55},
+	{240, 90, 55, 55},
+	{300, 90, 55, 55}
 };
 
 // Draw.
@@ -62,12 +62,12 @@ static void Draw(C2D_SpriteSheet &sheet) {
 			Gui::DrawSprite(sheet, i, cardPos[i].x, cardPos[i].y);
 		}
 
-		Gui::DrawSprite(sheet, cards_card_empty_idx, 180, 160);
+		Gui::DrawSprite(sheet, cards_card_empty_idx, 180, 150);
 	}
 
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 390);
+	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
 	C3D_FrameEnd(0);
 }
 
