@@ -30,18 +30,14 @@
 #include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
-
-bool cardTouch(touchPosition touch, FieldStruct card) {
-	if (touch.px >= card.x && touch.px <= (card.x + card.xSize) && touch.py >= card.y && touch.py <= (card.y + card.ySize)) return true;
-	else return false;
-}
+extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict, bool _20_mode) {
 	this->useDelay = useDelay;
 	this->useAI = useAI;
 	this->betterPredict = doBetterPredict;
 	this->_20_mode = _20_mode;
-	this->currentGame = std::make_unique<Game>(this->_20_mode ? 20 : 10, this->useAI, this->betterPredict); // Create game.
+	this->currentGame = std::make_unique<Game>((this->_20_mode ? 20 : 10), this->useAI, this->betterPredict); // Create game.
 	this->delay = config->delay();
 
 	this->avatar1 = Overlays::SelectAvatar(1);
@@ -56,6 +52,7 @@ GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict, bool _20
 
 
 void GameScreen::Draw(void) const {
+	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(this->_20_mode ? 2 : 1);
 	GFX::DrawTop(true);
 	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_SCREEN"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
@@ -68,6 +65,7 @@ void GameScreen::Draw(void) const {
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("PAIRS") + std::to_string(this->currentGame->getPairs(Players::Player2)), 110);
 
 	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("CURRENT_PLAYER") + std::to_string((int)this->currentGame->getCurrentPlayer()+1), 390);
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 
 	// For no delay mode, show that you have to press Y to do the play.
 	if ((this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == Players::Player2)) {
@@ -82,15 +80,15 @@ void GameScreen::Draw(void) const {
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom(false);
 
-	for (int i = 0; i < (this->_20_mode ? 40 : 20); i++) {
+	for (int i = 0 + this->page * 20, i2 = 0; i < (0 + (this->page * 20) + 20); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
-			GFX::DrawCard(this->currentGame->getCard(i), this->_20_mode ? cardPos20[i].x : cardPos[i].x, this->_20_mode ? cardPos20[i].y : cardPos[i].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
+			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
 		} else {
-			GFX::DrawCard(PairType::None, this->_20_mode ? cardPos20[i].x : cardPos[i].x, this->_20_mode ? cardPos20[i].y : cardPos[i].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
+			GFX::DrawCard(PairType::None, cardPos[i2].x, cardPos[i2].y);
 		}
 	}
 
-	GFX::DrawCardSelector(this->_20_mode ? cardPos20[this->selectedCard].x : cardPos[this->selectedCard].x, this->_20_mode ? cardPos20[this->selectedCard].y : cardPos[this->selectedCard].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
+	GFX::DrawCardSelector(cardPos[this->selectedCard].x, cardPos[this->selectedCard].y);
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
@@ -99,33 +97,45 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			if (this->selectedCard < (this->_20_mode ? 39 : 19)) this->selectedCard++;
+			if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			if (this->selectedCard > 0) this->selectedCard--;
+			if (this->selectedCard > 0)	this->selectedCard--;
 		}
 
 		if (hDown & KEY_DOWN) {
-			if (this->selectedCard < (this->_20_mode ? 32 : 15)) this->selectedCard += this->_20_mode ? 8 : 5;
+			if (this->selectedCard < 15) this->selectedCard += 5;
 		}
 
 		if (hDown & KEY_UP) {
-			if (this->selectedCard > (this->_20_mode ? 7 : 4)) this->selectedCard -= this->_20_mode ? 8 : 5;
+			if (this->selectedCard > 4)	this->selectedCard -=5;
+		}
+
+		if (hDown & KEY_R) {
+			if (this->_20_mode) {
+				if (this->page == 0) this->page = 1;
+			}
+		}
+
+		if (hDown & KEY_L) {
+			if (this->_20_mode) {
+				if (this->page == 1) this->page = 0;
+			}
 		}
 
 		if (hDown & KEY_A) {
-			if (!this->currentGame->returnIfUsed(this->selectedCard)) {
-				this->currentGame->play(this->selectedCard);
+			if (!this->currentGame->returnIfUsed(0 + (this->page * 20) + this->selectedCard)) {
+				this->currentGame->play(0 + (this->page * 20) + this->selectedCard);
 			}
 		}
 
 		if (hDown & KEY_TOUCH) {
-			for (int i = 0; i < (this->_20_mode ? 40 : 20); i++) {
-				if (cardTouch(touch, (this->_20_mode ? cardPos20[i] : cardPos[i]))) {
-					if (!this->currentGame->returnIfUsed(i)) {
+			for (int i = 0; i < 20; i++) {
+				if (touching(touch, cardPos[i])) {
+					if (!this->currentGame->returnIfUsed(i + (this->page * 20))) {
 						this->selectedCard = i;
-						this->currentGame->play(i);
+						this->currentGame->play(i + (this->page * 20));
 					}
 				}
 			}
@@ -141,10 +151,24 @@ void GameScreen::AILogic(u32 hDown) {
 					if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst) {
 						Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 						int card1 = this->currentGame->doAITurn();
+
+						if (card1 >= 20) {
+							if (this->page == 0) this->page = 1;
+						} else {
+							if (this->page == 1) this->page = 0;
+						}
+
 						this->currentGame->play(card1);
 					} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 						Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
+
+						if (card2 >= 20) {
+							if (this->page == 0) this->page = 1;
+						} else {
+							if (this->page == 1) this->page = 0;
+						}
+
 						this->currentGame->play(card2);
 					}
 				}
@@ -155,11 +179,25 @@ void GameScreen::AILogic(u32 hDown) {
 						if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst) {
 							Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 							int card1 = this->currentGame->doAITurn();
+
+							if (card1 >= 20) {
+								if (this->page == 0) this->page = 1;
+							} else {
+								if (this->page == 1) this->page = 0;
+							}
+
 							this->currentGame->play(card1);
 							this->delay = config->delay();
 						} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 							Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
+
+							if (card2 >= 20) {
+								if (this->page == 0) this->page = 1;
+							} else {
+								if (this->page == 1) this->page = 0;
+							}
+
 							this->currentGame->play(card2);
 							this->delay = config->delay();
 						}

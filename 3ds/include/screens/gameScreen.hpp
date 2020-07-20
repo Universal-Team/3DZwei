@@ -33,13 +33,6 @@
 
 #include <vector>
 
-struct FieldStruct {
-	float x;
-	float y;
-	float xSize;
-	float ySize;
-};
-
 class GameScreen : public Screen {
 public:
 	void Draw(void) const override;
@@ -47,13 +40,13 @@ public:
 	GameScreen(bool useDelay = true, bool useAI = false, bool doBetterPredict = false, bool _20_mode = false);
 private:
 	std::unique_ptr<Game> currentGame;
-	bool useDelay = false, useAI = false, betterPredict = false, _20_mode = true;
-	int selectedCard = 0, delay, avatar1, avatar2, wins;
+	bool useDelay = false, useAI = false, betterPredict = false, _20_mode = false;
+	int selectedCard = 0, delay, avatar1, avatar2, wins, page = 0;
 	// Logics.
 	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
 	void AILogic(u32 hDown);
 
-	const std::vector<FieldStruct> cardPos = {
+	const std::vector<Structs::ButtonPos> cardPos = {
 		// Row 1.
 		{10, 2, 55, 55}, // 1.
 		{71, 2, 55, 55}, // 2.
@@ -78,53 +71,6 @@ private:
 		{132, 183, 55, 55}, // 3.
 		{193, 183, 55, 55}, // 4.
 		{254, 183, 55, 55} // 5.
-	};
-
-	const std::vector<FieldStruct> cardPos20 = {
-		{2, 21.25, 38.5, 38.5},
-		{41.5, 21.25, 38.5, 38.5},
-		{81, 21.25, 38.5, 38.5},
-		{120.5, 21.25, 38.5, 38.5},
-		{160, 21.25, 38.5, 38.5},
-		{199.5, 21.25, 38.5, 38.5},
-		{239, 21.25, 38.5, 38.5},
-		{278.5, 21.25, 38.5, 38.5},
-
-		{2, 60.75, 38.5, 38.5},
-		{41.5, 60.75, 38.5, 38.5},
-		{81, 60.75, 38.5, 38.5},
-		{120.5, 60.75, 38.5, 38.5},
-		{160, 60.75, 38.5, 38.5},
-		{199.5, 60.75, 38.5, 38.5},
-		{239, 60.75, 38.5, 38.5},
-		{278.5, 60.75, 38.5, 38.5},
-
-		{2, 100.25, 38.5, 38.5},
-		{41.5, 100.25, 38.5, 38.5},
-		{81, 100.25, 38.5, 38.5},
-		{120.5, 100.25, 38.5, 38.5},
-		{160, 100.25, 38.5, 38.5},
-		{199.5, 100.25, 38.5, 38.5},
-		{239, 100.25, 38.5, 38.5},
-		{278.5, 100.25, 38.5, 38.5},
-
-		{2, 139.75, 38.5, 38.5},
-		{41.5, 139.75, 38.5, 38.5},
-		{81, 139.75, 38.5, 38.5},
-		{120.5, 139.75, 38.5, 38.5},
-		{160, 139.75, 38.5, 38.5},
-		{199.5, 139.75, 38.5, 38.5},
-		{239, 139.75, 38.5, 38.5},
-		{278.5, 139.75, 38.5, 38.5},
-
-		{2, 179.25, 38.5, 38.5},
-		{41.5, 179.25, 38.5, 38.5},
-		{81, 179.25, 38.5, 38.5},
-		{120.5, 179.25, 38.5, 38.5},
-		{160, 179.25, 38.5, 38.5},
-		{199.5, 179.25, 38.5, 38.5},
-		{239, 179.25, 38.5, 38.5},
-		{278.5, 179.25, 38.5, 38.5}
 	};
 };
 
