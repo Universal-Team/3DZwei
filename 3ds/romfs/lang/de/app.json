@@ -39,6 +39,7 @@
 	"NO_ONE_WINS": "Keiner gewinnt!",
 	"NOT_IMPLEMENTED_YET": "Das ist noch nicht implementiert!",
 	"OK": "OK",
+	"PAIR_MODE": "Möchten Sie mit 20 Paaren spielen?\nJa würde mit 20 Paaren spielen.\nNein würde mit 10 Paaren spielen.",
 	"PAIRS": "Paare: ",
 	"PLAY_AGAINST_AI": "Möchtest du gegen den Computer spielen?",
 	"PLAY_BETTER_AI": "Möchtest du gegen den besseren Computer spielen?\nNein würde sich an die letzten 2 Karten erinnern.\nJa würde sich an alle Karten erinnern.",

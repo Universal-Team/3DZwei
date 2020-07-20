@@ -30,13 +30,18 @@
 #include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
-extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict) {
+bool cardTouch(touchPosition touch, FieldStruct card) {
+	if (touch.px >= card.x && touch.px <= (card.x + card.xSize) && touch.py >= card.y && touch.py <= (card.y + card.ySize)) return true;
+	else return false;
+}
+
+GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict, bool _20_mode) {
 	this->useDelay = useDelay;
 	this->useAI = useAI;
 	this->betterPredict = doBetterPredict;
-	this->currentGame = std::make_unique<Game>(10, this->useAI, this->betterPredict); // Create game.
+	this->_20_mode = _20_mode;
+	this->currentGame = std::make_unique<Game>(this->_20_mode ? 20 : 10, this->useAI, this->betterPredict); // Create game.
 	this->delay = config->delay();
 
 	this->avatar1 = Overlays::SelectAvatar(1);
@@ -77,15 +82,15 @@ void GameScreen::Draw(void) const {
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom(false);
 
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < (this->_20_mode ? 40 : 20); i++) {
 		if (this->currentGame->returnIfShown(i)) {
-			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(this->currentGame->getCard(i), this->_20_mode ? cardPos20[i].x : cardPos[i].x, this->_20_mode ? cardPos20[i].y : cardPos[i].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
 		} else {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(PairType::None, this->_20_mode ? cardPos20[i].x : cardPos[i].x, this->_20_mode ? cardPos20[i].y : cardPos[i].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
 		}
 	}
 
-	GFX::DrawCardSelector(cardPos[this->selectedCard].x, cardPos[this->selectedCard].y);
+	GFX::DrawCardSelector(this->_20_mode ? cardPos20[this->selectedCard].x : cardPos[this->selectedCard].x, this->_20_mode ? cardPos20[this->selectedCard].y : cardPos[this->selectedCard].y, this->_20_mode ? 0.7 : 1.0, this->_20_mode ? 0.7 : 1.0);
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
@@ -94,19 +99,19 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			if (this->selectedCard < 19) this->selectedCard++;
+			if (this->selectedCard < (this->_20_mode ? 39 : 19)) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			if (this->selectedCard > 0)	this->selectedCard--;
+			if (this->selectedCard > 0) this->selectedCard--;
 		}
 
 		if (hDown & KEY_DOWN) {
-			if (this->selectedCard < 15) this->selectedCard += 5;
+			if (this->selectedCard < (this->_20_mode ? 32 : 15)) this->selectedCard += this->_20_mode ? 8 : 5;
 		}
 
 		if (hDown & KEY_UP) {
-			if (this->selectedCard > 4)	this->selectedCard -=5;
+			if (this->selectedCard > (this->_20_mode ? 7 : 4)) this->selectedCard -= this->_20_mode ? 8 : 5;
 		}
 
 		if (hDown & KEY_A) {
@@ -116,8 +121,8 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 		}
 
 		if (hDown & KEY_TOUCH) {
-			for (int i = 0; i < 20; i++) {
-				if (touching(touch, cardPos[i])) {
+			for (int i = 0; i < (this->_20_mode ? 40 : 20); i++) {
+				if (cardTouch(touch, (this->_20_mode ? cardPos20[i] : cardPos[i]))) {
 					if (!this->currentGame->returnIfUsed(i)) {
 						this->selectedCard = i;
 						this->currentGame->play(i);

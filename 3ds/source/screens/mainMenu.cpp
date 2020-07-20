@@ -77,13 +77,14 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
-		bool AI = false, delay = false, betterPredict = false;
+		bool AI = false, delay = false, betterPredict = false, _20_mode = false;
 		switch(this->Selection) {
 			case 0:
 				AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
 				delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
 				if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
+				_20_mode = Msg::promptMsg(Lang::get("PAIR_MODE"));
+				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict, _20_mode), true, true);
 				break;
 			case 1:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
@@ -99,11 +100,12 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, mainButtons[0])) {
-			bool AI = false, delay = false, betterPredict = false;
+			bool AI = false, delay = false, betterPredict = false, _20_mode = false;
 			AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
 			delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
 			if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
+			_20_mode = Msg::promptMsg(Lang::get("PAIR_MODE"));
+			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict, _20_mode), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {
