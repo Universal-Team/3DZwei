@@ -71,16 +71,7 @@ static void DrawAnimRight(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 	}
 
-	if (delay > 190 && delay < 260) {
-		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
-		}
-
-		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
-		GFX::DrawCard(0, cardPos[1].x, cardPos[1].y);
-	}
-
-	if (delay > 50 && delay < 190) {
+	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
 			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
 		}
@@ -88,7 +79,9 @@ static void DrawAnimRight(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 		GFX::DrawCard(0, cardPos[1].x, cardPos[1].y);
 
-		GFX::DrawSprite(sprites_right_idx, 100, 100);
+		if (delay > 50 && delay < 190) {
+			GFX::DrawSprite(sprites_right_idx, 100, 100);
+		}
 	}
 
 	C3D_FrameEnd(0);
@@ -113,16 +106,7 @@ static void DrawAnimFalse(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 	}
 
-	if (delay > 190 && delay < 260) {
-		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
-		}
-
-		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
-		GFX::DrawCard(1, cardPos[1].x, cardPos[1].y);
-	}
-
-	if (delay > 50 && delay < 190) {
+	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
 			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
 		}
@@ -130,7 +114,9 @@ static void DrawAnimFalse(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 		GFX::DrawCard(1, cardPos[1].x, cardPos[1].y);
 
-		GFX::DrawSprite(sprites_wrong_idx, 100, 100);
+		if (delay > 50 && delay < 190) {
+			GFX::DrawSprite(sprites_wrong_idx, 100, 100);
+		}
 	}
 
 	C3D_FrameEnd(0);
