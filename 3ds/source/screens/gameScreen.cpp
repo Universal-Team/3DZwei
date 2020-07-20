@@ -42,7 +42,7 @@ GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict) {
 	this->avatar1 = Overlays::SelectAvatar(1);
 	this->avatar2 = Overlays::SelectAvatar(2);
 	int tempWins = Keyboard::setInt(99, Lang::get("ENTER_WINS"));
-	if (tempWins != -1) {
+	if (tempWins != -1 || tempWins != 0) {
 		this->wins = tempWins;
 	} else {
 		this->wins = 3;
@@ -81,7 +81,7 @@ void GameScreen::Draw(void) const {
 		if (this->currentGame->returnIfShown(i)) {
 			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i].x, cardPos[i].y);
 		} else {
-			GFX::DrawCard(cards_card_empty_idx, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
 		}
 	}
 

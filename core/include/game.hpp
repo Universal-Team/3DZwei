@@ -41,7 +41,7 @@ public:
 	bool returnIfShown(int index);
 	void setShown(int index, bool show);
 	bool play(int index);
-	int getCard(int index);
+	PairType getCard(int index);
 	Players getCurrentPlayer();
 	void setCurrentPlayer(Players player);
 	void nextPlayer();
@@ -64,7 +64,7 @@ public:
 private:
 	std::unique_ptr<AI> ai; // Our AI.
 	std::vector<CardStruct> field; // The game's field.
-	std::vector<int> player1, player2;
+	int player1 = 0, player2 = 0;
 	bool useAI, rememberMoreAI = false;
 	Players currentPlayer = Players::Player1;
 	int card1 = -1, card2 = -1, p1Wins = 0, p2Wins = 0, pairs = 10;

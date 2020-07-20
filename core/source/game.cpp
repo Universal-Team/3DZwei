@@ -47,18 +47,18 @@ Game::Game(int pairs, bool useAI, bool rememberMoreAI) {
 
 // Generate new field.
 void Game::generateCards(int pairs) {
-	std::vector<int> tempCards;
+	std::vector<PairType> tempCards;
 
 	this->field.clear();
 
 	// First card for the pair!
 	for (int i = 0; i < pairs; i++) {
-		tempCards.push_back(i);
+		tempCards.push_back((PairType)i);
 	}
 
 	// Second card for the pair!
 	for (int i = 0; i < pairs; i++) {
-		tempCards.push_back(i);
+		tempCards.push_back((PairType)i);
 	}
 
 	std::shuffle(tempCards.begin(), tempCards.end(), randomGen);
@@ -97,12 +97,10 @@ bool Game::setCardPair() {
 			// Card matches, so set a win.
 			switch(this->currentPlayer) {
 				case Players::Player1:
-					this->player1.push_back(this->card1);
-					this->player1.push_back(this->card2);
+					this->player1++;
 					break;
 				case Players::Player2:
-					this->player2.push_back(this->card1);
-					this->player2.push_back(this->card2);
+					this->player2++;
 					break;	
 			}
 			
@@ -159,8 +157,8 @@ bool Game::play(int index) {
 }
 
 // Get a cardtype from an index.
-int Game::getCard(int index) {
-	if (index > (this->pairs * 2)-1) return -1; // Out of scope.
+PairType Game::getCard(int index) {
+	if (index > (this->pairs * 2)-1) return PairType::None; // Out of scope.
 	return this->field[index].CardType;
 }
 
@@ -185,12 +183,12 @@ void Game::nextPlayer() {
 // Check if all cards are used and return the winner.
 GameWinner Game::checkOver() {
 	// The Checkover is only valid, if the Player 1 & 2 cards matches the full size.
-	if ((int)this->player1.size() + (int)this->player2.size() == (this->pairs * 2)) {
-		if (this->player1.size() > this->player2.size()) {
+	if (this->player1 + this->player2 == (this->pairs)) {
+		if (this->player1 > this->player2) {
 			return GameWinner::Player1; // Player 1 wins!
-		} else if (this->player2.size() > this->player1.size()) {
+		} else if (this->player2 > this->player1) {
 			return GameWinner::Player2; // Player 2 wins!
-		} else if (this->player1.size() == this->player2.size()) {
+		} else if (this->player1 == this->player2) {
 			return GameWinner::None; // No one wins!
 		}
 	} else {
@@ -202,8 +200,8 @@ GameWinner Game::checkOver() {
 
 // Restart the game.
 void Game::restart() {
-	this->player1.clear();
-	this->player2.clear();
+	this->player1 = 0;
+	this->player2 = 0;
 	if (this->useAI) ai->clearCards();
 	this->card1 = -1;
 	this->card2 = -1;
@@ -216,9 +214,9 @@ void Game::restart() {
 int Game::getPairs(Players player) {
 	switch(player) {
 		case Players::Player1:
-			return this->player1.size() / 2;
+			return this->player1;
 		case Players::Player2:
-			return this->player2.size() / 2;
+			return this->player2;
 	}
 
 	return 0;
