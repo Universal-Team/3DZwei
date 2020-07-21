@@ -47,7 +47,8 @@ static const std::vector<Structs::ButtonPos> cardPos = {
 };
 
 // Draw.
-static void Draw(C2D_SpriteSheet &sheet) {
+static void Draw(C2D_SpriteSheet &sheet, int page) {
+	const std::string temp = std::to_string(page + 1) + " | " + std::to_string(2);
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
@@ -58,13 +59,14 @@ static void Draw(C2D_SpriteSheet &sheet) {
 
 	// Preview cards.
 	if (sheet) {
-		for (int i = 0; i < 10; i++) {
-			Gui::DrawSprite(sheet, i, cardPos[i].x, cardPos[i].y);
+		for (int i = 0 + (page * 10), i2 = 0; i < 0 + (page * 10) + 10; i++, i2++) {
+			Gui::DrawSprite(sheet, i, cardPos[i2].x, cardPos[i2].y);
 		}
 
 		Gui::DrawSprite(sheet, cards_card_empty_idx, 180, 150);
 	}
 
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
@@ -132,11 +134,12 @@ static void finalize(const std::string folder) {
 }
 
 void Overlays::PreviewCards(C2D_SpriteSheet &sheet, std::string folder) {
+	int page = 0;
 	// Do prev logic here.
 	if (loadSet(folder, sheet) != 0) return; // No No No.
 
 	while(1) {
-		Draw(sheet);
+		Draw(sheet, page);
 		hidScanInput();
 
 		if (hidKeysDown() & KEY_A) {
@@ -144,7 +147,15 @@ void Overlays::PreviewCards(C2D_SpriteSheet &sheet, std::string folder) {
 			Gui::unloadSheet(sheet);
 			break;
 		}
+
+		if (hidKeysDown() & KEY_R || hidKeysDown() & KEY_RIGHT) {
+			if (page == 0) page = 1;
+		}
 		
+		if (hidKeysDown() & KEY_L || hidKeysDown() & KEY_LEFT) {
+			if (page == 1) page = 0;
+		}
+
 		if (hidKeysDown() & KEY_B) {
 			Gui::unloadSheet(sheet);
 			break;
