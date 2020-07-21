@@ -60,13 +60,13 @@ static void DrawAnimRight(int delay) {
 	// Logic here!
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 	}
 
 	if (delay > 260 && delay < 330) {
 		for (int i = 1; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
@@ -74,7 +74,7 @@ static void DrawAnimRight(int delay) {
 
 	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
@@ -95,13 +95,13 @@ static void DrawAnimFalse(int delay) {
 	// Logic here!
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 	}
 
 	if (delay > 260 && delay < 330) {
 		for (int i = 1; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
@@ -109,7 +109,7 @@ static void DrawAnimFalse(int delay) {
 
 	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
 		}
 
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);

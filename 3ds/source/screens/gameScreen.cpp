@@ -95,7 +95,7 @@ void GameScreen::Draw(void) const {
 		if (this->currentGame->returnIfShown(i)) {
 			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
 		} else {
-			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i2].x, cardPos[i2].y);
+			GFX::DrawCard(-1, cardPos[i2].x, cardPos[i2].y);
 		}
 	}
 

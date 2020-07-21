@@ -24,6 +24,7 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "cardUtils.hpp"
 #include "colorChanger.hpp"
 #include "config.hpp"
 #include "keyboard.hpp"
@@ -66,6 +67,12 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			if (tempDelay != -1) config->delay(tempDelay);
 		} else if (touching(touch, mainButtons[3])) {
 			Overlays::SelectLanguage();
+		}
+	}
+
+	if (hDown & KEY_SELECT) {
+		if (Msg::promptMsg(Lang::get("CARD_RANDOMIZE"))) {
+			CardUtils::randomizeCards();
 		}
 	}
 

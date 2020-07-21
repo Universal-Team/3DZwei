@@ -28,6 +28,7 @@
 #include "config.hpp"
 
 extern std::unique_ptr<Config> config;
+std::vector<int> cardIndex;
 
 void GFX::DrawTop(bool useBars) {
 	Gui::ScreenDraw(Top);
@@ -163,7 +164,14 @@ void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
 }
 
 void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {
-	Gui::DrawSprite(cards, index, x, y, ScaleX, ScaleY);
+	if (index == -1) {
+		Gui::DrawSprite(cards, C2D_SpriteSheetCount(cards)-1, x, y, ScaleX, ScaleY);
+		return;
+	}
+
+	if (index > (int)cardIndex.size()) return;
+
+	Gui::DrawSprite(cards, cardIndex[index], x, y, ScaleX, ScaleY);
 }
 
 // Player Character.

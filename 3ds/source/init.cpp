@@ -24,7 +24,9 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "cardUtils.hpp"
 #include "common.hpp"
+#include "coreHelper.hpp"
 #include "config.hpp"
 #include "init.hpp"
 #include "mainMenu.hpp"
@@ -71,6 +73,8 @@ Result Init::Initialize() {
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.
 
+	CoreHelper::generateSeed();
+	CardUtils::fillIndex();
 	Overlays::SplashOverlay();
 
 	Gui::setScreen(std::make_unique<MainMenu>(), false, true);
