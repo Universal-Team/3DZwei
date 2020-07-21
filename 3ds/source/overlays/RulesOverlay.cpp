@@ -30,6 +30,7 @@
 #include "structs.hpp"
 
 extern std::unique_ptr<Config> config;
+extern C2D_SpriteSheet cards;
 
 static const std::vector<Structs::ButtonPos> cardPos = {
 	{71, 61, 55, 55},
@@ -59,25 +60,25 @@ static void DrawAnimRight(int delay) {
 	// Logic here!
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 	}
 
 	if (delay > 260 && delay < 330) {
 		for (int i = 1; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 
-		GFX::DrawCard(PairType::Pair1, cardPos[0].x, cardPos[0].y);
+		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 	}
 
 	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 
-		GFX::DrawCard(PairType::Pair1, cardPos[0].x, cardPos[0].y);
-		GFX::DrawCard(PairType::Pair1, cardPos[1].x, cardPos[1].y);
+		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
+		GFX::DrawCard(0, cardPos[1].x, cardPos[1].y);
 
 		if (delay > 50 && delay < 190) {
 			GFX::DrawSprite(sprites_right_idx, 100, 100);
@@ -94,25 +95,25 @@ static void DrawAnimFalse(int delay) {
 	// Logic here!
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 	}
 
 	if (delay > 260 && delay < 330) {
 		for (int i = 1; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 
-		GFX::DrawCard(PairType::Pair1, cardPos[0].x, cardPos[0].y);
+		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 	}
 
 	if (delay > 50 && delay < 260) {
 		for (int i = 2; i < (int)cardPos.size(); i++) {
-			GFX::DrawCard(PairType::None, cardPos[i].x, cardPos[i].y);
+			GFX::DrawCard(C2D_SpriteSheetCount(cards)-1, cardPos[i].x, cardPos[i].y);
 		}
 
-		GFX::DrawCard(PairType::Pair1, cardPos[0].x, cardPos[0].y);
-		GFX::DrawCard(PairType::Pair2, cardPos[1].x, cardPos[1].y);
+		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
+		GFX::DrawCard(1, cardPos[1].x, cardPos[1].y);
 
 		if (delay > 50 && delay < 190) {
 			GFX::DrawSprite(sprites_wrong_idx, 100, 100);

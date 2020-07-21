@@ -162,72 +162,8 @@ void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
 	timer += .030;
 }
 
-void GFX::DrawCard(PairType pt, int x, int y, float ScaleX, float ScaleY) {
-	switch(pt) {
-		case PairType::Pair1:
-			Gui::DrawSprite(cards, cards_card_0_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair2:
-			Gui::DrawSprite(cards, cards_card_1_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair3:
-			Gui::DrawSprite(cards, cards_card_2_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair4:
-			Gui::DrawSprite(cards, cards_card_3_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair5:
-			Gui::DrawSprite(cards, cards_card_4_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair6:
-			Gui::DrawSprite(cards, cards_card_5_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair7:
-			Gui::DrawSprite(cards, cards_card_6_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair8:
-			Gui::DrawSprite(cards, cards_card_7_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair9:
-			Gui::DrawSprite(cards, cards_card_8_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair10:
-			Gui::DrawSprite(cards, cards_card_9_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair11:
-			Gui::DrawSprite(cards, cards_card_10_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair12:
-			Gui::DrawSprite(cards, cards_card_11_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair13:
-			Gui::DrawSprite(cards, cards_card_12_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair14:
-			Gui::DrawSprite(cards, cards_card_13_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair15:
-			Gui::DrawSprite(cards, cards_card_14_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair16:
-			Gui::DrawSprite(cards, cards_card_15_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair17:
-			Gui::DrawSprite(cards, cards_card_16_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair18:
-			Gui::DrawSprite(cards, cards_card_17_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair19:
-			Gui::DrawSprite(cards, cards_card_18_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair20:
-			Gui::DrawSprite(cards, cards_card_19_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::None:
-			Gui::DrawSprite(cards, cards_card_empty_idx, x, y, ScaleX, ScaleY);
-			break;
-	}
+void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {
+	Gui::DrawSprite(cards, index, x, y, ScaleX, ScaleY);
 }
 
 // Player Character.

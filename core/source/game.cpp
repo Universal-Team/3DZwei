@@ -47,18 +47,18 @@ Game::Game(int pairs, bool useAI, bool rememberMoreAI) {
 
 // Generate new field.
 void Game::generateCards(int pairs) {
-	std::vector<PairType> tempCards;
+	std::vector<int> tempCards;
 
 	this->field.clear();
 
 	// First card for the pair!
 	for (int i = 0; i < pairs; i++) {
-		tempCards.push_back((PairType)i);
+		tempCards.push_back(i);
 	}
 
 	// Second card for the pair!
 	for (int i = 0; i < pairs; i++) {
-		tempCards.push_back((PairType)i);
+		tempCards.push_back(i);
 	}
 
 	std::shuffle(tempCards.begin(), tempCards.end(), randomGen);
@@ -157,8 +157,8 @@ bool Game::play(int index) {
 }
 
 // Get a cardtype from an index.
-PairType Game::getCard(int index) {
-	if (index > (this->pairs * 2)-1) return PairType::None; // Out of scope.
+int Game::getCard(int index) {
+	if (index > (this->pairs * 2)-1) return -1; // Out of scope.
 	return this->field[index].CardType;
 }
 
