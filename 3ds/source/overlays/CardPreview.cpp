@@ -125,7 +125,7 @@ static void finalize(const std::string folder) {
 		Gui::unloadSheet(cards);
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 		config->cardFile("romfs:/gfx/cards.t3x");
-		config->Set("3DZWEI_ROMFS");
+		config->Set("_3DZWEI_ROMFS");
 	} else {
 		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 		Gui::unloadSheet(cards);

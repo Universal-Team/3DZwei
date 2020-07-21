@@ -146,7 +146,7 @@ Config::Config() {
 	}
 
 	if (!this->json.contains("Set")) {
-		this->Set("3DZWEI_ROMFS");
+		this->Set("_3DZWEI_ROMFS");
 	} else {
 		this->Set(this->getString("Set"));
 	}
