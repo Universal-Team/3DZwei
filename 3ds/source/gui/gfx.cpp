@@ -164,12 +164,14 @@ void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
 }
 
 void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {
+	// -1 would do the "empty back" card.
 	if (index == -1) {
 		Gui::DrawSprite(cards, C2D_SpriteSheetCount(cards)-1, x, y, ScaleX, ScaleY);
 		return;
 	}
 
-	if (index > (int)cardIndex.size()) return;
+	// Do Nothing, when index size is smaller than 1, or index larger than size.
+	if (((int)cardIndex.size() < 1) && (index > (int)cardIndex.size()-1)) return;
 
 	Gui::DrawSprite(cards, cardIndex[index], x, y, ScaleX, ScaleY);
 }
