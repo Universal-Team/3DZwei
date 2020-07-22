@@ -26,9 +26,10 @@
 
 #include "config.hpp"
 #include "credits.hpp"
-#include "gameScreen.hpp"
+#include "multiGame.hpp"
 #include "mainMenu.hpp"
 #include "overlay.hpp"
+#include "timePlay.hpp"
 #include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
@@ -77,13 +78,19 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
-		bool AI = false, delay = false, betterPredict = false;
+		int tempSelect = -1;
 		switch(this->Selection) {
 			case 0:
-				AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
-				delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
-				if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
+				tempSelect = Overlays::SelectGame();
+
+				switch(tempSelect) {
+					case 0:
+						Gui::setScreen(std::make_unique<MultiGame>(), true, true);
+						break;
+					case 1:
+						Gui::setScreen(std::make_unique<TimePlay>(), true, true);
+						break;
+				}
 				break;
 			case 1:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
@@ -99,11 +106,17 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, mainButtons[0])) {
-			bool AI = false, delay = false, betterPredict = false;
-			AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
-			delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
-			if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict), true, true);
+			int tempSelect = Overlays::SelectGame();
+
+			switch(tempSelect) {
+				case 0:
+					Gui::setScreen(std::make_unique<MultiGame>(), true, true);
+					break;
+				case 1:
+					Gui::setScreen(std::make_unique<TimePlay>(), true, true);
+					break;
+			}
+			
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {

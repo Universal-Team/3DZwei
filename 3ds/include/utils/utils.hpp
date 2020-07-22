@@ -24,23 +24,14 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_OVERLAY_HPP
-#define _3DZWEI_OVERLAY_HPP
+#ifndef _3DZWEI_UTILS_HPP
+#define _3DZWEI_UTILS_HPP
 
 #include "common.hpp"
-#include "game.hpp"
-#include <citro2d.h>
+#include <string>
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
-	int SelectAvatar(int player = 0);
-	std::string SelectCardSet();
-	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
-	void SelectLanguage();
-	void SplashOverlay();
-	void ShowRules();
-	int SelectGame();
+namespace Utils {
+	std::string formatText(const std::string& fmt_str, ...);
 }
 
 #endif

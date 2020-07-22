@@ -25,18 +25,18 @@
 */
 
 #include "config.hpp"
-#include "gameScreen.hpp"
 #include "keyboard.hpp"
+#include "multiGame.hpp"
 #include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 extern C2D_SpriteSheet cards; // Needed for getting size the spritesheet.
 
-GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict) {
-	this->useDelay = useDelay;
-	this->useAI = useAI;
-	this->betterPredict = doBetterPredict;
+MultiGame::MultiGame() {
+	this->useAI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
+	this->useDelay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
+	if (this->useAI) this->betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
 
 	char msg[100];
 	snprintf(msg, sizeof(msg), Lang::get("ENTER_PAIR_AMOUNT").c_str(), C2D_SpriteSheetCount(cards)-1);
@@ -62,10 +62,10 @@ GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict) {
 }
 
 
-void GameScreen::Draw(void) const {
+void MultiGame::Draw(void) const {
 	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(((this->pairAmount / (10 + 1)) + 1));
 	GFX::DrawTop(true);
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_SCREEN"), 390);
+	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MULTIPLAY"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
 
 	// Player 1.
@@ -104,7 +104,7 @@ void GameScreen::Draw(void) const {
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
-void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
+void MultiGame::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
@@ -152,7 +152,7 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
-void GameScreen::AILogic(u32 hDown) {
+void MultiGame::AILogic(u32 hDown) {
 	if (this->useAI) {
 		if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 			if (!this->useDelay) {
@@ -219,7 +219,7 @@ void GameScreen::AILogic(u32 hDown) {
 	}
 }
 
-void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
 		if (Msg::promptMsg(Lang::get("EXIT_GAME"))) {
 			Gui::screenBack(true);

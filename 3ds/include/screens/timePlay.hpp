@@ -24,23 +24,59 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_OVERLAY_HPP
-#define _3DZWEI_OVERLAY_HPP
+#ifndef _3DZWEI_TIME_PLAY_HPP
+#define _3DZWEI_TIME_PLAY_HPP
 
 #include "common.hpp"
 #include "game.hpp"
-#include <citro2d.h>
+#include "structs.hpp"
 
-namespace Overlays {
-	u32 SelectRGB(u32 oldColor);
-	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
-	int SelectAvatar(int player = 0);
-	std::string SelectCardSet();
-	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
-	void SelectLanguage();
-	void SplashOverlay();
-	void ShowRules();
-	int SelectGame();
-}
+#include <vector>
+
+class TimePlay : public Screen {
+public:
+	void Draw(void) const override;
+	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+	TimePlay();
+private:
+	std::string formatTime() const;
+	void doTime();
+
+	std::unique_ptr<Game> currentGame;
+	bool useDelay = false, ticking = true;
+	int selectedCard = 0, delay, page = 0, pairAmount = 0, trys = 0;
+	// Seconds hours etc.
+	int seconds = 0, minutes = 0, hours = 0, millisecs = 0;
+
+	// Logics.
+	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
+
+	const std::vector<Structs::ButtonPos> cardPos = {
+		// Row 1.
+		{10, 2, 55, 55}, // 1.
+		{71, 2, 55, 55}, // 2.
+		{132, 2, 55, 55}, // 3.
+		{193, 2, 55, 55}, // 4.
+		{254, 2, 55, 55}, // 5.
+		// Row 2.
+		{10, 61, 55, 55}, // 1.
+		{71, 61, 55, 55}, // 2.
+		{132, 61, 55, 55}, // 3.
+		{193, 61, 55, 55}, // 4.
+		{254, 61, 55, 55}, // 5.
+		// Row 3.
+		{10, 122, 55, 55}, // 1.
+		{71, 122, 55, 55}, // 2.
+		{132, 122, 55, 55}, // 3.
+		{193, 122, 55, 55}, // 4.
+		{254, 122, 55, 55}, // 5.
+		// Row 4.
+		{10, 183, 55, 55}, // 1.
+		{71, 183, 55, 55}, // 2.
+		{132, 183, 55, 55}, // 3.
+		{193, 183, 55, 55}, // 4.
+		{254, 183, 55, 55} // 5.
+	};
+};
 
 #endif
