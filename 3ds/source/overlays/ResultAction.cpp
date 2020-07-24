@@ -38,7 +38,7 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int need
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("GAME_RESULTS"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GAME_RESULTS"), 390);
 
 	// Player 1.
 	GFX::DrawChar(avatar1, 10, 35);
@@ -47,7 +47,7 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int need
 	GFX::DrawChar(avatar2, 280, 35);
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player2)), 110);
 
-	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("NEEDED_WINS") + std::to_string(neededWins), 390);
+	Gui::DrawStringCentered(0, 217, 0.8f, config->textColor(), Lang::get("NEEDED_WINS") + std::to_string(neededWins), 390);
 
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));

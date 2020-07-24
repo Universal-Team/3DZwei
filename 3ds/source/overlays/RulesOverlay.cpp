@@ -49,7 +49,7 @@ static void Draw() {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_RULES"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_RULES"), 390);
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.55f, Lang::get("GAME_LOGIC")))/2, 0.55f, config->textColor(), Lang::get("GAME_LOGIC"), 390, 70);
 }
 

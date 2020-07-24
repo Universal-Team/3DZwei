@@ -60,15 +60,18 @@ std::string TimePlay::formatTime() const {
 void TimePlay::doTime() {
 	if (this->ticking) {
 		this->millisecs++;
+
 		// Do Seconds.
 		if (this->millisecs > 59) {
 			this->seconds++;
 			this->millisecs = 0;
+
 			// Do minutes.
 			if (this->seconds > 59) {
 				this->minutes++;
 				this->seconds = 0;
 				this->millisecs = 0;
+				
 				// Do Hours. I doubt it'll be reached tho.
 				if (this->minutes > 59) {
 					this->hours++;
@@ -85,9 +88,9 @@ void TimePlay::doTime() {
 void TimePlay::Draw(void) const {
 	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(((this->pairAmount / (10 + 1)) + 1));
 	GFX::DrawTop(true);
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("PLAY_WITH_TIME"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("PLAY_WITH_TIME"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
-	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 239-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 
 	Gui::DrawStringCentered(0, 80, 0.6f, config->textColor(), this->formatTime());
 	Gui::DrawStringCentered(0, 140, 0.6f, config->textColor(), Lang::get("TRIES") + std::to_string(this->trys));

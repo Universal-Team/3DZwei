@@ -36,18 +36,21 @@ void GFX::DrawTop(bool useBars) {
 		Gui::Draw_Rect(0, 0, 400, 25, config->barColor());
 		Gui::Draw_Rect(0, 25, 400, 190, config->bgColor());
 		Gui::Draw_Rect(0, 215, 400, 25, config->barColor());
+		GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0);
+		GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215);
 	} else {
 		Gui::Draw_Rect(0, 0, 400, 240, config->bgColor());
 	}
 }
 
-// False actually only draws 1 bar on the top screen. Special case for the Game screen. xD
 void GFX::DrawBottom(bool useBars) {
 	Gui::ScreenDraw(Bottom);
 	if (useBars) {
 		Gui::Draw_Rect(0, 0, 320, 25, config->barColor());
 		Gui::Draw_Rect(0, 25, 320, 190, config->bgColor());
 		Gui::Draw_Rect(0, 215, 320, 25, config->barColor());
+		GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
+		GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 	} else {
 		Gui::Draw_Rect(0, 0, 320, 240, config->bgColor());
 	}
@@ -69,6 +72,10 @@ void GFX::DrawFileBrowseBG(bool isTop) {
 	Gui::Draw_Rect(0, 151, isTop ? 400 : 320, 31, config->bgColor());
 	Gui::Draw_Rect(0, 182, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
 	Gui::Draw_Rect(0, 213, isTop ? 400 : 320, 27, config->barColor());
+
+	// Bars here.
+	isTop ? GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0) : GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
+	isTop ? GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215) : GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 }
 
 // Select something from a list.

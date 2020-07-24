@@ -41,7 +41,7 @@ static void Draw(int page, int selection, int player) {
 	
 	char buffer[100];
 	snprintf(buffer, sizeof(buffer), Lang::get("SELECT_AVATAR").c_str(), player);
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), buffer, 390, 30);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), buffer, 390, 30);
 
 	if (page == 1) {
 		GFX::DrawPlayer(-5, 35, 1, 1, 0);

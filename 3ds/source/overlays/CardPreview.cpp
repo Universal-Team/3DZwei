@@ -56,7 +56,7 @@ static void Draw(C2D_SpriteSheet &sheet, int page) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
 
 	// Preview cards.
 	if (sheet) {
@@ -70,7 +70,7 @@ static void Draw(C2D_SpriteSheet &sheet, int page) {
 	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
+	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
 	C3D_FrameEnd(0);
 }
 

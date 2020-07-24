@@ -37,7 +37,7 @@ static void Draw(int selection) {
 
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("SELECT_GAME_MODE"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("SELECT_GAME_MODE"), 390);
 	// Game Mode name here.
 	switch(selection) {
 		case 0:

@@ -30,14 +30,14 @@ extern std::unique_ptr<Config> config;
 
 void Credits::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
 	GFX::DrawSprite(sprites_stackz_idx, 2, 75);
 	Gui::DrawStringCentered(0, 40, 0.75f, config->textColor(), Lang::get("DEVELOPED_BY"), 400);
-	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 217, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
+	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
 	Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
 	Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
 	Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "Universal-Team", 310);
