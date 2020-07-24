@@ -108,11 +108,23 @@ void MultiGame::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			if (this->selectedCard < 19) this->selectedCard++;
+			// In case we'd reach the last card from the page.
+			if (this->selectedCard == 4 || this->selectedCard == 9 || this->selectedCard == 14 || this->selectedCard == 19) {
+				if (this->page < (this->currentGame->getPairs() / (10 + 1))) {
+					this->page++;
+					this->selectedCard = (this->selectedCard - 4);
+				}
+			} else if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			if (this->selectedCard > 0)	this->selectedCard--;
+			// In case we'd reach the first card from the page.
+			if (this->selectedCard == 15 || this->selectedCard == 10 || this->selectedCard == 5 || this->selectedCard == 0) {
+				if (this->page > 0) {
+					this->page--;
+					this->selectedCard = (this->selectedCard + 4);
+				}
+			} else if (this->selectedCard > 0) this->selectedCard--;
 		}
 
 		if (hDown & KEY_DOWN) {
