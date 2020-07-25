@@ -45,7 +45,7 @@ MultiGame::MultiGame() {
 	if (amount > 0) {
 		this->pairAmount = amount;
 	} else {
-		this->pairAmount = 10;
+		this->pairAmount = C2D_SpriteSheetCount(cards)-1;
 	}
 
 	this->currentGame = std::make_unique<Game>(this->pairAmount, this->useAI, this->betterPredict); // Create game.
@@ -174,8 +174,8 @@ void MultiGame::AILogic(u32 hDown) {
 						int card1 = this->currentGame->doAITurn();
 
 						if (this->currentGame->getPairs() > 10) {
-							if (this->page < ((this->currentGame->getPairs() / (10 + 1))) || this->page > ((this->currentGame->getPairs() / (10 + 1)))) {
-								this->page = (this->currentGame->getPairs() / (10 + 1));
+							if (this->page < ((card1 / (10 + 1))) || this->page > ((card1 / (10 + 1)))) {
+								this->page = (card1 / (10 + 1));
 							}
 						}
 
@@ -186,8 +186,8 @@ void MultiGame::AILogic(u32 hDown) {
 						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 
 						if (this->currentGame->getPairs() > 10) {
-							if (this->page < ((this->currentGame->getPairs() / (10 + 1))) || this->page > ((this->currentGame->getPairs() / (10 + 1)))) {
-								this->page = (this->currentGame->getPairs() / (10 + 1));
+							if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
+								this->page = (card2 / (10 + 1));
 							}
 						}
 
@@ -203,8 +203,8 @@ void MultiGame::AILogic(u32 hDown) {
 							int card1 = this->currentGame->doAITurn();
 
 							if (this->currentGame->getPairs() > 10) {
-								if (this->page < ((this->currentGame->getPairs() / (10 + 1))) || this->page > ((this->currentGame->getPairs() / (10 + 1)))) {
-									this->page = (this->currentGame->getPairs() / (10 + 1));
+								if (this->page < ((card1 / (10 + 1))) || this->page > ((card1 / (10 + 1)))) {
+									this->page = (card1 / (10 + 1));
 								}
 							}
 
@@ -216,8 +216,8 @@ void MultiGame::AILogic(u32 hDown) {
 							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 
 							if (this->currentGame->getPairs() > 10) {
-								if (this->page < ((this->currentGame->getPairs() / (10 + 1))) || this->page > ((this->currentGame->getPairs() / (10 + 1)))) {
-									this->page = (this->currentGame->getPairs() / (10 + 1));
+								if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
+									this->page = (card2 / (10 + 1));
 								}
 							}
 

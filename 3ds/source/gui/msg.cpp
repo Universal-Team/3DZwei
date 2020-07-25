@@ -93,6 +93,23 @@ bool Msg::promptMsg(std::string msg) {
 	return Msg::promptMsg2(msg);
 }
 
+// Displays a message, which does not rely on the config.
+void Msg::DisplayNoConfig(std::string Text) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	Gui::ScreenDraw(Top);
+	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(100, 0, 255, 255));
+	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, C2D_Color32(255, 255, 255, 255), Text, 395, 70);
+	Gui::ScreenDraw(Bottom);
+	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(100, 0, 255, 255));
+	C3D_FrameEnd(0);
+	for (int i = 0; i < 60*2; i++) {
+		gspWaitForVBlank();
+	}
+}
+
 // Displays a Warn Message.
 void Msg::DisplayWarnMsg(std::string Text) {
 	Gui::clearTextBufs();

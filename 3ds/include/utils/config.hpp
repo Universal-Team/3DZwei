@@ -59,7 +59,7 @@ public:
 	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
 	// Card Delay.
 	int delay() { return this->v_delay; }
-	void delay(u32 v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
+	void delay(int v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
 	// Debug.
 	bool debug() { return this->v_debug; }
 	// Card file.
@@ -67,13 +67,13 @@ public:
 	void cardFile(std::string v) { this->v_cardFile = v; if (!this->changesMade)	this->changesMade = true; }
 	// Language.
 	int language() { return this->v_language; }
-	void language(u32 v) { this->v_language = v; if (!this->changesMade)	this->changesMade = true; }
+	void language(int v) { this->v_language = v; if (!this->changesMade)	this->changesMade = true; }
 	// Set.
 	std::string Set() { return this->v_Set; }
 	void Set(std::string v) { this->v_Set = v; if (!this->changesMade)	this->changesMade = true; }
 	// Version.
 	int version() { return this->v_version; }
-	void version(u32 v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
+	void version(int v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
 
 	// Mainly helper.
 	bool getBool(const std::string &key);

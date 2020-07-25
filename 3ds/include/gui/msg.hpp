@@ -38,6 +38,7 @@ namespace Msg {
 	void NotImplementedYet(void); // Display a not Implemented Message.
 	void DisplayMsg(std::string Message); // Display just a Message.
 	void HelperBox(std::string Msg); // Helper Box?
+	void DisplayNoConfig(std::string Text); // Displays a message, which does not rely on the config.
 
 	void DebugMessage(std::string msg); // Debug message.
 }

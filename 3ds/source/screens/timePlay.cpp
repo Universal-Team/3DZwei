@@ -44,7 +44,7 @@ TimePlay::TimePlay() {
 	if (amount > 0) {
 		this->pairAmount = amount;
 	} else {
-		this->pairAmount = 10;
+		this->pairAmount = C2D_SpriteSheetCount(cards)-1;
 	}
 
 	this->currentGame = std::make_unique<Game>(this->pairAmount, false, false); // Create game.
