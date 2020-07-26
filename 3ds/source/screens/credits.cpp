@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020 SuperSaiyajinStackZ
+*   Copyright (C) 2020 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -31,8 +31,9 @@ extern std::unique_ptr<Config> config;
 void Credits::Draw(void) const {
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
-	GFX::DrawSprite(sprites_stackz_idx, 2, 75);
-	Gui::DrawStringCentered(0, 40, 0.75f, config->textColor(), Lang::get("DEVELOPED_BY"), 400);
+	GFX::DrawSprite(sprites_stackz_idx, 5, 70);
+	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("DEVELOPED_BY"), 390);
+	Gui::DrawStringCentered(0, 45, 0.6f, config->textColor(), Lang::get("MAIN_DEV"), 390);
 	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();

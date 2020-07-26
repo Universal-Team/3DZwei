@@ -12,25 +12,25 @@
 
 ## Screenshots of 3DZwei
 ### Avatar Selection
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/avatar_selection1.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/avatar_selection2.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/avatar_selection1.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/avatar_selection2.png)
 
 ### CardSet Changer
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/set_changer.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/cardset_preview.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/set_changer.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/cardset_preview.png)
 
 ### Color Settings
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/colorchanger.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/rgb_overlay.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/colorchanger.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/rgb_overlay.png)
 
 ### Credits
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/credits.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/developed_by.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/credits.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/developed_by.png)
 
 ### Game Screens
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/gameModeSelect.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/game_screen.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/game_result.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/timePlay.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/gameModeSelect.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/game_screen.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/game_result.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/timePlay.png)
 
 ### MainMenu
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/mainmenu.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/mainmenu.png)
 
 ### Other
-![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/rulesOvl.png) ![](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/screenshots/langSelect.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/rulesOvl.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/langSelect.png)
 
 ## Credits
 ### Main Developers
