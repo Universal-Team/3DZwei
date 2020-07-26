@@ -56,7 +56,7 @@ void GFX::DrawBottom(bool useBars) {
 	}
 }
 
-extern C2D_SpriteSheet cards, characters, sprites;
+extern C2D_SpriteSheet BGs, cards, characters, sprites;
 
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
@@ -78,59 +78,12 @@ void GFX::DrawFileBrowseBG(bool isTop) {
 	isTop ? GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215) : GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 }
 
-// Select something from a list.
-int GFX::selectList(std::vector<std::string> content, std::string msg, int oldIndex) {
-	int selection = 0;
-	int keyRepeatDelay = 5;
-	while(1) {
-		Gui::clearTextBufs();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		GFX::DrawFileBrowseBG();
-		Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), msg, 400);
-		std::string cnts;
-
-		for (uint i = (selection < 5) ? 0 : (uint)selection - 5; i < content.size() && i < (((uint)selection < 5) ? 6 : (uint)selection + 1); i++) {
-			if (i == (uint)selection) {
-				cnts +=  "> " + content[i] + "\n\n";
-			} else {
-				cnts +=  content[i] + "\n\n";
-			}
-		}
-
-		for (uint i = 0; i < ((content.size() < 6) ? 6 - content.size() : 0); i++) {
-			cnts += "\n\n";
-		}
-		
-		Gui::DrawString(26, 32, 0.53f, config->textColor(), cnts);
-		GFX::DrawFileBrowseBG(false);
-		C3D_FrameEnd(0);
-
-		hidScanInput();
-		if (keyRepeatDelay)	keyRepeatDelay--;
-
-		if (hidKeysHeld() & KEY_DOWN && !keyRepeatDelay) {
-			if ((uint)selection < content.size()-1) {
-				selection++;
-				keyRepeatDelay = 5;
-			}
-		}
-
-		if (hidKeysHeld() & KEY_UP && !keyRepeatDelay) {
-			if (selection > 0) {
-				selection--;
-				keyRepeatDelay = 5;
-			}
-		}
-
-		if (hidKeysDown() & KEY_A) {
-			return selection;
-		}
-
-		if (hidKeysDown() & KEY_B) {
-			return oldIndex;
-		}
+void GFX::DrawGameBG(bool top) {
+	if (BGs && BGLoaded && C2D_SpriteSheetCount(BGs) >= 2) {
+		top ? GFX::DrawTop() : Gui::ScreenDraw(Bottom);
+		top ? Gui::DrawSprite(BGs, 0, 0, 30) : Gui::DrawSprite(BGs, 1, 0, 0);
+	} else {
+		top ? GFX::DrawTop() : GFX::DrawBottom();
 	}
 }
 

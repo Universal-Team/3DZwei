@@ -61,7 +61,7 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			const std::string set = Overlays::SelectCardSet();
-			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
+			if (set != "") Overlays::PreviewCards(this->tempSheet, this->tempBG, set);
 		} else if (touching(touch, mainButtons[2])) {
 			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);
@@ -97,7 +97,7 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (this->Selection == 1) {
 			const std::string set = Overlays::SelectCardSet();
-			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
+			if (set != "") Overlays::PreviewCards(this->tempSheet, this->tempBG, set);
 		} else if (this->Selection == 2) {
 			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);

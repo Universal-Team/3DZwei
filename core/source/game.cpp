@@ -64,7 +64,7 @@ void Game::generateCards(int pairs) {
 	std::shuffle(tempCards.begin(), tempCards.end(), randomGen);
 
 	for (int i = 0; i < (int)tempCards.size(); i++) {
-		this->field.push_back({false, tempCards[i], false});
+		this->field.push_back({false, tempCards[i], false, false});
 	}
 }
 
@@ -78,6 +78,18 @@ bool Game::returnIfUsed(int index) {
 void Game::setUsed(int index, bool isUsed) {
 	if (index > (this->pairs * 2)-1) return; // Out of scope.
 	this->field[index].Used = isUsed;
+}
+
+// Return, if card is collected.
+bool Game::getCollected(int index) {
+	if (index > (this->pairs * 2)-1) return true; // Out of scope. No idea what else to return in that case.
+	return this->field[index].Collected;
+}
+
+// Set, if card is collected.
+void Game::setCollected(int index, bool collected) {
+	if (index > (this->pairs * 2)-1) return; // Out of scope.
+	this->field[index].Collected = collected;
 }
 
 // Return if both cards matches.
@@ -104,9 +116,9 @@ bool Game::setCardPair() {
 					break;	
 			}
 			
-			// Set that we used it.
-			this->setUsed(this->card1, true);
-			this->setUsed(this->card2, true);
+			// Set that we used and collected it.
+			this->setUsed(this->card1, true); this->setCollected(this->card1, true);
+			this->setUsed(this->card2, true); this->setCollected(this->card2, true);
 			return true;
 		} else {
 			if (this->useAI) ai->setLastCards(this->card1, this->card2);

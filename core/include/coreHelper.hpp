@@ -58,6 +58,7 @@ struct CardStruct {
 	bool Used;
 	int CardType;
 	bool Shown;
+	bool Collected;
 };
 
 namespace CoreHelper {

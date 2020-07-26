@@ -47,7 +47,7 @@ namespace GFX {
 	void DrawTop(bool useBars = true);
 	void DrawBottom(bool useBars = true);
 	void DrawFileBrowseBG(bool isTop = true);
-	int selectList(std::vector<std::string> content, std::string msg, int oldIndex);
+	void DrawGameBG(bool top = false);
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	// Selectors.
 	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);

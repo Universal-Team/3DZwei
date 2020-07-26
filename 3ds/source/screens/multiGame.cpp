@@ -64,7 +64,7 @@ MultiGame::MultiGame() {
 
 void MultiGame::Draw(void) const {
 	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(((this->pairAmount / (10 + 1)) + 1));
-	GFX::DrawTop(true);
+	GFX::DrawGameBG(true);
 	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MULTIPLAY"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
 
@@ -89,11 +89,13 @@ void MultiGame::Draw(void) const {
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	GFX::DrawBottom(false);
+	GFX::DrawGameBG(false);
 
 	for (int i = 0 + (this->page * 20), i2 = 0; (i < this->currentGame->getPairs() * 2) && (i < (0 + (this->page * 20) + 20)); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
-			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
+			if (!this->currentGame->getCollected(i)) {
+				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
+			}
 		} else {
 			GFX::DrawCard(-1, cardPos[i2].x, cardPos[i2].y);
 		}

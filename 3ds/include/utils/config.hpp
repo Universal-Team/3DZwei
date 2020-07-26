@@ -71,6 +71,9 @@ public:
 	// Set.
 	std::string Set() { return this->v_Set; }
 	void Set(std::string v) { this->v_Set = v; if (!this->changesMade)	this->changesMade = true; }
+	// BGs.
+	std::string BG() { return this->v_BG; }
+	void BG(std::string v) { this->v_BG = v; if (!this->changesMade)	this->changesMade = true; }
 	// Version.
 	int version() { return this->v_version; }
 	void version(int v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
@@ -91,7 +94,7 @@ private:
 	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
 	int v_delay, v_language, v_version;
 	bool v_debug;
-	std::string v_cardFile, v_Set;
+	std::string v_cardFile, v_Set, v_BG;
 };
 
 #endif

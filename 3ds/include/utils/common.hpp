@@ -40,5 +40,6 @@
 #define CARDCOLOR C2D_Color32(146, 146, 146, 255) // Card Backcolor.
 #define CARDSIZE 55 // 55x55 cardsize.
 #define MAXCARDS 20 // 20 -> Default max cards.
+extern bool BGLoaded;
 
 #endif

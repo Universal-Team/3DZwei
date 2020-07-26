@@ -36,12 +36,12 @@
 #include <dirent.h>
 #include <unistd.h>
 
-bool exiting = false;
+bool exiting = false, BGLoaded = false;
 touchPosition touch;
 u32 hDown, hHeld;
 std::unique_ptr<Config> config;
 // Include all spritesheet's.
-C2D_SpriteSheet cards, characters, sprites;
+C2D_SpriteSheet BGs, cards, characters, sprites;
 
 // If button Position pressed -> Do something.
 bool touching(touchPosition touch, Structs::ButtonPos button) {
@@ -60,6 +60,14 @@ Result Init::Initialize() {
 	mkdir("sdmc:/3ds/3DZwei/sets", 0777); // Set path.
 	
 	config = std::make_unique<Config>();
+
+	if (config->BG() != "") {
+		if (access(config->BG().c_str(), F_OK) != 0) {
+		} else {
+			Gui::loadSheet(config->BG().c_str(), BGs);
+			BGLoaded = true;
+		}
+	}
 
 	if (access(config->cardFile().c_str(), F_OK) != 0 ) {
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
@@ -113,6 +121,7 @@ Result Init::MainLoop() {
 
 Result Init::Exit() {
 	Gui::exit();
+	if (BGLoaded) Gui::unloadSheet(BGs); // Only unload, if loaded.
 	Gui::unloadSheet(cards);
 	Gui::unloadSheet(characters);
 	Gui::unloadSheet(sprites);

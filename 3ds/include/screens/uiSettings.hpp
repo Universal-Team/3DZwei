@@ -47,7 +47,7 @@ private:
 		{170, 145, 140, 40} // Language.
 	};
 
-	C2D_SpriteSheet tempSheet;
+	C2D_SpriteSheet tempSheet, tempBG;
 };
 
 #endif
