@@ -1,0 +1,4 @@
+--atlas -f rgba8888 -z auto
+
+bg/top.png
+bg/bottom.png
