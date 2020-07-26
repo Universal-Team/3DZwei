@@ -88,7 +88,6 @@ public:
 private:
 	nlohmann::json json; // Our private JSON file.
 	bool changesMade = false;
-	int configVersion = 2;
 
 	// Color variables and more.
 	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;

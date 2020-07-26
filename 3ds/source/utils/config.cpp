@@ -53,7 +53,7 @@ void Config::initialize() {
 	this->setInt("BG_Color", C2D_Color32(160, 160, 220, 255));
 	this->setInt("Button_Color", C2D_Color32(60, 0, 170, 255));
 	this->setInt("Selector_Color", C2D_Color32(0, 0, 255, 255));
-	this->setInt("Version", this->configVersion);
+	this->setInt("Version", 2);
 	this->setInt("Card_Delay", 70);
 	this->setString("Card_File", "romfs:/gfx/cards.t3x");
 	this->setInt("Language", 1);
@@ -81,7 +81,7 @@ Config::Config() {
 	}
 
 	// Here we add the missing things.
-	if (this->json["Version"] < this->configVersion) {
+	if (this->json["Version"] < 2) {
 		this->addMissingThings();
 	}
 
@@ -160,7 +160,7 @@ Config::Config() {
 	}
 
 	if (!this->json.contains("Version")) {
-		this->version(this->configVersion);
+		this->version(2);
 	} else {
 		this->version(this->getInt("Version"));
 	}
@@ -185,7 +185,7 @@ void Config::save() {
 		this->setInt("Language", this->language());
 		this->setString("Set", this->Set());
 		this->setString("BGS", this->BG());
-		this->setInt("Version", this->version());
+		this->setInt("Version", 2);
 
 		// Write changes to file.
 		std::string dump = this->json.dump(1, '\t');
