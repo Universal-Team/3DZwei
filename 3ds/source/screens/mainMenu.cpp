@@ -26,9 +26,10 @@
 
 #include "config.hpp"
 #include "credits.hpp"
-#include "gameScreen.hpp"
+#include "multiGame.hpp"
 #include "mainMenu.hpp"
 #include "overlay.hpp"
+#include "timePlay.hpp"
 #include "uiSettings.hpp"
 
 extern std::unique_ptr<Config> config;
@@ -37,7 +38,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"), 390);
 	
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
@@ -77,14 +78,19 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 
 	if (hDown & KEY_A) {
-		bool AI = false, delay = false, betterPredict = false, _20_mode = false;
+		int tempSelect = -1;
 		switch(this->Selection) {
 			case 0:
-				AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
-				delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
-				if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-				_20_mode = Msg::promptMsg(Lang::get("PAIR_MODE"));
-				Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict, _20_mode), true, true);
+				tempSelect = Overlays::SelectGame();
+
+				switch(tempSelect) {
+					case 0:
+						Gui::setScreen(std::make_unique<MultiGame>(), true, true);
+						break;
+					case 1:
+						Gui::setScreen(std::make_unique<TimePlay>(), true, true);
+						break;
+				}
 				break;
 			case 1:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
@@ -100,12 +106,17 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, mainButtons[0])) {
-			bool AI = false, delay = false, betterPredict = false, _20_mode = false;
-			AI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
-			delay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
-			if (AI) betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
-			_20_mode = Msg::promptMsg(Lang::get("PAIR_MODE"));
-			Gui::setScreen(std::make_unique<GameScreen>(delay, AI, betterPredict, _20_mode), true, true);
+			int tempSelect = Overlays::SelectGame();
+
+			switch(tempSelect) {
+				case 0:
+					Gui::setScreen(std::make_unique<MultiGame>(), true, true);
+					break;
+				case 1:
+					Gui::setScreen(std::make_unique<TimePlay>(), true, true);
+					break;
+			}
+			
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {

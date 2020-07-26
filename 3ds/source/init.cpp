@@ -24,7 +24,9 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "cardUtils.hpp"
 #include "common.hpp"
+#include "coreHelper.hpp"
 #include "config.hpp"
 #include "init.hpp"
 #include "mainMenu.hpp"
@@ -34,12 +36,12 @@
 #include <dirent.h>
 #include <unistd.h>
 
-bool exiting = false;
+bool exiting = false, BGLoaded = false;
 touchPosition touch;
 u32 hDown, hHeld;
 std::unique_ptr<Config> config;
 // Include all spritesheet's.
-C2D_SpriteSheet cards, characters, sprites;
+C2D_SpriteSheet BGs, cards, characters, sprites;
 
 // If button Position pressed -> Do something.
 bool touching(touchPosition touch, Structs::ButtonPos button) {
@@ -59,6 +61,14 @@ Result Init::Initialize() {
 	
 	config = std::make_unique<Config>();
 
+	if (config->BG() != "") {
+		if (access(config->BG().c_str(), F_OK) != 0) {
+		} else {
+			Gui::loadSheet(config->BG().c_str(), BGs);
+			BGLoaded = true;
+		}
+	}
+
 	if (access(config->cardFile().c_str(), F_OK) != 0 ) {
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 	} else {
@@ -71,6 +81,8 @@ Result Init::Initialize() {
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", sprites);
 	osSetSpeedupEnable(true); // Enable speed-up for New 3DS users.
 
+	CoreHelper::generateSeed();
+	CardUtils::fillIndex();
 	Overlays::SplashOverlay();
 
 	Gui::setScreen(std::make_unique<MainMenu>(), false, true);
@@ -109,6 +121,7 @@ Result Init::MainLoop() {
 
 Result Init::Exit() {
 	Gui::exit();
+	if (BGLoaded) Gui::unloadSheet(BGs); // Only unload, if loaded.
 	Gui::unloadSheet(cards);
 	Gui::unloadSheet(characters);
 	Gui::unloadSheet(sprites);

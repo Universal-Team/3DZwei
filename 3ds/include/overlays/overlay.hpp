@@ -36,10 +36,11 @@ namespace Overlays {
 	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
 	int SelectAvatar(int player = 0);
 	std::string SelectCardSet();
-	void PreviewCards(C2D_SpriteSheet &sheet, std::string folder);
+	void PreviewCards(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, std::string folder);
 	void SelectLanguage();
 	void SplashOverlay();
 	void ShowRules();
+	int SelectGame();
 }
 
 #endif

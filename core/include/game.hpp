@@ -36,12 +36,14 @@ public:
 	void generateCards(int pairs);
 	bool returnIfUsed(int index);
 	void setUsed(int index, bool isUsed);
+	bool getCollected(int index);
+	void setCollected(int index, bool collected);
 	bool checkIfMatches();
 	bool setCardPair();
 	bool returnIfShown(int index);
 	void setShown(int index, bool show);
 	bool play(int index);
-	PairType getCard(int index);
+	int getCard(int index);
 	Players getCurrentPlayer();
 	void setCurrentPlayer(Players player);
 	void nextPlayer();

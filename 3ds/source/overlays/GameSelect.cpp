@@ -24,32 +24,53 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "credits.hpp"
+#include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
 
-void Credits::Draw(void) const {
+// TODO: Display new banner for each mode?
+static void Draw(int selection) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
-	GFX::DrawSprite(sprites_stackz_idx, 2, 75);
-	Gui::DrawStringCentered(0, 40, 0.75f, config->textColor(), Lang::get("DEVELOPED_BY"), 400);
-	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
+	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("SELECT_GAME_MODE"), 390);
+	// Game Mode name here.
+	switch(selection) {
+		case 0:
+			Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("SELECTED_MODE") + Lang::get("MULTIPLAY"), 390);
+			break;
+		case 1:
+			Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("SELECTED_MODE") + Lang::get("PLAY_WITH_TIME"), 390);
+			break;
+	}
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
-
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
-	Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
-	Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
-	Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "Universal-Team", 310);
-	Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
-	Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "devkitPro", 310);
-	Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
+	C3D_FrameEnd(0);
 }
 
-void Credits::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (hDown & KEY_B) {
-		Gui::screenBack(true);
-		return;
+// Returns 0 if MultiPlay and 1 if TimePlay. -1 if cancel.
+int Overlays::SelectGame() {
+	int selection = 0;
+	while(1) {
+		Draw(selection);
+		hidScanInput();
+
+		if (hidKeysDown() & KEY_A) return selection;
+
+		if (hidKeysDown() & KEY_B) return -1;
+
+		if (hidKeysDown() & KEY_RIGHT) {
+			if (selection == 0) selection = 1;
+		}
+
+		if (hidKeysDown() & KEY_LEFT) {
+			if (selection == 1) selection = 0;
+		}
 	}
 }

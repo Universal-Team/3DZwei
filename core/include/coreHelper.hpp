@@ -53,36 +53,12 @@ enum class Players {
 	Player2
 };
 
-// For the Pairs.
-enum class PairType {
-	Pair1,
-	Pair2,
-	Pair3,
-	Pair4,
-	Pair5,
-	Pair6,
-	Pair7,
-	Pair8,
-	Pair9,
-	Pair10,
-	Pair11,
-	Pair12,
-	Pair13,
-	Pair14,
-	Pair15,
-	Pair16,
-	Pair17,
-	Pair18,
-	Pair19,
-	Pair20,
-	None
-};
-
 // For the gamefield.
 struct CardStruct {
 	bool Used;
-	PairType CardType;
+	int CardType;
 	bool Shown;
+	bool Collected;
 };
 
 namespace CoreHelper {

@@ -28,31 +28,35 @@
 #include "config.hpp"
 
 extern std::unique_ptr<Config> config;
+std::vector<int> cardIndex;
 
 void GFX::DrawTop(bool useBars) {
 	Gui::ScreenDraw(Top);
 	if (useBars) {
-		Gui::Draw_Rect(0, 0, 400, 25, config->barColor());
-		Gui::Draw_Rect(0, 25, 400, 190, config->bgColor());
-		Gui::Draw_Rect(0, 215, 400, 25, config->barColor());
+		Gui::Draw_Rect(0, 0, 400, 30, config->barColor());
+		Gui::Draw_Rect(0, 30, 400, 180, config->bgColor());
+		Gui::Draw_Rect(0, 210, 400, 30, config->barColor());
+		GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0);
+		GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215);
 	} else {
 		Gui::Draw_Rect(0, 0, 400, 240, config->bgColor());
 	}
 }
 
-// False actually only draws 1 bar on the top screen. Special case for the Game screen. xD
 void GFX::DrawBottom(bool useBars) {
 	Gui::ScreenDraw(Bottom);
 	if (useBars) {
-		Gui::Draw_Rect(0, 0, 320, 25, config->barColor());
-		Gui::Draw_Rect(0, 25, 320, 190, config->bgColor());
-		Gui::Draw_Rect(0, 215, 320, 25, config->barColor());
+		Gui::Draw_Rect(0, 0, 320, 30, config->barColor());
+		Gui::Draw_Rect(0, 30, 320, 180, config->bgColor());
+		Gui::Draw_Rect(0, 210, 320, 30, config->barColor());
+		GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
+		GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 	} else {
 		Gui::Draw_Rect(0, 0, 320, 240, config->bgColor());
 	}
 }
 
-extern C2D_SpriteSheet cards, characters, sprites;
+extern C2D_SpriteSheet BGs, cards, characters, sprites;
 
 void GFX::DrawSprite(int index, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(sprites, index, x, y, ScaleX, ScaleY);
@@ -68,61 +72,18 @@ void GFX::DrawFileBrowseBG(bool isTop) {
 	Gui::Draw_Rect(0, 151, isTop ? 400 : 320, 31, config->bgColor());
 	Gui::Draw_Rect(0, 182, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
 	Gui::Draw_Rect(0, 213, isTop ? 400 : 320, 27, config->barColor());
+
+	// Bars here.
+	isTop ? GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0) : GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
+	isTop ? GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215) : GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 }
 
-// Select something from a list.
-int GFX::selectList(std::vector<std::string> content, std::string msg, int oldIndex) {
-	int selection = 0;
-	int keyRepeatDelay = 5;
-	while(1) {
-		Gui::clearTextBufs();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		GFX::DrawFileBrowseBG();
-		Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), msg, 400);
-		std::string cnts;
-
-		for (uint i = (selection < 5) ? 0 : (uint)selection - 5; i < content.size() && i < (((uint)selection < 5) ? 6 : (uint)selection + 1); i++) {
-			if (i == (uint)selection) {
-				cnts +=  "> " + content[i] + "\n\n";
-			} else {
-				cnts +=  content[i] + "\n\n";
-			}
-		}
-
-		for (uint i = 0; i < ((content.size() < 6) ? 6 - content.size() : 0); i++) {
-			cnts += "\n\n";
-		}
-		
-		Gui::DrawString(26, 32, 0.53f, config->textColor(), cnts);
-		GFX::DrawFileBrowseBG(false);
-		C3D_FrameEnd(0);
-
-		hidScanInput();
-		if (keyRepeatDelay)	keyRepeatDelay--;
-
-		if (hidKeysHeld() & KEY_DOWN && !keyRepeatDelay) {
-			if ((uint)selection < content.size()-1) {
-				selection++;
-				keyRepeatDelay = 5;
-			}
-		}
-
-		if (hidKeysHeld() & KEY_UP && !keyRepeatDelay) {
-			if (selection > 0) {
-				selection--;
-				keyRepeatDelay = 5;
-			}
-		}
-
-		if (hidKeysDown() & KEY_A) {
-			return selection;
-		}
-
-		if (hidKeysDown() & KEY_B) {
-			return oldIndex;
-		}
+void GFX::DrawGameBG(bool top) {
+	if (BGs && BGLoaded && C2D_SpriteSheetCount(BGs) >= 2) {
+		top ? GFX::DrawTop() : Gui::ScreenDraw(Bottom);
+		top ? Gui::DrawSprite(BGs, 0, 0, 30) : Gui::DrawSprite(BGs, 1, 0, 0);
+	} else {
+		top ? GFX::DrawTop() : GFX::DrawBottom();
 	}
 }
 
@@ -162,72 +123,17 @@ void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
 	timer += .030;
 }
 
-void GFX::DrawCard(PairType pt, int x, int y, float ScaleX, float ScaleY) {
-	switch(pt) {
-		case PairType::Pair1:
-			Gui::DrawSprite(cards, cards_card_0_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair2:
-			Gui::DrawSprite(cards, cards_card_1_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair3:
-			Gui::DrawSprite(cards, cards_card_2_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair4:
-			Gui::DrawSprite(cards, cards_card_3_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair5:
-			Gui::DrawSprite(cards, cards_card_4_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair6:
-			Gui::DrawSprite(cards, cards_card_5_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair7:
-			Gui::DrawSprite(cards, cards_card_6_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair8:
-			Gui::DrawSprite(cards, cards_card_7_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair9:
-			Gui::DrawSprite(cards, cards_card_8_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair10:
-			Gui::DrawSprite(cards, cards_card_9_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair11:
-			Gui::DrawSprite(cards, cards_card_10_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair12:
-			Gui::DrawSprite(cards, cards_card_11_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair13:
-			Gui::DrawSprite(cards, cards_card_12_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair14:
-			Gui::DrawSprite(cards, cards_card_13_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair15:
-			Gui::DrawSprite(cards, cards_card_14_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair16:
-			Gui::DrawSprite(cards, cards_card_15_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair17:
-			Gui::DrawSprite(cards, cards_card_16_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair18:
-			Gui::DrawSprite(cards, cards_card_17_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair19:
-			Gui::DrawSprite(cards, cards_card_18_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::Pair20:
-			Gui::DrawSprite(cards, cards_card_19_idx, x, y, ScaleX, ScaleY);
-			break;
-		case PairType::None:
-			Gui::DrawSprite(cards, cards_card_empty_idx, x, y, ScaleX, ScaleY);
-			break;
+void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {
+	// -1 would do the "empty back" card.
+	if (index == -1) {
+		Gui::DrawSprite(cards, C2D_SpriteSheetCount(cards)-1, x, y, ScaleX, ScaleY);
+		return;
 	}
+
+	// Do Nothing, when index size is smaller than 1, or index larger than size.
+	if (((int)cardIndex.size() < 1) && (index > (int)cardIndex.size()-1)) return;
+
+	Gui::DrawSprite(cards, cardIndex[index], x, y, ScaleX, ScaleY);
 }
 
 // Player Character.

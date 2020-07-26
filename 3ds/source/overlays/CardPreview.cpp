@@ -24,13 +24,14 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "cardUtils.hpp"
 #include "config.hpp"
 #include "gui.hpp"
 #include "overlay.hpp"
 #include <unistd.h>
 
 extern std::unique_ptr<Config> config;
-extern C2D_SpriteSheet cards; // Our default cards sheet.
+extern C2D_SpriteSheet BGs, cards; // Our default sheets.
 
 static const std::vector<Structs::ButtonPos> cardPos = {
 	{60, 30, 55, 55},
@@ -47,41 +48,49 @@ static const std::vector<Structs::ButtonPos> cardPos = {
 };
 
 // Draw.
-static void Draw(C2D_SpriteSheet &sheet, int page) {
-	const std::string temp = std::to_string(page + 1) + " | " + std::to_string(2);
+static void Draw(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, int page, const bool &hasBG) {
+	const std::string temp = std::to_string(page + 1) + " | " + std::to_string((((C2D_SpriteSheetCount(sheet) - 1) / (10 + 1)) + 1));
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	
 	GFX::DrawTop();
+	if (hasBG && BG) Gui::DrawSprite(BG, 0, 0, 30); // Draw BG if has BG.
+
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
 
 	// Preview cards.
 	if (sheet) {
-		for (int i = 0 + (page * 10), i2 = 0; i < 0 + (page * 10) + 10; i++, i2++) {
+		for (int i = 0 + (page * 10), i2 = 0; (i < (int)C2D_SpriteSheetCount(sheet) - 1) && (i < (0 + (page * 10) + 10)); i++, i2++) {
 			Gui::DrawSprite(sheet, i, cardPos[i2].x, cardPos[i2].y);
 		}
 
-		Gui::DrawSprite(sheet, cards_card_empty_idx, 180, 150);
+		Gui::DrawSprite(sheet, C2D_SpriteSheetCount(sheet)-1, 180, 150);
 	}
 
 	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
+
 	GFX::DrawBottom();
+	if (BG && hasBG && C2D_SpriteSheetCount(sheet) >= 2) Gui::DrawSprite(BG, 1, 0, 0); // Draw BG, if has BG.
+
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, 0, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
+	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("CARDSET_PREVIEW_MSG"), 310);
 	C3D_FrameEnd(0);
 }
 
 static bool checkForValidate(std::string file) {
-	if (access(file.c_str(), F_OK) != -1 ) {
-		return true;
-	} else {
+	if (access(file.c_str(), F_OK) != 0) {
 		return false;
+	} else {
+		return true;
 	}
 }
 
-static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
+static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, bool &hasBG) {
+	hasBG = false;
+
 	if (folder == "3DZWEI_DEFAULT_ROMFS") {
 		// ROMFS logic.
 		char message [100];
@@ -104,7 +113,6 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 				Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 				// Load.
 				Gui::loadSheet((folder + "/cards.t3x").c_str(), sheet);
-				return 0; // All good.
 			} else {
 				return -1; // Abort.
 			}
@@ -116,48 +124,74 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet) {
 		}
 	}
 
-	return -2; // Should not go here.
+	if (checkForValidate(folder)) {
+		if (checkForValidate(folder + "/bg.t3x")) {
+			Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
+			// Load.
+			Gui::loadSheet((folder + "/bg.t3x").c_str(), BG);
+			hasBG = true;
+		}
+	}
+
+	return 0; // Should not go here.
 }
 
-static void finalize(const std::string folder) {
+static void finalize(const std::string folder, const bool &hasBG) {
 	if (folder == "3DZWEI_DEFAULT_ROMFS") {
 		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 		Gui::unloadSheet(cards);
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 		config->cardFile("romfs:/gfx/cards.t3x");
+		config->Set("_3DZWEI_ROMFS");
+		CardUtils::fillIndex(); // Fill normally here.
 	} else {
 		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
 		Gui::unloadSheet(cards);
 		Gui::loadSheet((folder + "/cards.t3x").c_str(), cards);
 		config->cardFile((folder + "/cards.t3x"));
+		CardUtils::fillIndex(); // Fill normally here.
+		config->Set(folder + "/");
+
+		// BG stuff.
+		if (hasBG) {
+			config->BG((folder + "/bg.t3x"));
+			if (BGs) Gui::unloadSheet(BGs);
+			Gui::loadSheet((folder + "/bg.t3x").c_str(), BGs);
+			BGLoaded = true;
+		}
 	}
 }
 
-void Overlays::PreviewCards(C2D_SpriteSheet &sheet, std::string folder) {
+void Overlays::PreviewCards(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, std::string folder) {
 	int page = 0;
+	bool hasBG;
 	// Do prev logic here.
-	if (loadSet(folder, sheet) != 0) return; // No No No.
+	if (loadSet(folder, sheet, BG, hasBG) != 0) return; // No No No.
 
 	while(1) {
-		Draw(sheet, page);
+		Draw(sheet, BG, page, hasBG);
 		hidScanInput();
 
 		if (hidKeysDown() & KEY_A) {
-			finalize(folder);
-			Gui::unloadSheet(sheet);
+			finalize(folder, hasBG);
+			if (sheet) Gui::unloadSheet(sheet);
+			if (hasBG && BG) Gui::unloadSheet(BG);
 			break;
 		}
-
-		if (hidKeysDown() & KEY_R || hidKeysDown() & KEY_RIGHT) {
-			if (page == 0) page = 1;
-		}
 		
+		if (hidKeysDown() & KEY_R || hidKeysDown() & KEY_RIGHT) {
+			if (C2D_SpriteSheetCount(sheet) - 1 > 10) {
+				if (page < (int)((C2D_SpriteSheetCount(sheet) - 1) / (10 + 1))) page++;
+			}
+		}
+
 		if (hidKeysDown() & KEY_L || hidKeysDown() & KEY_LEFT) {
-			if (page == 1) page = 0;
+			if (page > 0) page--;
 		}
 
 		if (hidKeysDown() & KEY_B) {
-			Gui::unloadSheet(sheet);
+			if (sheet) Gui::unloadSheet(sheet);
+			if (BG) Gui::unloadSheet(BG);
 			break;
 		}
 	}

@@ -24,30 +24,59 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_UI_SETTINGS_HPP
-#define _3DZWEI_UI_SETTINGS_HPP
+#ifndef _3DZWEI_TIME_PLAY_HPP
+#define _3DZWEI_TIME_PLAY_HPP
 
 #include "common.hpp"
+#include "game.hpp"
 #include "structs.hpp"
 
-#include <citro2d.h>
 #include <vector>
 
-class UISettings : public Screen {
+class TimePlay : public Screen {
 public:
 	void Draw(void) const override;
 	void Logic(u32 hDown, u32 hHeld, touchPosition touch) override;
+	TimePlay();
 private:
-	int Selection = 0;
+	std::string formatTime() const;
+	void doTime();
 
-	const std::vector<Structs::ButtonPos> mainButtons = {
-		{10, 70, 140, 40}, // Colors.
-		{170, 70, 140, 40}, // Set Changer.
-		{10, 145, 140, 40}, // Delay.
-		{170, 145, 140, 40} // Language.
+	std::unique_ptr<Game> currentGame;
+	bool useDelay = false, ticking = true;
+	int selectedCard = 0, delay, page = 0, pairAmount = 0, trys = 0;
+	// Seconds hours etc.
+	int seconds = 0, minutes = 0, hours = 0, millisecs = 0;
+
+	// Logics.
+	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
+
+	const std::vector<Structs::ButtonPos> cardPos = {
+		// Row 1.
+		{10, 2, 55, 55}, // 1.
+		{71, 2, 55, 55}, // 2.
+		{132, 2, 55, 55}, // 3.
+		{193, 2, 55, 55}, // 4.
+		{254, 2, 55, 55}, // 5.
+		// Row 2.
+		{10, 61, 55, 55}, // 1.
+		{71, 61, 55, 55}, // 2.
+		{132, 61, 55, 55}, // 3.
+		{193, 61, 55, 55}, // 4.
+		{254, 61, 55, 55}, // 5.
+		// Row 3.
+		{10, 122, 55, 55}, // 1.
+		{71, 122, 55, 55}, // 2.
+		{132, 122, 55, 55}, // 3.
+		{193, 122, 55, 55}, // 4.
+		{254, 122, 55, 55}, // 5.
+		// Row 4.
+		{10, 183, 55, 55}, // 1.
+		{71, 183, 55, 55}, // 2.
+		{132, 183, 55, 55}, // 3.
+		{193, 183, 55, 55}, // 4.
+		{254, 183, 55, 55} // 5.
 	};
-
-	C2D_SpriteSheet tempSheet, tempBG;
 };
 
 #endif

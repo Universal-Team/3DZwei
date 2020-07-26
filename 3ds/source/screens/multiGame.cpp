@@ -25,19 +25,30 @@
 */
 
 #include "config.hpp"
-#include "gameScreen.hpp"
 #include "keyboard.hpp"
+#include "multiGame.hpp"
 #include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern C2D_SpriteSheet cards; // Needed for getting size the spritesheet.
 
-GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict, bool _20_mode) {
-	this->useDelay = useDelay;
-	this->useAI = useAI;
-	this->betterPredict = doBetterPredict;
-	this->_20_mode = _20_mode;
-	this->currentGame = std::make_unique<Game>((this->_20_mode ? 20 : 10), this->useAI, this->betterPredict); // Create game.
+MultiGame::MultiGame() {
+	this->useAI = Msg::promptMsg(Lang::get("PLAY_AGAINST_AI"));
+	this->useDelay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
+	if (this->useAI) this->betterPredict = Msg::promptMsg(Lang::get("PLAY_BETTER_AI"));
+
+	char msg[100];
+	snprintf(msg, sizeof(msg), Lang::get("ENTER_PAIR_AMOUNT").c_str(), C2D_SpriteSheetCount(cards)-1);
+	// Pair Selection here.
+	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards)-1, msg);
+	if (amount > 0) {
+		this->pairAmount = amount;
+	} else {
+		this->pairAmount = C2D_SpriteSheetCount(cards)-1;
+	}
+
+	this->currentGame = std::make_unique<Game>(this->pairAmount, this->useAI, this->betterPredict); // Create game.
 	this->delay = config->delay();
 
 	this->avatar1 = Overlays::SelectAvatar(1);
@@ -51,10 +62,10 @@ GameScreen::GameScreen(bool useDelay, bool useAI, bool doBetterPredict, bool _20
 }
 
 
-void GameScreen::Draw(void) const {
-	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(this->_20_mode ? 2 : 1);
-	GFX::DrawTop(true);
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_SCREEN"), 390);
+void MultiGame::Draw(void) const {
+	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(((this->pairAmount / (10 + 1)) + 1));
+	GFX::DrawGameBG(true);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MULTIPLAY"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
 
 	// Player 1.
@@ -64,8 +75,8 @@ void GameScreen::Draw(void) const {
 	GFX::DrawChar(this->avatar2, 280, 35);
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("PAIRS") + std::to_string(this->currentGame->getPairs(Players::Player2)), 110);
 
-	Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("CURRENT_PLAYER") + std::to_string((int)this->currentGame->getCurrentPlayer()+1), 390);
-	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 237-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
+	Gui::DrawStringCentered(0, 217, 0.8f, config->textColor(), Lang::get("CURRENT_PLAYER") + std::to_string((int)this->currentGame->getCurrentPlayer()+1), 390);
+	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 239-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 
 	// For no delay mode, show that you have to press Y to do the play.
 	if ((this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == Players::Player2)) {
@@ -78,13 +89,15 @@ void GameScreen::Draw(void) const {
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	GFX::DrawBottom(false);
+	GFX::DrawGameBG(false);
 
-	for (int i = 0 + this->page * 20, i2 = 0; i < (0 + (this->page * 20) + 20); i++, i2++) {
+	for (int i = 0 + (this->page * 20), i2 = 0; (i < this->currentGame->getPairs() * 2) && (i < (0 + (this->page * 20) + 20)); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
-			GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
+			if (!this->currentGame->getCollected(i)) {
+				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
+			}
 		} else {
-			GFX::DrawCard(PairType::None, cardPos[i2].x, cardPos[i2].y);
+			GFX::DrawCard(-1, cardPos[i2].x, cardPos[i2].y);
 		}
 	}
 
@@ -93,15 +106,27 @@ void GameScreen::Draw(void) const {
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
-void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
+void MultiGame::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			if (this->selectedCard < 19) this->selectedCard++;
+			// In case we'd reach the last card from the page.
+			if (this->selectedCard == 4 || this->selectedCard == 9 || this->selectedCard == 14 || this->selectedCard == 19) {
+				if (this->page < (this->currentGame->getPairs() / (10 + 1))) {
+					this->page++;
+					this->selectedCard = (this->selectedCard - 4);
+				}
+			} else if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			if (this->selectedCard > 0)	this->selectedCard--;
+			// In case we'd reach the first card from the page.
+			if (this->selectedCard == 15 || this->selectedCard == 10 || this->selectedCard == 5 || this->selectedCard == 0) {
+				if (this->page > 0) {
+					this->page--;
+					this->selectedCard = (this->selectedCard + 4);
+				}
+			} else if (this->selectedCard > 0) this->selectedCard--;
 		}
 
 		if (hDown & KEY_DOWN) {
@@ -113,15 +138,13 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 		}
 
 		if (hDown & KEY_R) {
-			if (this->_20_mode) {
-				if (this->page == 0) this->page = 1;
+			if (this->currentGame->getPairs() > 10) {
+				if (this->page < (this->currentGame->getPairs() / (10 + 1))) this->page++;
 			}
 		}
 
 		if (hDown & KEY_L) {
-			if (this->_20_mode) {
-				if (this->page == 1) this->page = 0;
-			}
+			if (this->page > 0) this->page--;
 		}
 
 		if (hDown & KEY_A) {
@@ -143,7 +166,7 @@ void GameScreen::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
-void GameScreen::AILogic(u32 hDown) {
+void MultiGame::AILogic(u32 hDown) {
 	if (this->useAI) {
 		if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 			if (!this->useDelay) {
@@ -152,21 +175,22 @@ void GameScreen::AILogic(u32 hDown) {
 						Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 						int card1 = this->currentGame->doAITurn();
 
-						if (card1 >= 20) {
-							if (this->page == 0) this->page = 1;
-						} else {
-							if (this->page == 1) this->page = 0;
+						if (this->currentGame->getPairs() > 10) {
+							if (this->page < ((card1 / (10 + 1))) || this->page > ((card1 / (10 + 1)))) {
+								this->page = (card1 / (10 + 1));
+							}
 						}
 
 						this->currentGame->play(card1);
+
 					} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 						Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 
-						if (card2 >= 20) {
-							if (this->page == 0) this->page = 1;
-						} else {
-							if (this->page == 1) this->page = 0;
+						if (this->currentGame->getPairs() > 10) {
+							if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
+								this->page = (card2 / (10 + 1));
+							}
 						}
 
 						this->currentGame->play(card2);
@@ -180,22 +204,23 @@ void GameScreen::AILogic(u32 hDown) {
 							Msg::DebugMessage("Do int card1 = this->currentGame->doAITurn();.");
 							int card1 = this->currentGame->doAITurn();
 
-							if (card1 >= 20) {
-								if (this->page == 0) this->page = 1;
-							} else {
-								if (this->page == 1) this->page = 0;
+							if (this->currentGame->getPairs() > 10) {
+								if (this->page < ((card1 / (10 + 1))) || this->page > ((card1 / (10 + 1)))) {
+									this->page = (card1 / (10 + 1));
+								}
 							}
 
 							this->currentGame->play(card1);
 							this->delay = config->delay();
+
 						} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 							Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
 							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
 
-							if (card2 >= 20) {
-								if (this->page == 0) this->page = 1;
-							} else {
-								if (this->page == 1) this->page = 0;
+							if (this->currentGame->getPairs() > 10) {
+								if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
+									this->page = (card2 / (10 + 1));
+								}
 							}
 
 							this->currentGame->play(card2);
@@ -208,7 +233,7 @@ void GameScreen::AILogic(u32 hDown) {
 	}
 }
 
-void GameScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
+void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (hDown & KEY_START) {
 		if (Msg::promptMsg(Lang::get("EXIT_GAME"))) {
 			Gui::screenBack(true);

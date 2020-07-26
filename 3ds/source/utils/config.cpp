@@ -36,6 +36,8 @@
 void Config::addMissingThings() {
 	if (this->json["Version"] < 2) {
 		this->setInt("Language", 1);
+		this->setString("Set", "_3DZWEI_ROMFS");
+		this->setString("BGS", "");
 	}
 }
 
@@ -55,6 +57,8 @@ void Config::initialize() {
 	this->setInt("Card_Delay", 70);
 	this->setString("Card_File", "romfs:/gfx/cards.t3x");
 	this->setInt("Language", 1);
+	this->setString("Set", "_3DZWEI_ROMFS");
+	this->setString("BGS", "");
 
 	// Write to file.
 	std::string dump = this->json.dump(1, '\t');
@@ -143,6 +147,18 @@ Config::Config() {
 		this->language(this->getInt("Language"));
 	}
 
+	if (!this->json.contains("Set")) {
+		this->Set("_3DZWEI_ROMFS");
+	} else {
+		this->Set(this->getString("Set"));
+	}
+
+	if (!this->json.contains("BGS")) {
+		this->BG("");
+	} else {
+		this->BG(this->getString("BGS"));
+	}
+
 	if (!this->json.contains("Version")) {
 		this->version(this->configVersion);
 	} else {
@@ -167,6 +183,8 @@ void Config::save() {
 		this->setInt("Card_Delay", this->delay());
 		this->setString("Card_File", this->cardFile());
 		this->setInt("Language", this->language());
+		this->setString("Set", this->Set());
+		this->setString("BGS", this->BG());
 		this->setInt("Version", this->version());
 
 		// Write changes to file.

@@ -33,4 +33,5 @@
 
 ### Others
 - [devkitPro](https://github.com/devkitPro): For devkitARM, Libctru, Citro2D & Citro3D.
+- [TotallyNotGuy](https://github.com/TotallyNotGuy): For the bar graphics.
 - [Universal-Team](https://github.com/Universal-Team): For Universal-Core.

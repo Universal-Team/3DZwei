@@ -24,42 +24,14 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_GFX_HPP
-#define _3DZWEI_GFX_HPP
+#ifndef _3DZWEI_CARD_UTILS_HPP
+#define _3DZWEI_CARD_UTILS_HPP
 
-#include "cards.h"
-#include "chars.h"
-#include "coreHelper.hpp"
-#include "sprites.h"
+#include "common.hpp"
 
-#include <string>
-
-struct ButtonStruct {
-	int X;
-	int Y;
-	float xSize;
-	float ySize;
-	std::string Text;
-};
-
-namespace GFX {
-	// Basic GUI.
-	void DrawTop(bool useBars = true);
-	void DrawBottom(bool useBars = true);
-	void DrawFileBrowseBG(bool isTop = true);
-	void DrawGameBG(bool top = false);
-	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	// Selectors.
-	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);
-	
-	void DrawCard(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	void DrawCardSelector(int x, int y, float ScaleX = 1, float ScaleY = 1);
-
-	void DrawChar(int image, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	void DrawPlayer(int x, int y, float ScaleX, float ScaleY, int player);
-
-	// Buttons.
-	void Button(const ButtonStruct btn);
+namespace CardUtils {
+    void randomizeCards();
+    void fillIndex();
 }
 
 #endif

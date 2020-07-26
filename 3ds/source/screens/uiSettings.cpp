@@ -24,6 +24,7 @@
 *         reasonable ways as different from the original version.
 */
 
+#include "cardUtils.hpp"
 #include "colorChanger.hpp"
 #include "config.hpp"
 #include "keyboard.hpp"
@@ -35,7 +36,7 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void UISettings::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 0, 0.8f, config->textColor(), "3DZwei - " + Lang::get("UI_SETTINGS"), 390);
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("UI_SETTINGS"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
@@ -60,12 +61,18 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (touching(touch, mainButtons[1])) {
 			const std::string set = Overlays::SelectCardSet();
-			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
+			if (set != "") Overlays::PreviewCards(this->tempSheet, this->tempBG, set);
 		} else if (touching(touch, mainButtons[2])) {
 			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);
 		} else if (touching(touch, mainButtons[3])) {
 			Overlays::SelectLanguage();
+		}
+	}
+
+	if (hDown & KEY_SELECT) {
+		if (Msg::promptMsg(Lang::get("CARD_RANDOMIZE"))) {
+			CardUtils::randomizeCards();
 		}
 	}
 
@@ -90,7 +97,7 @@ void UISettings::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			Gui::setScreen(std::make_unique<ColorChanger>(), true, true);
 		} else if (this->Selection == 1) {
 			const std::string set = Overlays::SelectCardSet();
-			if (set != "") Overlays::PreviewCards(this->tempSheet, set);
+			if (set != "") Overlays::PreviewCards(this->tempSheet, this->tempBG, set);
 		} else if (this->Selection == 2) {
 			int tempDelay = Keyboard::setInt(999, Lang::get("ENTER_CARD_DELAY"));
 			if (tempDelay != -1) config->delay(tempDelay);

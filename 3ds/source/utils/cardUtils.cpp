@@ -24,42 +24,28 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_GFX_HPP
-#define _3DZWEI_GFX_HPP
-
-#include "cards.h"
-#include "chars.h"
+#include "cardUtils.hpp"
 #include "coreHelper.hpp"
-#include "sprites.h"
 
-#include <string>
+extern C2D_SpriteSheet cards; // Include it here, cause why not.
+extern std::vector<int> cardIndex;
 
-struct ButtonStruct {
-	int X;
-	int Y;
-	float xSize;
-	float ySize;
-	std::string Text;
-};
+// Randomize CardIndex.
+void CardUtils::randomizeCards() {
+	cardIndex.clear(); // Clear first.
 
-namespace GFX {
-	// Basic GUI.
-	void DrawTop(bool useBars = true);
-	void DrawBottom(bool useBars = true);
-	void DrawFileBrowseBG(bool isTop = true);
-	void DrawGameBG(bool top = false);
-	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	// Selectors.
-	void DrawButtonSelector(int x, int y, float ScaleX = 1, float ScaleY = 1, bool useSmall = false);
-	
-	void DrawCard(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	void DrawCardSelector(int x, int y, float ScaleX = 1, float ScaleY = 1);
+	for (int i = 0; i < (int)(C2D_SpriteSheetCount(cards)) - 1; i++) {
+		cardIndex.push_back({i});
+	}
 
-	void DrawChar(int image, int x, int y, float ScaleX = 1, float ScaleY = 1);
-	void DrawPlayer(int x, int y, float ScaleX, float ScaleY, int player);
-
-	// Buttons.
-	void Button(const ButtonStruct btn);
+	std::shuffle(cardIndex.begin(), cardIndex.end(), randomGen);
 }
 
-#endif
+// Fill CardIndex normally.
+void CardUtils::fillIndex() {
+	cardIndex.clear(); // Clear first.
+
+	for (int i = 0; i < (int)(C2D_SpriteSheetCount(cards)) - 1; i++) {
+		cardIndex.push_back({i});
+	}
+}
