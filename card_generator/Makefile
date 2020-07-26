@@ -46,16 +46,15 @@ $(GFXBUILD)/cards.t3x:	cards.t3s
 #---------------------------------------------------------------------------------
 	@echo build cards SpriteSheet...
 	@tex3ds -i $< -o $(GFXBUILD)/cards.t3x
-	@echo Done!
-	@echo Now copy the cards.t3x file over to your SD Card at "sdmc:/3ds/3DZwei/sets/<SetName>/".
+	@echo Cards SpriteSheet done!
+	@echo Now copy the bg.t3x and cards.t3x file over to your SD Card at "sdmc:/3ds/3DZwei/sets/<SetName>/".
 
 #---------------------------------------------------------------------------------
 $(GFXBUILD)/bg.t3x:	bg.t3s
 #---------------------------------------------------------------------------------
-	@echo build cards SpriteSheet...
+	@echo build BG SpriteSheet...
 	@tex3ds -i $< -o $(GFXBUILD)/bg.t3x
-	@echo Done!
-	@echo Now copy the bg.t3x file over to your SD Card at "sdmc:/3ds/3DZwei/sets/<SetName>/".
+	@echo BG SpriteSheet done!
 
 #---------------------------------------------------------------------------------
 .PRECIOUS	:	%.t3x

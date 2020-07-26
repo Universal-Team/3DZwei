@@ -83,7 +83,7 @@ void GFX::DrawGameBG(bool top) {
 		top ? GFX::DrawTop() : Gui::ScreenDraw(Bottom);
 		top ? Gui::DrawSprite(BGs, 0, 0, 30) : Gui::DrawSprite(BGs, 1, 0, 0);
 	} else {
-		top ? GFX::DrawTop() : GFX::DrawBottom();
+		top ? GFX::DrawTop() : GFX::DrawBottom(false);
 	}
 }
 
