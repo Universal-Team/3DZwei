@@ -34,9 +34,7 @@ class Game {
 public:
 	Game(int pairs = 10, bool useAI = true, bool rememberMoreAI = false);
 	void generateCards(int pairs);
-	bool returnIfUsed(int index);
-	void setUsed(int index, bool isUsed);
-	bool getCollected(int index);
+	bool isCollected(int index);
 	void setCollected(int index, bool collected);
 	bool checkIfMatches();
 	bool setCardPair();

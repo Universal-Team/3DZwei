@@ -105,7 +105,7 @@ void TimePlay::Draw(void) const {
 
 	for (int i = 0 + (this->page * 20), i2 = 0; (i < this->currentGame->getPairs() * 2) && (i < (0 + (this->page * 20) + 20)); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
-			if (!this->currentGame->getCollected(i)) {
+			if (!this->currentGame->isCollected(i)) {
 				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
 			}
 		} else {
@@ -160,7 +160,7 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 		}
 
 		if (hDown & KEY_A) {
-			if (!this->currentGame->returnIfUsed(0 + (this->page * 20) + this->selectedCard)) {
+			if (!this->currentGame->returnIfShown(0 + (this->page * 20) + this->selectedCard)) {
 				this->currentGame->play(0 + (this->page * 20) + this->selectedCard);
 			}
 		}
@@ -168,7 +168,7 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (hDown & KEY_TOUCH) {
 			for (int i = 0; i < 20; i++) {
 				if (touching(touch, cardPos[i])) {
-					if (!this->currentGame->returnIfUsed(i + (this->page * 20))) {
+					if (!this->currentGame->returnIfShown(i + (this->page * 20))) {
 						this->selectedCard = i;
 						this->currentGame->play(i + (this->page * 20));
 					}

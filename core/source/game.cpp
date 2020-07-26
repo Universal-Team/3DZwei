@@ -64,24 +64,12 @@ void Game::generateCards(int pairs) {
 	std::shuffle(tempCards.begin(), tempCards.end(), randomGen);
 
 	for (int i = 0; i < (int)tempCards.size(); i++) {
-		this->field.push_back({false, tempCards[i], false, false});
+		this->field.push_back({tempCards[i], false, false}); // Index, Shown, Collected.
 	}
 }
 
-// Return, if card is used.
-bool Game::returnIfUsed(int index) {
-	if (index > (this->pairs * 2)-1) return true; // Out of scope. No idea what else to return in that case.
-	return this->field[index].Used;
-}
-
-// Set, if card is used.
-void Game::setUsed(int index, bool isUsed) {
-	if (index > (this->pairs * 2)-1) return; // Out of scope.
-	this->field[index].Used = isUsed;
-}
-
 // Return, if card is collected.
-bool Game::getCollected(int index) {
+bool Game::isCollected(int index) {
 	if (index > (this->pairs * 2)-1) return true; // Out of scope. No idea what else to return in that case.
 	return this->field[index].Collected;
 }
@@ -117,13 +105,12 @@ bool Game::setCardPair() {
 			}
 			
 			// Set that we used and collected it.
-			this->setUsed(this->card1, true); this->setCollected(this->card1, true);
-			this->setUsed(this->card2, true); this->setCollected(this->card2, true);
+			this->setCollected(this->card1, true);
+			this->setCollected(this->card2, true);
 			return true;
 		} else {
 			if (this->useAI) ai->setLastCards(this->card1, this->card2);
 			this->setShown(this->card1, false); this->setShown(this->card2, false);
-			this->setUsed(this->card1, false); this->setUsed(this->card2, false);
 			// Heh, nope.
 			return false;
 		}
@@ -147,16 +134,14 @@ void Game::setShown(int index, bool show) {
 
 // Play if you can.
 bool Game::play(int index) {
-	if (this->returnIfUsed(index) != true) {
+	if (this->returnIfShown(index) != true) {
 		if (this->cardSelect == CardSelectMode::DrawFirst) {
 			this->setShown(index, true);
-			this->setUsed(index, true);
 			this->card1 = index;
 			this->cardSelect = CardSelectMode::DrawSecond;
 			return true;
 		} else if (this->cardSelect == CardSelectMode::DrawSecond) {
 			this->setShown(index, true);
-			this->setUsed(index, true);
 			this->card2 = index;
 			this->cardSelect = CardSelectMode::DoCheck;
 			return true;
@@ -298,14 +283,14 @@ int Game::doPredictLonger(int amountToRemember) {
 			for (int i = 0; i < this->ai->getSize()-amountToRemember; i++) {
 				// Check for the first card.
 				if (this->getCard(this->ai->getFirst(i)) == this->getCard(this->card1)) {
-					if (!this->returnIfUsed(this->ai->getFirst(i))) {
+					if (!this->returnIfShown(this->ai->getFirst(i))) {
 						return this->ai->getFirst(i);
 					}
 				}
 
 				// Check for the second card.
 				if (this->getCard(ai->getSecond(i)) == this->getCard(this->card1)) {
-					if (!this->returnIfUsed(this->ai->getSecond(i))) {
+					if (!this->returnIfShown(this->ai->getSecond(i))) {
 						return this->ai->getSecond(i);
 					}
 				}
@@ -317,14 +302,14 @@ int Game::doPredictLonger(int amountToRemember) {
 			for (int i = 0; i < ai->getSize(); i++) {
 				// Check for the first card.
 				if (this->getCard(ai->getFirst(i)) == this->getCard(this->card1)) {
-					if (!this->returnIfUsed(ai->getFirst(i))) {
+					if (!this->returnIfShown(ai->getFirst(i))) {
 						return this->ai->getFirst(i);
 					}
 				}
 
 				// Check for the second card.
 				if (this->getCard(ai->getSecond(i)) == this->getCard(this->card1)) {
-					if (!this->returnIfUsed(ai->getSecond(i))) {
+					if (!this->returnIfShown(ai->getSecond(i))) {
 						return this->ai->getSecond(i);
 					}
 				}
