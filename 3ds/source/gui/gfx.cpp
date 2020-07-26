@@ -33,9 +33,9 @@ std::vector<int> cardIndex;
 void GFX::DrawTop(bool useBars) {
 	Gui::ScreenDraw(Top);
 	if (useBars) {
-		Gui::Draw_Rect(0, 0, 400, 25, config->barColor());
-		Gui::Draw_Rect(0, 25, 400, 190, config->bgColor());
-		Gui::Draw_Rect(0, 215, 400, 25, config->barColor());
+		Gui::Draw_Rect(0, 0, 400, 30, config->barColor());
+		Gui::Draw_Rect(0, 30, 400, 180, config->bgColor());
+		Gui::Draw_Rect(0, 210, 400, 30, config->barColor());
 		GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0);
 		GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215);
 	} else {
@@ -46,9 +46,9 @@ void GFX::DrawTop(bool useBars) {
 void GFX::DrawBottom(bool useBars) {
 	Gui::ScreenDraw(Bottom);
 	if (useBars) {
-		Gui::Draw_Rect(0, 0, 320, 25, config->barColor());
-		Gui::Draw_Rect(0, 25, 320, 190, config->bgColor());
-		Gui::Draw_Rect(0, 215, 320, 25, config->barColor());
+		Gui::Draw_Rect(0, 0, 320, 30, config->barColor());
+		Gui::Draw_Rect(0, 30, 320, 180, config->bgColor());
+		Gui::Draw_Rect(0, 210, 320, 30, config->barColor());
 		GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
 		GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 	} else {
