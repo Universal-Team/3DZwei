@@ -6,7 +6,7 @@
 * Custom Cardsets & Background. For more, you can take a look [here](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/card_generator).
 * RGB Overlay for the UI Colors.
 * A "remember all played cards" and "remember last 2 played cards" AI in the "Multi Play!" mode.
-* A TimePlay Mode, try to collect all cards with the less amount of time and less amount of tries.
+* A TimePlay Mode, try to collect all cards with the least amount of time and least amount of tries.
 * 2 Player Mode on one console.
 * Initial Multi Language support, currently only supports English & German.
 
