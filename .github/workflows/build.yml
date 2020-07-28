@@ -14,8 +14,8 @@ jobs:
     container: devkitpro/devkitarm
     name: "Build with Docker using devKitARM r54"
     outputs:
-      commit_tag: ${{ steps.make-cias.outputs.commit_tag }}
-      commit_message: ${{ steps.make-cias.outputs.commit_message }}
+      commit_tag: ${{ steps.build.outputs.commit_tag }}
+      commit_message: ${{ steps.build.outputs.commit_message }}
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v1
@@ -111,7 +111,7 @@ jobs:
           AUTH_HEADER="Authorization: token ${{ secrets.TWLBOT_TOKEN }}"
           CONTENT_TYPE="Content-Type: application/json"
           API_URL="https://api.github.com/repos/Universal-Team/extras/releases"
-          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"Universal Team | $COMMIT_TAG\", \"body\": \"$COMMIT_MESSAGE\", "prerelease": true}"
+          RELEASE_INFO="{\"tag_name\": \"v${{ steps.commit.outputs.current_date }}\", \"name\": \"Universal Team | $COMMIT_TAG\", \"body\": \"$COMMIT_MESSAGE\", \"prerelease\": true}"
 
           RESPONSE=$(curl -XPOST -H "$AUTH_HEADER" -H "$CONTENT_TYPE" "$API_URL" -d "$RELEASE_INFO")
 
