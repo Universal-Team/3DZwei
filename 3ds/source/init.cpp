@@ -49,6 +49,12 @@ bool touching(touchPosition touch, Structs::ButtonPos button) {
 	else return false;
 }
 
+// If Card pressed -> Do something.
+bool cardTouch(touchPosition touch, CardStr card) {
+	if (touch.px >= card.X && touch.px <= (card.X + 55) && touch.py >= card.Y && touch.py <= (card.Y + 55)) return true;
+	else return false;
+}
+
 Result Init::Initialize() {
 	gfxInitDefault();
 	romfsInit();

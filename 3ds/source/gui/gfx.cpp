@@ -87,40 +87,14 @@ void GFX::DrawGameBG(bool top) {
 	}
 }
 
-void GFX::DrawButtonSelector(int x, int y, float ScaleX, float ScaleY, bool useSmall) {
-	static float timer			= 0.0f;
-	float highlight_multiplier	= fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
-	u8 r						= config->selectorColor() & 0xFF;
-	u8 g						= (config->selectorColor() >> 8) & 0xFF;
-	u8 b						= (config->selectorColor() >> 16) & 0xFF;
-	u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
+void GFX::DrawGrid(int x, int y) {
 	C2D_ImageTint tint;
-	C2D_SetImageTint(&tint, C2D_TopLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_TopRight, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
+	C2D_SetImageTint(&tint, C2D_TopLeft, config->gridColor(), 1);
+	C2D_SetImageTint(&tint, C2D_TopRight, config->gridColor(), 1);
+	C2D_SetImageTint(&tint, C2D_BotLeft, config->gridColor(), 1);
+	C2D_SetImageTint(&tint, C2D_BotRight, config->gridColor(), 1);
 
-	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, useSmall ? sprites_btnSelector2_idx : sprites_btnSelector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
-
-	timer += .030;
-}
-
-void GFX::DrawCardSelector(int x, int y, float ScaleX, float ScaleY) {
-	static float timer			= 0.0f;
-	float highlight_multiplier	= fmax(0.0, fabs(fmod(timer, 1.0) - 0.5) / 0.5);
-	u8 r						= config->selectorColor() & 0xFF;
-	u8 g						= (config->selectorColor() >> 8) & 0xFF;
-	u8 b						= (config->selectorColor() >> 16) & 0xFF;
-	u32 color = C2D_Color32(r + (255 - r) * highlight_multiplier, g + (255 - g) * highlight_multiplier, b + (255 - b) * highlight_multiplier, 255);
-	C2D_ImageTint tint;
-	C2D_SetImageTint(&tint, C2D_TopLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_TopRight, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotLeft, color, 1);
-	C2D_SetImageTint(&tint, C2D_BotRight, color, 1);
-
-	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, sprites_card_selector_idx), x, y, 0.5f, &tint, ScaleX, ScaleY);
-
-	timer += .030;
+	C2D_DrawImageAt(C2D_SpriteSheetGetImage(sprites, sprites_grid_idx), x, y, 0.5f, &tint);
 }
 
 void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {

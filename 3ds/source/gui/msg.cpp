@@ -57,7 +57,7 @@ bool Msg::promptMsg2(std::string promptMsg) {
 		Gui::Draw_Rect(170, 100, 140, 40, config->buttonColor());
 		Gui::DrawStringCentered(-150+70, 105, 0.8f, config->textColor(), Lang::get("YES"), 140);
 		Gui::DrawStringCentered(150-70, 105, 0.8f, config->textColor(), Lang::get("NO"), 140);
-		GFX::DrawButtonSelector(promptBtn[selection].x, promptBtn[selection].y);
+		GFX::DrawSprite(sprites_pointer_idx, promptBtn[selection].x+130, promptBtn[selection].y+10);
 		C3D_FrameEnd(0);
 
 		// Selection part.

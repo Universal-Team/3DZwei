@@ -54,7 +54,7 @@ static void Draw(int selection) {
 		Gui::Draw_Rect(langBlocks[language].x, langBlocks[language].y, langBlocks[language].w, langBlocks[language].h, config->buttonColor());
 	}
 
-	Gui::Draw_Rect(langBlocks[selection].x, langBlocks[selection].y, langBlocks[selection].w, langBlocks[selection].h, config->selectorColor());
+	GFX::DrawSprite(sprites_pointer_idx, langBlocks[selection].x+3, langBlocks[selection].y+2);
 
 	Gui::DrawString(langBlocks[0].x+25, langBlocks[0].y, 0.7f, config->textColor(), "Deutsch", 320);
 	Gui::DrawString(langBlocks[1].x+25, langBlocks[1].y, 0.7f, config->textColor(), "English", 320);

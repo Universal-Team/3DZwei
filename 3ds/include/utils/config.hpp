@@ -54,9 +54,9 @@ public:
 	// Button Color.
 	u32 buttonColor() { return this->v_buttonColor; }
 	void buttonColor(u32 v) { this->v_buttonColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Selector Color.
-	u32 selectorColor() { return this->v_selectorColor; }
-	void selectorColor(u32 v) { this->v_selectorColor = v; if (!this->changesMade)	this->changesMade = true; }
+	// Grid Color.
+	u32 gridColor() { return this->v_gridColor; }
+	void gridColor(u32 v) { this->v_gridColor = v; if (!this->changesMade)	this->changesMade = true; }
 	// Card Delay.
 	int delay() { return this->v_delay; }
 	void delay(int v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
@@ -90,7 +90,7 @@ private:
 	bool changesMade = false;
 
 	// Color variables and more.
-	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_selectorColor;
+	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_gridColor;
 	int v_delay, v_language, v_version;
 	bool v_debug;
 	std::string v_cardFile, v_Set, v_BG;

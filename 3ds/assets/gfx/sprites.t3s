@@ -1,11 +1,11 @@
 --atlas -f rgba8888 -z auto
 
+sprites/banner.png
 sprites/bottom_screen_bot.png
 sprites/bottom_screen_top.png
-sprites/btnSelector.png
-sprites/btnSelector2.png
-sprites/card_selector.png
 sprites/dev_by.png
+sprites/grid.png
+sprites/pointer.png
 sprites/right.png
 sprites/stackz.png
 sprites/top_screen_bot.png

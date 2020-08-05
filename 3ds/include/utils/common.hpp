@@ -42,4 +42,9 @@
 #define MAXCARDS 20 // 20 -> Default max cards.
 extern bool BGLoaded;
 
+struct CardStr {
+    float X;
+    float Y;
+};
+
 #endif

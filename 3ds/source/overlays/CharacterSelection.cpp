@@ -59,11 +59,12 @@ static void Draw(int page, int selection, int player) {
 	Gui::Draw_Rect(110, 160, 80, 30, config->buttonColor());
 	Gui::Draw_Rect(210, 160, 80, 30, config->buttonColor());
 	Gui::Draw_Rect(310, 160, 80, 30, config->buttonColor());
+	
 		
 	if (page == 1) {
-		GFX::DrawButtonSelector(10 + (selection * 100), 160, 1, 1, true);
+		GFX::DrawSprite(sprites_pointer_idx, 50 + (selection * 100), 170);
 	} else {
-		GFX::DrawButtonSelector(10 + ((selection-4) * 100), 160, 1, 1, true);
+		GFX::DrawSprite(sprites_pointer_idx, 50 + ((selection-4) * 100), 170);
 	}
 		
 	GFX::DrawBottom();

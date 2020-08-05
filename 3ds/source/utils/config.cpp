@@ -52,7 +52,7 @@ void Config::initialize() {
 	this->setInt("Text_Color", C2D_Color32(255, 255, 255, 255));
 	this->setInt("BG_Color", C2D_Color32(160, 160, 220, 255));
 	this->setInt("Button_Color", C2D_Color32(60, 0, 170, 255));
-	this->setInt("Selector_Color", C2D_Color32(0, 0, 255, 255));
+	this->setInt("Grid_Color", C2D_Color32(0, 0, 128, 255));
 	this->setInt("Version", 2);
 	this->setInt("Card_Delay", 70);
 	this->setString("Card_File", "romfs:/gfx/cards.t3x");
@@ -117,10 +117,10 @@ Config::Config() {
 		this->buttonColor(this->getInt("Button_Color"));
 	}
 
-	if (!this->json.contains("Selector_Color")) {
-		this->selectorColor(C2D_Color32(200, 0, 0, 255));
+	if (!this->json.contains("Grid_Color")) {
+		this->gridColor(C2D_Color32(0, 0, 128, 255));
 	} else {
-		this->selectorColor(this->getInt("Selector_Color"));
+		this->gridColor(this->getInt("Grid_Color"));
 	}
 
 	if (!this->json.contains("Card_Delay")) {
@@ -179,7 +179,7 @@ void Config::save() {
 		this->setInt("Text_Color", this->textColor());
 		this->setInt("BG_Color", this->bgColor());
 		this->setInt("Button_Color", this->buttonColor());
-		this->setInt("Selector_Color", this->selectorColor());
+		this->setInt("Grid_Color", this->gridColor());
 		this->setInt("Card_Delay", this->delay());
 		this->setString("Card_File", this->cardFile());
 		this->setInt("Language", this->language());

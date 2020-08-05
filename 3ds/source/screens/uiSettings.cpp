@@ -42,15 +42,14 @@ void UISettings::Draw(void) const {
 
 	for (int i = 0; i < 4; i++) {
 		Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, config->buttonColor());
-		if (this->Selection == i) {
-			GFX::DrawButtonSelector(mainButtons[i].x, mainButtons[i].y);
-		}
 	}
 
 	Gui::DrawStringCentered(-80, mainButtons[0].y+12, 0.6f, config->textColor(), Lang::get("COLOR_SETTINGS"), 130);
 	Gui::DrawStringCentered(80, mainButtons[1].y+12, 0.6f, config->textColor(), Lang::get("CARD_SETS"), 130);
 	Gui::DrawStringCentered(-80, mainButtons[2].y+12, 0.6f, config->textColor(), Lang::get("CARD_DELAY"), 130);
 	Gui::DrawStringCentered(80, mainButtons[3].y+12, 0.6f, config->textColor(), Lang::get("LANGUAGE"), 130);
+
+	GFX::DrawSprite(sprites_pointer_idx, mainButtons[this->Selection].x+130, mainButtons[this->Selection].y+10);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 

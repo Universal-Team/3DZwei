@@ -39,13 +39,15 @@ void ColorChanger::DrawPreview(void) const {
 	if (this->colorMode == 3) {
 		Gui::Draw_Rect(130, 120, 150, 40, config->buttonColor());
 	}  else if (this->colorMode == 4) {
-		GFX::DrawButtonSelector(120, 65, 1.5, 1.5);
+		GFX::DrawGrid(59.5, 7.5);
 	}
 }
 
 void ColorChanger::Draw(void) const {
-	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("COLOR_SETTINGS"), 390);
+	if (this->colorMode != 4) GFX::DrawTop();
+	else GFX::DrawTop(false);
+
+	if (this->colorMode != 4) Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("COLOR_SETTINGS"), 390);
 	this->DrawPreview();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
@@ -75,11 +77,12 @@ void ColorChanger::Draw(void) const {
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->buttonColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->buttonColor(), 0).c_str(), 400);
 	} else if (this->colorMode == 4) {
-		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("SELECTOR_COLOR"), 320);
-		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 2).c_str(), 400);
-		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 1).c_str(), 400);
-		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->selectorColor(), 0).c_str(), 400);
+		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("GRID_COLOR"), 320);
+		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->gridColor(), 2).c_str(), 400);
+		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->gridColor(), 1).c_str(), 400);
+		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->gridColor(), 0).c_str(), 400);
 	}
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
@@ -114,7 +117,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				config->buttonColor(Overlays::SelectRGB(config->buttonColor()));
 				break;
 			case 4:
-				config->selectorColor(Overlays::SelectRGB(config->selectorColor()));
+				config->gridColor(Overlays::SelectRGB(config->gridColor()));
 				break;
 		}
 	}
@@ -133,7 +136,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				} else if (this->colorMode == 3) {
 					config->buttonColor(RGBA8(red, ColorHelper::getColorValue(config->buttonColor(), 1), ColorHelper::getColorValue(config->buttonColor(), 0), 255));
 				} else if (this->colorMode == 4) {
-					config->selectorColor(RGBA8(red, ColorHelper::getColorValue(config->selectorColor(), 1), ColorHelper::getColorValue(config->selectorColor(), 0), 255));
+					config->gridColor(RGBA8(red, ColorHelper::getColorValue(config->gridColor(), 1), ColorHelper::getColorValue(config->gridColor(), 0), 255));
 				}
 			}
 		} else if (touching(touch, buttons[1])) {
@@ -149,7 +152,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				} else if (this->colorMode == 3) {
 					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), green, ColorHelper::getColorValue(config->buttonColor(), 0), 255));
 				} else if (this->colorMode == 4) {
-					config->selectorColor(RGBA8(ColorHelper::getColorValue(config->selectorColor(), 2), green, ColorHelper::getColorValue(config->selectorColor(), 0), 255));
+					config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), green, ColorHelper::getColorValue(config->gridColor(), 0), 255));
 				}
 			}
 		} else if (touching(touch, buttons[2])) {
@@ -165,7 +168,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				} else if (this->colorMode == 3) {
 					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), ColorHelper::getColorValue(config->buttonColor(), 1), blue, 255));
 				} else if (this->colorMode == 4) {
-					config->selectorColor(RGBA8(ColorHelper::getColorValue(config->selectorColor(), 2), ColorHelper::getColorValue(config->selectorColor(), 1), blue, 255));
+					config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), ColorHelper::getColorValue(config->gridColor(), 1), blue, 255));
 				}
 			}
 		}

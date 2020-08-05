@@ -30,7 +30,7 @@
 #include "utils.hpp"
 
 extern std::unique_ptr<Config> config;
-extern bool touching(touchPosition touch, Structs::ButtonPos button);
+extern bool cardTouch(touchPosition touch, CardStr card);
 extern C2D_SpriteSheet cards; // Needed for getting size the spritesheet.
 
 TimePlay::TimePlay() {
@@ -106,14 +106,18 @@ void TimePlay::Draw(void) const {
 	for (int i = 0 + (this->page * 20), i2 = 0; (i < this->currentGame->getPairs() * 2) && (i < (0 + (this->page * 20) + 20)); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
 			if (!this->currentGame->isCollected(i)) {
-				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].x, cardPos[i2].y);
+				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].X, cardPos[i2].Y);
 			}
 		} else {
-			GFX::DrawCard(-1, cardPos[i2].x, cardPos[i2].y);
+			GFX::DrawCard(-1, cardPos[i2].X, cardPos[i2].Y);
 		}
 	}
 
-	GFX::DrawCardSelector(cardPos[this->selectedCard].x, cardPos[this->selectedCard].y);
+	GFX::DrawGrid(19.5, 7.5);
+	// Only show pointer, if not on check.
+	if (this->currentGame->getCardSelect() != CardSelectMode::DoCheck) {
+		GFX::DrawSprite(sprites_pointer_idx, cardPos[this->selectedCard].X + 15.5, cardPos[this->selectedCard].Y + 17.5);
+	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
@@ -167,7 +171,7 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 		if (hDown & KEY_TOUCH) {
 			for (int i = 0; i < 20; i++) {
-				if (touching(touch, cardPos[i])) {
+				if (cardTouch(touch, cardPos[i])) {
 					if (!this->currentGame->returnIfShown(i + (this->page * 20))) {
 						this->selectedCard = i;
 						this->currentGame->play(i + (this->page * 20));
