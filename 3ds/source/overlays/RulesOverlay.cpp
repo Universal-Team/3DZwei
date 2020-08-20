@@ -41,7 +41,7 @@ static const std::vector<Structs::ButtonPos> cardPos = {
 	{193, 122, 55, 55}
 };
 
-// Draw.
+/* Draw. */
 static void Draw() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -57,7 +57,7 @@ static void DrawAnimRight(int delay) {
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 
-	// Logic here!
+	/* Logic here! */
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
 			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
@@ -80,9 +80,7 @@ static void DrawAnimRight(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 		GFX::DrawCard(0, cardPos[1].x, cardPos[1].y);
 
-		if (delay > 50 && delay < 190) {
-			GFX::DrawSprite(sprites_right_idx, 100, 100);
-		}
+		if (delay > 50 && delay < 190) GFX::DrawSprite(sprites_right_idx, 100, 100);
 	}
 
 	C3D_FrameEnd(0);
@@ -92,7 +90,7 @@ static void DrawAnimFalse(int delay) {
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 
-	// Logic here!
+	/* Logic here! */
 	if (delay > 330) {
 		for (int i = 0; i < (int)cardPos.size(); i++) {
 			GFX::DrawCard(-1, cardPos[i].x, cardPos[i].y);
@@ -115,9 +113,7 @@ static void DrawAnimFalse(int delay) {
 		GFX::DrawCard(0, cardPos[0].x, cardPos[0].y);
 		GFX::DrawCard(1, cardPos[1].x, cardPos[1].y);
 
-		if (delay > 50 && delay < 190) {
-			GFX::DrawSprite(sprites_wrong_idx, 100, 100);
-		}
+		if (delay > 50 && delay < 190) GFX::DrawSprite(sprites_wrong_idx, 100, 100);
 	}
 
 	C3D_FrameEnd(0);
@@ -128,6 +124,7 @@ void Overlays::ShowRules() {
 	bool showCorrect = true;
 	while(1) {
 		Draw();
+		
 		if (showCorrect) DrawAnimRight(delay);
 		else DrawAnimFalse(delay);
 

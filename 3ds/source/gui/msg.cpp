@@ -40,27 +40,28 @@ const std::vector<Structs::ButtonPos> promptBtn = {
 extern touchPosition touch;
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-// Display a Message, which needs to be confirmed with A/B.
-bool Msg::promptMsg2(std::string promptMsg) {
+/* Display a Message, which needs to be confirmed with A/B. */
+bool Msg::promptMsg(std::string promptMsg) {
 	s32 selection = 0;
 	while(1) {
 		Gui::clearTextBufs();
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 		GFX::DrawTop();
 		Gui::Draw_Rect(0, 60, 400, 100, config->barColor());
 		Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, promptMsg))/2-10, 0.8f, config->textColor(), promptMsg, 390, 90);
 		GFX::DrawBottom();
-		// Draw Bottom Screen part.
 		Gui::Draw_Rect(10, 100, 140, 40, config->buttonColor());
 		Gui::Draw_Rect(170, 100, 140, 40, config->buttonColor());
-		Gui::DrawStringCentered(-150+70, 105, 0.8f, config->textColor(), Lang::get("YES"), 140);
-		Gui::DrawStringCentered(150-70, 105, 0.8f, config->textColor(), Lang::get("NO"), 140);
-		GFX::DrawSprite(sprites_pointer_idx, promptBtn[selection].x+130, promptBtn[selection].y+10);
+		Gui::DrawStringCentered(-150 + 70, 105, 0.8f, config->textColor(), Lang::get("YES"), 140);
+		Gui::DrawStringCentered(150 - 70, 105, 0.8f, config->textColor(), Lang::get("NO"), 140);
+		GFX::DrawSprite(sprites_pointer_idx, promptBtn[selection].x + 130, promptBtn[selection].y + 10);
+
 		C3D_FrameEnd(0);
 
-		// Selection part.
+		/* Selection part. */
 		gspWaitForVBlank();
 		hidScanInput();
 		hidTouchRead(&touch);
@@ -89,28 +90,27 @@ bool Msg::promptMsg2(std::string promptMsg) {
 	}
 }
 
-bool Msg::promptMsg(std::string msg) {
-	return Msg::promptMsg2(msg);
-}
-
-// Displays a message, which does not rely on the config.
+/* Displays a message, which does not rely on the config with "default" colors. */
 void Msg::DisplayNoConfig(std::string Text) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	Gui::ScreenDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(100, 0, 255, 255));
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, C2D_Color32(255, 255, 255, 255), Text, 395, 70);
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(100, 0, 255, 255));
+
 	C3D_FrameEnd(0);
+
 	for (int i = 0; i < 60*2; i++) {
 		gspWaitForVBlank();
 	}
 }
 
-// Displays a Warn Message.
+/* Displays a Warn Message. */
 void Msg::DisplayWarnMsg(std::string Text) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -121,33 +121,38 @@ void Msg::DisplayWarnMsg(std::string Text) {
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, config->textColor(), Text, 395, 70);
 	GFX::DrawBottom();
 	C3D_FrameEnd(0);
+
 	for (int i = 0; i < 60*2; i++) {
 		gspWaitForVBlank();
 	}
 }
 
-// Displays a Warn Message. This is mostly be used for things with more text.
+/* Displays a Warn Message. This is mostly be used for things with more text. */
 void Msg::DisplayWarnMsg2(std::string Text) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Text))/2, 0.8f, config->textColor(), Text, 395, 70);
 	GFX::DrawBottom();
+
 	C3D_FrameEnd(0);
+
 	for (int i = 0; i < 60*2; i++) {
 		gspWaitForVBlank();
 	}
 }
 
-// Display a Message, which can be skipped with A.
+/* Display a Message, which can be skipped with A. */
 void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, waitMsg))/2, 0.8f, config->textColor(), waitMsg, 390, 70);
@@ -155,6 +160,7 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	GFX::DrawBottom();
 	Gui::Draw_Rect(100, 100, 140, 40, config->buttonColor());
 	Gui::DrawStringCentered(-60+70, 105, 0.8f, config->textColor(), Lang::get("OK"), 140);
+
 	C3D_FrameEnd(0);
 
 	while(1) {
@@ -165,9 +171,11 @@ void Msg::DisplayWaitMsg(std::string waitMsg, ...) {
 	}
 }
 
+/* Display a Helperbox. */
 void Msg::HelperBox(std::string Msg) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+
 	Gui::ScreenDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 	int textBoxHeight = Gui::GetStringHeight(0.6f, Msg) + 5;
@@ -178,27 +186,31 @@ void Msg::HelperBox(std::string Msg) {
 	Gui::DrawStringCentered(0, 215 - textBoxHeight-2, 0.6, config->textColor(), Msg, 305, Gui::GetStringHeight(0.6f, Msg));
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
+
 	C3D_FrameEnd(0);
 }
 
+/* Display a normal message. */
 void Msg::DisplayMsg(std::string Message) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 80, 400, 80, config->barColor());
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.8f, Message))/2, 0.8f, config->textColor(), Message, 390, 70);
 	GFX::DrawBottom();
+
 	C3D_FrameEnd(0);
 }
 
+/* Not implemented yet. */
 void Msg::NotImplementedYet(void) {
 	Msg::DisplayWaitMsg(Lang::get("NOT_IMPLEMENTED_YET"));
 }
 
+/* Debug message for me, StackZ, to debug the core. */
 void Msg::DebugMessage(std::string msg) {
-	if (config->debug()) {
-		Msg::DisplayWaitMsg(msg);
-	}
+	if (config->debug()) Msg::DisplayWaitMsg(msg);
 }

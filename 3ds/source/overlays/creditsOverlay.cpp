@@ -24,11 +24,16 @@
 *         reasonable ways as different from the original version.
 */
 
-#include "credits.hpp"
+#include "overlay.hpp"
 
 extern std::unique_ptr<Config> config;
 
-void Credits::Draw(void) const {
+static void Draw(int page) {
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
 	GFX::DrawSprite(sprites_stackz_idx, -2, 70);
@@ -36,22 +41,32 @@ void Credits::Draw(void) const {
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("DEVELOPED_BY"), 390);
 	Gui::DrawStringCentered(0, 45, 0.6f, config->textColor(), Lang::get("MAIN_DEV"), 390);
 	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
-	GFX::DrawBottom();
 
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
-	Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
-	Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
-	Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "Universal-Team", 310);
-	Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
-	Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "devkitPro", 310);
-	Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
-	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
+	/* Bottom with pages. */
+	GFX::DrawBottom();
+	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("CURRENT_PAGE") + std::to_string(page + 1) + " | 1", 310);
+
+	if (page == 0) {
+		Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "devkitPro", 310);
+		Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
+		Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
+		Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
+		Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "Universal-Team", 310);
+		Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
+		Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
+	}
+
+	C3D_FrameEnd(0);
 }
 
-void Credits::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	if (hDown & KEY_B) {
-		Gui::screenBack(true);
-		return;
+void Overlays::showCredits() {
+	bool doOut = false;
+	int page = 0;
+
+	while(!doOut) {
+		Draw(page);
+		hidScanInput();
+
+		if (hidKeysDown() & KEY_B) doOut = true;
 	}
 }

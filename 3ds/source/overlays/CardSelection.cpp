@@ -33,7 +33,7 @@
 
 extern std::unique_ptr<Config> config;
 
-// Draw the Top (File) browse.
+/* Draw the Top (File) browse. */
 static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	std::string sets;
 	Gui::clearTextBufs();
@@ -74,7 +74,7 @@ std::string Overlays::SelectCardSet() {
 	std::vector<DirEntry> dirContents;
 	bool dirChanged = false;
 
-	// Initial dir change.
+	/* Initial directory change. */
 	dirContents.clear();
 	chdir("sdmc:/3ds/3DZwei/sets/");
 	std::vector<DirEntry> dirContentsTemp;
@@ -84,11 +84,11 @@ std::string Overlays::SelectCardSet() {
 	}
 
 	while (1) {
-		// Screen draw part.
+		/* Screen draw part. */
 		DrawTop(selectedSet, dirContents);
 		DrawBottom();
 
-		// The input part.
+		/* The input part. */
 		hidScanInput();
 		u32 hDown = hidKeysDown();
 		u32 hRepeat = hidKeysDownRepeat();

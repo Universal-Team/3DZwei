@@ -30,17 +30,32 @@
 #include <string>
 
 namespace Msg {
-	void DisplayWarnMsg(std::string Text); // Display a Warn Message for about 2 seconds.
-	void DisplayWarnMsg2(std::string Text); // Display a Warn Message for about 2 seconds. Used for more text.
-	bool promptMsg(std::string msg); // This will be used for the prompt Messages, which needs confirmation with A or cancel with B.
-	bool promptMsg2(std::string promptMsg); // This is part of promptMsg.
-	void DisplayWaitMsg(std::string waitMsg, ...); // Will Display a Message, which needs a confirmation with A.
-	void NotImplementedYet(void); // Display a not Implemented Message.
-	void DisplayMsg(std::string Message); // Display just a Message.
-	void HelperBox(std::string Msg); // Helper Box?
-	void DisplayNoConfig(std::string Text); // Displays a message, which does not rely on the config.
+	/* Display a Warn Message for about 2 seconds. */
+	void DisplayWarnMsg(std::string Text);
 
-	void DebugMessage(std::string msg); // Debug message.
+	/* Display a Warn Message for about 2 seconds. Used for more text. */
+	void DisplayWarnMsg2(std::string Text);
+
+	/* This will be used for the prompt Messages, which needs confirmation with A or cancel with B. */
+	bool promptMsg(std::string promptMsg);
+
+	/* Will Display a Message, which needs a confirmation with A. */
+	void DisplayWaitMsg(std::string waitMsg, ...);
+
+	/* Display a not Implemented Message. */
+	void NotImplementedYet(void);
+
+	/* Display just a Message. */
+	void DisplayMsg(std::string Message);
+
+	/* Helper Box. */
+	void HelperBox(std::string Msg);
+
+	/* Displays a message, which does not rely on the config. */
+	void DisplayNoConfig(std::string Text);
+	
+	/* Debug Message for me, StackZ, to debug the core. */
+	void DebugMessage(std::string msg);
 }
 
 #endif

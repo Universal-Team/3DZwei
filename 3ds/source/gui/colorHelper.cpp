@@ -32,7 +32,7 @@ int ColorHelper::getColorValue(int color, int bgr) {
 	std::stringstream ss;
 
 	itoa(color, colorName, 16);
-	std::string colorNamePart(colorName, 2*bgr+2, 2);
+	std::string colorNamePart(colorName, 2 * bgr + 2, 2);
 	ss << std::hex << colorNamePart.c_str();
 	ss >> i;
 

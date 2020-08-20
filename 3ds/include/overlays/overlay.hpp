@@ -32,15 +32,35 @@
 #include <citro2d.h>
 
 namespace Overlays {
+	/* The RGB Overlay. */
 	u32 SelectRGB(u32 oldColor);
+
+	/* Display results of the game. */
 	bool ResultOverlay(std::unique_ptr<Game> &game, int neededWins = 3, int avatar1 = 0, int avatar2 = 1);
+
+	/* Select an avatar. */
 	int SelectAvatar(int player = 0);
+
+	/* Select a cardset. */
 	std::string SelectCardSet();
+
+	/* Preview the cardset. */
 	void PreviewCards(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, std::string folder);
+
+	/* Select a Language. */
 	void SelectLanguage();
+
+	/* Display the Splash. */
 	void SplashOverlay();
+
+	/* Show the rules. */
 	void ShowRules();
+
+	/* Select a game-mode. */
 	int SelectGame();
+
+	/* Show the credits. */
+	void showCredits();
 }
 
 #endif

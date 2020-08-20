@@ -34,7 +34,7 @@ extern std::unique_ptr<Config> config;
 
 extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
-// Draw a preview of the color.
+/* Draw a preview of the color. */
 void ColorChanger::DrawPreview(void) const {
 	if (this->colorMode == 3) {
 		Gui::Draw_Rect(130, 120, 150, 40, config->buttonColor());
@@ -61,21 +61,25 @@ void ColorChanger::Draw(void) const {
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->barColor(), 2).c_str(), 400);
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->barColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->barColor(), 0).c_str(), 400);
+
 	} else if (this->colorMode == 1) {
 		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("BG_COLOR"), 320);
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->bgColor(), 2).c_str(), 400);
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->bgColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->bgColor(), 0).c_str(), 400);
+
 	} else if (this->colorMode == 2) {
 		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("TEXT_COLOR"), 320);
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->textColor(), 2).c_str(), 400);
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->textColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->textColor(), 0).c_str(), 400);
+
 	} else if (this->colorMode == 3) {
 		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("BUTTON_COLOR"), 320);
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->buttonColor(), 2).c_str(), 400);
 		Gui::DrawString(140, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->buttonColor(), 1).c_str(), 400);
 		Gui::DrawString(245, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->buttonColor(), 0).c_str(), 400);
+
 	} else if (this->colorMode == 4) {
 		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("GRID_COLOR"), 320);
 		Gui::DrawString(40, 98, 0.7f, C2D_Color32(255, 255, 255, 255), ColorHelper::getColorName(config->gridColor(), 2).c_str(), 400);
@@ -139,6 +143,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					config->gridColor(RGBA8(red, ColorHelper::getColorValue(config->gridColor(), 1), ColorHelper::getColorValue(config->gridColor(), 0), 255));
 				}
 			}
+			
 		} else if (touching(touch, buttons[1])) {
 			int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
 			if (temp != -1) {
@@ -155,6 +160,7 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), green, ColorHelper::getColorValue(config->gridColor(), 0), 255));
 				}
 			}
+
 		} else if (touching(touch, buttons[2])) {
 			int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
 			if (temp != -1) {

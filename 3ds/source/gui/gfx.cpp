@@ -73,7 +73,7 @@ void GFX::DrawFileBrowseBG(bool isTop) {
 	Gui::Draw_Rect(0, 182, isTop ? 400 : 320, 31, config->bgColor() & C2D_Color32(255, 255, 255, 200));
 	Gui::Draw_Rect(0, 213, isTop ? 400 : 320, 27, config->barColor());
 
-	// Bars here.
+	/* Bars here. */
 	isTop ? GFX::DrawSprite(sprites_top_screen_top_idx, 0, 0) : GFX::DrawSprite(sprites_bottom_screen_top_idx, 0, 0);
 	isTop ? GFX::DrawSprite(sprites_top_screen_bot_idx, 0, 215) : GFX::DrawSprite(sprites_bottom_screen_bot_idx, 0, 215);
 }
@@ -98,19 +98,19 @@ void GFX::DrawGrid(int x, int y) {
 }
 
 void GFX::DrawCard(int index, int x, int y, float ScaleX, float ScaleY) {
-	// -1 would do the "empty back" card.
+	/* -1 would do the "empty back" card. */
 	if (index == -1) {
 		Gui::DrawSprite(cards, C2D_SpriteSheetCount(cards)-1, x, y, ScaleX, ScaleY);
 		return;
 	}
 
-	// Do Nothing, when index size is smaller than 1, or index larger than size.
+	/* Do Nothing, when index size is smaller than 1, or index larger than size. */
 	if (((int)cardIndex.size() < 1) && (index > (int)cardIndex.size()-1)) return;
 
 	Gui::DrawSprite(cards, cardIndex[index], x, y, ScaleX, ScaleY);
 }
 
-// Player Character.
+/* Player Character. */
 void GFX::DrawChar(int image, int x, int y, float ScaleX, float ScaleY) {
 	Gui::DrawSprite(characters, image, x, y, ScaleX, ScaleY);
 }

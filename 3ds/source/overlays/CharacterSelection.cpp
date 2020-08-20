@@ -72,7 +72,7 @@ static void Draw(int page, int selection, int player) {
 	C3D_FrameEnd(0);
 }
 
-// Select an avatar.
+/* Select an avatar. */
 int Overlays::SelectAvatar(int player) {
 	int selection = 0;
 	int page = 1;
@@ -80,11 +80,11 @@ int Overlays::SelectAvatar(int player) {
 	while(1) {
 		Draw(page, selection, player);
 
-		// The input part.
+		/* The input part. */
 		hidScanInput();
 		hidTouchRead(&touch);
 
-		// Page Switches.
+		/* Page Switches. */
 		if (hidKeysDown() & KEY_R) {
 			if (page == 1) {
 				page = 2;

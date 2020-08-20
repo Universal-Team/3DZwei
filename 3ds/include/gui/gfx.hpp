@@ -43,15 +43,19 @@ struct ButtonStruct {
 };
 
 namespace GFX {
-	// Basic GUI.
+	/* Basic GUI. */
 	void DrawTop(bool useBars = true);
 	void DrawBottom(bool useBars = true);
 	void DrawFileBrowseBG(bool isTop = true);
 	void DrawGameBG(bool top = false);
+
+	/* Sprite stuff. */
 	void DrawSprite(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	void DrawCard(int index, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	void DrawChar(int image, int x, int y, float ScaleX = 1, float ScaleY = 1);
 	void DrawPlayer(int x, int y, float ScaleX, float ScaleY, int player);
+
+	/* Button and Grid. */
 	void Button(const ButtonStruct btn);
 	void DrawGrid(int x, int y);
 }

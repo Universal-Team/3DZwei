@@ -25,7 +25,6 @@
 */
 
 #include "config.hpp"
-#include "credits.hpp"
 #include "multiGame.hpp"
 #include "mainMenu.hpp"
 #include "overlay.hpp"
@@ -58,7 +57,7 @@ void MainMenu::Draw(void) const {
 
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	// Navigation.
+	/* Navigation. */
 	if (hDown & KEY_RIGHT) {
 		if (this->Selection < 3) this->Selection++;
 	}
@@ -91,11 +90,13 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						break;
 				}
 				break;
+
 			case 1:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
 				break;
+				
 			case 2:
-				Gui::setScreen(std::make_unique<Credits>(), true, true);
+				Overlays::showCredits();
 				break;
 			case 3:
 				Overlays::ShowRules();
@@ -119,7 +120,7 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
 		} else if (touching(touch, mainButtons[2])) {
-			Gui::setScreen(std::make_unique<Credits>(), true, true);
+			Overlays::showCredits();
 		} else if (touching(touch, mainButtons[3])) {
 			Overlays::ShowRules();
 		}

@@ -26,11 +26,13 @@
 
 #include "ai.hpp"
 
+/* AI Constructor. */
 AI::AI(bool rememberLonger) {
 	this->rememberLonger = rememberLonger;
 	this->clearCards();
 }
 
+/* In case a game has ended, here we can reset the AI's mind. */
 void AI::clearCards() {
 	if (this->rememberLonger) {
 		this->cards.clear();
@@ -39,6 +41,7 @@ void AI::clearCards() {
 	}
 }
 
+/* Here we gonna set the last cards to the AI's mind. */
 void AI::setLastCards(int index1, int index2) {
 	if (this->rememberLonger) {
 		this->cards.push_back({index1, index2});
@@ -47,10 +50,10 @@ void AI::setLastCards(int index1, int index2) {
 	}
 }
 
-int AI::getSize() {
-	return (int)this->cards.size();
-}
+/* Get the amount of cards from the AI's mind. */
+int AI::getSize() { return (int)this->cards.size(); }
 
+/* Get the first card. */
 int AI::getFirst(int index) {
 	if (this->rememberLonger) {
 		if (index > this->getSize()-1)	return -1;
@@ -60,6 +63,7 @@ int AI::getFirst(int index) {
 	}
 }
 
+/* Get the second card. */
 int AI::getSecond(int index) {
 	if (this->rememberLonger) {
 		if (index > this->getSize()-1)	return -1;

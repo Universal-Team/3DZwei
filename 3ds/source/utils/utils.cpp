@@ -27,6 +27,7 @@
 #include "utils.hpp"
 #include <stdarg.h>
 
+/* Do we even need this here? */
 std::string Utils::formatText(const std::string& fmt_str, ...) {
 	va_list ap;
 	char* fp = NULL;

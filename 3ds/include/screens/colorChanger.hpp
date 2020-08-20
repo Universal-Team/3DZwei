@@ -39,6 +39,7 @@ public:
 private:
 	void DrawPreview(void) const;
 	int colorMode = 0;
+	
 	const std::vector<Structs::ButtonPos> buttons = {
 		{10, 85, 95, 41},
 		{115, 85, 95, 41},

@@ -45,32 +45,35 @@ private:
 	std::unique_ptr<Game> currentGame;
 	bool useDelay = false, ticking = true;
 	int selectedCard = 0, delay, page = 0, pairAmount = 0, trys = 0;
-	// Seconds hours etc.
+	/* Seconds hours etc. */
 	int seconds = 0, minutes = 0, hours = 0, millisecs = 0;
 
-	// Logics.
+	/* Logics. */
 	void playerLogic(u32 hDown, u32 hHeld, touchPosition touch);
 
 	const std::vector<CardStr> cardPos = {
-		// Row 1.
+		/* Row 1. */
 		{20.5, 8.5},
 		{20.5 + (1 * 56), 8.5},
 		{20.5 + (2 * 56), 8.5},
 		{20.5 + (3 * 56), 8.5},
 		{20.5 + (4 * 56), 8.5},
-		// Row 2.
+
+		/* Row 2. */
 		{20.5, 8.5 + (1 * 56)},
 		{20.5 + (1 * 56), 8.5 + (1 * 56)},
 		{20.5 + (2 * 56), 8.5 + (1 * 56)},
 		{20.5 + (3 * 56), 8.5 + (1 * 56)},
 		{20.5 + (4 * 56), 8.5 + (1 * 56)},
-		// Row 3.
+
+		/* Row 3. */
 		{20.5, 8.5 + (2 * 56)},
 		{20.5 + (1 * 56), 8.5 + (2 * 56)},
 		{20.5 + (2 * 56), 8.5 + (2 * 56)},
 		{20.5 + (3 * 56), 8.5 + (2 * 56)},
 		{20.5 + (4 * 56), 8.5 + (2 * 56)},
-		// Row 4.
+
+		/* Row 4. */
 		{20.5, 8.5 + (3 * 56)},
 		{20.5 + (1 * 56), 8.5 + (3 * 56)},
 		{20.5 + (2 * 56), 8.5 + (3 * 56)},

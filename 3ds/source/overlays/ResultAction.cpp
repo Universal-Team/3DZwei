@@ -30,7 +30,7 @@
 
 extern std::unique_ptr<Config> config;
 
-// Draw.
+/* Draw. */
 static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int neededWins) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -40,10 +40,10 @@ static void Draw(std::unique_ptr<Game> &game, int avatar1, int avatar2, int need
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
 	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("GAME_RESULTS"), 390);
 
-	// Player 1.
+	/* Player 1. */
 	GFX::DrawChar(avatar1, 10, 35);
 	Gui::DrawString(16, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player1)), 110);
-	// Player 2.
+	/* Player 2. */
 	GFX::DrawChar(avatar2, 280, 35);
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("WINS") + std::to_string(game->getWins(Players::Player2)), 110);
 
@@ -63,7 +63,7 @@ bool Overlays::ResultOverlay(std::unique_ptr<Game> &game, int neededWins, int av
 			if (game->getWins(Players::Player1) >= neededWins || game->getWins(Players::Player2) >= neededWins) {
 				return true; // Max wins reached, no plays needed.
 			} else {
-				return false; // We need to play again! ;P
+				return false; // We need to play again.
 			}
 		}
 	}

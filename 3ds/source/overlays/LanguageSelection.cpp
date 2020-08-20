@@ -61,14 +61,14 @@ static void Draw(int selection) {
 	C3D_FrameEnd(0);
 }
 
-// Select a Language.
+/* Select a Language. */
 void Overlays::SelectLanguage() {
 	int selection = config->language();
 
 	while(1) {
 		Draw(selection);
 
-		// The input part.
+		/* The input part. */
 		hidScanInput();
 		hidTouchRead(&touch);
 

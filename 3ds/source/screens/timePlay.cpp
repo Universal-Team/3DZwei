@@ -39,8 +39,9 @@ TimePlay::TimePlay() {
 
 	char msg[100];
 	snprintf(msg, sizeof(msg), Lang::get("ENTER_PAIR_AMOUNT").c_str(), C2D_SpriteSheetCount(cards)-1);
-	// Pair Selection here.
-	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards)-1, msg);
+
+	/* Pair Selection here. */
+	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards) - 1, msg);
 	if (amount > 0) {
 		this->pairAmount = amount;
 	} else {
@@ -51,28 +52,28 @@ TimePlay::TimePlay() {
 	this->delay = config->delay();
 }
 
-// Format time.
+/* Format time. */
 std::string TimePlay::formatTime() const {
 	return Utils::formatText("%s%02i:%02i:%02i", Lang::get("ELAPSED_TIME").c_str(), this->hours, this->minutes, this->seconds);
 }
 
-// Time ticking logic.
+/* Time ticking logic. */
 void TimePlay::doTime() {
 	if (this->ticking) {
 		this->millisecs++;
 
-		// Do Seconds.
+		/* Do Seconds. */
 		if (this->millisecs > 59) {
 			this->seconds++;
 			this->millisecs = 0;
 
-			// Do minutes.
+			/* Do minutes. */
 			if (this->seconds > 59) {
 				this->minutes++;
 				this->seconds = 0;
 				this->millisecs = 0;
 				
-				// Do Hours. I doubt it'll be reached tho.
+				/*  Do Hours. I doubt it'll be reached tho. */
 				if (this->minutes > 59) {
 					this->hours++;
 					this->minutes = 0;
@@ -95,7 +96,7 @@ void TimePlay::Draw(void) const {
 	Gui::DrawStringCentered(0, 80, 0.6f, config->textColor(), this->formatTime());
 	Gui::DrawStringCentered(0, 140, 0.6f, config->textColor(), Lang::get("TRIES") + std::to_string(this->trys));
 
-	// For no delay mode, show that you have to press X to do the play check.
+	/* For no delay mode, show that you have to press X to do the play check. */
 	if (this->currentGame->getCardSelect() == CardSelectMode::DoCheck && !this->useDelay) {
 		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), Lang::get("X_GAME_CHECK"), 390);
 	}
@@ -108,13 +109,14 @@ void TimePlay::Draw(void) const {
 			if (!this->currentGame->isCollected(i)) {
 				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].X, cardPos[i2].Y);
 			}
+
 		} else {
 			GFX::DrawCard(-1, cardPos[i2].X, cardPos[i2].Y);
 		}
 	}
 
 	GFX::DrawGrid(19.5, 7.5);
-	// Only show pointer, if not on check.
+	/* Only show pointer, if not on check. */
 	if (this->currentGame->getCardSelect() != CardSelectMode::DoCheck) {
 		GFX::DrawSprite(sprites_pointer_idx, cardPos[this->selectedCard].X + 15.5, cardPos[this->selectedCard].Y + 17.5);
 	}
@@ -126,22 +128,24 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			// In case we'd reach the last card from the page.
+			/* In case we'd reach the last card from the page. */
 			if (this->selectedCard == 4 || this->selectedCard == 9 || this->selectedCard == 14 || this->selectedCard == 19) {
 				if (this->page < (this->currentGame->getPairs() / (10 + 1))) {
 					this->page++;
 					this->selectedCard = (this->selectedCard - 4);
 				}
+
 			} else if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			// In case we'd reach the first card from the page.
+			/* In case we'd reach the first card from the page. */
 			if (this->selectedCard == 15 || this->selectedCard == 10 || this->selectedCard == 5 || this->selectedCard == 0) {
 				if (this->page > 0) {
 					this->page--;
 					this->selectedCard = (this->selectedCard + 4);
 				}
+
 			} else if (this->selectedCard > 0) this->selectedCard--;
 		}
 
@@ -184,6 +188,7 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	this->doTime();
+
 	if (hDown & KEY_START) {
 		if (Msg::promptMsg(Lang::get("EXIT_GAME"))) {
 			Gui::screenBack(true);
@@ -197,7 +202,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (!this->useDelay) {
 			if (hDown & KEY_X) {
 				if (this->currentGame->setCardPair()) {
-					// Check if over.
+					/* Check if over. */
 					if (this->currentGame->checkOver() != GameWinner::NotOver) {
 
 						const GameWinner checkOver = this->currentGame->checkOver();
@@ -218,7 +223,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						return;
 					}
 				} else {
-					// No match, so do ++ tries and +2 seconds.
+					/* No match, so do ++ tries and + 2 seconds. */
 					this->trys++;
 					this->seconds += 2;
 				}
@@ -230,7 +235,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				this->delay--;
 				if (this->delay < 1) {
 					if (this->currentGame->setCardPair()) {
-						// Check if over.
+						/* Check if over. */
 						if (this->currentGame->checkOver() != GameWinner::NotOver) {
 							const GameWinner checkOver = this->currentGame->checkOver();
 
@@ -250,7 +255,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							return;
 						}
 					} else {
-						// No match, so do ++ tries and +2 seconds.
+						/* No match, so do ++ tries and + 2 seconds. */
 						this->trys++;
 						this->seconds += 2;
 					}

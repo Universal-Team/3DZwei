@@ -39,46 +39,46 @@ public:
 	void initialize();
 	void addMissingThings();
 
-	// Card Color.
+	/* Card Color. */
 	u32 cardColor() { return this->v_cardColor; }
 	void cardColor(u32 v) { this->v_cardColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Bar Color.
+	/* Bar Color. */
 	u32 barColor() { return this->v_barColor; }
 	void barColor(u32 v) { this->v_barColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// BG Color.
+	/* BG Color. */
 	u32 bgColor() { return this->v_bgColor; }
 	void bgColor(u32 v) { this->v_bgColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Text Color.
+	/* Text Color. */
 	u32 textColor() { return this->v_textColor; }
 	void textColor(u32 v) { this->v_textColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Button Color.
+	/* Button Color. */
 	u32 buttonColor() { return this->v_buttonColor; }
 	void buttonColor(u32 v) { this->v_buttonColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Grid Color.
+	/* Grid Color. */
 	u32 gridColor() { return this->v_gridColor; }
 	void gridColor(u32 v) { this->v_gridColor = v; if (!this->changesMade)	this->changesMade = true; }
-	// Card Delay.
+	/* Card Delay. */
 	int delay() { return this->v_delay; }
 	void delay(int v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
-	// Debug.
+	/* Debug. */
 	bool debug() { return this->v_debug; }
-	// Card file.
+	/* Card file. */
 	std::string cardFile() { return this->v_cardFile; }
 	void cardFile(std::string v) { this->v_cardFile = v; if (!this->changesMade)	this->changesMade = true; }
-	// Language.
+	/* Language. */
 	int language() { return this->v_language; }
 	void language(int v) { this->v_language = v; if (!this->changesMade)	this->changesMade = true; }
-	// Set.
+	/* Set. */
 	std::string Set() { return this->v_Set; }
 	void Set(std::string v) { this->v_Set = v; if (!this->changesMade)	this->changesMade = true; }
-	// BGs.
+	/* BGs. */
 	std::string BG() { return this->v_BG; }
 	void BG(std::string v) { this->v_BG = v; if (!this->changesMade)	this->changesMade = true; }
-	// Version.
+	/* Version. */
 	int version() { return this->v_version; }
 	void version(int v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
 
-	// Mainly helper.
+	/* Mainly helper. */
 	bool getBool(const std::string &key);
 	void setBool(const std::string &key, bool v);
 	int getInt(const std::string &key);
@@ -89,7 +89,7 @@ private:
 	nlohmann::json json; // Our private JSON file.
 	bool changesMade = false;
 
-	// Color variables and more.
+	/* Color variables and more. */
 	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_gridColor;
 	int v_delay, v_language, v_version;
 	bool v_debug;

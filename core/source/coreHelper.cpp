@@ -25,10 +25,11 @@
 */
 
 #include "coreHelper.hpp"
-
 #include <time.h>
 
 static bool hasSeeded = false;
+
+/* Generate the seed for our randomizer. */
 void CoreHelper::generateSeed() {
 	if (!hasSeeded) {
 		hasSeeded = true;

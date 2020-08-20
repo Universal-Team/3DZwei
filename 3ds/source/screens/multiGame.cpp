@@ -40,8 +40,9 @@ MultiGame::MultiGame() {
 
 	char msg[100];
 	snprintf(msg, sizeof(msg), Lang::get("ENTER_PAIR_AMOUNT").c_str(), C2D_SpriteSheetCount(cards)-1);
-	// Pair Selection here.
-	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards)-1, msg);
+	/* Pair Selection here. */
+
+	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards) - 1, msg);
 	if (amount > 0) {
 		this->pairAmount = amount;
 	} else {
@@ -53,6 +54,7 @@ MultiGame::MultiGame() {
 
 	this->avatar1 = Overlays::SelectAvatar(1);
 	this->avatar2 = Overlays::SelectAvatar(2);
+
 	int tempWins = Keyboard::setInt(99, Lang::get("ENTER_WINS"));
 	if (tempWins != -1 || tempWins != 0) {
 		this->wins = tempWins;
@@ -68,22 +70,22 @@ void MultiGame::Draw(void) const {
 	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MULTIPLAY"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
 
-	// Player 1.
+	/* Player 1. */
 	GFX::DrawChar(this->avatar1, 10, 35);
 	Gui::DrawString(16, 170, 0.6f, config->textColor(), Lang::get("PAIRS") + std::to_string(this->currentGame->getPairs(Players::Player1)), 110);
-	// Player 2.
+	/* Player 2. */
 	GFX::DrawChar(this->avatar2, 280, 35);
 	Gui::DrawString(286, 170, 0.6f, config->textColor(), Lang::get("PAIRS") + std::to_string(this->currentGame->getPairs(Players::Player2)), 110);
 
 	Gui::DrawStringCentered(0, 217, 0.8f, config->textColor(), Lang::get("CURRENT_PLAYER") + std::to_string((int)this->currentGame->getCurrentPlayer()+1), 390);
 	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 239-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 
-	// For no delay mode, show that you have to press Y to do the play.
+	/* For no delay mode, show that you have to press Y to do the play. */
 	if ((this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) && (!this->useDelay && this->useAI && this->currentGame->getCurrentPlayer() == Players::Player2)) {
 		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), Lang::get("Y_PLAY"), 390);
 	}
 
-	// For no delay mode, show that you have to press X to do the play check.
+	/* For no delay mode, show that you have to press X to do the play check. */
 	if (this->currentGame->getCardSelect() == CardSelectMode::DoCheck && !this->useDelay) {
 		Gui::DrawStringCentered(0, 185, 0.6, config->textColor(), Lang::get("X_GAME_CHECK"), 390);
 	}
@@ -96,6 +98,7 @@ void MultiGame::Draw(void) const {
 			if (!this->currentGame->isCollected(i)) {
 				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].X, cardPos[i2].Y);
 			}
+
 		} else {
 			GFX::DrawCard(-1, cardPos[i2].X, cardPos[i2].Y);
 		}
@@ -103,9 +106,10 @@ void MultiGame::Draw(void) const {
 
 	GFX::DrawGrid(19.5, 7.5);
 	
-	// Only show pointer, if you can play.
+	/* Only show pointer, if you can play. */
 	if (this->useAI && this->currentGame->getCurrentPlayer() == Players::Player1 && this->currentGame->getCardSelect() != CardSelectMode::DoCheck) {
 		GFX::DrawSprite(sprites_pointer_idx, cardPos[this->selectedCard].X + 15.5, cardPos[this->selectedCard].Y + 17.5);
+
 	} else if (!this->useAI && this->currentGame->getCardSelect() != CardSelectMode::DoCheck) {
 		GFX::DrawSprite(sprites_pointer_idx, cardPos[this->selectedCard].X + 15.5, cardPos[this->selectedCard].Y + 17.5);
 	}
@@ -117,22 +121,24 @@ void MultiGame::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
 		if (hDown & KEY_RIGHT) {
-			// In case we'd reach the last card from the page.
+			/* In case we'd reach the last card from the page. */
 			if (this->selectedCard == 4 || this->selectedCard == 9 || this->selectedCard == 14 || this->selectedCard == 19) {
 				if (this->page < (this->currentGame->getPairs() / (10 + 1))) {
 					this->page++;
 					this->selectedCard = (this->selectedCard - 4);
 				}
+
 			} else if (this->selectedCard < 19) this->selectedCard++;
 		}
 
 		if (hDown & KEY_LEFT) {
-			// In case we'd reach the first card from the page.
+			/* In case we'd reach the first card from the page. */
 			if (this->selectedCard == 15 || this->selectedCard == 10 || this->selectedCard == 5 || this->selectedCard == 0) {
 				if (this->page > 0) {
 					this->page--;
 					this->selectedCard = (this->selectedCard + 4);
 				}
+
 			} else if (this->selectedCard > 0) this->selectedCard--;
 		}
 
@@ -192,7 +198,7 @@ void MultiGame::AILogic(u32 hDown) {
 
 					} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 						Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
-						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
+						int card2 = this->currentGame->doAITurn(true); // We do our prediction play here.
 
 						if (this->currentGame->getPairs() > 10) {
 							if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
@@ -222,7 +228,7 @@ void MultiGame::AILogic(u32 hDown) {
 
 						} else if (this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 							Msg::DebugMessage("Do int card2 = this->currentGame->doAITurn(true);.");
-							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here. ;D
+							int card2 = this->currentGame->doAITurn(true); // We do our prediction play here.
 
 							if (this->currentGame->getPairs() > 10) {
 								if (this->page < ((card2 / (10 + 1))) || this->page > ((card2 / (10 + 1)))) {
@@ -262,7 +268,7 @@ void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 		if (!this->useDelay) {
 			if (hDown & KEY_X) {
 				if (this->currentGame->setCardPair()) {
-					// Check if over.
+					/* Check if over. */
 					if (this->currentGame->checkOver() != GameWinner::NotOver) {
 
 						const GameWinner checkOver = this->currentGame->checkOver();
@@ -290,7 +296,7 @@ void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							Gui::screenBack(true);
 							return;
 						} else {
-							this->currentGame->restart(); // Restart!
+							this->currentGame->restart(); // Restart.
 							return;
 						}
 					}
@@ -306,7 +312,7 @@ void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				this->delay--;
 				if (this->delay < 1) {
 					if (this->currentGame->setCardPair()) {
-						// Check if over.
+						/* Check if over. */
 						if (this->currentGame->checkOver() != GameWinner::NotOver) {
 
 							const GameWinner checkOver = this->currentGame->checkOver();
@@ -334,7 +340,7 @@ void MultiGame::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 								Gui::screenBack(true);
 								return;
 							} else {
-								this->currentGame->restart(); // Restart!
+								this->currentGame->restart(); // Restart.
 								this->delay = config->delay();
 								return;
 							}

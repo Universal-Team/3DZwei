@@ -40,16 +40,16 @@ bool exiting = false, BGLoaded = false;
 touchPosition touch;
 u32 hDown, hHeld;
 std::unique_ptr<Config> config;
-// Include all spritesheet's.
+/* Include all spritesheet's. */
 C2D_SpriteSheet BGs, cards, characters, sprites;
 
-// If button Position pressed -> Do something.
+/* If button Position pressed -> Do something. */
 bool touching(touchPosition touch, Structs::ButtonPos button) {
 	if (touch.px >= button.x && touch.px <= (button.x + button.w) && touch.py >= button.y && touch.py <= (button.y + button.h)) return true;
 	else return false;
 }
 
-// If Card pressed -> Do something.
+/* If Card pressed -> Do something. */
 bool cardTouch(touchPosition touch, CardStr card) {
 	if (touch.px >= card.X && touch.px <= (card.X + 55) && touch.py >= card.Y && touch.py <= (card.Y + 55)) return true;
 	else return false;
@@ -60,21 +60,22 @@ Result Init::Initialize() {
 	romfsInit();
 	Gui::init();
 	cfguInit();
-	// Create missing directories.
+	/* Create missing directories. */
 	mkdir("sdmc:/3ds", 0777); // For DSP dump.
 	mkdir("sdmc:/3ds/3DZwei", 0777); // main Path.
 	mkdir("sdmc:/3ds/3DZwei/sets", 0777); // Set path.
 	
 	config = std::make_unique<Config>();
 
+	/* BG Loading. */
 	if (config->BG() != "") {
-		if (access(config->BG().c_str(), F_OK) != 0) {
-		} else {
+		if (access(config->BG().c_str(), F_OK) == 0) {
 			Gui::loadSheet(config->BG().c_str(), BGs);
 			BGLoaded = true;
 		}
 	}
 
+	/* Default cardset loading. */
 	if (access(config->cardFile().c_str(), F_OK) != 0 ) {
 		Gui::loadSheet("romfs:/gfx/cards.t3x", cards);
 	} else {
@@ -96,11 +97,11 @@ Result Init::Initialize() {
 }
 
 Result Init::MainLoop() {
-	// Initialize everything.
+	/* Initialize everything. */
 	Initialize();
-	// Loop as long as the status is not exiting.
+	/* Loop as long as the status is not exiting. */
 	while (aptMainLoop()) {
-		// Scan all the Inputs.
+		/* Scan all the Inputs. */
 		hidScanInput();
 		hDown = hidKeysDown();
 		hHeld = hidKeysHeld();
@@ -109,8 +110,10 @@ Result Init::MainLoop() {
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		Gui::clearTextBufs();
+
 		Gui::DrawScreen(true);
 		Gui::ScreenLogic(hDown, hHeld, touch, true, true);
+
 		C3D_FrameEnd(0);
 
 		if (exiting) {
@@ -120,7 +123,7 @@ Result Init::MainLoop() {
 		Gui::fadeEffects(16, 16, true);
 	}
 	
-	// Exit all services and exit the app.
+	/* Exit all services and exit the app. */
 	Exit();
 	return 0;
 }

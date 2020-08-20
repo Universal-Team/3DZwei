@@ -32,7 +32,7 @@
 #include <string>
 #include <unistd.h>
 
-// Used to add missing stuff for the JSON.
+/* Used to add missing stuff for the JSON. */
 void Config::addMissingThings() {
 	if (this->json["Version"] < 2) {
 		this->setInt("Language", 1);
@@ -41,12 +41,12 @@ void Config::addMissingThings() {
 	}
 }
 
-// In case it doesn't exist.
+/* In case it doesn't exist. */
 void Config::initialize() {
-	// Create through fopen "Write".
+	/* Create through fopen "Write". */
 	FILE *file = fopen("sdmc:/3ds/3DZwei/Settings.json", "w");
 
-	// Set default values.
+	/* Set default values. */
 	this->setInt("Card_Color", CARDCOLOR);
 	this->setInt("Bar_Color", C2D_Color32(60, 60, 220, 255));
 	this->setInt("Text_Color", C2D_Color32(255, 255, 255, 255));
@@ -60,7 +60,7 @@ void Config::initialize() {
 	this->setString("Set", "_3DZWEI_ROMFS");
 	this->setString("BGS", "");
 
-	// Write to file.
+	/* Write to file. */
 	std::string dump = this->json.dump(1, '\t');
 	fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 	fclose(file); // Now we have the file and can properly access it.
@@ -75,18 +75,13 @@ Config::Config() {
 	this->json = nlohmann::json::parse(file, nullptr, false);
 	fclose(file);
 
-	if (!this->json.contains("Version")) {
-		// Let us create a new one.
-		this->initialize();
-	}
+	/* Let us create a new one. */
+	if (!this->json.contains("Version")) this->initialize();
 
-	// Here we add the missing things.
-	if (this->json["Version"] < 2) {
-		this->addMissingThings();
-	}
+	/* Here we add the missing things. */
+	if (this->json["Version"] < 2) this->addMissingThings();
 
-	// Here we get the initial colors.
-
+	/* Here we get the initial colors. */
 	if (!this->json.contains("Card_Color")) {
 		this->cardColor(CARDCOLOR);
 	} else {
@@ -168,12 +163,12 @@ Config::Config() {
 	this->changesMade = false; // No changes made yet.
 }
 
-// Write to config if changesMade.
+/* Write to config if changesMade. */
 void Config::save() {
 	if (this->changesMade) {
 		FILE *file = fopen("sdmc:/3ds/3DZwei/Settings.json", "w");
 
-		// Set values.
+		/* Set values. */
 		this->setInt("Card_Color", this->cardColor());
 		this->setInt("Bar_Color", this->barColor());
 		this->setInt("Text_Color", this->textColor());
@@ -187,14 +182,14 @@ void Config::save() {
 		this->setString("BGS", this->BG());
 		this->setInt("Version", 2);
 
-		// Write changes to file.
+		/* Write changes to file. */
 		std::string dump = this->json.dump(1, '\t');
 		fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 		fclose(file);
 	}
 }
 
-// Helper functions.
+/* Helper functions. */
 bool Config::getBool(const std::string &key) {
 	if (!this->json.contains(key)) {
 		return false;
