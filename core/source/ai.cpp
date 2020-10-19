@@ -26,48 +26,74 @@
 
 #include "ai.hpp"
 
-/* AI Constructor. */
+/*
+	AI Constructor.
+
+	bool rememberLonger: If the AI should store all obtained pairs into an std::vector with an std::pair.
+*/
 AI::AI(bool rememberLonger) {
 	this->rememberLonger = rememberLonger;
 	this->clearCards();
 }
 
-/* In case a game has ended, here we can reset the AI's mind. */
+/*
+	In case a game did end,
+	here we can reset the AI's "mind".
+*/
 void AI::clearCards() {
 	if (this->rememberLonger) {
 		this->cards.clear();
+
 	} else {
 		this->lastCards = { -1, -1 };
 	}
 }
 
-/* Here we gonna set the last cards to the AI's mind. */
+/*
+	Here we gonna set the last cards to the AI's "mind".
+
+	int index1: The first card-index.
+	int index2: The second card-index.
+*/
 void AI::setLastCards(int index1, int index2) {
 	if (this->rememberLonger) {
-		this->cards.push_back({index1, index2});
+		this->cards.push_back({ index1, index2 });
+
 	} else {
 		this->lastCards = { index1, index2 };
 	}
 }
 
-/* Get the amount of cards from the AI's mind. */
-int AI::getSize() { return (int)this->cards.size(); }
+/*
+	Get the amount of cards from the AI's "mind".
+*/
+int AI::getSize() const { return (int)this->cards.size(); };
 
-/* Get the first card. */
-int AI::getFirst(int index) {
+/*
+	Get the first card.
+
+	int index: The card-index.
+*/
+int AI::getFirst(int index) const {
 	if (this->rememberLonger) {
-		if (index > this->getSize()-1)	return -1;
+		if (index > this->getSize()-1) return -1;
 		return this->cards[index].first;
+
 	} else {
 		return this->lastCards.first;
 	}
 }
 
-/* Get the second card. */
-int AI::getSecond(int index) {
+/*
+	Get the second card.
+
+	int index: The card-index.
+*/
+int AI::getSecond(int index) const {
 	if (this->rememberLonger) {
-		if (index > this->getSize()-1)	return -1;
+		if (index > this->getSize()-1) return -1;
 		return this->cards[index].second;
+
 	} else {
 		return this->lastCards.second;
 	}

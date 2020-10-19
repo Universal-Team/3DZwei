@@ -35,9 +35,9 @@ public:
 	AI(bool rememberLonger = false);
 	void clearCards();
 	void setLastCards(int index1, int index2);
-	int getFirst(int index = 0);
-	int getSecond(int index = 0);
-	int getSize();
+	int getFirst(int index = 0) const;
+	int getSecond(int index = 0) const;
+	int getSize() const;
 private:
 	std::pair<int, int> lastCards = { -1, -1 };
 	std::vector<std::pair<int, int>> cards;

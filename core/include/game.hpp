@@ -34,29 +34,29 @@ class Game {
 public:
 	Game(int pairs = 10, bool useAI = true, bool rememberMoreAI = false);
 	void generateCards(int pairs);
-	bool isCollected(int index);
+	bool isCollected(int index) const;
 	void setCollected(int index, bool collected);
-	bool checkIfMatches();
+	bool checkIfMatches() const;
 	bool setCardPair();
-	bool returnIfShown(int index);
+	bool returnIfShown(int index) const;
 	void setShown(int index, bool show);
 	bool play(int index);
-	int getCard(int index);
-	Players getCurrentPlayer();
+	int getCard(int index) const;
+	Players getCurrentPlayer() const;
 	void setCurrentPlayer(Players player);
 	void nextPlayer();
-	GameWinner checkOver();
+	GameWinner checkOver() const;
 	void restart();
-	int getPairs(Players player);
-	CardSelectMode getCardSelect();
+	int getPairs(Players player) const;
+	CardSelectMode getCardSelect() const;
 	void setCardSelect(CardSelectMode cardSelect);
-	int getWins(Players player);
+	int getWins(Players player) const;
 	void setWins(Players player, int wins);
-	int getPairs();
+	int getPairs() const;
 	void setPairs(int pairs);
-	int returnProperPair();
+	int returnProperPair() const;
 
-	// Other stuff.
+	/* AI stuff. */
 	int doRandomTurn();
 	int doPrediction();
 	int doPredictLonger(int amountToRemember = 2);
