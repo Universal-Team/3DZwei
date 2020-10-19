@@ -43,14 +43,11 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 
 	GFX::DrawFileBrowseBG();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("CARDSET_SELECT"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("CARDSET_SELECT"), 390);
 
 	for (uint i = (Selection < 5) ? 0 : Selection - 5; i < dirContents.size() && i < ((Selection < 5) ? 6 : Selection + 1); i++) {
-		if (i == Selection) {
-			sets += "> " + dirContents[i].name + "\n\n";
-		} else {
-			sets += dirContents[i].name + "\n\n";
-		}
+		if (i == Selection) sets += "> " + dirContents[i].name + "\n\n";
+		else sets += dirContents[i].name + "\n\n";
 	}
 
 	for (uint i = 0; i < ((dirContents.size() < 6) ? 6 - dirContents.size() : 0); i++) {
@@ -58,14 +55,14 @@ static void DrawTop(uint Selection, std::vector<DirEntry> dirContents) {
 	}
 
 	Gui::DrawString(26, 32, 0.53f, config->textColor(), sets, 360);
-	Gui::DrawStringCentered(0, 217, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
+	Gui::DrawStringCentered(0, 218, 0.6f, config->textColor(), Lang::get("REFRESH"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
 static void DrawBottom() {
 	GFX::DrawFileBrowseBG(false);
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.7f, config->textColor(), Lang::get("X_DEFAULT_SET"), 310);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("X_DEFAULT_SET"), 310);
 	C3D_FrameEnd(0);
 }
 
@@ -78,7 +75,8 @@ std::string Overlays::SelectCardSet() {
 	dirContents.clear();
 	chdir("sdmc:/3ds/3DZwei/sets/");
 	std::vector<DirEntry> dirContentsTemp;
-	getDirectoryContents(dirContentsTemp, {""});
+	getDirectoryContents(dirContentsTemp, { "" });
+
 	for(uint i = 0; i < dirContentsTemp.size(); i++) {
 		dirContents.push_back(dirContentsTemp[i]);
 	}
@@ -93,11 +91,12 @@ std::string Overlays::SelectCardSet() {
 		u32 hDown = hidKeysDown();
 		u32 hRepeat = hidKeysDownRepeat();
 
-		// if directory changed -> Refresh it.
+		/* if directory changed -> Refresh it. */
 		if (dirChanged) {
 			dirContents.clear();
 			std::vector<DirEntry> dirContentsTemp;
-			getDirectoryContents(dirContentsTemp, {""});
+			getDirectoryContents(dirContentsTemp, { "" });
+
 			for(uint i = 0; i < dirContentsTemp.size(); i++) {
 				dirContents.push_back(dirContentsTemp[i]);
 			}
@@ -109,35 +108,24 @@ std::string Overlays::SelectCardSet() {
 			if (dirContents[selectedSet].isDirectory) {
 				char path[PATH_MAX];
 				getcwd(path, PATH_MAX);
-				std::string output = path + dirContents[selectedSet].name;
-				return output;
+				return path + dirContents[selectedSet].name;
 			}
 		}
 
 		if (hRepeat & KEY_UP) {
-			if (selectedSet > 0) {
-				selectedSet--;
-			}
-		}
-		
-		if (hRepeat & KEY_DOWN) {
-			if ((uint)selectedSet < dirContents.size()-1) {
-				selectedSet++;
-			}
-		}
-		
-		if (hDown & KEY_B) {
-			if (Msg::promptMsg(Lang::get("CANCEL_SELECTION"))) {
-				return "";
-			}
+			if (selectedSet > 0) selectedSet--;
 		}
 
-		if (hDown & KEY_X) {
-			return "3DZWEI_DEFAULT_ROMFS";
+		if (hRepeat & KEY_DOWN) {
+			if ((uint)selectedSet < dirContents.size() - 1) selectedSet++;
 		}
-		
-		if (hDown & KEY_START) {
-			dirChanged = true;
+
+		if (hDown & KEY_B) {
+			if (Msg::promptMsg(Lang::get("CANCEL_SELECTION"))) return "";
 		}
+
+		if (hDown & KEY_X) return "3DZWEI_DEFAULT_ROMFS";
+
+		if (hDown & KEY_START) dirChanged = true;
 	}
 }

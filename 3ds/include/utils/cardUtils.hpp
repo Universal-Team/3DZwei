@@ -32,6 +32,6 @@
 namespace CardUtils {
     void randomizeCards();
     void fillIndex();
-}
+};
 
 #endif

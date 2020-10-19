@@ -37,8 +37,8 @@ extern bool touching(touchPosition touch, Structs::ButtonPos button);
 
 void MainMenu::Draw(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"), 390);
-	
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("MAINMENU"), 390);
+
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
@@ -57,7 +57,6 @@ void MainMenu::Draw(void) const {
 
 
 void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
-	/* Navigation. */
 	if (hDown & KEY_RIGHT) {
 		if (this->Selection < 3) this->Selection++;
 	}
@@ -85,6 +84,7 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 					case 0:
 						Gui::setScreen(std::make_unique<MultiGame>(), true, true);
 						break;
+
 					case 1:
 						Gui::setScreen(std::make_unique<TimePlay>(), true, true);
 						break;
@@ -94,10 +94,11 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			case 1:
 				Gui::setScreen(std::make_unique<UISettings>(), true, true);
 				break;
-				
+
 			case 2:
 				Overlays::showCredits();
 				break;
+
 			case 3:
 				Overlays::ShowRules();
 				break;
@@ -112,20 +113,23 @@ void MainMenu::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 				case 0:
 					Gui::setScreen(std::make_unique<MultiGame>(), true, true);
 					break;
+
 				case 1:
 					Gui::setScreen(std::make_unique<TimePlay>(), true, true);
 					break;
 			}
-			
+
 		} else if (touching(touch, mainButtons[1])) {
 			Gui::setScreen(std::make_unique<UISettings>(), true, true);
+
 		} else if (touching(touch, mainButtons[2])) {
 			Overlays::showCredits();
+
 		} else if (touching(touch, mainButtons[3])) {
 			Overlays::ShowRules();
 		}
 	}
-	
+
 	if (hDown & KEY_START) {
 		fadeout = true;
 		fadecolor = 0;

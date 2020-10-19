@@ -34,6 +34,6 @@ namespace Keyboard {
 	std::string setkbdString(uint maxLength, std::string Text);
 	int setu8(std::string Text);
 	int setInt(int maxValue, std::string Text);
-}
+};
 
 #endif

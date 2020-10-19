@@ -46,6 +46,6 @@ typedef u32 Color;
 namespace ColorHelper {
 	int getColorValue(int color, int bgr);
 	std::string getColorName(int color, int bgr);
-}
+};
 
 #endif

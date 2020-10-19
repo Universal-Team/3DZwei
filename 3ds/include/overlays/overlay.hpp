@@ -61,6 +61,6 @@ namespace Overlays {
 
 	/* Show the credits. */
 	void showCredits();
-}
+};
 
 #endif

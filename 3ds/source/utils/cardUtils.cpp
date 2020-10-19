@@ -30,7 +30,9 @@
 extern C2D_SpriteSheet cards; // Include it here, cause why not.
 extern std::vector<int> cardIndex;
 
-/* Randomize CardIndex. */
+/*
+	Randomize CardIndex.
+*/
 void CardUtils::randomizeCards() {
 	cardIndex.clear(); // Clear first.
 
@@ -41,7 +43,9 @@ void CardUtils::randomizeCards() {
 	std::shuffle(cardIndex.begin(), cardIndex.end(), randomGen);
 }
 
-/* Fill CardIndex normally. */
+/*
+	Fill CardIndex normally.
+*/
 void CardUtils::fillIndex() {
 	cardIndex.clear(); // Clear first.
 

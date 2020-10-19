@@ -33,6 +33,9 @@ extern std::unique_ptr<Config> config;
 extern bool cardTouch(touchPosition touch, CardStr card);
 extern C2D_SpriteSheet cards; // Needed for getting size the spritesheet.
 
+/*
+	TimePlay Constructor.
+*/
 TimePlay::TimePlay() {
 	this->useDelay = Msg::promptMsg(Lang::get("PLAY_WITH_DELAY"));
 	this->seconds = 0; this->minutes = 0; this->hours = 0; this->trys = 0;
@@ -42,22 +45,24 @@ TimePlay::TimePlay() {
 
 	/* Pair Selection here. */
 	int amount = Keyboard::setInt(C2D_SpriteSheetCount(cards) - 1, msg);
-	if (amount > 0) {
-		this->pairAmount = amount;
-	} else {
-		this->pairAmount = C2D_SpriteSheetCount(cards)-1;
-	}
 
-	this->currentGame = std::make_unique<Game>(this->pairAmount, false, false); // Create game.
+	if (amount > 0) this->pairAmount = amount;
+	else this->pairAmount = C2D_SpriteSheetCount(cards)-1;
+
+	this->currentGame = std::make_unique<Game>(this->pairAmount, false, false);
 	this->delay = config->delay();
 }
 
-/* Format time. */
+/*
+	Format the time to a string.
+*/
 std::string TimePlay::formatTime() const {
 	return Utils::formatText("%s%02i:%02i:%02i", Lang::get("ELAPSED_TIME").c_str(), this->hours, this->minutes, this->seconds);
 }
 
-/* Time ticking logic. */
+/*
+	Time ticking logic.
+*/
 void TimePlay::doTime() {
 	if (this->ticking) {
 		this->millisecs++;
@@ -72,7 +77,7 @@ void TimePlay::doTime() {
 				this->minutes++;
 				this->seconds = 0;
 				this->millisecs = 0;
-				
+
 				/*  Do Hours. I doubt it'll be reached tho. */
 				if (this->minutes > 59) {
 					this->hours++;
@@ -85,11 +90,14 @@ void TimePlay::doTime() {
 	}
 }
 
-
+/*
+	Main Screen Draw.
+*/
 void TimePlay::Draw(void) const {
 	const std::string temp = std::to_string(this->page + 1) + " | " + std::to_string(((this->pairAmount / (10 + 1)) + 1));
+
 	GFX::DrawGameBG(true);
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("PLAY_WITH_TIME"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("PLAY_WITH_TIME"), 390);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("CARDPAIRS") + std::to_string(this->currentGame->getPairs()));
 	Gui::DrawString(397-Gui::GetStringWidth(0.6f, temp), 239-Gui::GetStringHeight(0.6f, temp), 0.6f, config->textColor(), temp);
 
@@ -106,24 +114,26 @@ void TimePlay::Draw(void) const {
 
 	for (int i = 0 + (this->page * 20), i2 = 0; (i < this->currentGame->getPairs() * 2) && (i < (0 + (this->page * 20) + 20)); i++, i2++) {
 		if (this->currentGame->returnIfShown(i)) {
-			if (!this->currentGame->isCollected(i)) {
-				GFX::DrawCard(this->currentGame->getCard(i), cardPos[i2].X, cardPos[i2].Y);
-			}
+			if (!this->currentGame->isCollected(i)) GFX::DrawCard(this->currentGame->getCard(i), this->cardPos[i2].X, this->cardPos[i2].Y);
 
 		} else {
-			GFX::DrawCard(-1, cardPos[i2].X, cardPos[i2].Y);
+			GFX::DrawCard(-1, this->cardPos[i2].X, this->cardPos[i2].Y);
 		}
 	}
 
 	GFX::DrawGrid(19.5, 7.5);
+
 	/* Only show pointer, if not on check. */
 	if (this->currentGame->getCardSelect() != CardSelectMode::DoCheck) {
-		GFX::DrawSprite(sprites_pointer_idx, cardPos[this->selectedCard].X + 15.5, cardPos[this->selectedCard].Y + 17.5);
+		GFX::DrawSprite(sprites_pointer_idx, this->cardPos[this->selectedCard].X + 15.5, this->cardPos[this->selectedCard].Y + 17.5);
 	}
 
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 }
 
+/*
+	Player Logic.
+*/
 void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	if (this->currentGame->getCardSelect() == CardSelectMode::DrawFirst || this->currentGame->getCardSelect() == CardSelectMode::DrawSecond) {
 
@@ -186,6 +196,9 @@ void TimePlay::playerLogic(u32 hDown, u32 hHeld, touchPosition touch) {
 	}
 }
 
+/*
+	Main Screen Logic.
+*/
 void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 	this->doTime();
 
@@ -211,10 +224,13 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							case GameWinner::Player1:
 								Msg::DisplayWaitMsg(Lang::get("YOUR_RESULT") + this->formatTime() + "\n" + Lang::get("TRIES") + std::to_string(this->trys));
 								break;
+
 							case GameWinner::Player2:
 								break;
+
 							case GameWinner::None:
 								break;
+
 							case GameWinner::NotOver:
 								break;
 						}
@@ -222,6 +238,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 						Gui::screenBack(true);
 						return;
 					}
+
 				} else {
 					/* No match, so do ++ tries and + 2 seconds. */
 					this->trys++;
@@ -230,6 +247,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 				this->currentGame->setCardSelect(CardSelectMode::DrawFirst);
 			}
+
 		} else {
 			if (this->delay > 0) {
 				this->delay--;
@@ -243,10 +261,13 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 								case GameWinner::Player1:
 									Msg::DisplayWaitMsg(Lang::get("YOUR_RESULT") + this->formatTime() + "\n" + Lang::get("TRIES") + std::to_string(this->trys));
 									break;
+
 								case GameWinner::Player2:
 									break;
+
 								case GameWinner::None:
 									break;
+
 								case GameWinner::NotOver:
 									break;
 							}
@@ -254,6 +275,7 @@ void TimePlay::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 							Gui::screenBack(true);
 							return;
 						}
+
 					} else {
 						/* No match, so do ++ tries and + 2 seconds. */
 						this->trys++;

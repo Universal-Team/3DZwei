@@ -47,14 +47,14 @@ void ColorChanger::Draw(void) const {
 	if (this->colorMode != 4) GFX::DrawTop();
 	else GFX::DrawTop(false);
 
-	if (this->colorMode != 4) Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("COLOR_SETTINGS"), 390);
+	if (this->colorMode != 4) Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("COLOR_SETTINGS"), 390);
 	this->DrawPreview();
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 
-	Gui::Draw_Rect(buttons[0].x, buttons[0].y, 95, 41, C2D_Color32(255, 0, 0, 255));
-	Gui::Draw_Rect(buttons[1].x, buttons[1].y, 95, 41, C2D_Color32(0, 255, 0, 255));
-	Gui::Draw_Rect(buttons[2].x, buttons[2].y, 95, 41, C2D_Color32(0, 0, 255, 255));
+	Gui::Draw_Rect(this->buttons[0].x, this->buttons[0].y, 95, 41, C2D_Color32(255, 0, 0, 255));
+	Gui::Draw_Rect(this->buttons[1].x, this->buttons[1].y, 95, 41, C2D_Color32(0, 255, 0, 255));
+	Gui::Draw_Rect(this->buttons[2].x, this->buttons[2].y, 95, 41, C2D_Color32(0, 0, 255, 255));
 
 	if (this->colorMode == 0) {
 		Gui::DrawStringCentered(0, 60, 0.7f, C2D_Color32(255, 255, 255, 255), Lang::get("BAR_COLOR"), 320);
@@ -111,15 +111,19 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			case 0:
 				config->barColor(Overlays::SelectRGB(config->barColor()));
 				break;
+
 			case 1:
 				config->bgColor(Overlays::SelectRGB(config->bgColor()));
 				break;
+
 			case 2:
 				config->textColor(Overlays::SelectRGB(config->textColor()));
 				break;
+
 			case 3:
 				config->buttonColor(Overlays::SelectRGB(config->buttonColor()));
 				break;
+
 			case 4:
 				config->gridColor(Overlays::SelectRGB(config->gridColor()));
 				break;
@@ -128,53 +132,88 @@ void ColorChanger::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 
 	if (hDown & KEY_TOUCH) {
 		if (touching(touch, buttons[0])) {
-			int temp = Keyboard::setu8(Lang::get("ENTER_RED_RGB"));
+			const int temp = Keyboard::setu8(Lang::get("ENTER_RED_RGB"));
 			if (temp != -1) {
 				red = temp;
-				if (this->colorMode == 0) {
-					config->barColor(RGBA8(red, ColorHelper::getColorValue(config->barColor(), 1), ColorHelper::getColorValue(config->barColor(), 0), 255));
-				} else if (this->colorMode == 1) {
-					config->bgColor(RGBA8(red, ColorHelper::getColorValue(config->bgColor(), 1), ColorHelper::getColorValue(config->bgColor(), 0), 255));
-				} else if (this->colorMode == 2) {
-					config->textColor(RGBA8(red, ColorHelper::getColorValue(config->textColor(), 1), ColorHelper::getColorValue(config->textColor(), 0), 255));
-				} else if (this->colorMode == 3) {
-					config->buttonColor(RGBA8(red, ColorHelper::getColorValue(config->buttonColor(), 1), ColorHelper::getColorValue(config->buttonColor(), 0), 255));
-				} else if (this->colorMode == 4) {
-					config->gridColor(RGBA8(red, ColorHelper::getColorValue(config->gridColor(), 1), ColorHelper::getColorValue(config->gridColor(), 0), 255));
+
+				switch(this->colorMode) {
+					case 0:
+						config->barColor(RGBA8(red, ColorHelper::getColorValue(config->barColor(), 1), ColorHelper::getColorValue(config->barColor(), 0), 255));
+						break;
+
+					case 1:
+						config->bgColor(RGBA8(red, ColorHelper::getColorValue(config->bgColor(), 1), ColorHelper::getColorValue(config->bgColor(), 0), 255));
+						break;
+
+					case 2:
+						config->textColor(RGBA8(red, ColorHelper::getColorValue(config->textColor(), 1), ColorHelper::getColorValue(config->textColor(), 0), 255));
+						break;
+
+					case 3:
+						config->buttonColor(RGBA8(red, ColorHelper::getColorValue(config->buttonColor(), 1), ColorHelper::getColorValue(config->buttonColor(), 0), 255));
+						break;
+
+					case 4:
+						config->gridColor(RGBA8(red, ColorHelper::getColorValue(config->gridColor(), 1), ColorHelper::getColorValue(config->gridColor(), 0), 255));
+						break;
 				}
 			}
-			
+
 		} else if (touching(touch, buttons[1])) {
-			int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
+			const int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
+
 			if (temp != -1) {
 				green = temp;
-				if (this->colorMode == 0) {
-					config->barColor(RGBA8(ColorHelper::getColorValue(config->barColor(), 2), green, ColorHelper::getColorValue(config->barColor(), 0), 255));
-				} else if (this->colorMode == 1) {
-					config->bgColor(RGBA8(ColorHelper::getColorValue(config->bgColor(), 2), green, ColorHelper::getColorValue(config->bgColor(), 0), 255));
-				} else if (this->colorMode == 2) {
-					config->textColor(RGBA8(ColorHelper::getColorValue(config->textColor(), 2), green, ColorHelper::getColorValue(config->textColor(), 0), 255));
-				} else if (this->colorMode == 3) {
-					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), green, ColorHelper::getColorValue(config->buttonColor(), 0), 255));
-				} else if (this->colorMode == 4) {
-					config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), green, ColorHelper::getColorValue(config->gridColor(), 0), 255));
+
+				switch(this->colorMode) {
+					case 0:
+						config->barColor(RGBA8(ColorHelper::getColorValue(config->barColor(), 2), green, ColorHelper::getColorValue(config->barColor(), 0), 255));
+						break;
+
+					case 1:
+						config->bgColor(RGBA8(ColorHelper::getColorValue(config->bgColor(), 2), green, ColorHelper::getColorValue(config->bgColor(), 0), 255));
+						break;
+
+					case 2:
+						config->textColor(RGBA8(ColorHelper::getColorValue(config->textColor(), 2), green, ColorHelper::getColorValue(config->textColor(), 0), 255));
+						break;
+
+					case 3:
+						config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), green, ColorHelper::getColorValue(config->buttonColor(), 0), 255));
+						break;
+
+					case 4:
+						config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), green, ColorHelper::getColorValue(config->gridColor(), 0), 255));
+						break;
 				}
 			}
 
 		} else if (touching(touch, buttons[2])) {
-			int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
+			const int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
+
 			if (temp != -1) {
 				blue = temp;
-				if (this->colorMode == 0) {
-					config->barColor(RGBA8(ColorHelper::getColorValue(config->barColor(), 2), ColorHelper::getColorValue(config->barColor(), 1), blue, 255));
-				} else if (this->colorMode == 1) {
-					config->bgColor(RGBA8(ColorHelper::getColorValue(config->bgColor(), 2), ColorHelper::getColorValue(config->bgColor(), 1), blue, 255));
-				} else if (this->colorMode == 2) {
-					config->textColor(RGBA8(ColorHelper::getColorValue(config->textColor(), 2), ColorHelper::getColorValue(config->textColor(), 1), blue, 255));
-				} else if (this->colorMode == 3) {
-					config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), ColorHelper::getColorValue(config->buttonColor(), 1), blue, 255));
-				} else if (this->colorMode == 4) {
-					config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), ColorHelper::getColorValue(config->gridColor(), 1), blue, 255));
+
+				switch(this->colorMode) {
+					case 0:
+						config->barColor(RGBA8(ColorHelper::getColorValue(config->barColor(), 2), ColorHelper::getColorValue(config->barColor(), 1), blue, 255));
+						break;
+
+					case 1:
+						config->bgColor(RGBA8(ColorHelper::getColorValue(config->bgColor(), 2), ColorHelper::getColorValue(config->bgColor(), 1), blue, 255));
+						break;
+
+					case 2:
+						config->textColor(RGBA8(ColorHelper::getColorValue(config->textColor(), 2), ColorHelper::getColorValue(config->textColor(), 1), blue, 255));
+						break;
+
+					case 3:
+						config->buttonColor(RGBA8(ColorHelper::getColorValue(config->buttonColor(), 2), ColorHelper::getColorValue(config->buttonColor(), 1), blue, 255));
+						break;
+
+					case 4:
+						config->gridColor(RGBA8(ColorHelper::getColorValue(config->gridColor(), 2), ColorHelper::getColorValue(config->gridColor(), 1), blue, 255));
+						break;
 				}
 			}
 		}

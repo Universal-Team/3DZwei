@@ -32,16 +32,24 @@
 #include <string>
 #include <unistd.h>
 
-/* Used to add missing stuff for the JSON. */
+/*
+	Used to add missing stuff for the JSON.
+*/
 void Config::addMissingThings() {
 	if (this->json["Version"] < 2) {
 		this->setInt("Language", 1);
 		this->setString("Set", "_3DZWEI_ROMFS");
 		this->setString("BGS", "");
 	}
+
+	if (this->json["Version"] < 3) {
+		this->setBool("Show_Splash", true);
+	}
 }
 
-/* In case it doesn't exist. */
+/*
+	In case it doesn't exist.
+*/
 void Config::initialize() {
 	/* Create through fopen "Write". */
 	FILE *file = fopen("sdmc:/3ds/3DZwei/Settings.json", "w");
@@ -59,19 +67,23 @@ void Config::initialize() {
 	this->setInt("Language", 1);
 	this->setString("Set", "_3DZWEI_ROMFS");
 	this->setString("BGS", "");
+	this->setBool("Show_Splash", true);
 
 	/* Write to file. */
-	std::string dump = this->json.dump(1, '\t');
+	const std::string dump = this->json.dump(1, '\t');
 	fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 	fclose(file); // Now we have the file and can properly access it.
 }
 
+/*
+	Constructor of the config.
+*/
 Config::Config() {
 	if (access("sdmc:/3ds/3DZwei/Settings.json", F_OK) != 0 ) {
 		this->initialize();
 	}
 
-	FILE* file = fopen("sdmc:/3ds/3DZwei/Settings.json", "r");
+	FILE *file = fopen("sdmc:/3ds/3DZwei/Settings.json", "r");
 	this->json = nlohmann::json::parse(file, nullptr, false);
 	fclose(file);
 
@@ -79,86 +91,50 @@ Config::Config() {
 	if (!this->json.contains("Version")) this->initialize();
 
 	/* Here we add the missing things. */
-	if (this->json["Version"] < 2) this->addMissingThings();
+	if (this->json["Version"] < 3) this->addMissingThings();
 
-	/* Here we get the initial colors. */
-	if (!this->json.contains("Card_Color")) {
-		this->cardColor(CARDCOLOR);
-	} else {
-		this->cardColor(this->getInt("Card_Color"));
-	}
+	/* Here we get the initial values. */
+	if (!this->json.contains("Card_Color")) this->cardColor(CARDCOLOR);
+	else this->cardColor(this->getInt("Card_Color"));
 
-	if (!this->json.contains("Bar_Color")) {
-		this->barColor(C2D_Color32(220, 60, 0, 255));
-	} else {
-		this->barColor(this->getInt("Bar_Color"));
-	}
+	if (!this->json.contains("Bar_Color")) this->barColor(C2D_Color32(220, 60, 0, 255));
+	else this->barColor(this->getInt("Bar_Color"));
 
-	if (!this->json.contains("BG_Color")) {
-		this->bgColor(C2D_Color32(220, 160, 0, 255));
-	} else {
-		this->bgColor(this->getInt("BG_Color"));
-	}
+	if (!this->json.contains("BG_Color")) this->bgColor(C2D_Color32(220, 160, 0, 255));
+	else this->bgColor(this->getInt("BG_Color"));
 
-	if (!this->json.contains("Text_Color")) {
-		this->textColor(C2D_Color32(255, 255, 255, 255));
-	} else {
-		this->textColor(this->getInt("Text_Color"));
-	}
+	if (!this->json.contains("Text_Color")) this->textColor(C2D_Color32(255, 255, 255, 255));
+	else this->textColor(this->getInt("Text_Color"));
 
-	if (!this->json.contains("Button_Color")) {
-		this->buttonColor(C2D_Color32(170, 60, 0, 255));
-	} else {
-		this->buttonColor(this->getInt("Button_Color"));
-	}
+	if (!this->json.contains("Button_Color")) this->buttonColor(C2D_Color32(170, 60, 0, 255));
+	else this->buttonColor(this->getInt("Button_Color"));
 
-	if (!this->json.contains("Grid_Color")) {
-		this->gridColor(C2D_Color32(0, 0, 128, 255));
-	} else {
-		this->gridColor(this->getInt("Grid_Color"));
-	}
+	if (!this->json.contains("Grid_Color")) this->gridColor(C2D_Color32(0, 0, 128, 255));
+	else this->gridColor(this->getInt("Grid_Color"));
 
-	if (!this->json.contains("Card_Delay")) {
-		this->delay(70);
-	} else {
-		this->delay(this->getInt("Card_Delay"));
-	}
+	if (!this->json.contains("Card_Delay")) this->delay(70);
+	else this->delay(this->getInt("Card_Delay"));
 
-	if (!this->json.contains("Debug")) {
-		this->v_debug = false;
-	} else {
-		this->v_debug = this->getBool("Debug");
-	}
+	if (!this->json.contains("Debug")) this->v_debug = false;
+	else this->v_debug = this->getBool("Debug");
 
-	if (!this->json.contains("Card_File")) {
-		this->cardFile("romfs:/gfx/cards.t3x");
-	} else {
-		this->cardFile(this->getString("Card_File"));
-	}
+	if (!this->json.contains("Card_File")) this->cardFile("romfs:/gfx/cards.t3x");
+	else this->cardFile(this->getString("Card_File"));
 
-	if (!this->json.contains("Language")) {
-		this->language(1);
-	} else {
-		this->language(this->getInt("Language"));
-	}
+	if (!this->json.contains("Language")) this->language(1);
+	else this->language(this->getInt("Language"));
 
-	if (!this->json.contains("Set")) {
-		this->Set("_3DZWEI_ROMFS");
-	} else {
-		this->Set(this->getString("Set"));
-	}
+	if (!this->json.contains("Set")) this->Set("_3DZWEI_ROMFS");
+	else this->Set(this->getString("Set"));
 
-	if (!this->json.contains("BGS")) {
-		this->BG("");
-	} else {
-		this->BG(this->getString("BGS"));
-	}
+	if (!this->json.contains("BGS")) this->BG("");
+	else this->BG(this->getString("BGS"));
 
-	if (!this->json.contains("Version")) {
-		this->version(2);
-	} else {
-		this->version(this->getInt("Version"));
-	}
+	if (!this->json.contains("Show_Splash")) this->show_Splash(true);
+	else this->show_Splash(this->getBool("Show_Splash"));
+
+	if (!this->json.contains("Version")) this->version(3);
+	else this->version(this->getInt("Version"));
 
 	this->changesMade = false; // No changes made yet.
 }
@@ -180,10 +156,11 @@ void Config::save() {
 		this->setInt("Language", this->language());
 		this->setString("Set", this->Set());
 		this->setString("BGS", this->BG());
-		this->setInt("Version", 2);
+		this->setBool("Show_Splash", this->show_Splash());
+		this->setInt("Version", 3);
 
 		/* Write changes to file. */
-		std::string dump = this->json.dump(1, '\t');
+		const std::string dump = this->json.dump(1, '\t');
 		fwrite(dump.c_str(), 1, this->json.dump(1, '\t').size(), file);
 		fclose(file);
 	}
@@ -191,34 +168,22 @@ void Config::save() {
 
 /* Helper functions. */
 bool Config::getBool(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return false;
-	}
-	
+	if (!this->json.contains(key)) return false;
+
 	return this->json.at(key).get_ref<const bool&>();
 }
-void Config::setBool(const std::string &key, bool v) {
-	this->json[key] = v;
-}
+void Config::setBool(const std::string &key, bool v) { this->json[key] = v; };
 
 int Config::getInt(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return 0;
-	}
+	if (!this->json.contains(key)) return 0;
 
 	return this->json.at(key).get_ref<const int64_t&>();
 }
-void Config::setInt(const std::string &key, int v) {
-	this->json[key] = v;
-}
+void Config::setInt(const std::string &key, int v) { this->json[key] = v; };
 
 std::string Config::getString(const std::string &key) {
-	if (!this->json.contains(key)) {
-		return "";
-	}
+	if (!this->json.contains(key)) return "";
 
 	return this->json.at(key).get_ref<const std::string&>();
 }
-void Config::setString(const std::string &key, const std::string &v) {
-	this->json[key] = v;
-}
+void Config::setString(const std::string &key, const std::string &v) { this->json[key] = v; };

@@ -31,7 +31,6 @@
 #include "chars.h"
 #include "coreHelper.hpp"
 #include "sprites.h"
-
 #include <string>
 
 struct ButtonStruct {
@@ -58,6 +57,6 @@ namespace GFX {
 	/* Button and Grid. */
 	void Button(const ButtonStruct btn);
 	void DrawGrid(int x, int y);
-}
+};
 
 #endif

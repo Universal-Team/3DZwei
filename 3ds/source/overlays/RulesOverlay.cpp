@@ -41,7 +41,9 @@ static const std::vector<Structs::ButtonPos> cardPos = {
 	{193, 122, 55, 55}
 };
 
-/* Draw. */
+/*
+	Draw the Overlay.
+*/
 static void Draw() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -49,7 +51,7 @@ static void Draw() {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("GAME_RULES"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("GAME_RULES"), 390);
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.55f, Lang::get("GAME_LOGIC")))/2, 0.55f, config->textColor(), Lang::get("GAME_LOGIC"), 390, 70);
 }
 
@@ -122,9 +124,10 @@ static void DrawAnimFalse(int delay) {
 void Overlays::ShowRules() {
 	int delay = 400;
 	bool showCorrect = true;
+
 	while(1) {
 		Draw();
-		
+
 		if (showCorrect) DrawAnimRight(delay);
 		else DrawAnimFalse(delay);
 

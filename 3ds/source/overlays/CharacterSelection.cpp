@@ -38,44 +38,47 @@ static void Draw(int page, int selection, int player) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	
+
 	char buffer[100];
 	snprintf(buffer, sizeof(buffer), Lang::get("SELECT_AVATAR").c_str(), player);
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), buffer, 390, 30);
 
-	if (page == 1) {
-		GFX::DrawPlayer(-5, 35, 1, 1, 0);
-		GFX::DrawPlayer(95, 35, 1, 1, 1);
-		GFX::DrawPlayer(195, 35, 1, 1, 2);
-		GFX::DrawPlayer(295, 35, 1, 1, 3);
-	} else if (page == 2) {
-		GFX::DrawPlayer(-5, 35, 1, 1, 4);
-		GFX::DrawPlayer(95, 35, 1, 1, 5);
-		GFX::DrawPlayer(195, 35, 1, 1, 6);
-		GFX::DrawPlayer(295, 35, 1, 1, 7);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), buffer, 390, 30);
+
+	switch(page) {
+		case 1:
+			GFX::DrawPlayer(-5, 35, 1, 1, 0);
+			GFX::DrawPlayer(95, 35, 1, 1, 1);
+			GFX::DrawPlayer(195, 35, 1, 1, 2);
+			GFX::DrawPlayer(295, 35, 1, 1, 3);
+			break;
+
+		case 2:
+			GFX::DrawPlayer(-5, 35, 1, 1, 4);
+			GFX::DrawPlayer(95, 35, 1, 1, 5);
+			GFX::DrawPlayer(195, 35, 1, 1, 6);
+			GFX::DrawPlayer(295, 35, 1, 1, 7);
+			break;
 	}
 
 	Gui::Draw_Rect(10, 160, 80, 30, config->buttonColor());
 	Gui::Draw_Rect(110, 160, 80, 30, config->buttonColor());
 	Gui::Draw_Rect(210, 160, 80, 30, config->buttonColor());
 	Gui::Draw_Rect(310, 160, 80, 30, config->buttonColor());
-	
-		
-	if (page == 1) {
-		GFX::DrawSprite(sprites_pointer_idx, 50 + (selection * 100), 170);
-	} else {
-		GFX::DrawSprite(sprites_pointer_idx, 50 + ((selection-4) * 100), 170);
-	}
-		
+
+
+	if (page == 1) GFX::DrawSprite(sprites_pointer_idx, 50 + (selection * 100), 170);
+	else GFX::DrawSprite(sprites_pointer_idx, 50 + ((selection-4) * 100), 170);
+
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	C3D_FrameEnd(0);
 }
 
-/* Select an avatar. */
+/*
+	Select an avatar.
+*/
 int Overlays::SelectAvatar(int player) {
-	int selection = 0;
-	int page = 1;
+	int selection = 0, page = 1;
 
 	while(1) {
 		Draw(page, selection, player);
@@ -104,37 +107,33 @@ int Overlays::SelectAvatar(int player) {
 				if (selection > 2) {
 					selection++;
 					page++;
+
 				} else {
 					selection++;
 				}
+
 			} else if (page == 2) {
-				if (selection < 7) {
-					selection++;
-				}
+				if (selection < 7) selection++;
 			}
 		}
 
 		if (hidKeysDown() & KEY_LEFT) {
 			if (page == 1) {
-				if (selection > 0) {
-					selection--;
-				}
+				if (selection > 0) selection--;
+
 			} else if (page == 2) {
 				if (selection < 5) {
 					selection--;
 					page--;
+
 				} else {
 					selection--;
 				}
 			}
 		}
 
-		if (hidKeysDown() & KEY_A) {
-			return selection;
-		}
+		if (hidKeysDown() & KEY_A) return selection;
 
-		if (hidKeysDown() & KEY_B) {
-			return 0;
-		}
+		if (hidKeysDown() & KEY_B) return 0;
 	}
 }

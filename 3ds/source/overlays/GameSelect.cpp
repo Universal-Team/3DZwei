@@ -28,7 +28,9 @@
 
 extern std::unique_ptr<Config> config;
 
-/* TODO: Display new banner for each mode? */
+/*
+	TODO: Display new banner for each mode?
+*/
 static void Draw(int selection) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
@@ -37,13 +39,14 @@ static void Draw(int selection) {
 
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("SELECT_GAME_MODE"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("SELECT_GAME_MODE"), 390);
 
 	/* Game Mode name here. */
 	switch(selection) {
 		case 0:
 			Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("SELECTED_MODE") + Lang::get("MULTIPLAY"), 390);
 			break;
+
 		case 1:
 			Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("SELECTED_MODE") + Lang::get("PLAY_WITH_TIME"), 390);
 			break;
@@ -55,9 +58,12 @@ static void Draw(int selection) {
 	C3D_FrameEnd(0);
 }
 
-/* Returns 0 if MultiPlay and 1 if TimePlay. -1 if cancel. */
+/*
+	Returns 0 if MultiPlay and 1 if TimePlay. -1 if cancel.
+*/
 int Overlays::SelectGame() {
 	int selection = 0;
+
 	while(1) {
 		Draw(selection);
 		hidScanInput();

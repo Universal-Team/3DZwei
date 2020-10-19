@@ -53,9 +53,9 @@ namespace Msg {
 
 	/* Displays a message, which does not rely on the config. */
 	void DisplayNoConfig(std::string Text);
-	
+
 	/* Debug Message for me, StackZ, to debug the core. */
 	void DebugMessage(std::string msg);
-}
+};
 
 #endif

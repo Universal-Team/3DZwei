@@ -33,7 +33,6 @@
 #include "lang.hpp"
 #include "msg.hpp"
 #include "screenCommon.hpp"
-
 #include <citro2d.h>
 
 /* Card stuff. */

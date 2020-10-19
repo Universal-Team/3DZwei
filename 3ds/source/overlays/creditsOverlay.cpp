@@ -35,30 +35,35 @@ static void Draw(int page) {
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("CREDITS"), 390);
 	GFX::DrawSprite(sprites_stackz_idx, -2, 70);
-	GFX::DrawSprite(sprites_banner_idx, 137, 65);
+	GFX::DrawSprite(sprites_Logo_idx, 137, 65);
 	Gui::DrawStringCentered(0, 30, 0.6f, config->textColor(), Lang::get("DEVELOPED_BY"), 390);
 	Gui::DrawStringCentered(0, 45, 0.6f, config->textColor(), Lang::get("MAIN_DEV"), 390);
 	Gui::DrawString(395-Gui::GetStringWidth(0.6f, (Lang::get("CURRENT_VERSION") + V_STRING)), 219, 0.6f, config->textColor(), (Lang::get("CURRENT_VERSION") + V_STRING), 390);
 
 	/* Bottom with pages. */
 	GFX::DrawBottom();
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("CURRENT_PAGE") + std::to_string(page + 1) + " | 1", 310);
+	Gui::DrawStringCentered(0, 217, 0.7f, config->textColor(), Lang::get("CURRENT_PAGE") + std::to_string(page + 1) + " | 1", 310);
 
-	if (page == 0) {
-		Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "devkitPro", 310);
-		Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
-		Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
-		Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
-		Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "Universal-Team", 310);
-		Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
-		Gui::DrawStringCentered(0, 215, 0.8f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
+	switch(page) {
+		case 0:
+			Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("GENERAL_CREDITS"), 310);
+			Gui::DrawStringCentered(0, 30, 0.7f, config->textColor(), "devkitPro", 310);
+			Gui::DrawStringCentered(0, 60, 0.6f, config->textColor(), Lang::get("DEVKIT"), 310);
+			Gui::DrawStringCentered(0, 90, 0.7f, config->textColor(), "SuperSaiyajinStackZ", 310);
+			Gui::DrawStringCentered(0, 120, 0.6f, config->textColor(), Lang::get("DEVELOPING_CORE"), 310);
+			Gui::DrawStringCentered(0, 150, 0.7f, config->textColor(), "Universal-Team", 310);
+			Gui::DrawStringCentered(0, 180, 0.6f, config->textColor(), Lang::get("UNIVERSAL_CORE"), 310);
+			break;
 	}
 
 	C3D_FrameEnd(0);
 }
 
+/*
+	Display Credits.
+*/
 void Overlays::showCredits() {
 	bool doOut = false;
 	int page = 0;

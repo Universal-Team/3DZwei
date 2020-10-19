@@ -36,7 +36,9 @@ extern touchPosition touch;
 
 extern bool touching(Structs::ButtonPos button);
 
-/* Draw RGB Colors. */
+/*
+	Draw RGB Colors.
+*/
 static void DrawRGBColor(u8 r, u8 g, u8 b) {
 	/* Display RGB line. */
 	for (int i = 0; i < 256; i++) {
@@ -61,22 +63,26 @@ static void DrawRGBColor(u8 r, u8 g, u8 b) {
 
 	/* Display as formated string. */
 	char hexValues[16];
-
 	snprintf(hexValues, sizeof hexValues, "#%02x%02x%02x", r, g, b);
+
 	Gui::DrawStringCentered(0, 158, 0.7f, config->textColor(), "RGB: " + std::to_string(r) + ", " + std::to_string(g) + ", " + std::to_string(b) + " - Hex: " + hexValues, 310);
 	Gui::Draw_Rect(110, 180, 100, 30, C2D_Color32(r, g, b, 255));
 }
 
-/* Draw. */
+/*
+	Draw the Overlay.
+*/
 static void Draw(u8 r, u8 g, u8 b) {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("SELECT_RGB_COLOR"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("SELECT_RGB_COLOR"), 390);
 	Gui::DrawStringCentered(0, (240-Gui::GetStringHeight(0.7f, Lang::get("UI_COLOR_BEHAVIOUR")))/2, 0.7f, config->textColor(), Lang::get("UI_COLOR_BEHAVIOUR"), 390, 70);
+
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, config->bgColor() + C2D_Color32(0, 0, 0, 190));
 	DrawRGBColor(r, g, b);
@@ -109,9 +115,11 @@ u32 Overlays::SelectRGB(u32 oldColor) {
 				case 0: // Red.
 					if (r < 255) r++;
 					break;
+
 				case 1: // Green.
 					if (g < 255) g++;
 					break;
+
 				case 2: // Blue.
 					if (b < 255) b++;
 					break;
@@ -123,58 +131,47 @@ u32 Overlays::SelectRGB(u32 oldColor) {
 				case 0: // Red.
 					if (r > 0) r--;
 					break;
+
 				case 1: // Green.
 					if (g > 0) g--;
 					break;
+
 				case 2: // Blue.
 					if (b > 0) b--;
 					break;
 			}
 		}
 
-		if (hidKeysDown() & KEY_START) {
-			return RGBA8(r, g, b, 255);
-		}
+		if (hidKeysDown() & KEY_START) return RGBA8(r, g, b, 255);
 
-		if (hidKeysDown() & KEY_B) {
-			return oldColor;
-		}
+		if (hidKeysDown() & KEY_B) return oldColor;
 
 		if (hidKeysHeld() & KEY_TOUCH) {
 			for (int i = 0; i < 256; i++) {
-				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 30 && touch.py <= 30 + 20) {
-					r = i;
-				}
+				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 30 && touch.py <= 30 + 20) r = i;
 
-				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 80 && touch.py <= 80 + 20) {
-					g = i;
-				}
+				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 80 && touch.py <= 80 + 20) g = i;
 
-				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 130 && touch.py <= 130 + 20) {
-					b = i;
-				}
+				if (touch.px >= (10 + i) && touch.px <= (10 + i) + 1 && touch.py >= 130 && touch.py <= 130 + 20) b = i;
 			}
 		}
 
 		/* Change RGB Value on the next button. */
 		if (hidKeysDown() & KEY_TOUCH) {
 			if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 30 && touch.py <= 30 + 20) {
-				int temp = Keyboard::setu8(Lang::get("ENTER_RED_RGB"));
-				if (temp != -1) {
-					r = temp;
-				}
+				const int temp = Keyboard::setu8(Lang::get("ENTER_RED_RGB"));
+
+				if (temp != -1) r = temp;
 
 			} else if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 80 && touch.py <= 80 + 20) {
-				int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
-				if (temp != -1) {
-					g = temp;
-				}
-				
+				const int temp = Keyboard::setu8(Lang::get("ENTER_GREEN_RGB"));
+
+				if (temp != -1) g = temp;
+
 			} else if (touch.px >= 270 && touch.px <= 270 + 40 && touch.py >= 130 && touch.py <= 130 + 20) {
-				int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
-				if (temp != -1) {
-					b = temp;
-				}
+				const int temp = Keyboard::setu8(Lang::get("ENTER_BLUE_RGB"));
+
+				if (temp != -1) b = temp;
 			}
 		}
 	}

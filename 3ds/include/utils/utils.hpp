@@ -32,6 +32,6 @@
 
 namespace Utils {
 	std::string formatText(const std::string& fmt_str, ...);
-}
+};
 
 #endif

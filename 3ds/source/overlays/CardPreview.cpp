@@ -47,19 +47,21 @@ static const std::vector<Structs::ButtonPos> cardPos = {
 	{300, 90, 55, 55}
 };
 
-// Draw.
+/*
+	Draw the overlay.
+*/
 static void Draw(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, int page, const bool &hasBG) {
 	const std::string temp = std::to_string(page + 1) + " | " + std::to_string((((C2D_SpriteSheetCount(sheet) - 1) / (10 + 1)) + 1));
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-	
+
 	GFX::DrawTop();
 	if (hasBG && BG) Gui::DrawSprite(BG, 0, 0, 30); // Draw BG if has BG.
 
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), "3DZwei - " + Lang::get("CARDSET_PREVIEW"), 390);
 
 	/* Preview cards. */
 	if (sheet) {
@@ -80,14 +82,12 @@ static void Draw(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, int page, const bo
 	C3D_FrameEnd(0);
 }
 
-/* Check, if does exist. */
-static bool checkForValidate(std::string file) {
-	if (access(file.c_str(), F_OK) != 0) {
-		return false;
-	} else {
-		return true;
-	}
-}
+/*
+	Check, if does exist.
+
+	std::string file: The file.
+*/
+static bool checkForValidate(std::string file) { return access(file.c_str(), F_OK) == 0; };
 
 /* Load a set. */
 static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, bool &hasBG) {
@@ -97,11 +97,14 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteShee
 		/* ROMFS logic. */
 		char message [100];
 		snprintf(message, sizeof(message), Lang::get("LOADING_SET_PROMPT").c_str(), "3DZWEI_DEFAULT");
+
 		if (Msg::promptMsg(message)) {
 			Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
+
 			/* Load. */
 			Gui::loadSheet("romfs:/gfx/cards.t3x", sheet);
 			return 0; // All good.
+
 		} else {
 			return -1; // Abort.
 		}
@@ -111,10 +114,13 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteShee
 		if (checkForValidate(folder + "/cards.t3x")) {
 			char message [100];
 			snprintf(message, sizeof(message), Lang::get("LOADING_SET_PROMPT").c_str(), folder.c_str());
+
 			if (Msg::promptMsg(message)) {
 				Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
+
 				/* Load. */
 				Gui::loadSheet((folder + "/cards.t3x").c_str(), sheet);
+
 			} else {
 				return -1; // Abort.
 			}
@@ -130,6 +136,7 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteShee
 	if (checkForValidate(folder)) {
 		if (checkForValidate(folder + "/bg.t3x")) {
 			Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
+
 			/* Load. */
 			Gui::loadSheet((folder + "/bg.t3x").c_str(), BG);
 			hasBG = true;
@@ -139,6 +146,12 @@ static Result loadSet(std::string folder, C2D_SpriteSheet &sheet, C2D_SpriteShee
 	return 0; // Should not go here.
 }
 
+/*
+	Finalize action to load that stuff..
+
+	const std::string folder: The folder.
+	const bool &hasBG: If has BG.
+*/
 static void finalize(const std::string folder, const bool &hasBG) {
 	if (folder == "3DZWEI_DEFAULT_ROMFS") {
 		Msg::DisplayMsg(Lang::get("LOADING_SPRITESHEET"));
@@ -169,6 +182,7 @@ static void finalize(const std::string folder, const bool &hasBG) {
 void Overlays::PreviewCards(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, std::string folder) {
 	int page = 0;
 	bool hasBG;
+
 	/* Do preview logic here. */
 	if (loadSet(folder, sheet, BG, hasBG) != 0) return; // No No No.
 
@@ -182,7 +196,7 @@ void Overlays::PreviewCards(C2D_SpriteSheet &sheet, C2D_SpriteSheet &BG, std::st
 			if (hasBG && BG) Gui::unloadSheet(BG);
 			break;
 		}
-		
+
 		if (hidKeysDown() & KEY_R || hidKeysDown() & KEY_RIGHT) {
 			if (C2D_SpriteSheetCount(sheet) - 1 > 10) {
 				if (page < (int)((C2D_SpriteSheetCount(sheet) - 1) / (10 + 1))) page++;

@@ -45,7 +45,7 @@ static void Draw(int selection) {
 
 	GFX::DrawTop();
 	Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190));
-	Gui::DrawStringCentered(0, -2, 0.8f, config->textColor(), Lang::get("SELECT_LANG"), 390);
+	Gui::DrawStringCentered(0, 1, 0.7f, config->textColor(), Lang::get("SELECT_LANG"), 390);
 	if (fadealpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(fadecolor, fadecolor, fadecolor, fadealpha));
 	GFX::DrawBottom();
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
@@ -56,12 +56,14 @@ static void Draw(int selection) {
 
 	GFX::DrawSprite(sprites_pointer_idx, langBlocks[selection].x+3, langBlocks[selection].y+2);
 
-	Gui::DrawString(langBlocks[0].x+25, langBlocks[0].y, 0.7f, config->textColor(), "Deutsch", 320);
-	Gui::DrawString(langBlocks[1].x+25, langBlocks[1].y, 0.7f, config->textColor(), "English", 320);
+	Gui::DrawString(langBlocks[0].x + 25, langBlocks[0].y, 0.7f, config->textColor(), "Deutsch", 320);
+	Gui::DrawString(langBlocks[1].x + 25, langBlocks[1].y, 0.7f, config->textColor(), "English", 320);
 	C3D_FrameEnd(0);
 }
 
-/* Select a Language. */
+/*
+	Select a Language.
+*/
 void Overlays::SelectLanguage() {
 	int selection = config->language();
 
@@ -96,8 +98,6 @@ void Overlays::SelectLanguage() {
 			return; // Exit overlay.
 		}
 
-		if (hidKeysDown() & KEY_B) {
-			return; // Exit overlay.
-		}
+		if (hidKeysDown() & KEY_B) return; // Exit overlay.
 	}
 }

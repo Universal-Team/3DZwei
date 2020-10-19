@@ -40,44 +40,60 @@ public:
 	void addMissingThings();
 
 	/* Card Color. */
-	u32 cardColor() { return this->v_cardColor; }
-	void cardColor(u32 v) { this->v_cardColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Bar Color. */
-	u32 barColor() { return this->v_barColor; }
-	void barColor(u32 v) { this->v_barColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* BG Color. */
-	u32 bgColor() { return this->v_bgColor; }
-	void bgColor(u32 v) { this->v_bgColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Text Color. */
-	u32 textColor() { return this->v_textColor; }
-	void textColor(u32 v) { this->v_textColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Button Color. */
-	u32 buttonColor() { return this->v_buttonColor; }
-	void buttonColor(u32 v) { this->v_buttonColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Grid Color. */
-	u32 gridColor() { return this->v_gridColor; }
-	void gridColor(u32 v) { this->v_gridColor = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Card Delay. */
-	int delay() { return this->v_delay; }
-	void delay(int v) { this->v_delay = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Debug. */
-	bool debug() { return this->v_debug; }
-	/* Card file. */
-	std::string cardFile() { return this->v_cardFile; }
-	void cardFile(std::string v) { this->v_cardFile = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Language. */
-	int language() { return this->v_language; }
-	void language(int v) { this->v_language = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Set. */
-	std::string Set() { return this->v_Set; }
-	void Set(std::string v) { this->v_Set = v; if (!this->changesMade)	this->changesMade = true; }
-	/* BGs. */
-	std::string BG() { return this->v_BG; }
-	void BG(std::string v) { this->v_BG = v; if (!this->changesMade)	this->changesMade = true; }
-	/* Version. */
-	int version() { return this->v_version; }
-	void version(int v) { this->v_version = v; if (!this->changesMade)	this->changesMade = true; }
+	u32 cardColor() const { return this->v_cardColor; };
+	void cardColor(u32 v) { this->v_cardColor = v; if (!this->changesMade) this->changesMade = true; };
 
+	/* Bar Color. */
+	u32 barColor() const { return this->v_barColor; };
+	void barColor(u32 v) { this->v_barColor = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* BG Color. */
+	u32 bgColor() const { return this->v_bgColor; };
+	void bgColor(u32 v) { this->v_bgColor = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Text Color. */
+	u32 textColor() const { return this->v_textColor; };
+	void textColor(u32 v) { this->v_textColor = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Button Color. */
+	u32 buttonColor() const { return this->v_buttonColor; };
+	void buttonColor(u32 v) { this->v_buttonColor = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Grid Color. */
+	u32 gridColor() const { return this->v_gridColor; };
+	void gridColor(u32 v) { this->v_gridColor = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Card Delay. */
+	int delay() const { return this->v_delay; };
+	void delay(int v) { this->v_delay = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Debug. */
+	bool debug() const { return this->v_debug; };
+
+	/* Card file. */
+	std::string cardFile() const { return this->v_cardFile; };
+	void cardFile(std::string v) { this->v_cardFile = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Language. */
+	int language() const { return this->v_language; };
+	void language(int v) { this->v_language = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Set. */
+	std::string Set() const { return this->v_Set; };
+	void Set(std::string v) { this->v_Set = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* BGs. */
+	std::string BG() const { return this->v_BG; };
+	void BG(std::string v) { this->v_BG = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Show Splash. */
+	bool show_Splash() const { return this->v_showSplash; };
+	void show_Splash(bool v) { this->v_showSplash = v; if (!this->changesMade) this->changesMade = true; };
+
+	/* Version. */
+	int version() const { return this->v_version; };
+	void version(int v) { this->v_version = v; if (!this->changesMade) this->changesMade = true; };
+private:
 	/* Mainly helper. */
 	bool getBool(const std::string &key);
 	void setBool(const std::string &key, bool v);
@@ -85,14 +101,14 @@ public:
 	void setInt(const std::string &key, int v);
 	std::string getString(const std::string &key);
 	void setString(const std::string &key, const std::string &v);
-private:
+
 	nlohmann::json json; // Our private JSON file.
 	bool changesMade = false;
 
 	/* Color variables and more. */
 	u32 v_cardColor, v_barColor, v_bgColor, v_textColor, v_buttonColor, v_gridColor;
 	int v_delay, v_language, v_version;
-	bool v_debug;
+	bool v_debug, v_showSplash;
 	std::string v_cardFile, v_Set, v_BG;
 };
 
