@@ -49,6 +49,7 @@ private:
 		{ 0, 25, 25, 215, [this]() { this->PrevPage(); } },
 		{ 375, 25, 25, 215, [this]() { this->NextPage(); } },
 
+		/* Card Images. */
 		{ 60, 35, 55, 55, [this]() { this->ToggleCard(0); } },
 		{ 160, 35, 55, 55, [this]() { this->ToggleCard(1); } },
 		{ 260, 35, 55, 55, [this]() { this->ToggleCard(2); } },
@@ -59,7 +60,20 @@ private:
 
 		{ 60, 175, 55, 55, [this]() { this->ToggleCard(6); } },
 		{ 160, 175, 55, 55, [this]() { this->ToggleCard(7); } },
-		{ 260, 175, 55, 55, [this]() { this->ToggleCard(8); } }
+		{ 260, 175, 55, 55, [this]() { this->ToggleCard(8); } },
+
+		/* Checkboxes. */
+		{ 120, 50, 24, 24, [this]() { this->ToggleCard(0); } },
+		{ 220, 50, 24, 24, [this]() { this->ToggleCard(1); } },
+		{ 320, 50, 24, 24, [this]() { this->ToggleCard(2); } },
+
+		{ 120, 120, 24, 24, [this]() { this->ToggleCard(3); } },
+		{ 220, 120, 24, 24, [this]() { this->ToggleCard(4); } },
+		{ 320, 120, 24, 24, [this]() { this->ToggleCard(5); } },
+
+		{ 120, 190, 24, 24, [this]() { this->ToggleCard(6); } },
+		{ 220, 190, 24, 24, [this]() { this->ToggleCard(7); } },
+		{ 320, 190, 24, 24, [this]() { this->ToggleCard(8); } }
 	};
 
 	const std::vector<FuncCallback> BottomPos = {

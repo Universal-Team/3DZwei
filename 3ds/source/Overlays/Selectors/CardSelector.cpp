@@ -79,7 +79,7 @@ void CardSelector::Action() {
 		/* Draw the Cards + Checkboxes. */
 		for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 			Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X, this->Positions[Idx2 + 2].Y);
-			GFX::DrawCheckbox(this->Positions[Idx2 + 2].X + 60, this->Positions[Idx2 + 2].Y + 15, this->Cards[Idx].first);
+			GFX::DrawCheckbox(this->Positions[Idx2 + 11].X, this->Positions[Idx2 + 11].Y, this->Cards[Idx].first);
 		}
 
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Page > 0);
