@@ -1,0 +1,94 @@
+{
+	"AI_METHOD": "AI Method: ",
+	"AI_MODE_EXTREME": "Extreme",
+	"AI_MODE_EXTREME_DESC": "A more improved version of the Hard Method, which already does it's prediction plays at the first card.\nNOTE: The AI might be slower over time, because it does a lot of checks, the more turns have passed.",
+	"AI_MODE_HARD": "Hard",
+	"AI_MODE_HARD_DESC": "A harder AI, which does it's prediction plays at the second card.\nThis method stores all played cards into a vector of pairs and can that way check all played cards and play them, if it found a match.",
+	"AI_MODE_RANDOM": "Random",
+	"AI_MODE_RANDOM_DESC": "Just a random AI through a pseudo-random generator.\nThis method is the fastest for this Game but also easiest method to beat.\nThis Method does what it says, playing randomly.",
+
+	"AMOUNT_OF_CARDS": "Amount of cards: ",
+	"AMOUNT_OF_CHARACTERS": "Amount of characters: ",
+	"CANCEL": "Cancel",
+
+	"CARD_SELECTOR_TITLE": "Select the cards you want to use.",
+
+	"CHARACTER_SELECT_TITLE": "Select the Character you want.",
+
+	"CONFIRM": "Confirm",
+
+	"CREDITS_CONTRIBUTORS": "Contributors",
+	"CREDITS_TITLE": "Credits",
+	"CREDITS_TRANSLATORS": "Translators",
+
+	"GAME_RESULT_TITLE": "Here are the Game Results!",
+
+	"GAME_SCREEN_ANY_KEY": "Press any key to continue.",
+	"GAME_SCREEN_CURRENT_PAGE": "Current Page: ",
+	"GAME_SCREEN_CURRENT_PLAYER": "Current Player: ",
+	"GAME_SCREEN_EXIT": "Press START + SELECT to exit the Game.",
+	"GAME_SCREEN_TITLE": "Game Screen",
+	"GAME_SCREEN_TRIES": "Tries: ",
+
+	"GAME_SETTINGS_AI_EXTREME": "Extreme",
+	"GAME_SETTINGS_AI_HARD": "Hard",
+	"GAME_SETTINGS_AI_METHOD": "AI Method",
+	"GAME_SETTINGS_AI_RANDOM": "Random",
+	"GAME_SETTINGS_CARD_DELAY": "Card Delay",
+	"GAME_SETTINGS_CARD_DELAY_TXT": "Set the frame delay for the cards.",
+	"GAME_SETTINGS_CARD_PAIRS": "Card Pairs",
+	"GAME_SETTINGS_GM": "Game Mode",
+	"GAME_SETTINGS_GM_NORMAL": "Normal Play",
+	"GAME_SETTINGS_GM_TRIES": "Try Play",
+	"GAME_SETTINGS_P1_ENTER_NAME": "Player 1, enter your name.",
+	"GAME_SETTINGS_P2_ENTER_NAME": "Player 2, enter your name.",
+	"GAME_SETTINGS_ROUND_WIN": "Rounds to win",
+	"GAME_SETTINGS_ROUND_WIN_TXT": "Set the amount of wins to win this Game.",
+	"GAME_SETTINGS_STARTER": "Round Starter",
+	"GAME_SETTINGS_TAB_GENERAL": "General",
+	"GAME_SETTINGS_TAB_PLAYERS": "Players",
+	"GAME_SETTINGS_TITLE": "Configure the Game Settings.",
+
+	"LANG_SELECTOR_TITLE": "Select the language you want to use.",
+
+	"MAIN_MENU_CREDITS": "Credits",
+	"MAIN_MENU_GAME": "Game",
+	"MAIN_MENU_RULES": "Rules",
+	"MAIN_MENU_SETTINGS": "Settings",
+
+	"OK": "OK",
+	"PAIRS": "Pairs: ",
+	"PLAYER_1": "Player 1",
+	"PLAYER_2": "Player 2",
+	"RANDOM": "Random",
+
+	"RULES_DESC": "Select 2 cards each turn, if those show the same image, you've got a pair, else it's your opponents turn.\n\nThe Player with the most pairs wins, however note, that ties are also possible if an even number of pairs is used.",
+	"RULES_TITLE": "Rules",
+
+	"SELECT": "Select",
+
+	"SET_PREVIEW_TITLE": "Do you like to use this Set?",
+	"SET_PREVIEW_ERROR": "Oh no! There was an error with this Set...",
+	"SET_PREVIEW_ERROR_2": "Check, if the t3x file is also valid.\n\nPress any key to continue.",
+
+	"SET_SELECTION_TITLE": "Select the Set you like to use.",
+
+	"SETTINGS_ACTIVE_CARDSET": "Active Cardset",
+	"SETTINGS_ACTIVE_CHARSET": "Active Characterset",
+	"SETTINGS_BUILD_HASH": "Build Hash: ",
+	"SETTINGS_BUILD_VERSION": "Build Version: ",
+	"SETTINGS_LANGUAGE": "Language",
+	"SETTINGS_LATEST_CHANGES": "Latest Changes",
+	"SETTINGS_POINTER_SPEED": "Pointer Speed",
+	"SETTINGS_POINTER_SPEED_TXT": "Set the pointer speed.",
+	"SETTINGS_SHOW_SPLASH": "Show Splash",
+	"SETTINGS_TAB_CONFIG": "Configuration",
+	"SETTINGS_TAB_APPINFO": "App Info",
+
+	"TIE_RESULT": "The Result is a tie!",
+	"TRIES": "Tries: ",
+	"WINS": "Wins: ",
+	"WINS_WIN": "Wins needed to win: ",
+	"WON": "%s won!",
+	"YOUR_TRIES": "Your Tries: "
+}
