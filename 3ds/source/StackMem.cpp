@@ -33,7 +33,7 @@
 
 		--- const size_t Pairs -> The amount of pairs (Default: 10).
 		--- const bool AIUsed -> If an AI should be used (true) or not (false) (Default: true).
-		--- const StackMem::AIDifficulty Difficulty -> The AI Difficulty (Default: StackMem::AIDifficulty::Random).
+		--- const StackMem::AIMethod Method -> The AI Method (Default: StackMem::AIMethod::Random).
 
 
 	Check the Current Turn State by doing:
@@ -63,12 +63,12 @@
 			- StackMem::GameState::Player2 -> The Game is over and Player 2 has more Pairs than Player 1.
 
 
-	AIDifficulties Explained:
-		- StackMem::AIDifficulty::Random ->
+	AIMethods Explained:
+		- StackMem::AIMethod::Random ->
 			This Difficulty uses an std::mt19937 to randomly play a card.
 			-- This AI is fairly easy to beat and the fastest AI method from all because of literally no checks.
 
-		- StackMem::AIDifficulty::Hard ->
+		- StackMem::AIMethod::Hard ->
 			This Difficulty is a "bit" more complex.
 			-- It contains a std::vector<std::pair<int, int>> to store the last played cards.
 
@@ -81,7 +81,7 @@
 
 			--- It potential can take a bit longer if the AI has a lot of last played cards in their mind.
 
-		- StackMem::AIDifficulty::Extreme ->
+		- StackMem::AIMethod::Extreme ->
 			This is an improved version of the Hard method.
 			-- It already does the checks on the DrawFirst State and uses the Hard method on the DrawSecond State,
 			   because we don't need to do a lot of useless "work" at that point then.
@@ -164,23 +164,23 @@
 /*
 	StackMem's AI Constructor.
 
-	const StackMem::AIDifficulty Difficulty: The AI's difficulty.
+	const StackMem::AIMethod Method: The AI's Method.
 */
-StackMem::AI::AI(const StackMem::AIDifficulty Difficulty) { this->Difficulty = Difficulty; };
+StackMem::AI::AI(const StackMem::AIMethod Method) { this->Method = Method; };
 
 
 /*
 	In case the Game is over,
 	we can reset the AI's mind.
 */
-void StackMem::AI::ClearAICards() {
-	switch(this->Difficulty) {
-		case StackMem::AIDifficulty::Random:
+void StackMem::AI::ClearMind() {
+	switch(this->Method) {
+		case StackMem::AIMethod::Random:
 			break; // The Random AI has no mind.
 
-		case StackMem::AIDifficulty::Hard:
-		case StackMem::AIDifficulty::Extreme:
-			this->Mind.clear(); // The Hard and Extreme AI use the vector mind and hence needs to be cleared.
+		case StackMem::AIMethod::Hard:
+		case StackMem::AIMethod::Extreme:
+			this->Mind.clear(); // The Hard and Extreme Method use the vector mind and hence needs to be cleared.
 			break;
 	}
 };
@@ -192,13 +192,13 @@ void StackMem::AI::ClearAICards() {
 	const int Idx1: The first card-index which should be set.
 	const int Idx2: The second card-index which should be set.
 */
-void StackMem::AI::SetLastCards(const int Idx1, const int Idx2) {
-	switch(this->Difficulty) {
-		case StackMem::AIDifficulty::Random:
+void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
+	switch(this->Method) {
+		case StackMem::AIMethod::Random:
 			break; // The Random AI has no mind.
 
-		case StackMem::AIDifficulty::Hard:
-		case StackMem::AIDifficulty::Extreme:
+		case StackMem::AIMethod::Hard:
+		case StackMem::AIMethod::Extreme:
 			this->Mind.push_back(std::make_pair(Idx1, Idx2)); // Push the cards into the std::vector<std::pair<int, int>>.
 			break;
 	}
@@ -213,7 +213,7 @@ void StackMem::AI::SetLastCards(const int Idx1, const int Idx2) {
 	NOTE: This returns -1, if you'd check out of bounds, so keep that in mind!
 */
 int StackMem::AI::GetFirst(const size_t Idx) const {
-	if (this->GetDifficulty() != StackMem::AIDifficulty::Random) { // Ensure the AI is not the Random one.
+	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
 		/* Ensure Idx is larger THAN 0, and within the mind size. */
 		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx].first; // Return the index.
 	}
@@ -230,7 +230,7 @@ int StackMem::AI::GetFirst(const size_t Idx) const {
 	NOTE: This returns -1, if you'd check out of bounds, so keep that in mind!
 */
 int StackMem::AI::GetSecond(const size_t Idx) const {
-	if (this->GetDifficulty() != StackMem::AIDifficulty::Random) { // Ensure the AI is not the Random one.
+	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
 		/* Ensure Idx is larger THAN 0, and within the mind size. */
 		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx].second; // Return the index.
 	}
@@ -251,10 +251,10 @@ int StackMem::AI::GetSecond(const size_t Idx) const {
 
 	const size_t Pairs: The pair amount.
 	const bool AIUsed: If an AI should be used or not.
-	const StackMem::AIDifficulty Difficulty: The Difficulty of the AI.
+	const StackMem::AIMethod Method: The Method of the AI.
 */
-StackMem::StackMem(const size_t Pairs, const bool AIUsed, const StackMem::AIDifficulty Difficulty) {
-	this->InitializeGame(Pairs, AIUsed, Difficulty, true); // Initialization.
+StackMem::StackMem(const size_t Pairs, const bool AIUsed, const StackMem::AIMethod Method) {
+	this->InitializeGame(Pairs, AIUsed, Method, true); // Initialization.
 };
 
 
@@ -289,20 +289,20 @@ void StackMem::GenerateField(const size_t Pairs) {
 
 	const size_t Pairs: The amount of pairs.
 	const bool AIUsed: If an AI should be used or not.
-	const StackMem::AIDifficulty Difficulty: The Difficulty of the AI.
+	const StackMem::AIMethod Method: The Method of the AI.
 	const bool DoSeed: If the Random Engine should be re-seeded.
 */
-void StackMem::InitializeGame(const size_t Pairs, const bool AIUsed, const StackMem::AIDifficulty Difficulty, const bool DoSeed) {
+void StackMem::InitializeGame(const size_t Pairs, const bool AIUsed, const StackMem::AIMethod Method, const bool DoSeed) {
 	this->AIUsed = AIUsed; // Set AI used state.
 
 	/* AI Handle. */
 	if (this->AIEnabled()) {
 		if (this->_AI) { // If AI is already initialized, just change it + clear mind.
-			this->_AI->ClearAICards();
-			this->_AI->SetDifficulty(Difficulty);
+			this->_AI->ClearMind();
+			this->_AI->SetMethod(Method);
 
 		} else {
-			this->_AI = std::make_unique<StackMem::AI>(Difficulty); // Else initialize the AI.
+			this->_AI = std::make_unique<StackMem::AI>(Method); // Else initialize the AI.
 		}
 
 	} else { // In case the AI got disabled, set it to a nullptr.
@@ -383,7 +383,7 @@ bool StackMem::DoCheck() {
 			return true;
 
 		} else { // It did not match, so hide cards again + update the AI mind.
-			if (this->AIEnabled() && this->_AI) this->_AI->SetLastCards(this->PlayCards[0], this->PlayCards[1]); // Update AI's mind.
+			if (this->AIEnabled() && this->_AI) this->_AI->UpdateMind(this->PlayCards[0], this->PlayCards[1]); // Update AI's mind.
 			this->SetCardShown(this->PlayCards[0], false); this->SetCardShown(this->PlayCards[1], false); // Change the state, so the actual cards are hidden again.
 		}
 	}
@@ -482,7 +482,7 @@ size_t StackMem::GetPlayerPairs(const StackMem::Players P) const {
 
 	NOTE: This function returns -1, if no playable cards exist, so keep that in mind!
 */
-int StackMem::AIRandomPlay() {
+int StackMem::AIRandomMethod() {
 	std::vector<size_t> AvlIndexes;
 
 	/* Get all available indexes. */
@@ -503,7 +503,7 @@ int StackMem::AIRandomPlay() {
 
 	This function checks deeper into the last played cards (mind) and does it's prediction for the second card.
 */
-int StackMem::AIHardPlay() {
+int StackMem::AIHardMethod() {
 	/* Make sure we use the AI and our AI is not an nullptr. */
 	if (this->AIEnabled() && this->_AI) {
 		/* Check for the first AI mind cards. */
@@ -521,7 +521,7 @@ int StackMem::AIHardPlay() {
 		}
 	}
 
-	return this->AIRandomPlay(); // Do random play, cause either AI is not used, or no card matches for a proper play.
+	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
 };
 
 
@@ -534,7 +534,7 @@ int StackMem::AIHardPlay() {
 
 	For the DrawSecond State, it switches over to the Hard Method, because that is 100% enough for it.
 */
-int StackMem::AIExtremePlay() {
+int StackMem::AIExtremeMethod() {
 	/* Make sure we use the AI and our AI is valid. */
 	if (this->AIEnabled() && this->_AI) {
 		if (this->GetState() == StackMem::TurnState::DrawFirst) { // Ensure the Current State is the DrawFirst one.
@@ -597,10 +597,10 @@ int StackMem::AIExtremePlay() {
 			}
 
 			/* That should solve it for us. You ONLY need the Extreme Method on the DrawFirst State. */
-		} else if (this->GetState() == StackMem::TurnState::DrawSecond) return this->AIHardPlay();
+		} else if (this->GetState() == StackMem::TurnState::DrawSecond) return this->AIHardMethod();
 	}
 
-	return this->AIRandomPlay(); // No AI, or no proper matches found, do random.
+	return this->AIRandomMethod(); // No AI, or no proper matches found, do Random Method.
 };
 
 
@@ -611,24 +611,24 @@ int StackMem::AIExtremePlay() {
 */
 int StackMem::AIPlay() {
 	if (this->AIEnabled() && this->_AI) { // Ensure AI is enabled and valid.
-		switch(this->_AI->GetDifficulty()) {
-			case StackMem::AIDifficulty::Random: // Just random play.
-				return this->AIRandomPlay();
+		switch(this->_AI->GetMethod()) {
+			case StackMem::AIMethod::Random: // Just random play.
+				return this->AIRandomMethod();
 
-			case StackMem::AIDifficulty::Hard: // Predict on the DrawSecond State.
-				return this->AIHardPlay();
+			case StackMem::AIMethod::Hard: // Predict on the DrawSecond State.
+				return this->AIHardMethod();
 
-			case StackMem::AIDifficulty::Extreme: // Predict on the DrawFirst State.
-				return this->AIExtremePlay();
+			case StackMem::AIMethod::Extreme: // Predict on the DrawFirst State.
+				return this->AIExtremeMethod();
 		}
 	}
 
-	return this->AIRandomPlay(); // AI disabled, or invalid -> Random play.
+	return this->AIRandomMethod(); // AI disabled, or invalid -> Random Method.
 };
 
 
 /*
-	Get the proper second card for the pair, because why not. :p
+	Get the proper second card for the pair, because why not.
 
 	Returns the index of the proper card from the first card.
 */
@@ -658,12 +658,12 @@ void StackMem::SelectRandomPlayer() {
 };
 
 /*
-	Get the AI's Difficulty.
+	Get the AI's Method.
 
 	Returns Random, if the AI is disabled / invalid.
 */
-StackMem::AIDifficulty StackMem::GetDifficulty() const {
-	if (this->AIEnabled() && this->_AI) return this->_AI->GetDifficulty();
+StackMem::AIMethod StackMem::GetMethod() const {
+	if (this->AIEnabled() && this->_AI) return this->_AI->GetMethod();
 
-	return StackMem::AIDifficulty::Random;
+	return StackMem::AIMethod::Random;
 };

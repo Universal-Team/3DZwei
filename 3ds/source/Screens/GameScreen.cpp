@@ -32,7 +32,7 @@
 /* Initialize with the Game Parameters. */
 GameScreen::GameScreen(const GameSettings::GameParams Param) {
 	this->Params = Param;
-	this->Game = std::make_unique<StackMem>(Utils::Cards.size(), this->Params.AIUsed, this->Params.Difficulty);
+	this->Game = std::make_unique<StackMem>(Utils::Cards.size(), this->Params.AIUsed, this->Params.Method);
 
 	if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only select the Starter at the normal play mode.
 		switch(this->Params.Starter) { // Get the starter.
@@ -81,7 +81,7 @@ void GameScreen::DrawTryPlay(void) const {
 	/* Draw Player 1. */
 	if (this->Params.Characters[0] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30, 30);
-		Gui::Draw_Rect(37, 159, 106, 20, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
 		Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
 	}
 
@@ -141,7 +141,7 @@ void GameScreen::DrawNormalPlay(void) const {
 	/* Draw Player 1. */
 	if (this->Params.Characters[0] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30, 30);
-		Gui::Draw_Rect(37, 159, 106, 20, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
 		Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
 
 		Gui::DrawString(37, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player1)), 100);
@@ -150,7 +150,7 @@ void GameScreen::DrawNormalPlay(void) const {
 	/* Draw Player 2. */
 	if (this->Params.Characters[1] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 250, 30);
-		Gui::Draw_Rect(257, 159, 106, 20, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(257, 159, 106, 20, KBD_KEYUNPRESSED);
 		Gui::DrawString(260, 162, 0.45f, TEXT_COLOR, this->Params.Names[1], 100);
 
 		Gui::DrawString(257, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player2)), 100);
@@ -312,7 +312,7 @@ void GameScreen::NormalPlayLogic(const uint32_t Down, const uint32_t Held, const
 
 							} else {
 								/* Init a new game. */
-								this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetDifficulty(), false);
+								this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetMethod(), false);
 
 								/* Set the Starting Player. */
 								switch(this->Params.Starter) {
@@ -378,7 +378,7 @@ void GameScreen::NormalPlayLogic(const uint32_t Down, const uint32_t Held, const
 
 								} else {
 									/* Init a new game. */
-									this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetDifficulty(), false);
+									this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetMethod(), false);
 
 									/* Set the Starting Player. */
 									switch(this->Params.Starter) {

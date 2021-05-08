@@ -50,7 +50,6 @@ private:
 		{ 147, 180, 106, 20, [this]() { this->Select(); } }
 	};
 
-	/* Same as above, but on the bottom for touch compatibility! */
 	const std::vector<FuncCallback> BottomPos = {
 		{ 70, 75, 25, 90, [this]() { this->PrevChar(); } },
 		{ 123, 109, 74, 22, [this]() { this->Select(); } },

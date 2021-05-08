@@ -26,7 +26,7 @@
 
 #include "Common.hpp"
 #include "Utils.hpp"
-#include <unistd.h> // access().
+#include <unistd.h>
 
 std::vector<size_t> Utils::Cards;
 
@@ -36,7 +36,6 @@ std::vector<size_t> Utils::Cards;
 */
 void Utils::InitCards(const bool Init) {
 	Utils::Cards.clear();
-
 	for (size_t Idx = 0; Idx < Utils::GetCardSheetSize(); Idx++) Utils::Cards.push_back(Idx);
 
 	if (Init) {

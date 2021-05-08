@@ -37,7 +37,7 @@ public:
 	CharSetPreview(const std::string &Set);
 	bool Action();
 private:
-	std::string Set;
+	std::string Set = "";
 	C2D_SpriteSheet PreviewSheet = { nullptr };
 	bool Done = false, Res = false, SetGood = false;
 	size_t Idx = 0;

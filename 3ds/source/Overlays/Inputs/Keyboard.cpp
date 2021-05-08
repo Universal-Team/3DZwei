@@ -31,19 +31,19 @@
 void Keyboard::Draw() const {
 	/* Draw Upper + Lower. */
 	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->SpecialKeysFunc[Idx].X, this->SpecialKeysFunc[Idx].Y, this->SpecialKeysFunc[Idx].W, this->SpecialKeysFunc[Idx].H, (!this->Upper == Idx ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
+		Gui::Draw_Rect(this->SpecialKeysFunc[Idx].X, this->SpecialKeysFunc[Idx].Y, this->SpecialKeysFunc[Idx].W, this->SpecialKeysFunc[Idx].H, (!this->Upper == Idx ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
 		Gui::DrawString(this->SpecialKeysFunc[Idx].X + 35, this->SpecialKeysFunc[Idx].Y + 3, 0.7f, TEXT_COLOR, this->SpecialKeys[Idx]);
 	}
 
 	/* Draw Keys. */
 	for (uint8_t Idx = 0; Idx < this->Layout.size(); Idx++) {
-		Gui::Draw_Rect(this->Layout[Idx].X, this->Layout[Idx].Y, this->Layout[Idx].W, this->Layout[Idx].H, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(this->Layout[Idx].X, this->Layout[Idx].Y, this->Layout[Idx].W, this->Layout[Idx].H, KBD_KEYUNPRESSED);
 		Gui::DrawString(this->Layout[Idx].X + 15, this->Layout[Idx].Y + 5, 0.6f, TEXT_COLOR, (this->Upper ? this->ABCKeys[Idx] : this->abcKeys[Idx]));
 	}
 
 	/* Draw Back and Confirm. */
 	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->SpecialKeysFunc[2 + Idx].X, this->SpecialKeysFunc[2 + Idx].Y, this->SpecialKeysFunc[2 + Idx].W, this->SpecialKeysFunc[2].H, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(this->SpecialKeysFunc[2 + Idx].X, this->SpecialKeysFunc[2 + Idx].Y, this->SpecialKeysFunc[2 + Idx].W, this->SpecialKeysFunc[2].H, KBD_KEYUNPRESSED);
 		Gui::DrawString(this->SpecialKeysFunc[2 + Idx].X + 5, this->SpecialKeysFunc[2 + Idx].Y + 5, 0.6f, TEXT_COLOR, this->SpecialKeys[2 + Idx]);
 	}
 };

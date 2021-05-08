@@ -31,7 +31,6 @@
 #include <random> // std::mt19937.
 #include <vector> // std::vector.
 
-
 /*
 	StackMem's' main class implementation.
 	Written by SuperSaiyajinStackZ.
@@ -39,16 +38,15 @@
 class StackMem {
 public:
 	/* All used enum classes, which also need to be accessible for outside this class because of checks, here. */
-	enum class AIDifficulty : uint8_t { Random = 0, Hard = 1, Extreme = 2 }; // AI Difficulties.
+	enum class AIMethod : uint8_t { Random = 0, Hard = 1, Extreme = 2 }; // AI Methods.
 	enum class TurnState : uint8_t { DrawFirst = 0, DrawSecond = 1, DoCheck = 2 }; // The Current Turn State.
 	enum class GameState : uint8_t { NotOver = 0, Tie = 1, Player1 = 2, Player2 = 3 }; // The Game State.
 	enum class Players : uint8_t { Player1 = 0, Player2 = 1 }; // The Current Player.
 
-
-	StackMem(const size_t Pairs = 10, const bool AIUsed = true, const AIDifficulty Difficulty = AIDifficulty::Random);
+	StackMem(const size_t Pairs = 10, const bool AIUsed = true, const AIMethod Method = AIMethod::Random);
 
 	/* The actual Game initialization thing. Also called at constructor. */
-	void InitializeGame(const size_t Pairs, const bool AIUsed = true, const AIDifficulty Difficulty = AIDifficulty::Random, const bool DoSeed = false);
+	void InitializeGame(const size_t Pairs, const bool AIUsed = true, const AIMethod Method = AIMethod::Random, const bool DoSeed = false);
 
 	/* Card Collected things. */
 	bool IsCardCollected(const size_t Idx) const;
@@ -82,7 +80,7 @@ public:
 
 	/* AI Play! */
 	int AIPlay();
-	AIDifficulty GetDifficulty() const;
+	AIMethod GetMethod() const;
 private:
 	std::mt19937 RandomEngine;
 
@@ -100,25 +98,24 @@ private:
 	*/
 	class AI {
 	public:
-		AI(const AIDifficulty Difficulty = AIDifficulty::Random);
+		AI(const AIMethod Method = AIMethod::Random);
 
-		/* Clear and Set. */
-		void ClearAICards();
-		void SetLastCards(const int Idx1, const int Idx2);
+		/* Clear and Update. */
+		void ClearMind();
+		void UpdateMind(const int Idx1, const int Idx2);
 
 		/* Return first and second cards. */
 		int GetFirst(const size_t Idx = 0) const;
 		int GetSecond(const size_t Idx = 0) const;
 
-		/* Some other returns and sets. */
+		/* Some other Get and Set's. */
 		size_t GetSize() const { return this->Mind.size(); };
-		AIDifficulty GetDifficulty() const { return this->Difficulty; };
-		void SetDifficulty(const AIDifficulty Difficulty) { this->Difficulty = Difficulty; };
+		AIMethod GetMethod() const { return this->Method; };
+		void SetMethod(const AIMethod Method) { this->Method = Method; };
 	private:
-		std::vector<std::pair<int, int>> Mind = { }; // The mind for the Hard + Extreme AI Mode.
-		AIDifficulty Difficulty = AIDifficulty::Random; // The Difficulty of the AI.
+		std::vector<std::pair<int, int>> Mind = { }; // The mind for the Hard + Extreme AI Method.
+		AIMethod Method = AIMethod::Random; // The Method of the AI.
 	};
-
 
 	bool AIUsed = false; // If an AI is used.
 	size_t Pairs = 0, PlayerPairs[2] = { 0 }; // The amount of Pairs of the current game + pairs from the players.
@@ -131,9 +128,9 @@ private:
 	/* Keep those methods private, because you shouldn't mess with it. */
 	bool CheckMatch() const;
 	void GenerateField(const size_t Pairs);
-	int AIRandomPlay();
-	int AIHardPlay();
-	int AIExtremePlay();
+	int AIRandomMethod();
+	int AIHardMethod();
+	int AIExtremeMethod();
 };
 
 #endif

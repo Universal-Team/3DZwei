@@ -51,7 +51,6 @@ private:
 	void NextPage();
 	void CheckCard(const uint8_t Idx);
 
-
 	/* Normal Play Mode. */
 	void DrawNormalPlay(void) const;
 	void PlayerLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);

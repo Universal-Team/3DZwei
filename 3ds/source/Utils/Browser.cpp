@@ -114,7 +114,6 @@ void Browser::FetchDirectoryEntries(const std::vector<std::string> &ExtList) {
 	}
 
 	std::sort(this->DirEntries.begin(), this->DirEntries.end(), DirEntryPredicate); // Sort this alphabetically.
-	// if (this->CanDirBack()) this->DirEntries.insert(this->DirEntries.begin(), { "..", "", false }); // Push a ".." for going back.
 };
 
 /* Returns the Directory Entry Files as a vector of strings. */

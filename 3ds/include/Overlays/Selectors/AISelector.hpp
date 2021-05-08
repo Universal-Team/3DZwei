@@ -33,10 +33,10 @@
 
 class AISelector {
 public:
-	AISelector(const StackMem::AIDifficulty Diff);
-	StackMem::AIDifficulty Action();
+	AISelector(const StackMem::AIMethod Method);
+	StackMem::AIMethod Action();
 private:
-	StackMem::AIDifficulty Res = StackMem::AIDifficulty::Random;
+	StackMem::AIMethod Res = StackMem::AIMethod::Random;
 	bool Done = false, Cancelled = false;
 	uint8_t Mode = 0;
 
@@ -49,12 +49,11 @@ private:
 	const std::vector<std::string> ModeDesc = { "AI_MODE_RANDOM_DESC", "AI_MODE_HARD_DESC", "AI_MODE_EXTREME_DESC" };
 
 	const std::vector<FuncCallback> Positions = {
-		{ 40, 60, 25, 145, [this]() { this->PrevMode(); } }, // Prev.
-		{ 166, 172, 73, 21, [this]() { this->OK(); } }, // OK.
-		{ 335, 60, 25, 145, [this]() { this->NextMode(); } } // Next.
+		{ 40, 60, 25, 145, [this]() { this->PrevMode(); } },
+		{ 166, 172, 73, 21, [this]() { this->OK(); } },
+		{ 335, 60, 25, 145, [this]() { this->NextMode(); } }
 	};
 
-	/* Same as above, but on the bottom for touch compatibility! */
 	const std::vector<FuncCallback> BottomPos = {
 		{ 70, 75, 25, 90, [this]() { this->PrevMode(); } },
 		{ 123, 109, 74, 22, [this]() { this->OK(); } },

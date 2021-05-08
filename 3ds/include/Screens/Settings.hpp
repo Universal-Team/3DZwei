@@ -47,15 +47,15 @@ private:
 
 	void ConfigTab();
 	void AppinfoTab();
+	void Back();
 
+	/* Configurations Operations. */
 	void SelectLang();
 	void SelectCardSet();
 	void SelectCharSet();
 	void ToggleSplash();
 	void ShowSplash();
 	void SetPointerSpeed();
-
-	void Back();
 
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 0, 160, 20, [this]() { this->ConfigTab(); } },

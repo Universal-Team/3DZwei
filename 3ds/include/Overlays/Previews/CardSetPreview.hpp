@@ -37,7 +37,7 @@ public:
 	CardSetPreview(const std::string &Set);
 	bool Action();
 private:
-	std::string Set;
+	std::string Set = "";
 	C2D_SpriteSheet PreviewSheet = { nullptr };
 	std::vector<bool> CardsShown;
 	bool Done = false, Res = false, SetGood = false;

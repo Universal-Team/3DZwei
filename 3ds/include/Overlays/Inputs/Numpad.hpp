@@ -55,7 +55,6 @@ private:
 		7   8   9
 			0
 	*/
-
 	const std::vector<std::string> Nums = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "<-", "->" };
 	const std::vector<FuncCallback> Pad = {
 		{  80, 15, 40, 40, [this]() { this->InputNum(0); } }, { 140, 15, 40, 40, [this]() { this->InputNum(1); } },  { 200, 15, 40, 40, [this]() { this->InputNum(2); } },

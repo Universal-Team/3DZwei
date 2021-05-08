@@ -47,9 +47,9 @@ private:
 	int16_t Delay = 100; // Wait Delay.
 	bool CardClicks[2] = { false }; // If cards are clicked or nah.
 	States State = States::GotoFirst; // The Current State.
-	bool Done = false; // If it's done or nah.
+	bool Done = false;
 
-	/* Splash States. */
+	/* Rule States. */
 	void State1();
 	void State2();
 	void State3();

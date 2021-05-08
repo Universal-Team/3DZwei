@@ -52,7 +52,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 				/* Draw Player 1. */
 				if (Params.Characters[0] < Utils::GetCharSheetSize()) {
 					Gui::DrawSprite(GFX::Characters, Params.Characters[0], 10, 30);
-					Gui::Draw_Rect(17, 159, 106, 20, KD_KEYUNPRESSED);
+					Gui::Draw_Rect(17, 159, 106, 20, KBD_KEYUNPRESSED);
 					Gui::DrawString(20, 162, 0.45f, TEXT_COLOR, Params.Names[0], 100);
 
 					Gui::DrawString(20, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[0]), 100);
@@ -62,7 +62,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 				/* Draw Player 2. */
 				if (Params.Characters[1] < Utils::GetCharSheetSize()) {
 					Gui::DrawSprite(GFX::Characters, Params.Characters[1], 270, 30);
-					Gui::Draw_Rect(277, 159, 106, 20, KD_KEYUNPRESSED);
+					Gui::Draw_Rect(277, 159, 106, 20, KBD_KEYUNPRESSED);
 					Gui::DrawString(280, 162, 0.45f, TEXT_COLOR, Params.Names[1], 100);
 
 					Gui::DrawString(277, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[1]), 100);
@@ -96,7 +96,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 				/* Draw Player 1. */
 				if (Params.Characters[0] < Utils::GetCharSheetSize()) {
 					Gui::DrawSprite(GFX::Characters, Params.Characters[0], 30, 30);
-					Gui::Draw_Rect(37, 159, 106, 20, KD_KEYUNPRESSED);
+					Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
 					Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, Params.Names[0], 100);
 				}
 

@@ -130,7 +130,7 @@ void CreditsOverlay::Action() {
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, true);
 		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, true);
 
-		Gui::Draw_Rect(95, 105, 130, 30, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
 		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
 		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("OK"));
 		C3D_FrameEnd(0);

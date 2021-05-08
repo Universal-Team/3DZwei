@@ -70,12 +70,12 @@ void GameSettings::ToggleStarter() {
 	}
 };
 
-/* Select the AI Difficulty. */
-void GameSettings::SelectDifficulty() {
+/* Select the AI Method. */
+void GameSettings::SelectAIMethod() {
 	if (this->Params.AIUsed) {
 		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available on Normal Play.
-			std::unique_ptr<AISelector> Ovl = std::make_unique<AISelector>(this->Params.Difficulty);
-			this->Params.Difficulty = Ovl->Action();
+			std::unique_ptr<AISelector> Ovl = std::make_unique<AISelector>(this->Params.Method);
+			this->Params.Method = Ovl->Action();
 		};
 	}
 };
@@ -158,8 +158,8 @@ GameSettings::GameParams GameSettings::Action() {
 		GFX::DrawBottom();
 
 		/* Draw Tabs. */
-		Gui::Draw_Rect(0, 0, 160, 20, (this->Tab == Tabs::General ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
-		Gui::Draw_Rect(160, 0, 160, 20, (this->Tab == Tabs::Player ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
+		Gui::Draw_Rect(0, 0, 160, 20, (this->Tab == Tabs::General ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
+		Gui::Draw_Rect(160, 0, 160, 20, (this->Tab == Tabs::Player ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
 		Gui::DrawStringCentered(-80, 3, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_TAB_GENERAL"), 150);
 		Gui::DrawStringCentered(80, 3, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_TAB_PLAYERS"), 150);
 
@@ -201,20 +201,20 @@ GameSettings::GameParams GameSettings::Action() {
 					Gui::DrawString(15, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_METHOD"), 130);
 					GFX::DrawCheckbox(150, 155, this->Params.AIUsed);
 
-					/* AI Difficulty. */
+					/* AI Method. */
 					if (this->Params.AIUsed) { // Only show if AI enabled.
 						Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200, 155);
 
-						switch(this->Params.Difficulty) {
-							case StackMem::AIDifficulty::Random:
+						switch(this->Params.Method) {
+							case StackMem::AIMethod::Random:
 								Gui::DrawString(240, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
 								break;
 
-							case StackMem::AIDifficulty::Hard:
+							case StackMem::AIMethod::Hard:
 								Gui::DrawString(240, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
 								break;
 
-							case StackMem::AIDifficulty::Extreme:
+							case StackMem::AIMethod::Extreme:
 								Gui::DrawString(240, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
 								break;
 						};
@@ -231,13 +231,13 @@ GameSettings::GameParams GameSettings::Action() {
 			case Tabs::Player:
 				/* Player 1. */
 				if (this->Params.Characters[0] < Utils::GetCharSheetSize()) Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30, 30);
-				Gui::Draw_Rect(37, 159, 106, 20, KD_KEYUNPRESSED);
+				Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
 				Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
 
 				/* Player 2. */
 				if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available in Normal Play.
 					if (this->Params.Characters[1] < Utils::GetCharSheetSize()) Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 170, 30);
-					Gui::Draw_Rect(177, 159, 106, 20, KD_KEYUNPRESSED);
+					Gui::Draw_Rect(177, 159, 106, 20, KBD_KEYUNPRESSED);
 					Gui::DrawString(180, 162, 0.45f, TEXT_COLOR, this->Params.Names[1], 100);
 				};
 

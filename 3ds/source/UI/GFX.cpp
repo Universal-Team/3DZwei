@@ -29,7 +29,7 @@
 #include "Utils.hpp"
 
 /* All used Spritesheets. */
-C2D_SpriteSheet GFX::Characters = nullptr, GFX::Sprites = nullptr, GFX::Cards = nullptr;
+C2D_SpriteSheet GFX::Cards = nullptr, GFX::Characters = nullptr, GFX::Sprites = nullptr;
 
 /* Load all Spritesheets. */
 void GFX::LoadSheets() {
@@ -100,7 +100,7 @@ void GFX::DrawMsgBox(const int PosX, const int PosY, const int XSize, const int 
 	Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, PosX + XSize - 25, PosY + YSize - 25, -1.0f, -1.0f);
 
 	/* Middle. */
-	Gui::Draw_Rect(PosX + 25, PosY, XSize - 50, YSize, KD_KEYUNPRESSED);
+	Gui::Draw_Rect(PosX + 25, PosY, XSize - 50, YSize, KBD_KEYUNPRESSED);
 };
 
 /*

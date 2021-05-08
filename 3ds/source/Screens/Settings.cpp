@@ -141,8 +141,8 @@ void Settings::DrawTop() const {
 
 void Settings::DrawTabs() const {
 	GFX::DrawBottom();
-	Gui::Draw_Rect(0, 0, 160, 20, (this->Tab == SettingsTab::Configuration ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
-	Gui::Draw_Rect(160, 0, 160, 20, (this->Tab == SettingsTab::AppInfo ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
+	Gui::Draw_Rect(0, 0, 160, 20, (this->Tab == SettingsTab::Configuration ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
+	Gui::Draw_Rect(160, 0, 160, 20, (this->Tab == SettingsTab::AppInfo ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
 
 	/* Draw Tab Names. */
 	for (uint8_t Idx = 0; Idx < 2; Idx++) {

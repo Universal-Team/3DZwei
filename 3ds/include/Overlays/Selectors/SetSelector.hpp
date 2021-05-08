@@ -50,7 +50,7 @@ private:
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 25, 25, 190, [this]() { this->PrevPage(); } },
 
-		/* Entries. */
+		/* Sets. */
 		{ 50, 30, 300, 32, [this]() { this->SelectSet(0); } },
 		{ 50, 67, 300, 32, [this]() { this->SelectSet(1); } },
 		{ 50, 104, 300, 32, [this]() { this->SelectSet(2); } },
@@ -60,11 +60,10 @@ private:
 		{ 375, 25, 25, 190, [this]() { this->NextPage(); } }
 	};
 
-	/* Same as above, but on the bottom for touch compatibility! */
 	const std::vector<FuncCallback> BottomPos = {
 		{ 70, 25, 25, 190, [this]() { this->PrevPage(); } },
 
-		/* Entries. */
+		/* Sets. */
 		{ 95, 30, 130, 32, [this]() { this->SelectSet(0); } },
 		{ 95, 67, 130, 32, [this]() { this->SelectSet(1); } },
 		{ 95, 104, 130, 32, [this]() { this->SelectSet(2); } },

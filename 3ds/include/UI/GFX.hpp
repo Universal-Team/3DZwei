@@ -36,11 +36,11 @@
 #define TEXT_COLOR C2D_Color32(216, 228, 228, 255)
 #define BUTTON_COLOR C2D_Color32(80, 128, 128, 255)
 #define KBD_KEYPRESSED C2D_Color32(60, 70, 113, 255)
-#define KD_KEYUNPRESSED C2D_Color32(40, 40, 40, 255)
+#define KBD_KEYUNPRESSED C2D_Color32(40, 40, 40, 255)
 #define CORNER_COLOR C2D_Color32(44, 64, 100, 255)
 
 namespace GFX {
-	extern C2D_SpriteSheet Characters, Sprites, Cards;
+	extern C2D_SpriteSheet Cards, Characters, Sprites;
 
 	void LoadSheets();
 	void UnloadSheets();

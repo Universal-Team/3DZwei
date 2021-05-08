@@ -31,13 +31,13 @@
 void Numpad::Draw(void) const {
 	/* Draw Numbers. */
 	for (uint8_t Idx = 0; Idx < 10; Idx++) {
-		Gui::Draw_Rect(this->Pad[Idx].X, this->Pad[Idx].Y, this->Pad[Idx].W, this->Pad[Idx].H, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(this->Pad[Idx].X, this->Pad[Idx].Y, this->Pad[Idx].W, this->Pad[Idx].H, KBD_KEYUNPRESSED);
 		Gui::DrawString(this->Pad[Idx].X + 14, this->Pad[Idx].Y + 7, 0.75f, TEXT_COLOR, this->Nums[Idx]);
 	}
 
 	/* Draw Back and Next Buttons. */
 	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->Pad[10 + Idx].X, this->Pad[10 + Idx].Y, this->Pad[10 + Idx].W, this->Pad[10 + Idx].H, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(this->Pad[10 + Idx].X, this->Pad[10 + Idx].Y, this->Pad[10 + Idx].W, this->Pad[10 + Idx].H, KBD_KEYUNPRESSED);
 		Gui::DrawString(this->Pad[10 + Idx].X + 5, this->Pad[10 + Idx].Y + 5, 0.6f, TEXT_COLOR, this->Nums[10 + Idx]);
 	}
 };
@@ -56,7 +56,7 @@ void Numpad::RemoveNum() const {
 	if (!this->Res.empty()) this->Res.pop_back();
 };
 
-void Numpad::Confirm() const { this->Done = true; }; // Confirm.
+void Numpad::Confirm() const { this->Done = true; };
 
 
 int Numpad::Action() const {

@@ -95,7 +95,7 @@ std::string SetSelector::Action() const {
 		/* Display Cardsets. */
 		if (this->Sets.size() > 0) {
 			for(size_t Idx = 0; Idx < SETS_PER_SCREEN && Idx < this->Sets.size(); Idx++) {
-				Gui::Draw_Rect(this->Positions[1 + Idx].X, this->Positions[1 + Idx].Y, this->Positions[1 + Idx].W, this->Positions[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
+				Gui::Draw_Rect(this->Positions[1 + Idx].X, this->Positions[1 + Idx].Y, this->Positions[1 + Idx].W, this->Positions[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
 				Gui::DrawStringCentered(0, this->Positions[1 + Idx].Y + 8, 0.5f, TEXT_COLOR, this->Sets[this->ScreenPos + Idx], 290);
 			}
 		}
@@ -112,7 +112,7 @@ std::string SetSelector::Action() const {
 		/* Display Cardsets on the bottom. */
 		if (this->Sets.size() > 0) {
 			for(size_t Idx = 0; Idx < SETS_PER_SCREEN && Idx < this->Sets.size(); Idx++) {
-				Gui::Draw_Rect(this->BottomPos[1 + Idx].X, this->BottomPos[1 + Idx].Y, this->BottomPos[1 + Idx].W, this->BottomPos[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KD_KEYUNPRESSED));
+				Gui::Draw_Rect(this->BottomPos[1 + Idx].X, this->BottomPos[1 + Idx].Y, this->BottomPos[1 + Idx].W, this->BottomPos[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
 			}
 		}
 

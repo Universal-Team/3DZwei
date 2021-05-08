@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020 SuperSaiyajinStackZ
+*   Copyright (C) 2020-2021 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -26,30 +26,54 @@
 
 #include "Common.hpp"
 #include "Lang.hpp"
-
 #include <stdio.h>
 #include <unistd.h>
 
 static nlohmann::json AppJSON;
 
+/*
+	Gets a translated string from the JSON.
+
+	const std::string &Key: The string to get from the translation.
+*/
 std::string Lang::Get(const std::string &Key) {
 	if (!AppJSON.contains(Key)) return "";
 
 	return AppJSON.at(Key).get_ref<const std::string &>();
 };
 
+/*
+	Loads the Language Strings.
+*/
 void Lang::Load() {
 	FILE *In = nullptr;
 
-	if (access(("romfs:/lang/" + _3DZwei::CFG->Lang() + "/app.json").c_str(), F_OK) == 0) { // Ensure access is ok.
-		In = fopen(("romfs:/lang/" + _3DZwei::CFG->Lang() + "/app.json").c_str(), "r");
-		if (In)	AppJSON = nlohmann::json::parse(In, nullptr, false);
-		fclose(In);
+	bool Good = true;
+	if (_3DZwei::CFG->Lang() != "") { // Ensure it isn't ''.
+		for (size_t Idx = 0; Idx < _3DZwei::CFG->Lang().size(); Idx++) {
+			if (_3DZwei::CFG->Lang()[Idx] == '/') { // Contains a '/' and hence breaks.
+				Good = false;
+				break;
+			}
+		}
+	}
 
-	} else {
-		/* Load English otherwise. */
+	if (Good) {
+		if (access(("romfs:/lang/" + _3DZwei::CFG->Lang() + "/app.json").c_str(), F_OK) == 0) { // Ensure access is ok.
+			In = fopen(("romfs:/lang/" + _3DZwei::CFG->Lang() + "/app.json").c_str(), "r");
+			if (In)	AppJSON = nlohmann::json::parse(In, nullptr, false);
+			fclose(In);
+
+		} else {
+			Good = false;
+		}
+	}
+
+	if (!Good) {
+		/* Load English. */
 		In = fopen("romfs:/lang/en/app.json", "r");
 		if (In)	AppJSON = nlohmann::json::parse(In, nullptr, false);
 		fclose(In);
+		_3DZwei::CFG->Lang("en"); // Set back to english too.
 	}
 };

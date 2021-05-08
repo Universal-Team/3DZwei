@@ -41,7 +41,7 @@ public:
 	struct GameParams {
 		bool AIUsed = false; // If an AI is being used at all.
 		bool CardDelayUsed = false; // If the card delay should be used.. or if it's over a button press.
-		StackMem::AIDifficulty Difficulty = StackMem::AIDifficulty::Random; // AI Method / Difficulty.
+		StackMem::AIMethod Method = StackMem::AIMethod::Random; // AI Method / Difficulty.
 		uint8_t CardDelay = 0; // The card delay before the card gets hidden again after a turn.
 		uint8_t RoundsToWin = 3; // Rounds to win the game.
 		uint8_t Characters[2] = { 0 }; // Avatar Indexes.
@@ -57,29 +57,32 @@ public:
 	GameSettings() { };
 	GameParams Action();
 private:
-	enum class Tabs : uint8_t { General, Player };
+	enum class Tabs : uint8_t { General = 0, Player = 1 };
 
 	GameParams Params;
 	bool Done = false;
 	Tabs Tab = Tabs::General;
 
+	/* Both Tabs operations. */
+	void OK();
+	void Cancel();
+	void GeneralTab() { this->Tab = Tabs::General; };
+	void PlayerTab() { this->Tab = Tabs::Player; };
+	void TabLogic();
+
+	/* General Tab operations. */
 	void ToggleAI();
 	void ToggleDelay();
 	void ToggleGameMode();
-	void ToggleStarter();
-	void SelectDifficulty();
+	void SelectAIMethod();
 	void SelectCards();
 	void SetCardDelay();
 	void SetWinRounds();
-	void SetName(const bool AI);
-	void OK();
-	void Cancel();
-	void SelectPicture(const bool AI);
-	void TabLogic();
 
-	/* Tabs Switch! */
-	void GeneralTab() { this->Tab = Tabs::General; };
-	void PlayerTab() { this->Tab = Tabs::Player; };
+	/* Player Tab operations. */
+	void SetName(const bool AI);
+	void SelectPicture(const bool AI);
+	void ToggleStarter();
 
 	/* General Tab. */
 	const std::vector<FuncCallback> GeneralPos = {
@@ -94,7 +97,7 @@ private:
 		{ 150, 115, 24, 24, [this]() { this->SelectCards(); } },
 
 		{ 150, 155, 24, 24, [this]() { this->ToggleAI(); } },
-		{ 200, 155, 24, 24, [this]() { this->SelectDifficulty(); } },
+		{ 200, 155, 24, 24, [this]() { this->SelectAIMethod(); } },
 
 		{ 150, 195, 24, 24, [this]() { this->SetWinRounds(); } },
 

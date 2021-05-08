@@ -27,19 +27,19 @@
 #include "AISelector.hpp"
 #include "Common.hpp"
 
-AISelector::AISelector(const StackMem::AIDifficulty Diff) {
-	this->Res = Diff;
+AISelector::AISelector(const StackMem::AIMethod Method) {
+	this->Res = Method;
 
 	switch(this->Res) {
-		case StackMem::AIDifficulty::Random:
+		case StackMem::AIMethod::Random:
 			this->Mode = 0;
 			break;
 
-		case StackMem::AIDifficulty::Hard:
+		case StackMem::AIMethod::Hard:
 			this->Mode = 1;
 			break;
 
-		case StackMem::AIDifficulty::Extreme:
+		case StackMem::AIMethod::Extreme:
 			this->Mode = 2;
 			break;
 	}
@@ -62,7 +62,7 @@ void AISelector::Cancel() {
 	this->Done = true;
 };
 
-StackMem::AIDifficulty AISelector::Action() {
+StackMem::AIMethod AISelector::Action() {
 	Pointer::OnTop = true;
 	Pointer::SetPos(0, 0);
 
@@ -93,7 +93,7 @@ StackMem::AIDifficulty AISelector::Action() {
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, true);
 		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, true);
 
-		Gui::Draw_Rect(95, 105, 130, 30, KD_KEYUNPRESSED);
+		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
 		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
 		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
 
@@ -129,6 +129,6 @@ StackMem::AIDifficulty AISelector::Action() {
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
-	if (!this->Cancelled) this->Res = (StackMem::AIDifficulty)this->Mode; // Only set if NOT cancelled.
+	if (!this->Cancelled) this->Res = (StackMem::AIMethod)this->Mode; // Only set if NOT cancelled.
 	return this->Res;
 };

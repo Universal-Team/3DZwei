@@ -1,6 +1,8 @@
 # 3DZwei
-
-3DZwei is a memory cardgame clone for Nintendo 3DS.
+<p align="center">
+	<a href="https://github.com/Universal-Team/3DZwei/releases/latest"><img src="https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/logos/logo.png"></a><br>
+	<b>A memory cardgame clone for Nintendo 3DS.</b><br>
+</p>
 
 ## Main Features
 * 3DZwei includes 3 AI Methods / Difficulties, and those are explained below!
@@ -79,6 +81,34 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/splash.png)
 
 </details>
+
+## Compilation
+
+### Setting up your environment
+
+To build 3DZwei from source, you will need to install devkitARM, libctru, citro2d and citro3d. Follow devkitPro's [Getting Started](https://devkitpro.org/wiki/Getting_Started) page to install pacman, then run the following command to install everything you need:
+```
+(sudo dkp-)pacman -S 3ds-dev
+```
+(The `sudo dkp-` may not be needed depending on your OS).
+
+You will also need [bannertool](https://github.com/Steveice10/bannertool/releases/latest) and [makerom](https://github.com/profi200/Project_CTR/releases/latest) in your PATH.
+
+### Cloning the repository
+
+To download the source you will need to clone the repository with submodules, this can be done by running:
+```
+git clone --recursive https://github.com/Universal-Team/3DZwei.git
+```
+
+If you've already cloned it, you can use the following command to update all of the submodules:
+```
+git submodule update --init --recursive
+```
+
+### Building
+
+Once you've cloned the repository (with submodules), simply run `make` in the root of the repository. You will find `3DZwei.cia` and `3DZwei.3dsx` inside the `3ds` directory.
 
 ## Credits
 ### Main Developers

@@ -43,13 +43,11 @@ private:
 	void OK();
 	void NextPage();
 
-
 	const std::vector<FuncCallback> Positions = {
-		{ 40, 60, 25, 145, [this]() { this->PrevPage(); } }, // Prev.
-		{ 335, 60, 25, 145, [this]() { this->NextPage(); } } // Next.
+		{ 40, 60, 25, 145, [this]() { this->PrevPage(); } },
+		{ 335, 60, 25, 145, [this]() { this->NextPage(); } }
 	};
 
-	/* Same as above, but on the bottom for touch compatibility! */
 	const std::vector<FuncCallback> BottomPos = {
 		{ 70, 75, 25, 90, [this]() { this->PrevPage(); } },
 		{ 123, 109, 74, 22, [this]() { this->OK(); } },

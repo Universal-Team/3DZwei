@@ -44,11 +44,11 @@ private:
 	};
 
 	int16_t X = 200, Y = 120; // Pointer Pos.
-	int16_t CoreMoved = 0; // The Moved Core.
+	int16_t CoreMoved = 0; // The Moved Core Logo.
 	int16_t Delay = 200; // Wait Delay.
 	bool CardClicks[2] = { false }; // If cards are clicked or nah.
 	States State = States::GotoFirst; // The Current State.
-	bool Done = false; // If it's done or nah.
+	bool Done = false;
 
 	/* Splash States. */
 	void State1();

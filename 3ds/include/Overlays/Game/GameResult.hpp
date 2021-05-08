@@ -27,7 +27,7 @@
 #ifndef _3DZWEI_GAME_RESULT_HPP
 #define _3DZWEI_GAME_RESULT_HPP
 
-#include "GameSettings.hpp" // For GameParams.
+#include "GameSettings.hpp"
 #include "Pointer.hpp"
 #include <vector>
 
