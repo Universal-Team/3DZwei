@@ -644,14 +644,14 @@ int StackMem::GetProperPair() const {
 
 /* Sets a random Player as the Current Player using the Random Engine. */
 void StackMem::SelectRandomPlayer() {
-	const bool Res = this->RandomEngine() % 1; // It's 50:50.
+	const uint8_t Res = this->RandomEngine() % 2 + 1; // Returns 1, or 2.
 
 	switch(Res) {
-		case 0:
+		case 1:
 			this->SetCurrentPlayer(StackMem::Players::Player1);
 			break;
 
-		case 1:
+		case 2:
 			this->SetCurrentPlayer(StackMem::Players::Player2);
 			break;
 	}

@@ -45,8 +45,10 @@ GameScreen::GameScreen(const GameSettings::GameParams Param) {
 				break;
 
 			case GameSettings::RoundStarter::Random:
+			case GameSettings::RoundStarter::Loser:
+			case GameSettings::RoundStarter::Winner:
 				this->Game->SelectRandomPlayer();
-					break;
+				break;
 		};
 	}
 };
@@ -258,6 +260,118 @@ void GameScreen::AILogic(const uint32_t Down) {
 	}
 };
 
+/*
+	Executes the turn checks.
+	This saves duplicate of codes.
+*/
+void GameScreen::PlayCheck() {
+	if (this->Game->DoCheck()) {
+		/* Check if over. */
+		if (this->Game->CheckGameState() != StackMem::GameState::NotOver) {
+			const StackMem::GameState Res = this->Game->CheckGameState();
+
+			switch(Res) {
+				case StackMem::GameState::NotOver:
+					break;
+
+				case StackMem::GameState::Tie:
+				case StackMem::GameState::Player1:
+				case StackMem::GameState::Player2: // All 3 states are valid end states.
+				{
+					/* Set Pairs. */
+					this->Params.PlayerPairs[0] = this->Game->GetPlayerPairs(StackMem::Players::Player1);
+					this->Params.PlayerPairs[1] = this->Game->GetPlayerPairs(StackMem::Players::Player2);
+
+					std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
+
+					/* Get the proper Overlay. They also set the win count to ++ for the winner. */
+					if (Res == StackMem::GameState::Tie) Ovl->Action(this->Params, 0);
+					else if (Res == StackMem::GameState::Player1) Ovl->Action(this->Params, 1);
+					else if (Res == StackMem::GameState::Player2) Ovl->Action(this->Params, 2);
+
+					/* If we reached the needed win amount, are on the Try Play Mode -> go the screen back to the MainMenu again. */
+					if (this->Params.Wins[0] >= this->Params.RoundsToWin || this->Params.Wins[1] >= this->Params.RoundsToWin || this->Params.GameMode == GameSettings::GameModes::TryPlay) {
+						Gui::screenBack();
+						return;
+
+					} else {
+						/* Init a new game. */
+						this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetMethod(), false);
+
+						/* Set the Starting Player. */
+						switch(this->Params.Starter) {
+							case GameSettings::RoundStarter::Player1:
+								this->Game->SetCurrentPlayer(StackMem::Players::Player1);
+								break;
+
+							case GameSettings::RoundStarter::Player2:
+								this->Game->SetCurrentPlayer(StackMem::Players::Player2);
+								break;
+
+							case GameSettings::RoundStarter::Random: // Just Random!
+								this->Game->SelectRandomPlayer();
+								break;
+
+							case GameSettings::RoundStarter::Loser:
+								switch(Res) { // The Loser can start.
+									case StackMem::GameState::NotOver:
+									case StackMem::GameState::Tie:
+										this->Game->SelectRandomPlayer();
+										break;
+
+									case StackMem::GameState::Player2:
+										this->Game->SetCurrentPlayer(StackMem::Players::Player1);
+										break;
+
+									case StackMem::GameState::Player1:
+										this->Game->SetCurrentPlayer(StackMem::Players::Player2);
+										break;
+								};
+								break;
+
+							case GameSettings::RoundStarter::Winner:
+								switch(Res) { // The Winner can start.
+									case StackMem::GameState::NotOver:
+									case StackMem::GameState::Tie:
+										this->Game->SelectRandomPlayer();
+										break;
+
+									case StackMem::GameState::Player1:
+										this->Game->SetCurrentPlayer(StackMem::Players::Player1);
+										break;
+
+									case StackMem::GameState::Player2:
+										this->Game->SetCurrentPlayer(StackMem::Players::Player2);
+										break;
+								};
+								break;
+						};
+
+						this->RefreshFrame = true;
+					}
+				}
+				break;
+			};
+
+		} else {
+			this->RefreshFrame = true;
+			this->Game->SetState(StackMem::TurnState::DrawFirst); // We were able to play a card, so let us continue!
+		}
+
+	} else {
+		/* At this point, we need to make an exception for Try and Normal Mode. */
+		if (this->Params.GameMode == GameSettings::GameModes::TryPlay) { // Try Mode.
+			this->Params.Tries++; // Increase the Tries.
+			this->RefreshFrame = true;
+			this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
+
+		} else { // Normal Mode.
+			this->RefreshFrame = true;
+			this->Game->NextPlayer(); // Nah, no match. Next player!
+		}
+	}
+};
+
 /* Normal Play Logic. */
 void GameScreen::NormalPlayLogic(const uint32_t Down, const uint32_t Held, const touchPosition T) {
 	if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
@@ -281,132 +395,11 @@ void GameScreen::NormalPlayLogic(const uint32_t Down, const uint32_t Held, const
 				for (uint8_t Idx = 0; Idx < this->Params.CardDelay; Idx++) { gspWaitForVBlank(); }; // Do the delay, if enabled.
 			}
 
-			if (this->Game->DoCheck()) {
-				/* Check if over. */
-				if (this->Game->CheckGameState() != StackMem::GameState::NotOver) {
-					const StackMem::GameState Res = this->Game->CheckGameState();
-
-					switch(Res) {
-						case StackMem::GameState::NotOver:
-							break;
-
-						case StackMem::GameState::Tie:
-						case StackMem::GameState::Player1:
-						case StackMem::GameState::Player2: // All 3 states are valid end states.
-						{
-							/* Set Pairs. */
-							this->Params.PlayerPairs[0x0] = this->Game->GetPlayerPairs(StackMem::Players::Player1);
-							this->Params.PlayerPairs[0x1] = this->Game->GetPlayerPairs(StackMem::Players::Player2);
-
-							std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
-
-							/* Get the proper Overlay. They also set the win count to ++ for the winner. */
-							if (Res == StackMem::GameState::Tie) Ovl->Action(this->Params, 0);
-							else if (Res == StackMem::GameState::Player1) Ovl->Action(this->Params, 1);
-							else if (Res == StackMem::GameState::Player2) Ovl->Action(this->Params, 2);
-
-							/* If we reached the needed win amount, go the screen back to the MainMenu again. */
-							if (this->Params.Wins[0] >= this->Params.RoundsToWin || this->Params.Wins[1] >= this->Params.RoundsToWin) {
-								Gui::screenBack();
-								return;
-
-							} else {
-								/* Init a new game. */
-								this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetMethod(), false);
-
-								/* Set the Starting Player. */
-								switch(this->Params.Starter) {
-									case GameSettings::RoundStarter::Player1:
-										this->Game->SetCurrentPlayer(StackMem::Players::Player1);
-										break;
-
-									case GameSettings::RoundStarter::Player2:
-										this->Game->SetCurrentPlayer(StackMem::Players::Player2);
-										break;
-
-									case GameSettings::RoundStarter::Random:
-										this->Game->SelectRandomPlayer();
-										break;
-								};
-
-								this->RefreshFrame = true;
-							}
-						}
-						break;
-					};
-
-				} else {
-					this->RefreshFrame = true;
-					this->Game->SetState(StackMem::TurnState::DrawFirst); // We were able to play a card, so let us continue!
-				}
-
-			} else {
-				this->RefreshFrame = true;
-				this->Game->NextPlayer(); // Nah, no match. Next player!
-			}
+			this->PlayCheck();
 
 		} else { // At this point, we'd expect an input.
 			if (Down) {
-				if (this->Game->DoCheck()) {
-					/* Check if over. */
-					if (this->Game->CheckGameState() != StackMem::GameState::NotOver) {
-						const StackMem::GameState Res = this->Game->CheckGameState();
-
-						switch(Res) {
-							case StackMem::GameState::NotOver:
-								break;
-
-							case StackMem::GameState::Tie:
-							case StackMem::GameState::Player1:
-							case StackMem::GameState::Player2: // All 3 states are valid end states.
-							{
-								/* Set Pairs. */
-								this->Params.PlayerPairs[0x0] = this->Game->GetPlayerPairs(StackMem::Players::Player1);
-								this->Params.PlayerPairs[0x1] = this->Game->GetPlayerPairs(StackMem::Players::Player2);
-
-								std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
-
-								/* Get the proper Overlay. They also set the win count to ++ for the winner. */
-								if (Res == StackMem::GameState::Tie) Ovl->Action(this->Params, 0);
-								else if (Res == StackMem::GameState::Player1) Ovl->Action(this->Params, 1);
-								else if (Res == StackMem::GameState::Player2) Ovl->Action(this->Params, 2);
-
-								/* If we reached the needed win amount, go the screen back to the MainMenu again. */
-								if (this->Params.Wins[0] >= this->Params.RoundsToWin || this->Params.Wins[1] >= this->Params.RoundsToWin) {
-									Gui::screenBack();
-									return;
-
-								} else {
-									/* Init a new game. */
-									this->Game->InitializeGame(this->Game->GetPairs(), this->Game->AIEnabled(), this->Game->GetMethod(), false);
-
-									/* Set the Starting Player. */
-									switch(this->Params.Starter) {
-										case GameSettings::RoundStarter::Player1:
-											this->Game->SetCurrentPlayer(StackMem::Players::Player1);
-											break;
-
-										case GameSettings::RoundStarter::Player2:
-											this->Game->SetCurrentPlayer(StackMem::Players::Player2);
-											break;
-
-										case GameSettings::RoundStarter::Random:
-											this->Game->SelectRandomPlayer();
-											break;
-									};
-
-								}
-							}
-							break;
-						};
-
-					} else {
-						this->Game->SetState(StackMem::TurnState::DrawFirst); // We were able to play a card, so let us continue!
-					}
-
-				} else {
-					this->Game->NextPlayer(); // Nah, no match. Next player!
-				}
+				this->PlayCheck();
 			}
 		}
 	}
@@ -440,45 +433,11 @@ void GameScreen::TryPlayLogic(const uint32_t Down, const uint32_t Held, const to
 				for (size_t Idx = 0; Idx < this->Params.CardDelay; Idx++) { gspWaitForVBlank(); }; // Do the delay, if enabled.
 			}
 
-			if (this->Game->DoCheck()) {
-				/* Check if over. */
-				if (this->Game->CheckGameState() != StackMem::GameState::NotOver) {
-					std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
-					Ovl->Action(this->Params, 0);
-					Gui::screenBack();
-					return;
-
-				} else {
-					this->RefreshFrame = true;
-					this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
-				}
-
-			} else {
-				this->Params.Tries++; // Increase the Tries.
-				this->RefreshFrame = true;
-				this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
-			}
+			this->PlayCheck();
 
 		} else { // At this point, we'd expect an input.
 			if (Down) {
-				if (this->Game->DoCheck()) {
-					/* Check if over. */
-					if (this->Game->CheckGameState() != StackMem::GameState::NotOver) {
-						std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
-						Ovl->Action(this->Params, 0);
-						Gui::screenBack();
-						return;
-
-					} else {
-						this->RefreshFrame = true;
-						this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
-					}
-
-				} else {
-					this->Params.Tries++; // Increase the Tries.
-					this->RefreshFrame = true;
-					this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
-				}
+				this->PlayCheck();
 			}
 		}
 	}

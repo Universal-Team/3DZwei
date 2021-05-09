@@ -65,6 +65,14 @@ void GameSettings::ToggleStarter() {
 			break;
 
 		case GameSettings::RoundStarter::Random:
+			this->Params.Starter = GameSettings::RoundStarter::Loser;
+			break;
+
+		case GameSettings::RoundStarter::Loser:
+			this->Params.Starter = GameSettings::RoundStarter::Winner;
+			break;
+
+		case GameSettings::RoundStarter::Winner:
 			this->Params.Starter = GameSettings::RoundStarter::Player1;
 			break;
 	}
@@ -256,6 +264,14 @@ GameSettings::GameParams GameSettings::Action() {
 
 						case GameSettings::RoundStarter::Random:
 							Gui::DrawString(190, 200, 0.5f, TEXT_COLOR, Lang::Get("RANDOM"), 120);
+							break;
+
+						case GameSettings::RoundStarter::Loser:
+							Gui::DrawString(190, 200, 0.5f, TEXT_COLOR, Lang::Get("LOSER"), 120);
+							break;
+
+						case GameSettings::RoundStarter::Winner:
+							Gui::DrawString(190, 200, 0.5f, TEXT_COLOR, Lang::Get("WINNER"), 120);
 							break;
 					}
 				}

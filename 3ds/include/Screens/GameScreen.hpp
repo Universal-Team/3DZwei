@@ -50,6 +50,7 @@ private:
 	void PrevPage();
 	void NextPage();
 	void CheckCard(const uint8_t Idx);
+	void PlayCheck();
 
 	/* Normal Play Mode. */
 	void DrawNormalPlay(void) const;

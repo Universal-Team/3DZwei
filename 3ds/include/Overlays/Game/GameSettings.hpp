@@ -35,7 +35,7 @@
 class GameSettings {
 public:
 	enum class GameModes : uint8_t { NormalPlay = 0, TryPlay = 1 };
-	enum class RoundStarter : uint8_t { Player1 = 0, Player2 = 1, Random = 2 };
+	enum class RoundStarter : uint8_t { Player1 = 0, Player2 = 1, Random = 2, Loser = 3, Winner = 4 };
 
 	/* Game Parameters. */
 	struct GameParams {
