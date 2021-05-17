@@ -26,27 +26,35 @@
 
 #include "3DZwei.hpp"
 #include "Common.hpp"
-#include "MainMenu.hpp"
-#include "SplashOverlay.hpp"
 #include "Utils.hpp"
-#include <3ds.h>
-#include <dirent.h>
+#include <3ds.h> // aptMainLoop().
+#include <dirent.h> // mkdir.
+#include <ctime> // time.
+
+/* Include all Overlays here. */
+#include "CreditsOverlay.hpp"
+#include "GameSettings.hpp"
+#include "GameOverlay.hpp"
+#include "RulesOverlay.hpp"
+#include "SettingsOverlay.hpp"
+#include "SplashOverlay.hpp"
 
 std::unique_ptr<Config> _3DZwei::CFG = nullptr;
-bool _3DZwei::Exiting = false;
-uint8_t _3DZwei::FAlpha = 255;
 
-void _3DZwei::Start() {
+
+/* Constructor of the app. */
+_3DZwei::_3DZwei() {
 	gfxInitDefault();
 	romfsInit();
 	Gui::init();
 
 	/* Create necessary directories. */
 	mkdir("sdmc:/3ds", 0x777);
-	mkdir("sdmc:/3ds/3DZwei", 0x777); // Main directory.
-	mkdir("sdmc:/3ds/3DZwei/sets", 0x777); // Main set path.
-	mkdir("sdmc:/3ds/3DZwei/sets/cards", 0x777); // For the Card Sets.
-	mkdir("sdmc:/3ds/3DZwei/sets/characters", 0x777); // For the Character Sets.
+	mkdir("sdmc:/3ds/ut-games", 0x777); // Universal-Team Games.
+	mkdir("sdmc:/3ds/ut-games/3DZwei", 0x777); // Main directory.
+	mkdir("sdmc:/3ds/ut-games/sets", 0x777); // Main set path.
+	mkdir("sdmc:/3ds/ut-games/sets/3DZwei", 0x777); // For the Card Sets.
+	mkdir("sdmc:/3ds/ut-games/sets/characters", 0x777); // For the Character Sets.
 
 	_3DZwei::CFG = std::make_unique<Config>();
 	Lang::Load();
@@ -60,47 +68,171 @@ void _3DZwei::Start() {
 	if (_3DZwei::CFG->ShowSplash()) {
 		std::unique_ptr<SplashOverlay> Ovl = std::make_unique<SplashOverlay>();
 		Ovl->Action();
-	}
+	};
 
-	_3DZwei::FAlpha = 0;
-
-	Gui::setScreen(std::make_unique<MainMenu>(), false, true);
+	srand(time(nullptr)); // Seed for rand() usage on animation.
 };
 
-int _3DZwei::Logic() {
-	bool FullExit = false;
 
-	_3DZwei::Start();
+/* Prepare a Game. */
+void _3DZwei::PrepareGame() {
+	this->FadeOutHandler(); // Fade out.
 
-	while(aptMainLoop() && !FullExit) {
+	std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>();
+	const GameSettings::GameParams Params = Ovl->Action();
+
+	if (Utils::Cards.size() > 0 && !Params.CancelGame) { // At least 1 pair should exist and the game NOT cancelled!!!
+		std::unique_ptr<GameOverlay> Game = std::make_unique<GameOverlay>(Params);
+		Game->Action();
+	}
+
+	this->OverlayReturn();
+};
+
+
+/* Show the 3DZwei Rules. */
+void _3DZwei::ShowRules() {
+	this->FadeOutHandler(); // Fade out.
+
+	std::unique_ptr<RulesOverlay> Ovl = std::make_unique<RulesOverlay>();
+	Ovl->Action();
+
+	this->OverlayReturn();
+};
+
+
+/* Access the Settings. */
+void _3DZwei::AccessSettings() {
+	this->FadeOutHandler(); // Fade out.
+
+	std::unique_ptr<SettingsOverlay> Ovl = std::make_unique<SettingsOverlay>();
+	Ovl->Action();
+
+	this->OverlayReturn();
+	if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) && (this->FAlpha > 0)) this->FAlpha = 0; // Don't blackscreen.
+};
+
+
+/* Show the 3DZwei Credits. */
+void _3DZwei::ShowCredits() {
+	this->FadeOutHandler(); // Fade out.
+
+	std::unique_ptr<CreditsOverlay> Ovl = std::make_unique<CreditsOverlay>();
+	Ovl->Action();
+
+	this->OverlayReturn();
+};
+
+
+/* Returns back to an overlay. */
+void _3DZwei::OverlayReturn() { this->FadeInHandler(); };
+
+
+/* Fade Handlers. */
+void _3DZwei::FadeOutHandler() {
+	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) return;
+
+	this->FadeOut = true;
+	this->FAlpha = 0;
+
+	while(aptMainLoop() && this->FadeOut) {
+		this->Draw();
+
 		hidScanInput();
-		touchPosition T;
 		const uint32_t Down = hidKeysDown();
-		const uint32_t Held = hidKeysHeld();
-		hidTouchRead(&T);
+		if (Down) this->FAlpha = 255, this->FadeOut = false;
 
-		Gui::clearTextBufs();
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		Gui::DrawScreen(true);
-		if (!_3DZwei::Exiting) Gui::ScreenLogic(Down, Held, T, false, true); // Only logic, if doesn't Exit.
-		C3D_FrameEnd(0);
+		if (this->FAlpha < 255) {
+			this->FAlpha += 5;
 
-		if (_3DZwei::Exiting) {
-			hidScanInput(); // Re-Scan.
-			if (hidKeysDown() & KEY_START) _3DZwei::FAlpha = 255;
+			if (this->FAlpha >= 255) this->FadeOut = false;
+		}
+	};
+};
 
-			if (_3DZwei::FAlpha < 252) _3DZwei::FAlpha += 3;
-			if (_3DZwei::FAlpha >= 252) FullExit = true;
+
+void _3DZwei::FadeInHandler() {
+	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) return;
+
+	this->FadeIn = true;
+	this->FAlpha = 255;
+
+	while(aptMainLoop() && this->FadeIn) {
+		this->Draw();
+
+		hidScanInput();
+		const uint32_t Down = hidKeysDown();
+		if (Down) this->FAlpha = 0, this->FadeIn = false;
+
+		if (this->FAlpha > 0) {
+			this->FAlpha -= 5;
+
+			if (this->FAlpha <= 0) this->FadeIn = false;
+		}
+	};
+};
+
+
+void _3DZwei::Draw() {
+	Gui::clearTextBufs();
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+
+	GFX::DrawTop();
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, "3DZwei", 395);
+	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
+	if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+
+	GFX::DrawBottom();
+	for (uint8_t Idx = 0; Idx < (int)this->Positions.size(); Idx++) {
+		Gui::Draw_Rect(this->Positions[Idx].X, this->Positions[Idx].Y, this->Positions[Idx].W, this->Positions[Idx].H, KBD_KEYPRESSED);
+		Gui::DrawStringCentered(0, this->Positions[Idx].Y + 8, 0.6f, TEXT_COLOR, Lang::Get(this->ButtonNames[Idx]), 130);
+	}
+
+	Pointer::Draw();
+	if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+	C3D_FrameEnd(0);
+};
+
+
+/* MAIN Logic. */
+int _3DZwei::Action() {
+	this->FadeInHandler();
+
+	while(aptMainLoop() && !this->FullExit) {
+		this->Draw();
+
+		if (!this->FullExit) {
+			hidScanInput();
+			touchPosition T;
+			const uint32_t Down = hidKeysDown();
+			const uint32_t Held = hidKeysHeld();
+			hidTouchRead(&T);
+
+			Pointer::ScrollHandling(Held); // Pointer Handling.
+
+			if (Down & KEY_A) {
+				for (auto &Position : this->Positions) {
+					if (Pointer::Clicked(Position, true)) break;
+				}
+			}
+
+			if (Down & KEY_TOUCH) {
+				for (auto &Position : this->Positions) {
+					if (Touched(Position, T, true)) break;
+				}
+			}
+
+			if (Down & KEY_START) {
+				this->FadeOutHandler();
+				this->FullExit = true;
+			}
 		}
 	};
 
-	return _3DZwei::Exit();
-};
-
-int _3DZwei::Exit() {
-	CFG->Sav();
+	/* De-init everything. */
+	_3DZwei::CFG->Sav();
 	GFX::UnloadSheets();
 	Gui::exit();
 	romfsExit();
@@ -109,4 +241,8 @@ int _3DZwei::Exit() {
 	return 0;
 };
 
-int main() { return _3DZwei::Logic(); };
+
+int main() {
+	std::unique_ptr<_3DZwei> Ovl = std::make_unique<_3DZwei>(); // Init everything.
+	return Ovl->Action(); // Run app + handle main loop.
+};

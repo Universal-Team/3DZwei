@@ -24,44 +24,64 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_GAME_SCREEN_HPP
-#define _3DZWEI_GAME_SCREEN_HPP
+#ifndef _3DZWEI_GAME_HELPER_HPP
+#define _3DZWEI_GAME_HELPER_HPP
 
-#include "GameSettings.hpp"
+#include "GameSettings.hpp" // Game Params.
+#include "StackMem.hpp" // Game class.
 #include "Pointer.hpp"
-#include "screen.hpp"
-#include "StackMem.hpp"
-#include <vector>
+#include <vector> // Positions.
 
-class GameScreen : public Screen {
+class GameHelper {
 public:
-	GameScreen(const GameSettings::GameParams Params = { });
-	void Draw(void) const override;
-	void Logic(uint32_t Down, uint32_t Held, touchPosition T) override;
+	enum class LogicState : uint8_t { Nothing = 0, P1Won = 1, P2Won = 2, Tie = 3 };
+
+	GameHelper(const GameSettings::GameParams Params = { }); // Constructor.
+	void StartGame(const bool AlreadyInitialized = true, const GameSettings::GameParams Params = { }, const bool P2Won = true);
+
+	void DrawTryPlay(void) const;
+	void DrawNormalPlay(void) const;
+	void DrawTop(void) const;
+	void DrawField(const bool ShowPointer = true) const;
+
+	LogicState Logic(const uint32_t Down, const uint32_t Held, const touchPosition T);
+	GameSettings::GameParams &ReturnParams() { return this->Params; };
 private:
-	/* Some Variables. */
 	std::unique_ptr<StackMem> Game = nullptr;
-	GameSettings::GameParams Params; // Game Parameters!
-	size_t Page = 0, P1Wins = 0, P2Wins = 0, Tries = 0; // Current Page, Player 1 Wins, Player 2 Wins and the amount of Tries.
+	GameSettings::GameParams Params = { };
+	size_t Page = 0, Selection = 0;
 	bool RefreshFrame = true; // Used for the delay mode to properly display the card.
 
-	/* Functions, which are used in both play modes. */
-	bool CanGoNext() const;
-	void PrevPage();
-	void NextPage();
+	/* Turn Card variables. The clicked state AND card scale (0.0f up to 1.0f). */
+	bool CardClicked[2] = { false };
+	float ClickedScale[2] = { 1.0f };
+
+	/* Page related. */
+	bool CanGoForward(const size_t CurPage) const;
+	bool PrevPage();
+	bool NextPage();
+
+	/* Utility related. */
 	void CheckCard(const uint8_t Idx);
-	void PlayCheck();
+	std::vector<uint8_t> GetAnimationIdx(const uint8_t Round) const;
+	uint8_t GetIndexCount() const;
 
-	/* Normal Play Mode. */
-	void DrawNormalPlay(void) const;
-	void PlayerLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);
-	void AILogic(const uint32_t Down);
-	void NormalPlayLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);
+	/* Turn based related. */
+	LogicState TurnChecks();
+	LogicState AILogic(const uint32_t Down);
+	LogicState PlayerLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);
 
-	/* Try Play Mode. */
-	void DrawTryPlay(void) const;
-	void TryPlayLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);
+	/* Include all Animations here. */
+	void StartGameAnimationFalling();
+	void StartGameAnimationGrowing();
+	void StartGameAnimation();
+	void PageAnimation(const bool Forward);
+	void PickAnimation(const size_t Idx);
+	void HideAnimation();
+	void ShrinkAnimation();
+	void EndGameAnimation();
 
+	/* Card Positions. */
 	const std::vector<FuncCallback> CPos = {
 		/* Row 1. */
 		{ 20.5, 8.5, 55, 55, [this]() { this->CheckCard(0); } },

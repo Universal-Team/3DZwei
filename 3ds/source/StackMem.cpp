@@ -364,7 +364,7 @@ bool StackMem::CheckMatch() const {
 
 	Returns true if card matched, false if not.
 */
-bool StackMem::DoCheck() {
+bool StackMem::DoCheck(const bool HideCards) {
 	if (this->PlayCards[0] != -1 && this->PlayCards[1] != -1 && this->GetState() == StackMem::TurnState::DoCheck) { // Ensure they are not -1.
 		if (this->CheckMatch()) { // Check if both current Cards match.
 			/* Card matches, so set a pair. */
@@ -379,12 +379,19 @@ bool StackMem::DoCheck() {
 			}
 
 			/* Set that we used and collected it. */
-			this->SetCardCollected(this->PlayCards[0], true); this->SetCardCollected(this->PlayCards[1], true);
+			if (HideCards) {
+				this->SetCardCollected(this->PlayCards[0], true); this->SetCardCollected(this->PlayCards[1], true);
+			}
+
 			return true;
 
 		} else { // It did not match, so hide cards again + update the AI mind.
 			if (this->AIEnabled() && this->_AI) this->_AI->UpdateMind(this->PlayCards[0], this->PlayCards[1]); // Update AI's mind.
-			this->SetCardShown(this->PlayCards[0], false); this->SetCardShown(this->PlayCards[1], false); // Change the state, so the actual cards are hidden again.
+
+			/* Optionally hide those automatically. This is set to false though on 3DZwei for animation purposes. */
+			if (HideCards) {
+				this->ResetTurn(false); // Hide the cards again.
+			}
 		}
 	}
 
@@ -666,4 +673,12 @@ StackMem::AIMethod StackMem::GetMethod() const {
 	if (this->AIEnabled() && this->_AI) return this->_AI->GetMethod();
 
 	return StackMem::AIMethod::Random;
+};
+
+void StackMem::ResetTurn(const bool Correct) {
+	if (!Correct) {
+		this->SetCardShown(this->PlayCards[0], false); this->SetCardShown(this->PlayCards[1], false);
+	}
+
+	this->PlayCards[0] = -1, this->PlayCards[1] = -1;
 };

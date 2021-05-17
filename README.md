@@ -35,17 +35,11 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ### Card Selector
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardSelector.png)
 
-### Cardset Preview
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetPreview.png)
-
-### Characterset Preview
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charsetPreview.png)
-
 ### Character Selector
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/characterSelector.png)
 
 ### Credits
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsTranslators.png)
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsTranslators.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsSpecialThanks.png)
 
 ### Game Result
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameResult.png)
@@ -56,26 +50,20 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ### Game Settings
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsGeneral.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsPlayers.png)
 
-### Keyboard
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/keyboard.png)
-
 ### Language Selector
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/languageSelector.png)
 
 ### Main Menu
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/mainmenu.png)
 
-### Numpad
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/numpad.png)
-
 ### Rules
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/rules.png)
 
-### Set Selector
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/setSelector.png)
+### Set Selectors
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorCard.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorChar.png)
 
 ### Settings
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsConfig.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAppInfo.png)
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsConfig.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAnimation.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAppInfo.png)
 
 ### Splash
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/splash.png)
@@ -118,6 +106,11 @@ Once you've cloned the repository (with submodules), simply run `make` in the ro
 - [devkitPro](https://github.com/devkitPro): devkitARM, Libctru, Citro2D & Citro3D.
 - [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): StackMem-Core + 3DZwei developement.
 - [Universal-Team](https://github.com/Universal-Team): Universal-Core.
+
+### Special Thanks
+- [NightScript](https://github.com/NightYoshi370): For having the idea to use cubic bezier for animations, the falling cards animation on the game start and suggestions.
+- [Pk11](https://github.com/Epicpkmn11): For helping me with an example on how to flip a card in 2D and suggestions.
+- Universal-Microwave: For better teaching me how cubic bezier works with an example and suggestions.
 
 ### Translators
 - [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): Deutsch, English.

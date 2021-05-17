@@ -74,16 +74,14 @@ BUILD		:=	build
 UNIVCORE	:= 	Universal-Core
 SOURCES		:=	$(UNIVCORE) \
 				source \
-				source/Overlays source/Overlays/Game source/Overlays/Inputs source/Overlays/Previews source/Overlays/Selectors \
-				source/Screens \
+				source/Overlays source/Overlays/Game source/Overlays/Inputs source/Overlays/Selectors \
 				source/UI \
 				source/Utils
 
 DATA		:=	data
 INCLUDES	:=	$(UNIVCORE) \
 				include \
-				include/Overlays include/Overlays/Game include/Overlays/Inputs include/Overlays/Previews include/Overlays/Selectors \
-				include/Screens \
+				include/Overlays include/Overlays/Game include/Overlays/Inputs include/Overlays/Selectors \
 				include/UI \
 				include/Utils
 
@@ -109,7 +107,7 @@ CFLAGS	:=	-g -Wall -Wno-psabi -O2 -mword-relocations \
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -D_GNU_SOURCE=1
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++17
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++20
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)

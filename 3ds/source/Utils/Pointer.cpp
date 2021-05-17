@@ -27,6 +27,7 @@
 #include "Common.hpp"
 #include "Pointer.hpp"
 
+
 /* Define the actual variables. */
 float Pointer::X = 0, Pointer::Y = 0;
 bool Pointer::OnTop = false;
@@ -36,16 +37,17 @@ bool Pointer::OnTop = false;
 #define PTR_Y_SIZE 16
 #define X_DIST 3
 #define Y_DIST 4
-
 #define PTR_SPEED _3DZwei::CFG->PointerSpeed(); // Pointer Speed.
+
 
 /*
 	Handles the Pointer Scrolling.
 
 	const uint32_t Held: The key held input variable, also known as hidKeysHeld() on 3DS.
+	const bool InGame: If in game (true) or not (false).
 */
-void Pointer::ScrollHandling(const uint32_t Held) {
-	if (Held & KEY_LEFT) {
+void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
+	if (Held & (InGame ? KEY_CPAD_LEFT : KEY_LEFT)) {
 		if (Pointer::X >= 0) {
 			Pointer::X -= PTR_SPEED;
 
@@ -53,7 +55,7 @@ void Pointer::ScrollHandling(const uint32_t Held) {
 		}
 	}
 
-	if (Held & KEY_RIGHT) {
+	if (Held & (InGame ? KEY_CPAD_RIGHT : KEY_RIGHT)) {
 		if (Pointer::X <= ((Pointer::OnTop ? 400 : 320) - PTR_X_SIZE)) {
 			Pointer::X += PTR_SPEED;
 
@@ -61,7 +63,7 @@ void Pointer::ScrollHandling(const uint32_t Held) {
 		}
 	}
 
-	if (Held & KEY_UP) {
+	if (Held & (InGame ? KEY_CPAD_UP : KEY_UP)) {
 		if (Pointer::Y >= -Y_DIST) {
 			Pointer::Y -= PTR_SPEED;
 
@@ -69,7 +71,7 @@ void Pointer::ScrollHandling(const uint32_t Held) {
 		}
 	}
 
-	if (Held & KEY_DOWN) {
+	if (Held & (InGame ? KEY_CPAD_DOWN : KEY_DOWN)) {
 		if (Pointer::Y <= (240 - PTR_Y_SIZE)) {
 			Pointer::Y += PTR_SPEED;
 
@@ -77,6 +79,7 @@ void Pointer::ScrollHandling(const uint32_t Held) {
 		}
 	}
 };
+
 
 /*
 	Returns, of a specific Callback Position was clicked.. and if so, execute optionally it's function.
@@ -93,6 +96,7 @@ bool Pointer::Clicked(const FuncCallback CBack, const bool CallFunc) {
 
 	return false;
 };
+
 
 /*
 	Returns, of a specific Callback Position was touched.. and if so, execute optionally it's function.
@@ -117,6 +121,7 @@ bool Touched(const FuncCallback CBack, touchPosition T, const bool CallFunc) {
 	const float Scale: Optional Pointer Scale.
 */
 void Pointer::Draw(const float Scale) { Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, Pointer::X, Pointer::Y); };
+
 
 /* Set Pointer Position from two float's, or the Pointer Struct. */
 void Pointer::SetPos(const FuncCallback CBack) { Pointer::X = CBack.X, Pointer::Y = CBack.Y; };

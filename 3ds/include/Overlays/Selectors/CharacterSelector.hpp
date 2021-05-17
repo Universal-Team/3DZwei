@@ -34,20 +34,23 @@
 class CharacterSelector {
 public:
 	CharacterSelector(const int8_t OldSelection) : Res(OldSelection) { };
-	int Action() const;
+	int Action();
 private:
-	mutable int Res = 1;
-	mutable bool Done = false;
+	int Res = 0, PrevPos = -400, CurPos = -400, NextPos = 400;
+	bool Done = false, FullDone = false, FadeIn = true, SwipeDir = true, DoSwipe = false, InitialSwipe = true;
+	float Cubic = 0.0f;
+	uint8_t FAlpha = 255;
 
-	void PrevChar() const;
-	void NextChar() const;
-	void Select() const;
-	void Cancel() const;
+	void PrevChar();
+	void NextChar();
+	void Select();
+	void Cancel();
+	void CharLogic();
 
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 25, 25, 215, [this]() { this->PrevChar(); } },
 		{ 375, 25, 25, 215, [this]() { this->NextChar(); } },
-		{ 147, 180, 106, 20, [this]() { this->Select(); } }
+		{ 147, 200, 106, 20, [this]() { this->Select(); } }
 	};
 
 	const std::vector<FuncCallback> BottomPos = {

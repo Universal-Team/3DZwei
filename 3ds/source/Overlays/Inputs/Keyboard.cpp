@@ -27,116 +27,41 @@
 #include "Common.hpp"
 #include "Keyboard.hpp"
 
-/* Draw the Keyboard. */
-void Keyboard::Draw() const {
-	/* Draw Upper + Lower. */
-	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->SpecialKeysFunc[Idx].X, this->SpecialKeysFunc[Idx].Y, this->SpecialKeysFunc[Idx].W, this->SpecialKeysFunc[Idx].H, (!this->Upper == Idx ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
-		Gui::DrawString(this->SpecialKeysFunc[Idx].X + 35, this->SpecialKeysFunc[Idx].Y + 3, 0.7f, TEXT_COLOR, this->SpecialKeys[Idx]);
-	}
-
-	/* Draw Keys. */
-	for (uint8_t Idx = 0; Idx < this->Layout.size(); Idx++) {
-		Gui::Draw_Rect(this->Layout[Idx].X, this->Layout[Idx].Y, this->Layout[Idx].W, this->Layout[Idx].H, KBD_KEYUNPRESSED);
-		Gui::DrawString(this->Layout[Idx].X + 15, this->Layout[Idx].Y + 5, 0.6f, TEXT_COLOR, (this->Upper ? this->ABCKeys[Idx] : this->abcKeys[Idx]));
-	}
-
-	/* Draw Back and Confirm. */
-	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->SpecialKeysFunc[2 + Idx].X, this->SpecialKeysFunc[2 + Idx].Y, this->SpecialKeysFunc[2 + Idx].W, this->SpecialKeysFunc[2].H, KBD_KEYUNPRESSED);
-		Gui::DrawString(this->SpecialKeysFunc[2 + Idx].X + 5, this->SpecialKeysFunc[2 + Idx].Y + 5, 0.6f, TEXT_COLOR, this->SpecialKeys[2 + Idx]);
-	}
-};
 
 /*
-	Insert a Character.
+	Init the Keyboard.
 
-	const int Idx: The Index of the character.
+	const int MaxLength: The max length of characters.
+	const std::string &OldString: The old string which would be returned, if the input was invalid.
+	const std::string &Text: The Text to display on the top screen.
 */
-void Keyboard::InputChar(const int Idx) const {
-	if ((int)this->Res.size() < this->MaxLength) this->Res += (this->Upper ? this->ABCKeys[Idx] : this->abcKeys[Idx]);
+Keyboard::Keyboard(const int MaxLength, const std::string &OldString, const std::string &Text) {
+	this->MaxLength = MaxLength;
+	this->Res = OldString;
+	this->Text = Text;
+
+	swkbdInit(&this->State, SWKBD_TYPE_NORMAL, 2, this->MaxLength);
+	swkbdSetHintText(&this->State, this->Text.c_str());
+	swkbdSetValidation(&this->State, SWKBD_NOTBLANK_NOTEMPTY, SWKBD_FILTER_PROFANITY, 0);
 };
 
-/* Upper and Lower Tab. */
-void Keyboard::UpperTab() const { this->Upper = true; };
-void Keyboard::LowerTab() const { this->Upper = false; };
 
-/* Removes the last character if not empty. */
-void Keyboard::RemoveChar() const {
-	if (!this->Res.empty()) this->Res.pop_back();
-};
+/* The keyboard action. */
+std::string Keyboard::Action() {
+	/* Display one frame on top of what should be entered. */
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	GFX::DrawTop();
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, this->Text, 395);
+	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69);
+	GFX::DrawBottom();
+	C3D_FrameEnd(0);
 
-/* Set status to done. */
-void Keyboard::Confirm() const { this->Done = true; };
-
-std::string Keyboard::Action() const {
-	Pointer::OnTop = false;
-	Pointer::SetPos(this->Layout[0]);
-
-	while(!this->Done) {
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		Gui::clearTextBufs();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-
-		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, this->Text, 395);
-		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
-		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, this->Res, 395);
-		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 56); // Display Logo.
-
-		GFX::DrawBottom();
-		this->Draw();
-		Pointer::Draw();
-
-		C3D_FrameEnd(0);
-
-		hidScanInput();
-		touchPosition T;
-		const uint32_t Down = hidKeysDown();
-		const uint32_t Held = hidKeysHeld();
-		hidTouchRead(&T);
-		Pointer::ScrollHandling(Held);
-
-		if (Down & KEY_B) this->RemoveChar();
-		if (Down & KEY_START) this->Done = true;
-		if (Down & KEY_SELECT) this->Upper = !this->Upper;
-
-		if (Down & KEY_A) {
-			bool pressed = false;
-
-			for (auto &Position : this->Layout) {
-				if (Pointer::Clicked(Position, true)) {
-					pressed = true;
-					break;
-				}
-			}
-
-			if (!pressed) {
-				for (auto &Position : this->SpecialKeysFunc) {
-					if (Pointer::Clicked(Position, true)) break;
-				}
-			}
-		}
-
-		if (Down & KEY_TOUCH) {
-			bool pressed = false;
-
-			for (auto &Position : this->Layout) {
-				if (Touched(Position, T, true)) {
-					pressed = true;
-					break;
-				}
-			}
-
-			if (!pressed) {
-				for (auto &Position : this->SpecialKeysFunc) {
-					if (Touched(Position, T, true)) break;
-				}
-			}
-		}
-	}
-
-	Pointer::SetPos(0, 0);
-	return this->Res;
+	/* Do the keyboard magic. */
+	char Input[this->MaxLength + 1] = { '\0' };
+	SwkbdButton Ret = swkbdInputText(&this->State, Input, sizeof(Input));
+	Input[this->MaxLength] = '\0';
+	return (Ret == SWKBD_BUTTON_CONFIRM ? Input : this->Res);
 };

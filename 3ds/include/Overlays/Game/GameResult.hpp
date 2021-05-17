@@ -33,10 +33,12 @@
 
 class GameResult {
 public:
-	GameResult() { };
+	GameResult();
 	void Action(GameSettings::GameParams &Params, const uint8_t Won);
 private:
-	bool Done = false;
+	bool Done = false, FullDone = false, DoSwipe = true;
+	int Delay = 255;
+	float Cubic = 0.0f;
 };
 
 #endif

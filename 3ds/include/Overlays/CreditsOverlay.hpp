@@ -35,17 +35,19 @@ public:
 	CreditsOverlay() { };
 	void Action();
 private:
-	enum class Pages : uint8_t { Contributors = 0, SMemCore = 1, UnivCore = 2, Translators = 3 };
-	Pages Page = Pages::Contributors;
-	bool Done = false;
+	bool Done = false, FullDone = false, FadeIn = true, DoSwipe = false, SwipeDirection = false, InitialSwipe = true;
+	int16_t Page = 0, FAlpha = 255, PrevPos = -400, CurPos = -400, NextPos = 400;
+	float Cubic = 0.0f;
 
 	void PrevPage();
 	void OK();
 	void NextPage();
+	void DrawPage(const int16_t Pg, const int AddOffs);
+	void Handler();
 
 	const std::vector<FuncCallback> Positions = {
-		{ 40, 60, 25, 145, [this]() { this->PrevPage(); } },
-		{ 335, 60, 25, 145, [this]() { this->NextPage(); } }
+		{ 0, 25, 25, 215, [this]() { this->PrevPage(); } },
+		{ 375, 25, 25, 215, [this]() { this->NextPage(); } }
 	};
 
 	const std::vector<FuncCallback> BottomPos = {

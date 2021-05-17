@@ -27,6 +27,7 @@
 #include "Common.hpp"
 #include "LanguageSelector.hpp"
 
+
 /* Select a Language. */
 void LanguageSelector::SelectLang(const uint8_t Idx) {
 	switch(Idx) {
@@ -46,12 +47,15 @@ void LanguageSelector::SelectLang(const uint8_t Idx) {
 	this->Done = true;
 };
 
-void LanguageSelector::Cancel() { this->Done = true; };
 
+void LanguageSelector::Cancel() { this->Done = true; }; // Cancel Selection.
+
+
+/* Main Language Selection Logic. */
 void LanguageSelector::Action() {
 	Pointer::SetPos(0, 0);
 
-	while(!this->Done) {
+	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
@@ -60,6 +64,9 @@ void LanguageSelector::Action() {
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("LANG_SELECTOR_TITLE"), 395);
 		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		}
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
@@ -76,29 +83,49 @@ void LanguageSelector::Action() {
 		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[2].X, this->Positions[2].Y);
 
 		Pointer::Draw();
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		}
 		C3D_FrameEnd(0);
 
-		hidScanInput();
-		touchPosition T;
-		hidTouchRead(&T);
-		const uint32_t Down = hidKeysDown();
-		const uint32_t Held = hidKeysHeld();
-		Pointer::ScrollHandling(Held);
+		if (this->FadeIn) {
+			if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->FAlpha = 0, this->FadeIn = false;
+			if (this->FAlpha > 0) this->FAlpha -= 5;
+			if (this->FAlpha <= 0) this->FadeIn = false;
 
-		if (Down & KEY_START || Down & KEY_B) this->Done = true; // START or B can exit as well.
+		} else {
+			if (this->Done) {
+				hidScanInput();
+				const uint32_t Down = hidKeysDown();
 
-		if (Down & KEY_A) {
-			for (auto &Position : this->Positions) {
-				if (Pointer::Clicked(Position, true)) break;
+				if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade() || Down) this->FullDone = true;
+				if (this->FAlpha < 255) this->FAlpha += 5;
+				if (this->FAlpha >= 255) this->FullDone = true;
+
+			} else {
+				hidScanInput();
+				touchPosition T;
+				hidTouchRead(&T);
+				const uint32_t Down = hidKeysDown();
+				const uint32_t Held = hidKeysHeld();
+				Pointer::ScrollHandling(Held);
+
+				if (Down & KEY_START || Down & KEY_B) this->Done = true; // START or B can exit as well.
+
+				if (Down & KEY_A) {
+					for (auto &Position : this->Positions) {
+						if (Pointer::Clicked(Position, true)) break;
+					}
+				}
+
+				if (Down & KEY_TOUCH) {
+					for (auto &Position : this->Positions) {
+						if (Touched(Position, T, true)) break;
+					}
+				}
 			}
 		}
-
-		if (Down & KEY_TOUCH) {
-			for (auto &Position : this->Positions) {
-				if (Touched(Position, T, true)) break;
-			}
-		}
-	}
+	};
 
 	Pointer::SetPos(0, 0);
 };

@@ -25,11 +25,14 @@
 */
 
 #include "Common.hpp"
+#include "JSON.hpp"
 #include "Lang.hpp"
 #include <stdio.h>
 #include <unistd.h>
 
+
 static nlohmann::json AppJSON;
+
 
 /*
 	Gets a translated string from the JSON.
@@ -42,13 +45,12 @@ std::string Lang::Get(const std::string &Key) {
 	return AppJSON.at(Key).get_ref<const std::string &>();
 };
 
-/*
-	Loads the Language Strings.
-*/
+
+/* Loads the Language Strings. */
 void Lang::Load() {
 	FILE *In = nullptr;
-
 	bool Good = true;
+
 	if (_3DZwei::CFG->Lang() != "") { // Ensure it isn't ''.
 		for (size_t Idx = 0; Idx < _3DZwei::CFG->Lang().size(); Idx++) {
 			if (_3DZwei::CFG->Lang()[Idx] == '/') { // Contains a '/' and hence breaks.

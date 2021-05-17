@@ -27,16 +27,17 @@
 #include "Common.hpp"
 #include "RulesOverlay.hpp"
 
+
 /* STATE 1: Handle Going to first card. */
 void RulesOverlay::State1() {
 	if (this->X > this->Cards[0].X + 20) {
-		this->X--;
+		this->X -= 2;
 
 		if (this->X != this->Cards[0].X + 20) return;
 	}
 
 	if (this->Y > this->Cards[0].Y + 20) {
-		this->Y--;
+		this->Y -= 2;
 
 		if (this->Y != this->Cards[0].Y + 20) return;
 	}
@@ -44,11 +45,41 @@ void RulesOverlay::State1() {
 	this->State = States::ClickOnFirst;
 };
 
-/* STATE 2: Handle click on the card + Swipe the StackMem Logo. */
+
+/* STATE 2: Flip the first card and move on to the next card. */
 void RulesOverlay::State2() {
-	this->CardClicks[0] = true;
-	this->State = States::GotoSecond;
+	/* Card Flip. */
+	if (!this->FlipDone[0]) {
+		if (!this->CardFlipped[0]) { // Scale down the back cover -- first operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+
+				this->CardScale[0] = 1.0f - Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[0] = 0.0f;
+					this->CardFlipped[0] = true;
+				}
+			}
+
+		} else { // Scale up the front cover -- second operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+				this->CardScale[0] = this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[0] = 1.0f;
+					this->FlipDone[0] = true;
+				}
+			}
+		}
+	}
+
+	if (this->FlipDone[0]) this->State = States::GotoSecond;
 };
+
 
 /* STATE 3: Handle Going to second card. */
 void RulesOverlay::State3() {
@@ -67,29 +98,107 @@ void RulesOverlay::State3() {
 	this->State = States::ClickOnSecond;
 };
 
-/* STATE 4: Show the second card and go into the Wait State. */
+
+/* STATE 4: Flip the second card and go into the Wait State. */
 void RulesOverlay::State4() {
-	this->CardClicks[1] = true;
-	this->State = States::WaitDelay;
-};
+	/* Card Flip. */
+	if (!this->FlipDone[1]) {
+		if (!this->CardFlipped[1]) { // Scale down the back cover -- first operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
 
-/* STATE 5: Wait for the delay. */
-void RulesOverlay::State5() {
-	if (this->Delay > 0) {
-		this->Delay--;
+				this->CardScale[1] = 1.0f - Cubic;
 
-		if (this->Delay == 0) {
-			this->Delay = 100;
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[1] = 0.0f;
+					this->CardFlipped[1] = true;
+				}
+			}
 
-			/* Hide Cards, reset positions + go to first State. */
-			this->CardClicks[0] = false, this->CardClicks[1] = false;
-			this->X = this->Cards[7].X + 20, this->Y = this->Cards[7].Y + 20;
-			this->State = States::GotoFirst;
+		} else { // Scale up the front cover -- second operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+				this->CardScale[1] = this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[1] = 1.0f;
+					this->FlipDone[1] = true;
+				}
+			}
 		}
-	}
+	};
+
+	if (this->FlipDone[1]) this->State = States::WaitDelay;
 };
 
+
+/* STATE 5: Wait for the delay and flip cards back. */
+void RulesOverlay::State5() {
+	if (this->Delay > 0) this->Delay--;
+
+	/* Handle Flip back. */
+	if (this->Delay == 0) { // After delay -> Handle back flip.
+		if (this->CardFlipped[0]) { // Scale down the back cover -- first operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+
+				this->CardScale[0] = 1.0f - this->Cubic, this->CardScale[1] = 1.0f - this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[0] = 0.0f, this->CardScale[1] = 0.0f;
+					this->CardFlipped[0] = false, this->CardFlipped[1] = false;
+				}
+			}
+
+		} else { // Scale up the front cover -- second operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+
+				this->CardScale[0] = this->Cubic, this->CardScale[1] = this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->CardScale[0] = 1.0f, this->CardScale[1] = 1.0f;
+					this->FlipDone[0] = false, this->FlipDone[1] = false;
+				}
+			}
+		}
+	};
+
+	if (this->Delay == 0 && !this->FlipDone[0] && !this->FlipDone[1]) {
+		this->Delay = 100;
+
+		this->Cubic = 0.0f;
+		this->State = States::GotoFirst;
+	};
+};
+
+
+/* Handle the States. */
 void RulesOverlay::StateHandler() {
+	/* Handle Fade-Out. */
+	if (this->Done) {
+		hidScanInput();
+		const uint32_t Down = hidKeysDown();
+
+		if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade() || Down) this->FAlpha = 255, this->FullDone = true;
+		else {
+			if (this->FAlpha < 255) this->FAlpha += 5;
+			if (this->FAlpha == 255) this->FullDone = true;
+		};
+
+		return;
+
+	/* Handle Fade-In. */
+	} else {
+		if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->FAlpha = 0;
+		else {
+			if (this->FAlpha > 0) this->FAlpha -= 5;
+		};
+	};
+
 	switch(this->State) {
 		case States::GotoFirst:
 			this->State1();
@@ -113,10 +222,9 @@ void RulesOverlay::StateHandler() {
 	}
 };
 
-const std::string RULES = "Select 2 cards each turn, if those show the same image, you've got a pair, else it's your opponents turn.\n\nThe Player with the most pairs wins, but NOTE, that ties are also possible if you are using an even pair number.";
 
 void RulesOverlay::Action() {
-	while(!this->Done) {
+	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
@@ -124,13 +232,16 @@ void RulesOverlay::Action() {
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("RULES_TITLE"), 395);
 		Gui::DrawStringCentered(0, 40, 0.55f, TEXT_COLOR, Lang::Get("RULES_DESC"), 380, 160, nullptr, C2D_WordWrap);
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 
 		/* First real card. */
-		if (this->CardClicks[0]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[0].X, this->Cards[0].Y);
-		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[0].X, this->Cards[0].Y);
+		if (this->CardFlipped[0]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[0].X + (1.0f - this->CardScale[0]) * 55 / 2, this->Cards[0].Y, this->CardScale[0], 1.0f);
+		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[0].X + (1.0f - this->CardScale[0]) * 55 / 2, this->Cards[0].Y, this->CardScale[0], 1.0f);
 
 		/* Hidden cards. */
 		for (uint8_t Idx = 1; Idx < 19; Idx++) {
@@ -138,18 +249,20 @@ void RulesOverlay::Action() {
 		}
 
 		/* Second real card. */
-		if (this->CardClicks[1]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[19].X, this->Cards[19].Y);
-		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[19].X, this->Cards[19].Y);
+		if (this->CardFlipped[1]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[19].X + (1.0f - this->CardScale[1]) * 55 / 2, this->Cards[19].Y, this->CardScale[1], 1.0f);
+		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[19].X + (1.0f - this->CardScale[1]) * 55 / 2, this->Cards[19].Y, this->CardScale[1], 1.0f);
 
-		Gui::DrawSprite(GFX::Sprites, sprites_grid_idx, 19.5, 7.5);
+
 		Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, this->X, this->Y);
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
 
 		C3D_FrameEnd(0);
 
 		hidScanInput();
 		const uint32_t Down = hidKeysDown();
 		if (Down) this->Done = true; // Any key -> Skip.
-
 		this->StateHandler();
 	};
 };

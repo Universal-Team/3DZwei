@@ -24,32 +24,18 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_MAIN_MENU_HPP
-#define _3DZWEI_MAIN_MENU_HPP
+#ifndef _3DZWEI_GAME_OVERLAY_HPP
+#define _3DZWEI_GAME_OVERLAY_HPP
 
-#include "Pointer.hpp"
-#include "screen.hpp"
-#include <vector>
+#include "GameHelper.hpp"
 
-class MainMenu : public Screen {
+class GameOverlay {
 public:
-	MainMenu() { };
-	void Draw(void) const override;
-	void Logic(uint32_t Down, uint32_t Held, touchPosition T) override;
+	GameOverlay(const GameSettings::GameParams Params = { });
+	void Action();
 private:
-	void GotoGame();
-	void ShowRules();
-	void GotoSettings();
-	void ShowCredits();
-
-	const std::vector<FuncCallback> Positions = {
-		{ 90, 35, 140, 35, [this]() { this->GotoGame(); } }, // Game.
-		{ 90, 80, 140, 35, [this]() { this->ShowRules(); } }, // Rules.
-		{ 90, 125, 140, 35, [this]() { this->GotoSettings(); } }, // Settings.
-		{ 90, 170, 140, 35, [this]() { this->ShowCredits(); } } // Credits.
-	};
-
-	const std::vector<std::string> ButtonNames = { "MAIN_MENU_GAME", "MAIN_MENU_RULES", "MAIN_MENU_SETTINGS", "MAIN_MENU_CREDITS" };
+	std::unique_ptr<GameHelper> Helper = nullptr;
+	bool Running = true;
 };
 
 #endif

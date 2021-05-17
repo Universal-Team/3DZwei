@@ -28,17 +28,38 @@
 #define _3DZWEI_3DZWEI_HPP
 
 #include "Config.hpp"
+#include "Pointer.hpp"
 #include <memory>
 #include <string>
 
-namespace _3DZwei {
-	extern bool Exiting;
-	extern std::unique_ptr<Config> CFG;
-	extern uint8_t FAlpha;
+class _3DZwei {
+public:
+	_3DZwei();
+	int Action();
 
-	void Start();
-	int Logic();
-	int Exit();
+	static std::unique_ptr<Config> CFG; // Need to do this static for the other overlays to access.
+private:
+	bool Exiting = false, FullExit = false, FadeIn = true, FadeOut = false;
+	uint8_t FAlpha = 0;
+
+	void PrepareGame();
+	void ShowRules();
+	void AccessSettings();
+	void ShowCredits();
+
+	void OverlayReturn();
+	void FadeOutHandler();
+	void FadeInHandler();
+	void Draw();
+
+	const std::vector<FuncCallback> Positions = {
+		{ 90, 35, 140, 35, [this]() { this->PrepareGame(); } }, // Game.
+		{ 90, 80, 140, 35, [this]() { this->ShowRules(); } }, // Rules.
+		{ 90, 125, 140, 35, [this]() { this->AccessSettings(); } }, // Settings.
+		{ 90, 170, 140, 35, [this]() { this->ShowCredits(); } } // Credits.
+	};
+
+	const std::vector<std::string> ButtonNames = { "MAIN_MENU_GAME", "MAIN_MENU_RULES", "MAIN_MENU_SETTINGS", "MAIN_MENU_CREDITS" };
 };
 
 #endif

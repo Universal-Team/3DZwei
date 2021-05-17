@@ -24,28 +24,30 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_SETTINGS_HPP
-#define _3DZWEI_SETTINGS_HPP
+#ifndef _3DZWEI_SETTINGS_OVERLAY_HPP
+#define _3DZWEI_SETTINGS_OVERLAY_HPP
 
 #include "Pointer.hpp"
-#include "screen.hpp"
 #include <vector>
 
-class Settings : public Screen {
+class SettingsOverlay {
 public:
-	Settings() { Pointer::SetPos(this->Positions[0]); };
-	void Draw(void) const override;
-	void Logic(uint32_t Down, uint32_t Held, touchPosition T) override;
+	SettingsOverlay() { };
+	void Action();
 private:
-	enum class SettingsTab : uint8_t { Configuration, AppInfo };
+	enum class SettingsTab : uint8_t { Configuration, Animation, AppInfo };
 
 	SettingsTab Tab = SettingsTab::Configuration;
-	const std::vector<std::string> TabNames = { "SETTINGS_TAB_CONFIG", "SETTINGS_TAB_APPINFO" };
+	const std::vector<std::string> TabNames = { "SETTINGS_TAB_CONFIG", "SETTINGS_ANIMATION_TAB", "SETTINGS_TAB_APPINFO" };
+	bool Done = false, SwipeDir = false, DoSwipe = false, InitialSwipe = true, FadeIn = true, FadeOut = false;
+	int CurTabOffs[3] = { -320, 320, 640 }, PrevTabOffs[3] = { -320, 320, 640 }, FAlpha = 255;
+	float Swipe = 0.0f, ToSwipe = 0.0f;
 
 	void DrawTop() const;
 	void DrawTabs() const;
 
 	void ConfigTab();
+	void AnimationTab();
 	void AppinfoTab();
 	void Back();
 
@@ -57,16 +59,39 @@ private:
 	void ShowSplash();
 	void SetPointerSpeed();
 
+	void ToggleAnimation();
+	void SwitchGameAnim();
+	void TogglePageSwitch();
+	void ToggleFade();
+
+	void FadeOutHandler();
+	void FadeInHandler();
+	void TabHandler();
+
+	const std::vector<FuncCallback> AnimPos = {
+		{ 1, 0, 106, 20, [this]() { this->ConfigTab(); } },
+		{ 107, 0, 106, 20, [this]() { this->AnimationTab(); } },
+		{ 213, 0, 106, 20, [this]() { this->AppinfoTab(); } },
+
+		{ 150, 35, 24, 24, [this]() { this->ToggleAnimation(); } },
+		{ 150, 70, 24, 24, [this]() { this->SwitchGameAnim(); } },
+		{ 150, 105, 24, 24, [this]() { this->TogglePageSwitch(); } },
+		{ 150, 140, 24, 24, [this]() { this->ToggleFade(); } },
+
+		{ 0, 223, 17, 17, [this]() { this->Back(); } }
+	};
+
 	const std::vector<FuncCallback> Positions = {
-		{ 0, 0, 160, 20, [this]() { this->ConfigTab(); } },
-		{ 160, 0, 160, 20, [this]() { this->AppinfoTab(); } },
+		{ 1, 0, 106, 20, [this]() { this->ConfigTab(); } },
+		{ 107, 0, 106, 20, [this]() { this->AnimationTab(); } },
+		{ 213, 0, 106, 20, [this]() { this->AppinfoTab(); } },
 
 		{ 150, 35, 24, 24, [this]() { this->SelectLang(); } },
-		{ 150, 75, 24, 24, [this]() { this->SelectCardSet(); } },
-		{ 150, 115, 24, 24, [this]() { this->SelectCharSet(); } },
-		{ 150, 155, 24, 24, [this]() { this->ToggleSplash(); } },
-		{ 200, 155, 24, 24, [this]() { this->ShowSplash(); } },
-		{ 150, 195, 24, 24, [this]() { this->SetPointerSpeed(); } },
+		{ 150, 70, 24, 24, [this]() { this->SelectCardSet(); } },
+		{ 150, 105, 24, 24, [this]() { this->SelectCharSet(); } },
+		{ 150, 140, 24, 24, [this]() { this->ToggleSplash(); } },
+		{ 200, 140, 24, 24, [this]() { this->ShowSplash(); } },
+		{ 150, 175, 24, 24, [this]() { this->SetPointerSpeed(); } },
 
 		{ 0, 223, 17, 17, [this]() { this->Back(); } }
 	};

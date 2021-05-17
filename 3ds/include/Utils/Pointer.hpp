@@ -44,7 +44,7 @@ namespace Pointer {
 	extern bool OnTop;
 
 	bool Clicked(const FuncCallback CBack, const bool CallFunc = true);
-	void ScrollHandling(const uint32_t Held);
+	void ScrollHandling(const uint32_t Held, const bool InGame = false);
 
 	void Draw(const float Scale = 1);
 	void SetPos(const FuncCallback CBack);

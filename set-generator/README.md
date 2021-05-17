@@ -40,9 +40,9 @@ If you are done with adding your graphics, simply run `make` in the `set-generat
 
 Rename the `t3x` files to whatever you like, and place them in the following directories on your SD Card:
 
-`cards.t3x`: `sdmc:/3ds/3DZwei/sets/cards/`
+`cards.t3x`: `sdmc:/3ds/ut-games/sets/3DZwei/`
 
-`chars.t3x`: `sdmc:/3ds/3DZwei/sets/characters/`
+`chars.t3x`: `sdmc:/3ds/ut-games/sets/characters/`
 
 
 ## Loading the Sets

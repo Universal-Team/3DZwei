@@ -27,16 +27,17 @@
 #include "Common.hpp"
 #include "SplashOverlay.hpp"
 
+
 /* STATE 1: Handle Going to first card. */
 void SplashOverlay::State1() {
 	if (this->X > this->Cards[0].X + 20) {
-		this->X--;
+		this->X -= 2;
 
 		if (this->X != this->Cards[0].X + 20) return;
 	}
 
 	if (this->Y > this->Cards[0].Y + 20) {
-		this->Y--;
+		this->Y -= 2;
 
 		if (this->Y != this->Cards[0].Y + 20) return;
 	}
@@ -44,17 +45,43 @@ void SplashOverlay::State1() {
 	this->State = States::ClickOnFirst;
 };
 
-/* STATE 2: Handle click on the card + Swipe the StackMem Logo. */
-void SplashOverlay::State2() {
-	if (this->CoreMoved < 160) {
-		this->CoreMoved++;
 
-		if (this->CoreMoved != 160) return;
+/* STATE 2: Handle flip on the first card + Swipe the StackMem Logo. */
+void SplashOverlay::State2() {
+	if (this->CoreMoved < 160) this->CoreMoved += 2;
+
+	/* Card Flip. */
+	if (this->CoreMoved == 160 && !this->FlipDone[0]) {
+		if (!this->CardFlipped[0]) { // Scale down the back cover -- first operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+
+				this->CardScale[0] = 1.0f - Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[0] = 0.0f;
+					this->CardFlipped[0] = true;
+				}
+			}
+
+		} else { // Scale up the front cover -- second operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+				this->CardScale[0] = this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[0] = 1.0f;
+					this->FlipDone[0] = true;
+				}
+			}
+		}
 	}
 
-	this->CardClicks[0] = true;
-	this->State = States::GotoSecond;
+	if (this->FlipDone[0] && this->CoreMoved == 160) this->State = States::GotoSecond;
 };
+
 
 /* STATE 3: Handle Going to second card. */
 void SplashOverlay::State3() {
@@ -73,29 +100,55 @@ void SplashOverlay::State3() {
 	this->State = States::ClickOnSecond;
 };
 
-/* STATE 4: Swipe the StackMem Logo further, show the second card and go into the wait State. */
+
+/* STATE 4: Swipe the StackMem Logo further, flip the second card and go into the fade-out State. */
 void SplashOverlay::State4() {
-	if (this->CoreMoved < 320) {
-		this->CoreMoved++;
+	if (this->CoreMoved < 320) this->CoreMoved += 2;
 
-		if (this->CoreMoved != 320) return;
-	}
+	/* Card Flip. */
+	if (this->CoreMoved == 320 && !this->FlipDone[1]) {
+		if (!this->CardFlipped[1]) { // Scale down the back cover -- first operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
 
-	this->CardClicks[1] = true;
-	this->State = States::Wait;
+				this->CardScale[1] = 1.0f - Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[1] = 0.0f;
+					this->CardFlipped[1] = true;
+				}
+			}
+
+		} else { // Scale up the front cover -- second operation.
+			if (this->Cubic < 1.0f) {
+				this->Cubic = std::lerp(this->Cubic, 2.0f, 0.1f);
+				this->CardScale[1] = this->Cubic;
+
+				if (this->Cubic >= 1.0f) {
+					this->Cubic = 0.0f;
+					this->CardScale[1] = 1.0f;
+					this->FlipDone[1] = true;
+				}
+			}
+		}
+	};
+
+	if (this->FlipDone[1] && this->CoreMoved == 320) this->State = States::FadeOut;
 };
 
-/* STATE 5: Wait for the delay. */
+
+/* STATE 5: Fade out. */
 void SplashOverlay::State5() {
-	if (this->Delay > 0) {
-		this->Delay--;
-
-		if (this->Delay == 0) this->Done = true;
-	}
+	if (this->FAlpha < 255) this->FAlpha += 2;
+	if (this->FAlpha == 255) this->Done = true;
 };
+
 
 void SplashOverlay::StateHandler() {
-	if (_3DZwei::FAlpha > 0) _3DZwei::FAlpha--; // Handle Alpha Fading.
+	if (this->State != States::FadeOut) {
+		if (this->FAlpha > 0) this->FAlpha -= 2; // Handle Alpha Fading.
+	}
 
 	switch(this->State) {
 		case States::GotoFirst:
@@ -114,7 +167,7 @@ void SplashOverlay::StateHandler() {
 			this->State4();
 			break;
 
-		case States::Wait:
+		case States::FadeOut:
 			this->State5();
 			break;
 	}
@@ -122,7 +175,7 @@ void SplashOverlay::StateHandler() {
 
 
 void SplashOverlay::Action() {
-	while(!this->Done) {
+	while(aptMainLoop() && !this->Done) {
 		Gui::clearTextBufs();
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
@@ -131,8 +184,8 @@ void SplashOverlay::Action() {
 		GFX::DrawTop();
 
 		/* First real card. */
-		if (this->CardClicks[0]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[0].X, this->Cards[0].Y);
-		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[0].X, this->Cards[0].Y);
+		if (this->CardFlipped[0]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[0].X + (1.0f - this->CardScale[0]) * 55 / 2, this->Cards[0].Y, this->CardScale[0], 1.0f);
+		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[0].X + (1.0f - this->CardScale[0]) * 55 / 2, this->Cards[0].Y, this->CardScale[0], 1.0f);
 
 		/* Hidden cards. */
 		for (uint8_t Idx = 1; Idx < 8; Idx++) {
@@ -140,28 +193,32 @@ void SplashOverlay::Action() {
 		}
 
 		/* Second real card. */
-		if (this->CardClicks[1]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[8].X, this->Cards[8].Y);
-		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[8].X, this->Cards[8].Y);
+		if (this->CardFlipped[1]) Gui::DrawSprite(GFX::Sprites, sprites_voltcard_idx, this->Cards[8].X + (1.0f - this->CardScale[1]) * 55 / 2, this->Cards[8].Y, this->CardScale[1], 1.0f);
+		else Gui::DrawSprite(GFX::Sprites, sprites_icon_idx, this->Cards[8].X + (1.0f - this->CardScale[1]) * 55 / 2, this->Cards[8].Y, this->CardScale[1], 1.0f);
 
 		Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, this->X, this->Y);
-		if (_3DZwei::FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, _3DZwei::FAlpha));
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
 
 		GFX::DrawBottom();
-		if (this->State != States::Wait) Gui::DrawSprite(GFX::Sprites, sprites_stackmemcore_idx, 32 - this->CoreMoved, 52);
+		if (this->State != States::FadeOut) Gui::DrawSprite(GFX::Sprites, sprites_stackmemcore_idx, 32 - this->CoreMoved, 52);
 		Gui::DrawSprite(GFX::Sprites, sprites_universal_core_idx, 320 - this->CoreMoved, 56);
 
-		if (this->State == States::Wait) { // The last State -> Copyright + StackZ Image.
+		if (this->State == States::FadeOut) { // The last State -> Copyright + StackZ Image.
 			Gui::DrawStringCentered(0, 190, 0.55f, TEXT_COLOR, "3DZwei\nCopyright (C) Universal-Team 2020 - 2021");
 			Gui::DrawSprite(GFX::Sprites, sprites_stackz_idx, 213, 50);
 		}
 
-		if (_3DZwei::FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, _3DZwei::FAlpha));
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
+
 		C3D_FrameEnd(0);
 
 		hidScanInput();
 		const uint32_t Down = hidKeysDown();
 		if (Down) this->Done = true; // Any key -> Skip.
-
 		this->StateHandler();
 	};
 };

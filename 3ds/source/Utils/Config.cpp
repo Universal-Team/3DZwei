@@ -27,30 +27,40 @@
 #include "Config.hpp"
 #include <unistd.h>
 
+
 /* Loads the Configuration file. */
 void Config::Load() {
-	if (access("sdmc:/3ds/3DZwei/Config.json", F_OK) != 0) this->Initialize();
+	if (access("sdmc:/3ds/ut-games/3DZwei/Config.json", F_OK) != 0) this->Initialize();
 
-	FILE *File = fopen("sdmc:/3ds/3DZwei/Config.json", "r");
+	FILE *File = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "r");
 	this->CFG = nlohmann::json::parse(File, nullptr, false);
 	fclose(File);
 
 	if (!this->CFG.is_discarded()) {
 		this->CardSet(this->Get<std::string>("Cardset", this->CardSet()));
 		this->CharSet(this->Get<std::string>("Charset", this->CharSet()));
+		this->DoAnimation(this->Get<bool>("DoAnimation", this->DoAnimation()));
+		this->DoFade(this->Get<bool>("DoFade", this->DoFade()));
+		this->GameAnimation(this->Get<nlohmann::json::number_integer_t>("GameAnimation", this->GameAnimation()));
 		this->Lang(this->Get<std::string>("Lang", this->Lang()));
+		this->PageSwitch(this->Get<bool>("PageSwitch", this->PageSwitch()));
 		this->PointerSpeed(this->Get<nlohmann::json::number_integer_t>("PointerSpeed", this->PointerSpeed()));
 		this->ShowSplash(this->Get<bool>("ShowSplash", this->ShowSplash()));
 	}
 };
 
+
 /* Initializes the Configuration file properly as a JSON. */
 void Config::Initialize() {
-	FILE *Temp = fopen("sdmc:/3ds/3DZwei/Config.json", "w");
+	FILE *Temp = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "w");
 
 	const nlohmann::json OBJ = {
 		{ "Cardset", this->CardSet() }, // Cardset.
 		{ "Charset", this->CharSet() }, // Character Set.
+		{ "DoAnimation", this->DoAnimation() }, // Animation.
+		{ "DoFade", this->DoFade() }, // If fade effects are activated.
+		{ "GameAnimation", 1 }, // Game Animation Type.
+		{ "PageSwitch", true }, // Page Switch.
 		{ "Lang", this->Lang() }, // Language.
 		{ "PointerSpeed", this->PointerSpeed() }, // Pointer Speed.
 		{ "ShowSplash", this->ShowSplash() }, // Show the Startup Splash.
@@ -62,16 +72,21 @@ void Config::Initialize() {
 	fclose(Temp);
 };
 
+
 /* SAV changes to the Configuration, if changes made. */
 void Config::Sav() {
 	if (this->ChangesMade) {
 		this->Set<std::string>("Cardset", this->CardSet()); // Cardset.
 		this->Set<std::string>("Charset", this->CharSet()); // Cardset.
+		this->Set<bool>("DoAnimation", this->DoAnimation()); // Animation.
+		this->Set<bool>("DoFade", this->DoFade()); // If fade effects are activated.
+		this->Set<nlohmann::json::number_integer_t>("GameAnimation", this->GameAnimation()); // Game Animation.
 		this->Set<std::string>("Lang", this->Lang()); // Language.
-		this->Set<nlohmann::json::number_integer_t>("PointerSpeed", this->PointerSpeed()); // Pointer Speed
+		this->Set<bool>("PageSwitch", this->PageSwitch()); // PageSwitch.
+		this->Set<nlohmann::json::number_integer_t>("PointerSpeed", this->PointerSpeed()); // Pointer Speed.
 		this->Set<bool>("ShowSplash", this->ShowSplash()); // Startup Splash.
 
-		FILE *Out = fopen("sdmc:/3ds/3DZwei/Config.json", "w");
+		FILE *Out = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "w");
 
 		/* Write changes to file. */
 		const std::string Dump = this->CFG.dump(1, '\t');
@@ -79,6 +94,7 @@ void Config::Sav() {
 		fclose(Out);
 	}
 };
+
 
 /*
 	Returns if the provided index is activated.
@@ -94,6 +110,7 @@ bool Config::CardIndexIncluded(const size_t Idx) {
 
 	return false;
 };
+
 
 /*
 	Set the activated cards to the config.

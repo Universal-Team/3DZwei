@@ -52,6 +52,10 @@ public:
 	bool ShowSplash() const { return this->VShowSplash; };
 	void ShowSplash(const bool V) { this->VShowSplash = V; if (!this->ChangesMade) this->ChangesMade = true; };
 
+	/* Animation enabled State. */
+	bool DoAnimation() const { return this->VAnimation; };
+	void DoAnimation(const bool V) { this->VAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; };
+
 	/* The Activated Cards. */
 	bool CardIndexIncluded(const size_t Idx);
 	void ActivatedCards(const std::vector<size_t> &Cards);
@@ -59,6 +63,18 @@ public:
 	/* The Pointer Speed. */
 	uint8_t PointerSpeed() const { return this->VPointerSpeed; };
 	void PointerSpeed(const uint8_t V) { this->VPointerSpeed = V; if (!this->ChangesMade) this->ChangesMade = true; };
+
+	/* The Game Animation. */
+	uint8_t GameAnimation() const { return this->VGameAnimation; };
+	void GameAnimation(const uint8_t V) { this->VGameAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; };
+
+	/* If doing the page switches visually or not. */
+	bool PageSwitch() const { return this->VPageSwitch; };
+	void PageSwitch(const bool V) { this->VPageSwitch = V; if (!this->ChangesMade) this->ChangesMade = true; };
+
+	/* If using the fade effect or nah. */
+	bool DoFade() const { return this->VDoFade; };
+	void DoFade(const bool V) { this->VDoFade = V; if (!this->ChangesMade) this->ChangesMade = true; };
 private:
 	template <typename T>
 	T Get(const std::string &Key, const T IfNotFound) {
@@ -72,9 +88,9 @@ private:
 		if (!this->CFG.is_discarded()) this->CFG[Key] = Data;
 	};
 
-	bool ChangesMade = false, VShowSplash = true;
+	bool ChangesMade = false, VShowSplash = true, VAnimation = true, VPageSwitch = true, VDoFade = true;
 	nlohmann::json CFG = nullptr;
-	uint8_t VPointerSpeed = 4;
+	uint8_t VPointerSpeed = 4, VGameAnimation = 1;
 	std::string VCardSet = "3DZwei-RomFS", VCharSet = "3DZwei-RomFS", VLang = "en";
 };
 

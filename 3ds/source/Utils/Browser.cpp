@@ -31,6 +31,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+
 /*
 	Browser Initializer for a File / Directory type.
 
@@ -44,12 +45,14 @@ Browser::Browser(const std::string &Path, const std::vector<std::string> &Extens
 	this->FetchDirectoryEntries();
 };
 
+
 /*
 	Browser Initializer for a List type.
 
 	const std::vector<std::string> &List: The list of Strings for the List type.
 */
 Browser::Browser(const std::vector<std::string> &List) : ListEntries(List) { this->Type = Browser::BrowserType::List; };
+
 
 /*
 	Return, if a specific Name ends with an Extension.
@@ -71,6 +74,7 @@ bool Browser::NameEndsWith(const std::string &Name, const std::vector<std::strin
 	return false;
 };
 
+
 /*
 	Predict File Entries Alphabetically.
 
@@ -83,6 +87,7 @@ bool DirEntryPredicate(const Browser::DirEntry &First, const Browser::DirEntry &
 
 	return strcasecmp(First.Name.c_str(), Second.Name.c_str()) < 0;
 };
+
 
 /*
 	Fetches Directory Contents.
@@ -116,6 +121,7 @@ void Browser::FetchDirectoryEntries(const std::vector<std::string> &ExtList) {
 	std::sort(this->DirEntries.begin(), this->DirEntries.end(), DirEntryPredicate); // Sort this alphabetically.
 };
 
+
 /* Returns the Directory Entry Files as a vector of strings. */
 std::vector<std::string> Browser::GetFileList() {
 	std::vector<std::string> TMP = { };
@@ -126,6 +132,7 @@ std::vector<std::string> Browser::GetFileList() {
 
 	return TMP;
 };
+
 
 /* Up, Down, Left and Right Callbacks. */
 void Browser::Up() {
@@ -144,6 +151,7 @@ void Browser::Up() {
 	}
 };
 
+
 void Browser::Down() {
 	switch(this->Type) {
 		case Browser::BrowserType::File:
@@ -160,10 +168,12 @@ void Browser::Down() {
 	}
 };
 
+
 void Browser::Left(const int Amount) {
 	if (this->Selected - Amount >= 0) this->Selected -= Amount;
 	else this->Selected = 0;
 };
+
 
 void Browser::Right(const int Amount) {
 	switch(this->Type) {
@@ -202,6 +212,7 @@ bool Browser::OpenHandle() {
 	return false;
 };
 
+
 /* Return, if you can go a directory back or not. */
 bool Browser::CanDirBack() {
 	if (this->Type == Browser::BrowserType::File) {
@@ -215,6 +226,7 @@ bool Browser::CanDirBack() {
 	return true;
 };
 
+
 /* Goes a directory back. */
 void Browser::GoDirBack() {
 	if (this->Type == Browser::BrowserType::File) {
@@ -225,6 +237,7 @@ void Browser::GoDirBack() {
 		this->Selected = 0;
 	}
 };
+
 
 /* Goes a directory up. */
 void Browser::GoDirUp() {
@@ -237,6 +250,7 @@ void Browser::GoDirUp() {
 		this->Selected = 0;
 	}
 };
+
 
 /*
 	Set the Selected Selection.
@@ -267,6 +281,7 @@ bool Browser::SetSelection(const int Selection) {
 
 	return false;
 };
+
 
 /* Returns the current working directory. */
 std::string Browser::GetPath() const {

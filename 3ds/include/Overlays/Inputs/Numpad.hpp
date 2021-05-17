@@ -27,42 +27,17 @@
 #ifndef _3DZWEI_NUMPAD_HPP
 #define _3DZWEI_NUMPAD_HPP
 
-#include "Pointer.hpp"
 #include <string>
-#include <vector>
+#include <3ds.h>
 
 class Numpad {
 public:
-	Numpad(const int MaxLength, const int OldNum, const int MaxVal, const std::string &Text)
-			: MaxLength(MaxLength), OldNum(OldNum), MaxVal(MaxVal), Text(Text) { this->Res = std::to_string(this->OldNum); };
-	int Action() const;
+	Numpad(const int MaxLength, const int OldNum, const int MaxVal, const std::string &Text);
+	int Action();
 private:
-	mutable int MaxLength = 0, OldNum = 0, MaxVal = 0, FinalRes = 0;
-	mutable bool Done = false;
-	mutable std::string Text = "", Res = "";
-
-	void Draw() const;
-	void InputNum(const uint8_t Idx) const;
-	void RemoveNum() const;
-	void Confirm() const;
-	void SetPos() const;
-
-	/*
-		Numpad Structure.
-
-		1   2   3
-		4   5   6
-		7   8   9
-			0
-	*/
-	const std::vector<std::string> Nums = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "<-", "->" };
-	const std::vector<FuncCallback> Pad = {
-		{  80, 15, 40, 40, [this]() { this->InputNum(0); } }, { 140, 15, 40, 40, [this]() { this->InputNum(1); } },  { 200, 15, 40, 40, [this]() { this->InputNum(2); } },
-		{ 80, 75, 40, 40, [this]() { this->InputNum(3); } },  { 140, 75, 40, 40, [this]() { this->InputNum(4); } },  { 200, 75, 40, 40, [this]() { this->InputNum(5); } },
-		{ 80, 135, 40, 40, [this]() { this->InputNum(6); } }, { 140, 135, 40, 40, [this]() { this->InputNum(7); } }, { 200, 135, 40, 40, [this]() { this->InputNum(8); } },
-															  { 140, 195, 40, 40, [this]() { this->InputNum(9); } },
-		{ 5, 205, 30, 30, [this]() { this->RemoveNum(); } }, 														 { 285, 205, 30, 30, [this]() { this->Confirm(); } } // Back and Next.
-	};
+	int MaxLength = 0, MaxVal = 0, Res = 0;
+	std::string Text = "";
+	SwkbdState State;
 };
 
 #endif

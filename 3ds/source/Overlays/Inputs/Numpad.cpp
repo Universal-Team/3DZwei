@@ -27,86 +27,44 @@
 #include "Common.hpp"
 #include "Numpad.hpp"
 
-/* Draw the Numpad. */
-void Numpad::Draw(void) const {
-	/* Draw Numbers. */
-	for (uint8_t Idx = 0; Idx < 10; Idx++) {
-		Gui::Draw_Rect(this->Pad[Idx].X, this->Pad[Idx].Y, this->Pad[Idx].W, this->Pad[Idx].H, KBD_KEYUNPRESSED);
-		Gui::DrawString(this->Pad[Idx].X + 14, this->Pad[Idx].Y + 7, 0.75f, TEXT_COLOR, this->Nums[Idx]);
-	}
-
-	/* Draw Back and Next Buttons. */
-	for (uint8_t Idx = 0; Idx < 2; Idx++) {
-		Gui::Draw_Rect(this->Pad[10 + Idx].X, this->Pad[10 + Idx].Y, this->Pad[10 + Idx].W, this->Pad[10 + Idx].H, KBD_KEYUNPRESSED);
-		Gui::DrawString(this->Pad[10 + Idx].X + 5, this->Pad[10 + Idx].Y + 5, 0.6f, TEXT_COLOR, this->Nums[10 + Idx]);
-	}
-};
 
 /*
-	Insert a Number digit.
+	Init the Numpad.
 
-	const uint8_t Idx: The index of the Nums vector.
+	const int MaxLength: The max length of numbers.
+	const int OldNum: The old value, which will be returned if an invalid amount was entered.
+	const int MaxVal: The max value which is allowed.
+	const std::string &Text: The Text to display on the top screen.
 */
-void Numpad::InputNum(const uint8_t Idx) const {
-	if ((int)this->Res.size() < this->MaxLength) this->Res += this->Nums[Idx];
+Numpad::Numpad(const int MaxLength, const int OldNum, const int MaxVal, const std::string &Text) {
+	this->MaxLength = MaxLength;
+	this->Res = OldNum;
+	this->MaxVal = MaxVal;
+	this->Text = Text;
+
+	swkbdInit(&this->State, SWKBD_TYPE_NUMPAD, 2, this->MaxLength);
+	swkbdSetFeatures(&this->State, SWKBD_FIXED_WIDTH);
+	swkbdSetValidation(&this->State, SWKBD_NOTBLANK_NOTEMPTY, 0, 0);
 };
 
-/* Remove the last digit. */
-void Numpad::RemoveNum() const {
-	if (!this->Res.empty()) this->Res.pop_back();
-};
 
-void Numpad::Confirm() const { this->Done = true; };
+/* The numpad action. */
+int Numpad::Action() {
+	/* Display one frame on top of what should be entered. */
+	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+	C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+	Gui::clearTextBufs();
+	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+	GFX::DrawTop();
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, this->Text, 395);
+	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69);
+	GFX::DrawBottom();
+	C3D_FrameEnd(0);
 
+	/* Do the numpad magic. */
+	char Input[this->MaxLength + 1] = { '\0' };
+	SwkbdButton Ret = swkbdInputText(&this->State, Input, sizeof(Input));
+	Input[this->MaxLength] = '\0';
 
-int Numpad::Action() const {
-	Pointer::OnTop = false;
-	Pointer::SetPos(this->Pad[0]);
-
-	while(!this->Done) {
-		/* Drawing part. */
-		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
-		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
-		Gui::clearTextBufs();
-		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-
-		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, this->Text, 395);
-		Gui::Draw_Rect(0, 215, 400, 25, BAR_COLOR);
-		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_COLOR, this->Res, 395);
-		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 56); // Display Logo.
-
-		GFX::DrawBottom();
-		this->Draw();
-		Pointer::Draw();
-
-		C3D_FrameEnd(0);
-
-		hidScanInput();
-		touchPosition T;
-		const uint32_t Down = hidKeysDown();
-		const uint32_t Held = hidKeysHeld();
-		hidTouchRead(&T);
-		Pointer::ScrollHandling(Held);
-
-		if (Down & KEY_B) this->RemoveNum();
-		if (Down & KEY_START) this->Done = true;
-
-		if (Down & KEY_A) {
-			for (auto &Position : this->Pad) {
-				if (Pointer::Clicked(Position, true)) break;
-			}
-		}
-
-		if (Down & KEY_TOUCH) {
-			for (auto &Position : this->Pad) {
-				if (Touched(Position, T, true)) break;
-			}
-		}
-	}
-
-	Pointer::SetPos(0, 0);
-	this->FinalRes = std::atoi(this->Res.c_str()); // Convert that string into an Int.
-	if (this->FinalRes > this->MaxVal) return this->OldNum;
-	else return this->FinalRes;
+	return (Ret == SWKBD_BUTTON_CONFIRM ? (int)std::min(std::stoi(Input), this->MaxVal) : this->Res);
 };

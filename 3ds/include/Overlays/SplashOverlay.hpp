@@ -32,7 +32,10 @@
 
 class SplashOverlay {
 public:
-	SplashOverlay() { };
+	SplashOverlay() {
+		this->CardScale[0] = 1.0f, this->CardScale[1] = 1.0f;
+		this->CardFlipped[0] = false, this->CardFlipped[1] = false;
+	};
 	void Action();
 private:
 	enum class States : uint8_t {
@@ -40,15 +43,18 @@ private:
 		ClickOnFirst = 1,
 		GotoSecond = 2,
 		ClickOnSecond = 3,
-		Wait = 4
+		FadeOut = 4
 	};
 
+	int16_t FAlpha = 255;
 	int16_t X = 200, Y = 120; // Pointer Pos.
 	int16_t CoreMoved = 0; // The Moved Core Logo.
-	int16_t Delay = 200; // Wait Delay.
-	bool CardClicks[2] = { false }; // If cards are clicked or nah.
 	States State = States::GotoFirst; // The Current State.
 	bool Done = false;
+
+	/* Card Flip related. */
+	bool CardFlipped[2] = { false }, FlipDone[2] = { false };
+	float CardScale[2] = { 1.0f }, Cubic = 0.0f;
 
 	/* Splash States. */
 	void State1();

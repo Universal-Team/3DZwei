@@ -31,10 +31,12 @@
 /* All used Spritesheets. */
 C2D_SpriteSheet GFX::Cards = nullptr, GFX::Characters = nullptr, GFX::Sprites = nullptr;
 
+
 /* Load all Spritesheets. */
 void GFX::LoadSheets() {
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", GFX::Sprites);
 };
+
 
 /* Unload all Spritesheets. */
 void GFX::UnloadSheets() {
@@ -43,6 +45,7 @@ void GFX::UnloadSheets() {
 	Gui::unloadSheet(GFX::Sprites);
 };
 
+
 /* Draws the Top Screen base. */
 void GFX::DrawTop() {
 	Gui::ScreenDraw(Top);
@@ -50,11 +53,13 @@ void GFX::DrawTop() {
 	Gui::Draw_Rect(0, 25, 400, 215, BG_COLOR);
 };
 
+
 /* Draws the Bottom Screen base. */
 void GFX::DrawBottom() {
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, BG_COLOR);
 };
+
 
 /*
 	Draw the Corner Edges, being used for the Overlays like SetSelection.
@@ -80,28 +85,6 @@ void GFX::DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, co
 	}
 };
 
-/*
-	Draw the new styled Message Box.
-
-	const int PosX: The X Start Position where to draw the message box.
-	const int PosY: The Y Start Position where to draw the message box.
-	const int XSize: The X-Size of the Message box (Including the Corners).
-	const int YSize: The Y-Size of the Message box (Including the Corners).
-*/
-void GFX::DrawMsgBox(const int PosX, const int PosY, const int XSize, const int YSize) {
-	/* Left Side. */
-	Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, PosX, PosY);
-	Gui::Draw_Rect(PosX, PosY + 25, 25, YSize - 50, CORNER_COLOR);
-	Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, PosX, PosY + YSize - 25, 1.0f, -1.0f);
-
-	/* Right Side. */
-	Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, PosX + XSize - 25, PosY, -1.0f, 1.0f);
-	Gui::Draw_Rect(PosX + XSize - 25, PosY + 25, 25, YSize - 50, CORNER_COLOR);
-	Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, PosX + XSize - 25, PosY + YSize - 25, -1.0f, -1.0f);
-
-	/* Middle. */
-	Gui::Draw_Rect(PosX + 25, PosY, XSize - 50, YSize, KBD_KEYUNPRESSED);
-};
 
 /*
 	Draws a Checkbox.
@@ -114,6 +97,7 @@ void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked) {
 	Gui::DrawSprite(GFX::Sprites, sprites_checkbox_idx, PosX, PosY);
 	if (Checked) Gui::DrawSprite(GFX::Sprites, sprites_mark_idx, PosX + 4, PosY + 4);
 };
+
 
 /*
 	Draw the Cards.. but with size checks to make sure no bad behavior happens.

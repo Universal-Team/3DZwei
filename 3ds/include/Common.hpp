@@ -27,10 +27,10 @@
 #ifndef _3DZWEI_COMMON_HPP
 #define _3DZWEI_COMMON_HPP
 
-#include "3DZwei.hpp"
-#include "GFX.hpp"
-#include "Lang.hpp"
-#include "Pointer.hpp"
-#include "screenCommon.hpp"
+#include "3DZwei.hpp" // Main Overlay.
+#include "GFX.hpp" // Graphics.
+#include "Lang.hpp" // Multi-Language stuff.
+#include "Pointer.hpp" // Pointer Callbacks.
+#include "screenCommon.hpp" // Universal-Core.
 
 #endif

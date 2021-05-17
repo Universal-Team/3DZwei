@@ -30,6 +30,7 @@
 
 std::vector<size_t> Utils::Cards;
 
+
 /*
 	Initialize the used Cards at app-start.
 	Can also be used to reset the used cards.
@@ -50,6 +51,22 @@ void Utils::InitCards(const bool Init) {
 	}
 };
 
+
+/*
+	ONLY enable the first 10 pairs when initing a new Card Spritesheet, so it'd fill a full page as max.
+*/
+void Utils::InitNewCardSheet() {
+	Utils::Cards.clear();
+
+	if (Utils::GetCardSheetSize() >= 10) { // 10+ -> Only enable 10 pairs.
+		for (size_t Idx = 0; Idx < 10; Idx++) Utils::Cards.push_back(Idx);
+
+	} else { // 9- -> enable all pairs.
+		for (size_t Idx = 0; Idx < Utils::GetCardSheetSize(); Idx++) Utils::Cards.push_back(Idx);
+	}
+};
+
+
 /*
 	Returns the amount of cards from the active Cards Spritesheet.
 	This excludes the back cover card which should be the last one.
@@ -63,6 +80,7 @@ size_t Utils::GetCardSheetSize() {
 	return 0;
 };
 
+
 /*
 	Returns the amount of characters from the active Characters Spritesheet.
 */
@@ -71,6 +89,7 @@ size_t Utils::GetCharSheetSize() {
 
 	return 0;
 };
+
 
 /*
 	Check, if a set is good.
@@ -89,10 +108,10 @@ bool Utils::CheckSetContent(const std::string &Set, const bool CheckChars) {
 			/* Ensure it is '.t3x'. */
 			if (Set[Set.size() - 4] == '.' && Set[Set.size() - 3] == 't' && Set[Set.size() - 2] == '3' && Set[Set.size() - 1] == 'x') {
 				if (CheckChars) {
-					if (Set != "3DZwei-RomFS" && (access((std::string("sdmc:/3ds/3DZwei/sets/characters/") + Set).c_str(), F_OK) == 0)) return true;
+					if (Set != "3DZwei-RomFS" && (access((std::string("sdmc:/3ds/ut-games/sets/characters/") + Set).c_str(), F_OK) == 0)) return true;
 
 				} else {
-					if (Set != "3DZwei-RomFS" && (access((std::string("sdmc:/3ds/3DZwei/sets/cards/") + Set).c_str(), F_OK) == 0)) return true;
+					if (Set != "3DZwei-RomFS" && (access((std::string("sdmc:/3ds/ut-games/sets/3DZwei/") + Set).c_str(), F_OK) == 0)) return true;
 				}
 			}
 		}
@@ -101,8 +120,9 @@ bool Utils::CheckSetContent(const std::string &Set, const bool CheckChars) {
 	return ((!Set.empty()) && (Set == "3DZwei-RomFS"));
 };
 
+
 /*
-	Load a card set.
+	Load a cardset.
 
 	const std::string &Set: The cardset to load.
 */
@@ -115,7 +135,7 @@ void Utils::LoadCardSet(const std::string &Set) {
 	} else {
 		if (Utils::CheckSetContent(Set, false)) { // Check for cards.
 			if (GFX::Cards) C2D_SpriteSheetFree(GFX::Cards); // Unload first.
-			GFX::Cards = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/3DZwei/sets/cards/") + Set).c_str()); // Reload now.
+			GFX::Cards = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/ut-games/sets/3DZwei/") + Set).c_str()); // Reload now.
 
 		} else {
 			if (GFX::Cards) C2D_SpriteSheetFree(GFX::Cards); // Unload first.
@@ -124,6 +144,7 @@ void Utils::LoadCardSet(const std::string &Set) {
 		}
 	}
 };
+
 
 /*
 	Load a character set.
@@ -139,7 +160,7 @@ void Utils::LoadCharSet(const std::string &Set) {
 	} else {
 		if (Utils::CheckSetContent(Set, true)) { // Check for Chars.
 			if (GFX::Characters) C2D_SpriteSheetFree(GFX::Characters); // Unload first.
-			GFX::Characters = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/3DZwei/sets/characters/") + Set).c_str()); // Reload now.
+			GFX::Characters = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/ut-games/sets/characters/") + Set).c_str()); // Reload now.
 
 		} else {
 			if (GFX::Characters) C2D_SpriteSheetFree(GFX::Characters); // Unload first.

@@ -27,7 +27,6 @@
 #ifndef _3DZWEI_LANG_HPP
 #define _3DZWEI_LANG_HPP
 
-#include "JSON.hpp"
 #include <string>
 
 namespace Lang {

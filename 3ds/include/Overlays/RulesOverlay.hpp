@@ -32,7 +32,11 @@
 
 class RulesOverlay {
 public:
-	RulesOverlay() { this->X = this->Cards[7].X + 20, this->Y = this->Cards[7].Y + 20; };
+	RulesOverlay() {
+		this->X = this->Cards[7].X + 20, this->Y = this->Cards[7].Y + 20;
+		this->CardScale[0] = 1.0f, this->CardScale[1] = 1.0f;
+		this->CardFlipped[0] = false, this->CardFlipped[1] = false;
+	};
 	void Action();
 private:
 	enum class States : uint8_t {
@@ -43,11 +47,16 @@ private:
 		WaitDelay = 4
 	};
 
+	int16_t FAlpha = 255;
 	int16_t X = 140, Y = 120; // Pointer Pos.
 	int16_t Delay = 100; // Wait Delay.
 	bool CardClicks[2] = { false }; // If cards are clicked or nah.
 	States State = States::GotoFirst; // The Current State.
-	bool Done = false;
+	bool Done = false, FullDone = false;
+
+	/* Card Flip related. */
+	bool CardFlipped[2] = { false }, FlipDone[2] = { false };
+	float CardScale[2] = { 1.0f }, Cubic = 0.0f;
 
 	/* Rule States. */
 	void State1();

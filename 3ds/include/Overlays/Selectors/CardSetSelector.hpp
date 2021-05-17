@@ -24,35 +24,66 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_CARDSET_PREVIEW_HPP
-#define _3DZWEI_CARDSET_PREVIEW_HPP
+#ifndef _3DZWEI_CARDSET_SELECTOR_HPP
+#define _3DZWEI_CARDSET_SELECTOR_HPP
 
 #include "Pointer.hpp"
 #include <citro2d.h>
 #include <string>
 #include <vector>
 
-class CardSetPreview {
+class CardSetSelector {
 public:
-	CardSetPreview(const std::string &Set);
-	bool Action();
+	CardSetSelector();
+	std::string Action();
 private:
-	std::string Set = "";
-	C2D_SpriteSheet PreviewSheet = { nullptr };
-	std::vector<bool> CardsShown;
-	bool Done = false, Res = false, SetGood = false;
-	size_t Page = 0;
+	bool Done = false, FullDone = false, Res = false, SetGood = false, FadeIn = true,
+		IsSelecting = true, ModeSwitch = false, InitialSwipe = true;
+	int16_t FAlpha = 255;
 
-	void PrevPage();
-	void NextPage();
-	bool CanGoNext() const;
+	/* Selector based. */
+	std::vector<std::string> CardSets; // List all cardsets there.
+	int SelectedSet = 0, SetListPos = 0, CurSetPos = 0;
+
+	/* Preview based. */
+	C2D_SpriteSheet PreviewSheet = nullptr;
+	bool FlipCard = false, FirstFlipDone = false, CardSwipeDir = false, CardSwipe = false,
+		CardSwipeIn = false, CardSwipeOut = false;
+	int CardPage = 0, PrevCardPos = -400, CurCardPos = -400, NextCardPos = 400, ToFlip = -1;
+
+	/* Animation related. */
+	float Cubic = 0.0f;
+	std::vector<float> CardScale;
+	std::vector<bool> CardFlipped;
+
+	/* Set. */
+	void DrawSetList(const int AddOffs);
+	void PrevSetPage();
+	void LastSet();
+	void NextSet();
+	void NextSetPage();
+	void HandleSet(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+
+	/* Preview. */
+	void PrevCardPage();
+	void NextCardPage();
+	bool CardCanGoNext() const;
 	void ToggleCard(const uint8_t Idx);
+	void DrawCardPage(const size_t Pg, const int AddOffs);
+	void DrawCardBottom(const int AddOffs);
+	void HandleCard(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+
+	/* Both. */
+	void PreviewSelection(const size_t Idx, const bool SetSelection = false, const bool First = false);
+	void OldCardsetOut();
 	void Cancel();
 	void Confirm();
+	void Handler();
+	void Draw();
 
 	const std::vector<FuncCallback> Positions = {
-		{ 0, 25, 25, 215, [this]() { this->PrevPage(); } },
-		{ 375, 25, 25, 215, [this]() { this->NextPage(); } },
+		{ 0, 25, 25, 215, [this]() { this->PrevCardPage(); } },
+		{ 375, 25, 25, 215, [this]() { this->NextCardPage(); } },
 
 		{ 60, 35, 55, 55, [this]() { this->ToggleCard(0); } },
 		{ 160, 35, 55, 55, [this]() { this->ToggleCard(1); } },
@@ -67,9 +98,22 @@ private:
 		{ 260, 175, 55, 55, [this]() { this->ToggleCard(8); } }
 	};
 
+	const std::vector<FuncCallback> SetPos = {
+		{ 0, 15, 25, 215, [this]() { this->PrevSetPage(); } },
+
+		{ 50, 30, 220, 32, [this]() { this->PreviewSelection(this->SetListPos + 0, true); } },
+		{ 50, 67, 220, 32, [this]() { this->PreviewSelection(this->SetListPos + 1, true); } },
+		{ 50, 104, 220, 32, [this]() { this->PreviewSelection(this->SetListPos + 2, true); } },
+		{ 50, 141, 220, 32, [this]() { this->PreviewSelection(this->SetListPos + 3, true); } },
+		{ 50, 178, 220, 32, [this]() { this->PreviewSelection(this->SetListPos + 4, true); } },
+
+		{ 295, 15, 25, 215, [this]() { this->NextSetPage(); } }
+	};
+
+
 	const std::vector<FuncCallback> BottomPos = {
-		{ 0, 15, 25, 215, [this]() { this->PrevPage(); } },
-		{ 295, 15, 25, 215, [this]() { this->NextPage(); } },
+		{ 0, 15, 25, 215, [this]() { this->PrevCardPage(); } },
+		{ 295, 15, 25, 215, [this]() { this->NextCardPage(); } },
 
 		{ 88, 50, 24, 24, [this]() { this->ToggleCard(0); } },
 		{ 148, 50, 24, 24, [this]() { this->ToggleCard(1); } },

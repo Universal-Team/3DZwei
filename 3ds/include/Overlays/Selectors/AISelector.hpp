@@ -37,21 +37,26 @@ public:
 	StackMem::AIMethod Action();
 private:
 	StackMem::AIMethod Res = StackMem::AIMethod::Random;
-	bool Done = false, Cancelled = false;
 	uint8_t Mode = 0;
+	bool Done = false, FullDone = false, Cancelled = false, SwipeDirection = false,
+		DoSwipe = false, InitialSwipe = true, FadeIn = true;
+	int16_t FAlpha = 255, PrevPos = -400, CurPos = -400, NextPos = 400;
+	float Cubic = 0.0f;
 
 	void PrevMode();
 	void NextMode();
 	void OK();
 	void Cancel();
+	void DrawPage(const int16_t Pg, const int AddOffs);
+	void Handler();
 
 	const std::vector<std::string> Modes = { "AI_MODE_RANDOM", "AI_MODE_HARD", "AI_MODE_EXTREME" };
 	const std::vector<std::string> ModeDesc = { "AI_MODE_RANDOM_DESC", "AI_MODE_HARD_DESC", "AI_MODE_EXTREME_DESC" };
 
 	const std::vector<FuncCallback> Positions = {
-		{ 40, 60, 25, 145, [this]() { this->PrevMode(); } },
-		{ 166, 172, 73, 21, [this]() { this->OK(); } },
-		{ 335, 60, 25, 145, [this]() { this->NextMode(); } }
+		{ 0, 25, 25, 215, [this]() { this->PrevMode(); } },
+		{ 375, 25, 25, 215, [this]() { this->NextMode(); } },
+		{ 160, 205, 74, 22, [this]() { this->OK(); } }
 	};
 
 	const std::vector<FuncCallback> BottomPos = {

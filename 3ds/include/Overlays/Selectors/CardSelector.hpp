@@ -36,14 +36,21 @@ public:
 	void Action();
 private:
 	std::vector<std::pair<bool, size_t>> Cards = { };
-	bool Done = false, Changed = false;
+	bool Done = false, FullDone = false, Changed = false, FadeIn = true, DoSwipe = false, SwipeDir = false, InitialSwipe = true;
+	uint8_t FAlpha = 255;
+	int PrevPos = -400, CurPos = -400, NextPos = 400;
 	size_t Page = 0;
+	float Cubic = 0.0f;
 
 	void PrevPage();
 	void NextPage();
 	bool CanGoNext() const;
 	void OK();
 	void ToggleCard(const uint8_t Idx);
+
+	void DrawTop();
+	void DrawBottom();
+	void PageFadeHandler();
 
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 25, 25, 215, [this]() { this->PrevPage(); } },

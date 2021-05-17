@@ -54,20 +54,30 @@ public:
 		bool CancelGame = false; // If Game should be cancelled or not.
 	};
 
-	GameSettings() { };
+	GameSettings();
 	GameParams Action();
 private:
 	enum class Tabs : uint8_t { General = 0, Player = 1 };
 
 	GameParams Params;
-	bool Done = false;
 	Tabs Tab = Tabs::General;
+	bool Done = false, FullDone = false, DoSwipe = false, SwipeDirection = false, InitialSwipe = true;
+	int FAlpha = 255, T1Offs = -320, T2Offs = 320;
+	float Cubic = 0.0f;
 
 	/* Both Tabs operations. */
 	void OK();
 	void Cancel();
-	void GeneralTab() { this->Tab = Tabs::General; };
-	void PlayerTab() { this->Tab = Tabs::Player; };
+
+	void GeneralTab() {
+		if (this->Tab != Tabs::General) this->SwipeDirection = false, this->DoSwipe = true;
+	};
+	void PlayerTab() {
+		if (this->Tab != Tabs::Player) this->SwipeDirection = true, this->DoSwipe = true;
+	};
+
+	void Draw();
+	void FadeOut();
 	void TabLogic();
 
 	/* General Tab operations. */

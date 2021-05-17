@@ -33,6 +33,7 @@ namespace Utils {
 	extern std::vector<size_t> Cards;
 
 	void InitCards(const bool Init = false);
+	void InitNewCardSheet();
 	size_t GetCardSheetSize();
 	size_t GetCharSheetSize();
 

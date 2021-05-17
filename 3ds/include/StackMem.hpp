@@ -32,7 +32,7 @@
 #include <vector> // std::vector.
 
 /*
-	StackMem's' main class implementation.
+	StackMem's main class implementation.
 	Written by SuperSaiyajinStackZ.
 */
 class StackMem {
@@ -60,7 +60,7 @@ public:
 	int GetCardType(const size_t Idx) const;
 
 	/* Some Utility related things. */
-	bool DoCheck();
+	bool DoCheck(const bool HideCards = true);
 	bool DoPlay(const size_t Idx = 0);
 	GameState CheckGameState() const;
 	size_t GetPairs() const { return this->Pairs; }; // Get the amount of Pairs used in the Current Game.
@@ -81,6 +81,10 @@ public:
 	/* AI Play! */
 	int AIPlay();
 	AIMethod GetMethod() const;
+
+	/* Returns the Turn cards. */
+	int GetTurnCard(const uint8_t Idx) const { return this->PlayCards[Idx]; };
+	void ResetTurn(const bool Correct);
 private:
 	std::mt19937 RandomEngine;
 
