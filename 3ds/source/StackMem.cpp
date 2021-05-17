@@ -362,6 +362,8 @@ bool StackMem::CheckMatch() const {
 	Does it's checks after both cards are played.
 	This handles Pairs checks, if it was successfull, adds the pair to the player, updates the AI mind etc.
 
+	const bool HideCards: If the cards should be hidden (true), or if you handle it on your own (false).
+
 	Returns true if card matched, false if not.
 */
 bool StackMem::DoCheck(const bool HideCards) {
@@ -675,6 +677,11 @@ StackMem::AIMethod StackMem::GetMethod() const {
 	return StackMem::AIMethod::Random;
 };
 
+/*
+	Resets a turn by resetting the Playcards and set to hidden
+
+	const bool Correct: If the card was correct (true, doesn't set the status to hidden) or not (false, hide the card).
+*/
 void StackMem::ResetTurn(const bool Correct) {
 	if (!Correct) {
 		this->SetCardShown(this->PlayCards[0], false); this->SetCardShown(this->PlayCards[1], false);

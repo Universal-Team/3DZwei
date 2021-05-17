@@ -1102,7 +1102,7 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 		if (this->Selection < 15) { // 15 --> 4th row first card.
 			if ((this->Page * 20) + this->Selection + 5 < this->Game->GetPairs() * 2) { // Ensureness.
 				this->Selection += 5;
-				Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
+				Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 			}
 		}
 	};
@@ -1110,18 +1110,20 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 	if (Down & KEY_DUP) {
 		if (this->Selection > 4) { // 4 --> 1st row last card.
 			this->Selection -= 5;
-			Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
+			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 		}
 	};
 
 	if (Down & KEY_DLEFT) {
 		if (this->Selection == 0 || this->Selection == 5 || this->Selection == 10 || this->Selection == 15) {
 			this->PrevPage();
+			this->Selection += 4; // Go to the whole right.
+			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 
 		} else {
 			if (this->Selection > 0) {
 				this->Selection--;
-				Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
+				Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 			}
 		}
 	};
@@ -1130,16 +1132,19 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 		if (this->Selection < 20) {
 			if (this->Selection == 4 || this->Selection == 9 || this->Selection == 14 || this->Selection == 19) {
 				if (this->NextPage()) {
+					this->Selection -= 4;
+
 					if ((this->Page * 20) + this->Selection + 1 > this->Game->GetPairs() * 2) { // Ensureness.
 						this->Selection = ((this->Game->GetPairs() * 2) - 1) % 20;
-						Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
 					}
+
+					Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 				}
 
 			} else {
 				if ((this->Page * 20) + this->Selection + 1 < this->Game->GetPairs() * 2) { // Ensureness.
 					this->Selection++;
-					Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
+					Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 				}
 			}
 		}
