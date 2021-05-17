@@ -105,9 +105,13 @@ You can find user-created Sets on the [Universal-Team Game Sets](https://game-se
 This also exists in the form of a UniStore for [Universal-Updater](https://github.com/Universal-Team/Universal-Updater). You just need to find it in the list of the recommended UniStores. If you don't know how, see below for instructions.
 
 1.) Press on the last Tab on the left side in Universal-Updater.
+
 2.) Press on `Select UniStore`.
+
 3.) Press on the small `+` circle icon on the bottom screen.
+
 4.) Find the `Universal-Team Game Sets` entry in the list and select it.
+
 5.) Now press on `ut-game-sets.unistore` and you are ready to go!
 
 
