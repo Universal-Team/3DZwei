@@ -68,7 +68,7 @@ void CardSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection
 
 		} else { // Load from the SD otherwise.
 			if (this->CardSets[Idx] != "" && Utils::CheckSetContent(this->CardSets[Idx], false)) {
-				this->PreviewSheet = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/3DZwei/sets/cards/") + this->CardSets[Idx]).c_str());
+				this->PreviewSheet = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/ut-games/sets/3DZwei/") + this->CardSets[Idx]).c_str());
 				this->SetGood = this->PreviewSheet;
 			}
 		}

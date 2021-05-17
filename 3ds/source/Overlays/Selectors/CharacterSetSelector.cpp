@@ -66,7 +66,7 @@ void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSele
 
 		} else { // Load from the SD otherwise.
 			if (this->CharSets[Idx] != "" && Utils::CheckSetContent(this->CharSets[Idx], true)) {
-				this->PreviewSheet = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/3DZwei/sets/characters/") + this->CharSets[Idx]).c_str());
+				this->PreviewSheet = C2D_SpriteSheetLoad((std::string("sdmc:/3ds/ut-games/sets/characters/") + this->CharSets[Idx]).c_str());
 				this->SetGood = this->PreviewSheet;
 			}
 		}
