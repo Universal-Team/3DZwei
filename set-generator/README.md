@@ -54,12 +54,3 @@ Rename the `t3x` files to whatever you like, and place them in the following dir
 3.) After you selected a Set, it will show a preview of it. At this point, you can select if you want to use it, or not through the touch screen buttons, or you can press `B` / `Y` to cancel, or `START` / `X` to confirm.
 
 Now have fun with your sets!
-
-
-## 3DZwei-Sets UniStore
-If those steps are too difficult for you or not possible, you can also find user-created Sets on the `3DZwei-Sets` UniStore, which can be found on [Universal-Updater](https://github.com/Universal-Team/Universal-Updater).
-
-You can download that UniStore by clicking on the last Tab on the left side, then `Select UniStore`.
-From there, you can click on that `+` icon at the bottom middle right and find `3DZwei-Sets`. After it's being downloaded, select it again on the UniStore Selector and have fun browsing through all available Sets!
-
-If you are curious where it's hosted, it's [here](https://github.com/SuperSaiyajinStackZ/3DEins-3DZwei-Sets/blob/master/unistore/3DZwei-Sets.unistore).
