@@ -1,45 +1,133 @@
 # 3DZwei
+<p align="center">
+	<a href="https://github.com/Universal-Team/3DZwei/releases/latest"><img src="https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/logos/logo.png"></a><br>
+	<b>A memory cardgame clone for Nintendo 3DS.</b><br>
+</p>
 
-3DZwei is a memory cardgame clone for Nintendo 3DS. Including...
+## Main Features
+* 3DZwei includes 3 AI Methods / Difficulties, and those are explained below!
 
-* Avatars from [3DEins](https://github.com/Universal-Team/3DEins) & [3DVier](https://github.com/Universal-Team/3DVier).
-* Custom Cardsets & Background. For more, you can take a look [here](https://github.com/SuperSaiyajinStackZ/3DZwei/blob/master/card_generator).
-* RGB Overlay for the UI Colors.
-* A "remember all played cards" and "remember last 2 played cards" AI in the "Multi Play!" mode.
-* A TimePlay Mode, try to collect all cards with the least amount of time and least amount of tries.
-* 2 Player Mode on one console.
-* Initial Multi Language support, currently only supports English & German.
+### Method 1: Random
+This method does what it says -> playing randomly.
 
-## Screenshots of 3DZwei
-### Avatar Selection
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/avatar_selection1.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/avatar_selection2.png)
+### Method 2: Hard
+This method stores the last played cards as a vector of pairs. On the second Turn State, it checks through all the cards in that vector to see, if a card matches the one of the first Turn State. If it does, it plays it -> Otherwise it uses the Random Method.
 
-### CardSet Changer
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/set_changer.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/cardset_preview.png)
+### Method 3: Extreme
+This is a more improved version of the Hard Method. It already does the thing what the Hard Method does on it's first Turn State. NOTE, that it may take longer the more turns have passed, because it does check for the first card pairs, second card pairs and mixed.. if it can find a valid pair already which got played. On the second Turn State, it switches over to the Hard Method, because we don't need more checks than really required.
 
-### Color Settings
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/colorchanger.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/rgb_overlay.png)
+
+* A new UI based of [Sim2Editor](https://github.com/Universal-Team/Sim2Editor) ones.
+
+* Ability for custom Cardsets and Charactersets! See [here](https://github.com/Universal-Team/3DZwei/tree/Rewrite/set-generator/README.md) for more. The wiki page [here](https://github.com/Universal-Team/3DZwei/wiki) though will contain a more detailed guide when the next version (v0.3.0) is out.
+
+* A `Least amount of tries` (`Try Play`) and `Normal` (`Normal Play`) Play Mode.
+
+* Multi-Player on a single console, if the AI is disabled.
+
+## Screenshots
+
+<details><summary>Screenshots</summary>
+
+### AI Selector
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/aiSelector.png)
+
+### Card Selector
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardSelector.png)
+
+### Character Selector
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/characterSelector.png)
 
 ### Credits
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/credits.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/developed_by.png)
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsTranslators.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsSpecialThanks.png)
 
-### Game Screens
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/gameModeSelect.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/game_screen.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/game_result.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/timePlay.png)
+### Game Result
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameResult.png)
 
-### MainMenu
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/mainmenu.png)
+### Game Screen
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenVersus.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenSolo.png)
 
-### Other
-![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/rulesOvl.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/screenshots/langSelect.png)
+### Game Settings
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsGeneral.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsPlayers.png)
+
+### Language Selector
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/languageSelector.png)
+
+### Main Menu
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/mainmenu.png)
+
+### Rules
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/rules.png)
+
+### Set Selectors
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorCard.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorChar.png)
+
+### Settings
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsConfig.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAnimation.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAppInfo.png)
+
+### Splash
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/splash.png)
+
+</details>
+
+## Compilation
+
+### Setting up your environment
+
+To build 3DZwei from source, you will need to install devkitARM, libctru, citro2d and citro3d. Follow devkitPro's [Getting Started](https://devkitpro.org/wiki/Getting_Started) page to install pacman, then run the following command to install everything you need:
+```
+(sudo dkp-)pacman -S 3ds-dev
+```
+(The `sudo dkp-` may not be needed depending on your OS).
+
+You will also need [bannertool](https://github.com/Steveice10/bannertool/releases/latest) and [makerom](https://github.com/profi200/Project_CTR/releases/latest) in your PATH.
+
+### Cloning the repository
+
+To download the source you will need to clone the repository with submodules, this can be done by running:
+```
+git clone --recursive https://github.com/Universal-Team/3DZwei.git
+```
+
+If you've already cloned it, you can use the following command to update all of the submodules:
+```
+git submodule update --init --recursive
+```
+
+### Building
+
+Once you've cloned the repository (with submodules), simply run `make` in the root of the repository. You will find `3DZwei.cia` and `3DZwei.3dsx` inside the `3ds` directory.
+
+
+## Getting Sets
+You can find user-created Sets on the [Universal-Team Game Sets](https://game-sets.universal-team.net/) page
+
+This also exists in the form of a UniStore for [Universal-Updater](https://github.com/Universal-Team/Universal-Updater). You just need to find it in the list of the recommended UniStores. If you don't know how, see below for instructions.
+
+1.) Press on the last Tab on the left side in Universal-Updater.
+
+2.) Press on `Select UniStore`.
+
+3.) Press on the small `+` circle icon on the bottom screen.
+
+4.) Find the `Universal-Team Game Sets` entry in the list and select it.
+
+5.) Now press on `ut-game-sets.unistore` and you are ready to go!
+
 
 ## Credits
 ### Main Developers
 - [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ)
 
 ### Others
-- [devkitPro](https://github.com/devkitPro): For devkitARM, Libctru, Citro2D & Citro3D.
-- [TotallyNotGuy](https://github.com/TotallyNotGuy): For the bar graphics.
-- [Universal-Team](https://github.com/Universal-Team): For Universal-Core.
+- [devkitPro](https://github.com/devkitPro): devkitARM, Libctru, Citro2D & Citro3D.
+- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): StackMem-Core + 3DZwei developement.
+- [Universal-Team](https://github.com/Universal-Team): Universal-Core.
+
+### Special Thanks
+- [NightScript](https://github.com/NightYoshi370): For having the idea to use cubic bezier for animations, the falling cards animation on the game start and suggestions.
+- [Pk11](https://github.com/Epicpkmn11): For helping me with an example on how to flip a card in 2D and suggestions.
+- Universal-Microwave: For better teaching me how cubic bezier works with an example and suggestions.
 
 ### Translators
-- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): German & English.
+- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): Deutsch, English.

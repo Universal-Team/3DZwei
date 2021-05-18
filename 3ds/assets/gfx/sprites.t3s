@@ -1,14 +1,19 @@
 --atlas -f rgba8888 -z auto
 
-sprites/bottom_screen_bot.png
-sprites/bottom_screen_top.png
-sprites/grid.png
-sprites/Logo.png
+sprites/misc/arrow.png
+sprites/misc/back_btn.png
+sprites/misc/checkbox.png
+sprites/misc/corner.png
+sprites/misc/mark.png
+sprites/misc/next_btn.png
+sprites/misc/small_corner.png
+sprites/misc/stripe.png
+
+sprites/icon.png
+sprites/logo.png
+sprites/outline.png
 sprites/pointer.png
-sprites/right.png
+sprites/stackmemcore.png
 sprites/stackz.png
-sprites/top_screen_bot.png
-sprites/top_screen_top.png
 sprites/universal-core.png
-sprites/UT.png
-sprites/wrong.png
+sprites/voltcard.png

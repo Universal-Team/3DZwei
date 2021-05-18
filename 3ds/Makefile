@@ -35,8 +35,8 @@ include $(DEVKITARM)/3ds_rules
 # External tools
 #---------------------------------------------------------------------------------
 ifeq ($(OS),Windows_NT)
-MAKEROM 	?= ../makerom.exe
-BANNERTOOL 	?= ../bannertool.exe
+MAKEROM 	?= makerom.exe
+BANNERTOOL 	?= bannertool.exe
 
 else
 MAKEROM 	?= makerom
@@ -44,30 +44,52 @@ BANNERTOOL 	?= bannertool
 
 endif
 
+GIT_VER := "$(shell git rev-parse --short=7 HEAD)"
+
 #---------------------------------------------------------------------------------
 # Version number
 #---------------------------------------------------------------------------------
+ifneq ($(shell echo $(shell git describe --tags) | head -c 2 | tail -c 1),)
+VERSION_MAJOR := $(shell echo $(shell git describe --tags) | head -c 2 | tail -c 1)
+else
 VERSION_MAJOR := 0
-VERSION_MINOR := 2
-VERSION_MICRO := 0
+endif
 
-VERSION_STRING := "$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_MICRO)"
+ifneq ($(shell echo $(shell git describe --tags) | head -c 4 | tail -c 1),)
+VERSION_MINOR := $(shell echo $(shell git describe --tags) | head -c 4 | tail -c 1)
+else
+VERSION_MINOR := 2
+endif
+
+ifneq ($(shell echo $(shell git describe --tags) | head -c 6 | tail -c 1),)
+VERSION_MICRO := $(shell echo $(shell git describe --tags) | head -c 6 | tail -c 1)
+else
+VERSION_MICRO := 0
+endif
+
+VERSION_STRING := "v$(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_MICRO)"
 #---------------------------------------------------------------------------------
 TARGET		:=	3DZwei
 BUILD		:=	build
-SRCCORE		:= ../core/source
-INCCORE		:= ../core/include
-SRCCMN		:= ../common/source
-INCCMN		:= ../common/include
 UNIVCORE	:= 	Universal-Core
-SOURCES		:=	$(SRCCORE) $(SRCCMN) $(UNIVCORE) source source/gui source/overlays source/screens source/utils
+SOURCES		:=	$(UNIVCORE) \
+				source \
+				source/Overlays source/Overlays/Game source/Overlays/Inputs source/Overlays/Selectors \
+				source/UI \
+				source/Utils
+
 DATA		:=	data
-INCLUDES	:=	$(INCCORE) $(INCCMN) $(UNIVCORE) include include/gui include/overlays include/screens include/utils
+INCLUDES	:=	$(UNIVCORE) \
+				include \
+				include/Overlays include/Overlays/Game include/Overlays/Inputs include/Overlays/Selectors \
+				include/UI \
+				include/Utils
+
 GRAPHICS	:=	assets/gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
 APP_AUTHOR	:=	Universal-Team
-APP_DESCRIPTION := A Memory clone for Nintendo 3DS.
+APP_DESCRIPTION := A Memory Cardgame clone for Nintendo 3DS.
 ICON		:=	app/icon.png
 BNR_IMAGE	:=  app/banner.png
 RSF_FILE	:=	app/build-cia.rsf
@@ -79,12 +101,13 @@ ARCH	:=	-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft
 
 CFLAGS	:=	-g -Wall -Wno-psabi -O2 -mword-relocations \
 			-DV_STRING=\"$(VERSION_STRING)\" \
+			-DV_SHA=\"$(GIT_VER)\" \
 			-fomit-frame-pointer -ffunction-sections \
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM11 -D_3DS -D_GNU_SOURCE=1
 
-CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++17
+CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++20
 
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=3dsx.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
@@ -235,11 +258,11 @@ all: $(OUTPUT).cia $(OUTPUT).elf $(OUTPUT).3dsx
 $(OUTPUT).elf	:	$(OFILES)
 
 $(OUTPUT).cia	:	$(OUTPUT).elf $(OUTPUT).smdh
-	$(BANNERTOOL) makebanner -i "../app/banner.png" -a "../app/BannerAudio.wav" -o "../app/banner.bin"
+	@$(BANNERTOOL) makebanner -i "../app/banner.png" -a "../app/BannerAudio.wav" -o "../app/banner.bin"
 
-	$(BANNERTOOL) makesmdh -i "../app/icon.png" -s "$(TARGET)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -o "../app/icon.bin"
+	@$(BANNERTOOL) makesmdh -i "../app/icon.png" -s "$(TARGET)" -l "$(APP_DESCRIPTION)" -p "$(APP_AUTHOR)" -o "../app/icon.bin"
 
-	$(MAKEROM) -f cia -target t -exefslogo -o "../3DZwei.cia" -elf "../3DZwei.elf" -rsf "../app/build-cia.rsf" -banner "../app/banner.bin" -icon "../app/icon.bin" -logo "../app/logo.bcma.lz" -DAPP_ROMFS="$(TOPDIR)/$(ROMFS)" -major $(VERSION_MAJOR) -minor $(VERSION_MINOR) -micro $(VERSION_MICRO) -DAPP_VERSION_MAJOR="$(VERSION_MAJOR)"
+	@$(MAKEROM) -f cia -target t -exefslogo -o "../3DZwei.cia" -elf "../3DZwei.elf" -rsf "../app/build-cia.rsf" -banner "../app/banner.bin" -icon "../app/icon.bin" -logo "../app/logo.bcma.lz" -DAPP_ROMFS="$(TOPDIR)/$(ROMFS)" -major $(VERSION_MAJOR) -minor $(VERSION_MINOR) -micro $(VERSION_MICRO) -DAPP_VERSION_MAJOR="$(VERSION_MAJOR)"
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data

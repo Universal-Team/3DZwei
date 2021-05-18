@@ -9,7 +9,4 @@ clean:
 3ds:
 	@$(MAKE) -C 3ds
 
-ds:
-	@$(MAKE) -C ds
-
 .PHONY: $(SUBDIRS) clean
