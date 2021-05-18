@@ -6,7 +6,7 @@
 	"AI_MODE_HARD_DESC": "A harder AI which starts predicting its plays at the second card.\nThis AI stores all played cards into a vector of pairs and can check all played cards and play them if it finds a match.",
 	"AI_MODE_RANDOM": "Random",
 	"AI_MODE_RANDOM_DESC": "A simple AI using a pseudo-random number generator.\nThis AI is the fastest, but also easiest to beat.",
-	"AMOUNT_OF_CARDS": "Cards count: ",
+	"AMOUNT_OF_CARDS": "Card count: ",
 	"AMOUNT_OF_CHARACTERS": "Character count: ",
 	"CANCEL": "Cancel",
 	"CARD_SELECTOR_TITLE": "Select the cards to use",
