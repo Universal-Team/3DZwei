@@ -1,6 +1,6 @@
 # 3DZwei
 <p align="center">
-	<a href="https://github.com/Universal-Team/3DZwei/releases/latest"><img src="https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/logos/logo.png"></a><br>
+	<a href="https://github.com/Universal-Team/3DZwei/releases/latest"><img src="https://github.com/Universal-Team/3DZwei/blob/master/resources/logos/logo.png"></a><br>
 	<b>A memory cardgame clone for Nintendo 3DS.</b><br>
 </p>
 
@@ -19,9 +19,9 @@ This is a more improved version of the Hard Method. It already does the thing wh
 
 * A new UI based of [Sim2Editor](https://github.com/Universal-Team/Sim2Editor) ones.
 
-* Ability for custom Cardsets and Charactersets! See [here](https://github.com/Universal-Team/3DZwei/tree/Rewrite/set-generator/README.md) for more. The wiki page [here](https://github.com/Universal-Team/3DZwei/wiki) though will contain a more detailed guide when the next version (v0.3.0) is out.
+* Ability for custom Cardsets and Charactersets! See [here](https://github.com/Universal-Team/3DZwei/tree/master/set-generator/README.md) for more. The wiki page [here](https://github.com/Universal-Team/3DZwei/wiki) though will contain a more detailed guide when the next version (v0.3.0) is out.
 
-* A `Least amount of tries` (`Try Play`) and `Normal` (`Normal Play`) Play Mode.
+* Versus and Solo Play mode.
 
 * Multi-Player on a single console, if the AI is disabled.
 
@@ -30,43 +30,43 @@ This is a more improved version of the Hard Method. It already does the thing wh
 <details><summary>Screenshots</summary>
 
 ### AI Selector
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/aiSelector.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/aiSelector.png)
 
 ### Card Selector
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardSelector.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/cardSelector.png)
 
 ### Character Selector
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/characterSelector.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/characterSelector.png)
 
 ### Credits
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsTranslators.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/creditsSpecialThanks.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsTranslators.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsSpecialThanks.png)
 
 ### Game Result
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameResult.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameResult.png)
 
 ### Game Screen
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenVersus.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenSolo.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameScreenVersus.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameScreenSolo.png)
 
 ### Game Settings
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsGeneral.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsPlayers.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameSettingsGeneral.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameSettingsPlayers.png)
 
 ### Language Selector
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/languageSelector.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/languageSelector.png)
 
 ### Main Menu
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/mainmenu.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/mainmenu.png)
 
 ### Rules
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/rules.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/rules.png)
 
 ### Set Selectors
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/cardsetSelectorCard.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/charactersetSelectorChar.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/cardsetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/cardsetSelectorCard.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/charactersetSelectorList.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/charactersetSelectorChar.png)
 
 ### Settings
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsConfig.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAnimation.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/settingsAppInfo.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/settingsConfig.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/settingsAnimation.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/settingsAppInfo.png)
 
 ### Splash
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/splash.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/splash.png)
 
 </details>
 
