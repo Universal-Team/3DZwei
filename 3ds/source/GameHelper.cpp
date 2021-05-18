@@ -55,8 +55,8 @@ void GameHelper::StartGame(const bool AlreadyInitialized, const GameSettings::Ga
 		this->Game = std::make_unique<StackMem>(Utils::Cards.size(), this->Params.AIUsed, this->Params.Method);
 	}
 
-	/* Set the Game Starter, if using Normal-Play mode. */
-	if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) {
+	/* Set the Game Starter, if using Versus Mode. */
+	if (this->Params.GameMode == GameSettings::GameModes::Versus) {
 		switch(this->Params.Starter) { // Get the starter.
 			case GameSettings::RoundStarter::Player1: // Player 1.
 				this->Game->SetCurrentPlayer(StackMem::Players::Player1);
@@ -166,7 +166,7 @@ void GameHelper::DrawNormalPlay(void) const {
 
 
 void GameHelper::DrawTop(void) const {
-	if (this->Params.GameMode == GameSettings::GameModes::TryPlay) this->DrawTryPlay();
+	if (this->Params.GameMode == GameSettings::GameModes::Solo) this->DrawTryPlay();
 	else this->DrawNormalPlay();
 };
 
@@ -467,8 +467,8 @@ void GameHelper::StartGameAnimationFalling() {
 			Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30 - Delay, 30);
 		}
 
-		/* Draw Second character. It's only included in Normal play mode. */
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) {
+		/* Draw Second character. It's only included in Versus Mode.. */
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) {
 			if (this->Params.Characters[1] < Utils::GetCharSheetSize()) {
 				Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 250 + Delay, 30);
 			}
@@ -574,8 +574,8 @@ void GameHelper::StartGameAnimationGrowing() {
 			Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30 - Delay, 30);
 		}
 
-		/* Draw Second character. It's only included in Normal play mode. */
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) {
+		/* Draw Second character. It's only included in Versus Mode.. */
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) {
 			if (this->Params.Characters[1] < Utils::GetCharSheetSize()) {
 				Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 250 + Delay, 30);
 			}
@@ -977,8 +977,8 @@ void GameHelper::EndGameAnimation() {
 			Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30 - Delay, 30);
 		}
 
-		/* Draw Second character. It's only included in Normal play mode. */
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) {
+		/* Draw Second character. It's only included in Versus Mode.. */
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) {
 			if (this->Params.Characters[1] < Utils::GetCharSheetSize()) {
 				Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 250 + Delay, 30);
 			}
@@ -1070,7 +1070,7 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 		this->Game->ResetTurn(false); // Hide cards, reset state.
 
 		/* At this point, we need to make an exception for Try and Normal Mode. */
-		if (this->Params.GameMode == GameSettings::GameModes::TryPlay) { // Try Mode.
+		if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Try Mode.
 			this->Params.Tries++; // Increase the Tries.
 			this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
 
@@ -1224,7 +1224,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 		Not even over yet: GameHelper::LogicState::Nothing.
 */
 GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Held, const touchPosition T) {
-	if (this->Params.GameMode == GameSettings::GameModes::TryPlay) { // Least amount of tries play mode.
+	if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Least amount of tries play mode.
 		if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
 			this->PlayerLogic(Down, Held, T);
 

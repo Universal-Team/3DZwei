@@ -72,10 +72,10 @@ void GameOverlay::Action() {
 					break; // Should never happen.
 			};
 
-			/* If we reached the needed win amount, are on the Try Play Mode -> go the screen back to the MainMenu again. */
+			/* If we reached the needed win amount, are on Solo Mode -> go the screen back to the MainMenu again. */
 			if ((this->Helper->ReturnParams().Wins[0] >= this->Helper->ReturnParams().RoundsToWin)
 			|| (this->Helper->ReturnParams().Wins[1] >= this->Helper->ReturnParams().RoundsToWin)
-			|| (this->Helper->ReturnParams().GameMode == GameSettings::GameModes::TryPlay)) {
+			|| (this->Helper->ReturnParams().GameMode == GameSettings::GameModes::Solo)) {
 				this->Running = false; // Game is not running anymore.
 				return;
 

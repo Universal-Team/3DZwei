@@ -36,7 +36,12 @@ public:
 	GameResult();
 	void Action(GameSettings::GameParams &Params, const uint8_t Won);
 private:
-	bool Done = false, FullDone = false, DoSwipe = true;
+	/* Draw Modes. */
+	void DrawOver(const bool P2Wins, const GameSettings::GameParams &Params);
+	void DrawVersus(const bool P2Wins, const GameSettings::GameParams &Params, const bool Tie);
+	void DrawSolo(const GameSettings::GameParams &Params);
+
+	bool Done = false, FullDone = false, Over = false, DoSwipe = true;
 	int Delay = 255;
 	float Cubic = 0.0f;
 };

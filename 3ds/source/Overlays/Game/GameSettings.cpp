@@ -48,7 +48,7 @@ GameSettings::GameSettings() {
 
 /* Toggle if the AI should be used. */
 void GameSettings::ToggleAI() {
-	if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available on Normal Play.
+	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		this->Params.AIUsed = !this->Params.AIUsed;
 	}
 };
@@ -58,15 +58,15 @@ void GameSettings::ToggleAI() {
 void GameSettings::ToggleDelay() { this->Params.CardDelayUsed = !this->Params.CardDelayUsed; };
 
 
-/* Toggle which game mode should be used (Least amount of tries or Normal play). */
+/* Toggle which game mode should be used. */
 void GameSettings::ToggleGameMode() {
 	switch(this->Params.GameMode) {
-		case GameSettings::GameModes::NormalPlay:
-			this->Params.GameMode = GameSettings::GameModes::TryPlay;
+		case GameSettings::GameModes::Versus:
+			this->Params.GameMode = GameSettings::GameModes::Solo;
 			break;
 
-		case GameSettings::GameModes::TryPlay:
-			this->Params.GameMode = GameSettings::GameModes::NormalPlay;
+		case GameSettings::GameModes::Solo:
+			this->Params.GameMode = GameSettings::GameModes::Versus;
 			break;
 	}
 };
@@ -101,7 +101,7 @@ void GameSettings::ToggleStarter() {
 /* Select the AI Method. */
 void GameSettings::SelectAIMethod() {
 	if (this->Params.AIUsed) {
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available on Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 			this->FadeOut();
 
 			std::unique_ptr<AISelector> Ovl = std::make_unique<AISelector>(this->Params.Method);
@@ -139,7 +139,7 @@ void GameSettings::Cancel() { this->Params.CancelGame = true, this->Done = true;
 */
 void GameSettings::SelectPicture(const bool AI) {
 	if (AI) {
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // 2 Player only available on Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // 2 Player only available on Versus Mode.
 			this->FadeOut();
 
 			std::unique_ptr<CharacterSelector> Ovl = std::make_unique<CharacterSelector>(this->Params.Characters[1]);
@@ -172,7 +172,7 @@ void GameSettings::SetCardDelay() {
 
 /* Set the amount of wins you need to win the game. */
 void GameSettings::SetWinRounds() {
-	if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available on Normal Play.
+	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		std::unique_ptr<Numpad> Ovl = std::make_unique<Numpad>(3, this->Params.RoundsToWin, 255, Lang::Get("GAME_SETTINGS_ROUND_WIN_TXT"));
 		this->Params.RoundsToWin = Ovl->Action();
 	};
@@ -186,7 +186,7 @@ void GameSettings::SetWinRounds() {
 */
 void GameSettings::SetName(const bool AI) {
 	if (AI) {
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // 2 Player only available on Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // 2 Player only available on Versus Mode.
 			std::unique_ptr<Keyboard> Ovl = std::make_unique<Keyboard>(16, this->Params.Names[1], Lang::Get("GAME_SETTINGS_P2_ENTER_NAME"));
 			this->Params.Names[1] = Ovl->Action();
 		}
@@ -222,11 +222,11 @@ void GameSettings::Draw() {
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 35);
 
 		switch(this->Params.GameMode) {
-			case GameSettings::GameModes::NormalPlay:
+			case GameSettings::GameModes::Versus:
 				Gui::DrawString(190 + this->T1Offs, 40, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
 				break;
 
-			case GameSettings::GameModes::TryPlay:
+			case GameSettings::GameModes::Solo:
 				Gui::DrawString(190 + this->T1Offs, 40, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
 				break;
 		};
@@ -248,7 +248,7 @@ void GameSettings::Draw() {
 		Gui::DrawString(190 + this->T1Offs, 120, 0.5f, TEXT_COLOR, std::to_string(Utils::Cards.size()));
 
 		/* Using AI. */
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available in Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
 			Gui::DrawString(15 + this->T1Offs, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_METHOD"), 130);
 			GFX::DrawCheckbox(150 + this->T1Offs, 155, this->Params.AIUsed);
 
@@ -287,14 +287,14 @@ void GameSettings::Draw() {
 		Gui::DrawString(40 + this->T2Offs, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
 
 		/* Player 2. */
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available in Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
 			if (this->Params.Characters[1] < Utils::GetCharSheetSize()) Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 170 + this->T2Offs, 30);
 			Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 168 + this->T2Offs, 28);
 			Gui::Draw_Rect(177 + this->T2Offs, 159, 106, 20, KBD_KEYUNPRESSED);
 			Gui::DrawString(180 + this->T2Offs, 162, 0.45f, TEXT_COLOR, this->Params.Names[1], 100);
 		};
 
-		if (this->Params.GameMode == GameSettings::GameModes::NormalPlay) { // Only available in Normal Play.
+		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
 			Gui::DrawString(15 + this->T2Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_STARTER"), 130);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T2Offs, 195);
 

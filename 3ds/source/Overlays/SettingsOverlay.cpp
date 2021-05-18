@@ -242,9 +242,9 @@ void SettingsOverlay::DrawTabs() const {
 	if (this->Tab != SettingsTab::AppInfo) Gui::Draw_Rect(213, 0, 106, 20, KBD_KEYUNPRESSED);
 
 	/* I'm too lazy to center right now, so TODO. */
-	Gui::DrawString(1 + 40, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_CONFIG"));
-	Gui::DrawString(107 + 19, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_ANIMATION"));
-	Gui::DrawString(213 + 23, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_APPINFO"));
+	Gui::DrawStringCentered(-106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_CONFIG"));
+	Gui::DrawStringCentered(0, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_ANIMATION"));
+	Gui::DrawStringCentered(106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_APPINFO"));
 
 	/* Only draw between -320 and 320. */
 	if (this->CurTabOffs[0] >= -320 && this->CurTabOffs[0] <= 320) { // Configuration.

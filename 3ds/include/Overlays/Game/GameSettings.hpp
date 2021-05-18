@@ -34,7 +34,7 @@
 
 class GameSettings {
 public:
-	enum class GameModes : uint8_t { NormalPlay = 0, TryPlay = 1 };
+	enum class GameModes : uint8_t { Versus = 0, Solo = 1 };
 	enum class RoundStarter : uint8_t { Player1 = 0, Player2 = 1, Random = 2, Loser = 3, Winner = 4 };
 
 	/* Game Parameters. */
@@ -46,7 +46,7 @@ public:
 		uint8_t RoundsToWin = 3; // Rounds to win the game.
 		uint8_t Characters[2] = { 0 }; // Avatar Indexes.
 		std::string Names[2] = { "Player1", "Player2" }; // Player Names.
-		GameSettings::GameModes GameMode = GameSettings::GameModes::NormalPlay; // Game Mode.
+		GameSettings::GameModes GameMode = GameSettings::GameModes::Versus; // Game Mode.
 		uint8_t Wins[2] = { 0 }; // Wins of both players.
 		size_t PlayerPairs[2] = { 0 }; // Player Pairs for both players.
 		size_t Tries = 0; // Amount of tries.
