@@ -116,8 +116,6 @@ void GameHelper::DrawTryPlay(void) const {
 			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
 		}
 	}
-
-	Gui::DrawStringCentered(0, 200, 0.5f, TEXT_COLOR, Lang::Get("GAME_SCREEN_EXIT"), 395);
 };
 
 
@@ -162,9 +160,6 @@ void GameHelper::DrawNormalPlay(void) const {
 		/* Only display if current State is the check state.. OR the AI's turn. */
 		if ((this->Game->GetState() == StackMem::TurnState::DoCheck) || (this->Game->GetCurrentPlayer() == StackMem::Players::Player2 && this->Game->AIEnabled())) {
 			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
-
-		} else {
-			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_EXIT"), 390); // Cause dunno where else to place it.
 		}
 	}
 };

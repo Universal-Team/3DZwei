@@ -45,7 +45,7 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameResult.png)
 
 ### Game Screen
-![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenNormal.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenTries.png)
+![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenVersus.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameScreenSolo.png)
 
 ### Game Settings
 ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsGeneral.png) ![](https://github.com/Universal-Team/3DZwei/blob/Rewrite/resources/screenshots/gameSettingsPlayers.png)

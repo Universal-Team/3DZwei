@@ -48,7 +48,7 @@ private:
 	/* Preview based. */
 	C2D_SpriteSheet PreviewSheet = nullptr;
 	bool DoSwipe = false, SwipeDir = false, CharSwipeIn = false, CharSwipeOut = false;;
-	int Idx = 0, PrevPos = -400, CurPos = -400, NextPos = 400;
+	int CharPage = 0, PrevPos = -400, CurPos = -400, NextPos = 400;
 
 	/* Animation related. */
 	float Cubic = 0.0f;
@@ -65,7 +65,7 @@ private:
 	void PrevChar();
 	void NextChar();
 	bool CanGoNext() const;
-	void DrawCharacter(const int Char, const int AddOffs);
+	void DrawCharacter(const int Page, const int AddOffs);
 	void DrawCharBottom(const int AddOffs);
 	void HandleChar(const uint32_t Down, const uint32_t Held, const touchPosition &T);
 
@@ -78,8 +78,8 @@ private:
 	void Draw();
 
 	const std::vector<FuncCallback> Positions = {
-		{ 0, 25, 25, 215, [this]() { this->PrevChar(); } },
-		{ 375, 25, 25, 215, [this]() { this->NextChar(); } }
+		{ 0, 25, 20, 215, [this]() { this->PrevChar(); } },
+		{ 380, 25, 20, 215, [this]() { this->NextChar(); } }
 	};
 
 	const std::vector<FuncCallback> SetPos = {

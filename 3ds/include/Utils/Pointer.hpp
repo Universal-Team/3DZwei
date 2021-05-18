@@ -41,12 +41,12 @@ struct FuncCallback {
 namespace Pointer {
 	/* Pointer related. */
 	extern float X, Y;
-	extern bool OnTop;
+	extern bool OnTop, Show;
 
 	bool Clicked(const FuncCallback CBack, const bool CallFunc = true);
 	void ScrollHandling(const uint32_t Held, const bool InGame = false);
 
-	void Draw(const float Scale = 1);
+	void Draw();
 	void SetPos(const FuncCallback CBack);
 	void SetPos(const float X, const float Y);
 };

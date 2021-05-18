@@ -57,7 +57,7 @@ void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSele
 
 	if (Idx < this->CharSets.size()) { // Ensure it's smaller than the size.
 		if (!First) this->OldCharsetOut();
-		this->Idx = 0;
+		this->CharPage = 0;
 		if (this->PreviewSheet) C2D_SpriteSheetFree(this->PreviewSheet); // Free first.
 
 		if (this->CharSets[Idx] == "3DZwei-RomFS") { // Load from the RomFS.
@@ -112,7 +112,7 @@ void CharacterSetSelector::OldCharsetOut() {
 /* Go to the previous character. */
 void CharacterSetSelector::PrevChar() {
 	if (this->SetGood) {
-		if (this->Idx > 0) {
+		if (this->CharPage > 0) {
 			this->SwipeDir = true;
 			this->DoSwipe = true;
 		}
@@ -144,7 +144,7 @@ void CharacterSetSelector::PrevSetPage() {
 /* Go to the next character. */
 void CharacterSetSelector::NextChar() {
 	if (this->SetGood) {
-		if (this->Idx < (int)C2D_SpriteSheetCount(this->PreviewSheet) - 1)  {
+		if (this->CanGoNext())  {
 			this->SwipeDir = false;
 			this->DoSwipe = true;
 		}
@@ -175,7 +175,7 @@ void CharacterSetSelector::NextSetPage() {
 
 /* Return, if a next character is available. */
 bool CharacterSetSelector::CanGoNext() const {
-	return ((this->Idx + 1) < (int)C2D_SpriteSheetCount(this->PreviewSheet));
+	return (((this->CharPage * 3) + 3) < (int)C2D_SpriteSheetCount(this->PreviewSheet));
 };
 
 
@@ -184,16 +184,17 @@ void CharacterSetSelector::Confirm() { this->Res = true, this->Done = true; };
 
 
 /*
-	Draws a character.
+	Draws a character page.
 
-	const int Char: The character index to draw.
+	const int Page: The character page to draw.
 	const int AddOffs: The Offsets to add to the base position.
 */
-void CharacterSetSelector::DrawCharacter(const int Char, const int AddOffs) {
+void CharacterSetSelector::DrawCharacter(const int Page, const int AddOffs) {
 	if (this->SetGood) {
-		if (Char < (int)C2D_SpriteSheetCount(this->PreviewSheet) && Char >= 0) {
-			Gui::DrawSprite(this->PreviewSheet, Char, 140 + AddOffs, 72);
-			Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138 + AddOffs, 70);
+		if ((Page * 3) < (int)C2D_SpriteSheetCount(this->PreviewSheet)) {
+			for (size_t Idx = (Page * 3), Idx2 = 0; (int)Idx < (Page * 3) + 3 && Idx < C2D_SpriteSheetCount(this->PreviewSheet); Idx++, Idx2++) {
+				Gui::DrawSprite(this->PreviewSheet, Idx, 20 + (Idx2 * 120) + AddOffs, 72);
+			}
 		}
 	}
 };
@@ -228,8 +229,8 @@ void CharacterSetSelector::DrawCharBottom(const int AddOffs) {
 	Gui::Draw_Rect(this->BottomPos[3].X + AddOffs, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, KBD_KEYPRESSED);
 	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[3].Y + 15, 0.6f, TEXT_COLOR, Lang::Get("CONFIRM"));
 
-	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->Idx >= 1);
-	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->Idx + 1 < (int)C2D_SpriteSheetCount(this->PreviewSheet));
+	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->CharPage >= 1);
+	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->CanGoNext());
 };
 
 
@@ -247,27 +248,38 @@ void CharacterSetSelector::Draw() {
 	/* Display Preview of the current set. */
 	if (this->SetGood) {
 		if (this->CharSwipeIn || this->CharSwipeOut) {
-			this->DrawCharacter(this->Idx, this->CurPos);
+			this->DrawCharacter(this->CharPage, this->CurPos);
 		};
 
 		if (this->DoSwipe) { // We swipe.
-			this->DrawCharacter(this->Idx, this->CurPos);
-			this->DrawCharacter(this->Idx - 1, this->PrevPos);
-			this->DrawCharacter(this->Idx + 1, this->NextPos);
+			this->DrawCharacter(this->CharPage, this->CurPos);
+			this->DrawCharacter(this->CharPage - 1, this->PrevPos);
+			this->DrawCharacter(this->CharPage + 1, this->NextPos);
 
 		} else { // No swipe.
-			if (!this->CharSwipeIn && !this->CharSwipeOut) this->DrawCharacter(this->Idx, 0); // Draw current page only.
+			if (!this->CharSwipeIn && !this->CharSwipeOut) this->DrawCharacter(this->CharPage, 0); // Draw current page only.
 		}
 
 		if (this->PreviewSheet) Gui::DrawStringCentered(0, 200, 0.6f, TEXT_COLOR, Lang::Get("AMOUNT_OF_CHARACTERS") + std::to_string(C2D_SpriteSheetCount(this->PreviewSheet)), 395);
-		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Idx > 0);
-		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->CanGoNext());
+
+		/* Previous page. */
+		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 25); // Draw the small top corner.
+		Gui::Draw_Rect(0, 45, 20, 175, CORNER_COLOR); // Draw the Middle corner bar.
+		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 220, 1.0f, -1.0f); // Draw the small bottom corner.
+		if (this->CharPage > 0) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0, 113); // Now the arrow!
+
+		/* Next page. */
+		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 380, 25, -1.0f, 1.0f); // Draw the small top corner.
+		Gui::Draw_Rect(380, 45, 20, 175, CORNER_COLOR); // Draw the Middle corner bar.
+		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 380, 220, -1.0f, -1.0f); // Draw the small bottom corner.
+		if (this->CanGoNext()) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 380, 113, -1.0f, 1.0f); // Now the arrow!
+
 		Pointer::Draw();
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 		};
-	}
+	};
 
 	GFX::DrawBottom();
 	if (this->ModeSwitch) {
@@ -476,7 +488,7 @@ void CharacterSetSelector::Handler() {
 		if (!_3DZwei::CFG->DoAnimation() || Down) {
 			this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
 			this->Cubic = 0.0f, this->DoSwipe = false;
-			this->Idx = (this->SwipeDir ? (this->Idx - 1) : (this->Idx + 1));
+			this->CharPage = (this->SwipeDir ? (this->CharPage - 1) : (this->CharPage + 1));
 			return;
 		}
 
@@ -490,7 +502,7 @@ void CharacterSetSelector::Handler() {
 				this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
 				this->Cubic = 0.0f, this->DoSwipe = false;
 
-				this->Idx = (this->SwipeDir ? (this->Idx - 1) : (this->Idx + 1));
+				this->CharPage = (this->SwipeDir ? (this->CharPage - 1) : (this->CharPage + 1));
 			}
 		}
 

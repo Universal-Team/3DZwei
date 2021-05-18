@@ -30,14 +30,14 @@
 
 /* Define the actual variables. */
 float Pointer::X = 0, Pointer::Y = 0;
-bool Pointer::OnTop = false;
+bool Pointer::OnTop = false, Pointer::Show = true;
 
 /* Sizes of the pointer + distances. */
 #define PTR_X_SIZE 19
 #define PTR_Y_SIZE 16
 #define X_DIST 3
 #define Y_DIST 4
-#define PTR_SPEED _3DZwei::CFG->PointerSpeed(); // Pointer Speed.
+#define PTR_SPEED _3DZwei::CFG->PointerSpeed() // Pointer Speed.
 
 
 /*
@@ -47,7 +47,13 @@ bool Pointer::OnTop = false;
 	const bool InGame: If in game (true) or not (false).
 */
 void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
+	if (Held & KEY_TOUCH) {
+		if (Pointer::Show) Pointer::Show = false;
+	};
+
 	if (Held & (InGame ? KEY_CPAD_LEFT : KEY_LEFT)) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (Pointer::X >= 0) {
 			Pointer::X -= PTR_SPEED;
 
@@ -56,6 +62,8 @@ void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
 	}
 
 	if (Held & (InGame ? KEY_CPAD_RIGHT : KEY_RIGHT)) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (Pointer::X <= ((Pointer::OnTop ? 400 : 320) - PTR_X_SIZE)) {
 			Pointer::X += PTR_SPEED;
 
@@ -64,6 +72,8 @@ void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
 	}
 
 	if (Held & (InGame ? KEY_CPAD_UP : KEY_UP)) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (Pointer::Y >= -Y_DIST) {
 			Pointer::Y -= PTR_SPEED;
 
@@ -72,6 +82,8 @@ void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
 	}
 
 	if (Held & (InGame ? KEY_CPAD_DOWN : KEY_DOWN)) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (Pointer::Y <= (240 - PTR_Y_SIZE)) {
 			Pointer::Y += PTR_SPEED;
 
@@ -90,6 +102,7 @@ void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
 bool Pointer::Clicked(const FuncCallback CBack, const bool CallFunc) {
 	if (((Pointer::X + X_DIST) >= CBack.X && (Pointer::X + X_DIST) <= CBack.X + CBack.W)
 		&& ((Pointer::Y + Y_DIST) >= CBack.Y && (Pointer::Y + Y_DIST) <= CBack.Y + CBack.H)) {
+			if (!Pointer::Show) Pointer::Show = true; // Show pointer, if clicked.
 			if (CallFunc) CBack.Func(); // Call the function, if specified.
 			return true;
 	}
@@ -115,12 +128,8 @@ bool Touched(const FuncCallback CBack, touchPosition T, const bool CallFunc) {
 };
 
 
-/*
-	Draw the Pointer, also with Position.
-
-	const float Scale: Optional Pointer Scale.
-*/
-void Pointer::Draw(const float Scale) { Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, Pointer::X, Pointer::Y); };
+/* Draw the Pointer. */
+void Pointer::Draw() { if (Pointer::Show) Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, Pointer::X, Pointer::Y); };
 
 
 /* Set Pointer Position from two float's, or the Pointer Struct. */

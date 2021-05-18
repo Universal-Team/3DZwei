@@ -66,5 +66,6 @@ int Numpad::Action() {
 	SwkbdButton Ret = swkbdInputText(&this->State, Input, sizeof(Input));
 	Input[this->MaxLength] = '\0';
 
+	if (Input[0] < '0' || Input[0] > '9') return this->Res; // Because citra allows you to enter actual characters for dumb reasons.
 	return (Ret == SWKBD_BUTTON_CONFIRM ? (int)std::min(std::stoi(Input), this->MaxVal) : this->Res);
 };

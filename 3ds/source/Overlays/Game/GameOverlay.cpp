@@ -50,11 +50,6 @@ void GameOverlay::Action() {
 		const uint32_t Held = hidKeysHeld();
 
 		/* Logic. */
-		if (Held & KEY_START && Held & KEY_SELECT) { // START + SELECT -> Cancel because why not.
-			this->Running = false; // Exit.
-			return;
-		}
-
 		const GameHelper::LogicState State = this->Helper->Logic(Down, Held, T);
 		if (State != GameHelper::LogicState::Nothing) { // Someone won already.
 			std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
