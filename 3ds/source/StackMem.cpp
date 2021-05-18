@@ -70,12 +70,12 @@
 
 		- StackMem::AIMethod::Hard ->
 			This Difficulty is a "bit" more complex.
-			-- It contains a std::vector<std::pair<int, int>> to store the last played cards.
+			-- It contains a std::vector<int> to store the last played cards.
 
-			--- After each turn, it gets extended with the last 2 played indexes ( .push_back(std::make_pair(Card1, Card2)) ).
+			--- After each turn, if the played cards do not already exist in it's mind, it gets added.
 
 			This Mode only takes effect on the DrawSecond State, else it uses the Random method.
-			-- This Method checks each card from the AI with the first played card.
+			-- This Method checks each card from the AI's mind with the first played card.
 				If the Indexes from it match with the first played card, it plays that.
 				Else it will use the Random method.
 
@@ -86,18 +86,11 @@
 			-- It already does the checks on the DrawFirst State and uses the Hard method on the DrawSecond State,
 			   because we don't need to do a lot of useless "work" at that point then.
 
-			--- This will take a bit longer than the Hard method, because it has a lot more checks in place,
+			--- This may take a bit longer than the Hard Method, but not as long as the previous Extreme Method with the pairs.
 				the checks are explained below:
 
-			- Firstly, check if the first last played cards are already a pair and aren't shown.
-				If so, it returns the first Index, so it can match it on the next State with the Hard method.
-
-			-- Secondly, check if the second last played cards are already a pair and aren't shown.
-				If so, it returns the first Index, so it can match it on the next State with the Hard method.
-
-			--- Lastly, mix the first and second last played cards together and do the same checks as above.
-				(This is likely the part where it takes the longest from all).
-				If it matches, it does the same action as the previous steps.
+			---- It basically checks all the indexes from the AI's mind with each other. If the CardType matches,
+				and is not already collected, it plays it.
 
 			If none of them go through, it will use the Random method.
 
@@ -187,10 +180,10 @@ void StackMem::AI::ClearMind() {
 
 
 /*
-	Here we gonna set the last cards to the AI's mind.
+	Here we gonna set a card we want to add to the AI's mind.
 
-	const int Idx1: The first card-index which should be set.
-	const int Idx2: The second card-index which should be set.
+	const int Idx1: The first index to add if not included.
+	const int Idx2: The second index to add if not included.
 */
 void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
 	switch(this->Method) {
@@ -199,23 +192,40 @@ void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
 
 		case StackMem::AIMethod::Hard:
 		case StackMem::AIMethod::Extreme:
-			this->Mind.push_back(std::make_pair(Idx1, Idx2)); // Push the cards into the std::vector<std::pair<int, int>>.
+			{
+				bool Included[2] = { false }; // Included state.
+				const int Idxs[2] = { Idx1, Idx2 }; // The index to check.
+
+				/* Check if that card is already included, so we don't have multiple of the same card. */
+				for (size_t Idx = 0; Idx < 2; Idx++) {
+					for (size_t Idx3 = 0; Idx3 < this->GetSize(); Idx3++) {
+						if (this->Mind[Idx3] == Idxs[Idx]) {
+							Included[Idx] = true;
+							break;
+						}
+					}
+				}
+
+				for (size_t Idx = 0; Idx < 2; Idx++) {
+					if (!Included[Idx]) this->Mind.push_back(Idxs[Idx]); // If not included -> Push it.
+				}
+			}
 			break;
 	}
 };
 
 
 /*
-	Get the first card from the AI's mind.
+	Get an index from the AI's mind.
 
 	const size_t Idx: The index of the mind's first card which to return it's index from.
 
 	NOTE: This returns -1, if you'd check out of bounds, so keep that in mind!
 */
-int StackMem::AI::GetFirst(const size_t Idx) const {
+int StackMem::AI::GetMind(const size_t Idx) const {
 	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
 		/* Ensure Idx is larger THAN 0, and within the mind size. */
-		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx].first; // Return the index.
+		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx]; // Return the index.
 	}
 
 	return -1;
@@ -223,19 +233,21 @@ int StackMem::AI::GetFirst(const size_t Idx) const {
 
 
 /*
-	Get the second card from the AI's mind.
+	Erase an index from the AI's mind.
 
-	const size_t Idx: The index of the mind's second card which to return it's index from.
-
-	NOTE: This returns -1, if you'd check out of bounds, so keep that in mind!
+	const int Idx1: The first index to erase, if included.
+	const int Idx2: The second index to erase, if included.
 */
-int StackMem::AI::GetSecond(const size_t Idx) const {
+void StackMem::AI::EraseMind(const int Idx1, const int Idx2) {
 	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
-		/* Ensure Idx is larger THAN 0, and within the mind size. */
-		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx].second; // Return the index.
-	}
+		if (this->Mind.empty()) return; // Already empty, so don't.
 
-	return -1;
+		for (size_t Idx = this->GetSize() - 1; Idx > 0; Idx--) { // From last index to first, because erase.
+			if (this->Mind[Idx] == Idx1 || this->Mind[Idx] == Idx2) {
+				this->Mind.erase(this->Mind.begin() + Idx); // Included, so erase.
+			}
+		}
+	}
 };
 
 
@@ -380,6 +392,11 @@ bool StackMem::DoCheck(const bool HideCards) {
 					break;
 			}
 
+			/* Clean up the played cards from the AI's mind. */
+			if (this->AIEnabled() && this->_AI && this->_AI->GetMethod() != StackMem::AIMethod::Random) {
+				this->_AI->EraseMind(this->GetCardType(this->PlayCards[0]), this->GetCardType(this->PlayCards[1]));
+			}
+
 			/* Set that we used and collected it. */
 			if (HideCards) {
 				this->SetCardCollected(this->PlayCards[0], true); this->SetCardCollected(this->PlayCards[1], true);
@@ -388,7 +405,9 @@ bool StackMem::DoCheck(const bool HideCards) {
 			return true;
 
 		} else { // It did not match, so hide cards again + update the AI mind.
-			if (this->AIEnabled() && this->_AI) this->_AI->UpdateMind(this->PlayCards[0], this->PlayCards[1]); // Update AI's mind.
+			if (this->AIEnabled() && this->_AI && this->_AI->GetMethod() != StackMem::AIMethod::Random) {
+				this->_AI->UpdateMind(this->PlayCards[0], this->PlayCards[1]);
+			}
 
 			/* Optionally hide those automatically. This is set to false though on 3DZwei for animation purposes. */
 			if (HideCards) {
@@ -517,15 +536,8 @@ int StackMem::AIHardMethod() {
 	if (this->AIEnabled() && this->_AI) {
 		/* Check for the first AI mind cards. */
 		for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
-			if (this->GetCardType(this->_AI->GetFirst(Idx)) == this->GetCardType(this->PlayCards[0])) {
-				if (!this->IsCardShown(this->_AI->GetFirst(Idx))) return this->_AI->GetFirst(Idx);
-			}
-		}
-
-		/* Check for the second AI mind cards. */
-		for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
-			if (this->GetCardType(this->_AI->GetSecond(Idx)) == this->GetCardType(this->PlayCards[0])) {
-				if (!this->IsCardShown(this->_AI->GetSecond(Idx))) return this->_AI->GetSecond(Idx);
+			if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->PlayCards[0])) {
+				if (!this->IsCardShown(this->_AI->GetMind(Idx))) return this->_AI->GetMind(Idx);
 			}
 		}
 	}
@@ -548,57 +560,20 @@ int StackMem::AIExtremeMethod() {
 	if (this->AIEnabled() && this->_AI) {
 		if (this->GetState() == StackMem::TurnState::DrawFirst) { // Ensure the Current State is the DrawFirst one.
 
-			/* Check for first card pairs. */
+			/* Check for card indexes. */
 			for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
 
 				/* Ensure it is not shown already. */
-				if (!this->IsCardShown(this->_AI->GetFirst(Idx))) {
+				if (!this->IsCardShown(this->_AI->GetMind(Idx))) {
 
 					/* Check further through the indexes. */
 					for (size_t Idx2 = 0; Idx2 < this->_AI->GetSize(); Idx2++) {
-						if (this->_AI->GetFirst(Idx) != this->_AI->GetFirst(Idx2)) { // Ensure it is not the same card.
+
+						if (this->_AI->GetMind(Idx) != this->_AI->GetMind(Idx2)) { // Ensure it is not the same card.
 
 							/* Check if CardType matches. */
-							if (this->GetCardType(this->_AI->GetFirst(Idx)) == this->GetCardType(this->_AI->GetFirst(Idx2))) {
-								return this->_AI->GetFirst(Idx);
-							}
-						}
-					}
-				}
-			}
-
-			/* Check for second card pairs. */
-			for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
-
-				/* Ensure it is not shown already. */
-				if (!this->IsCardShown(this->_AI->GetSecond(Idx))) {
-
-					/* Check further through the indexes. */
-					for (size_t Idx2 = 0; Idx2 < this->_AI->GetSize(); Idx2++) {
-						if (this->_AI->GetSecond(Idx) != this->_AI->GetSecond(Idx2)) { // Ensure it is not the same card.
-
-							/* Check if CardType matches. */
-							if (this->GetCardType(this->_AI->GetSecond(Idx)) == this->GetCardType(this->_AI->GetSecond(Idx2))) {
-								return this->_AI->GetSecond(Idx);
-							}
-						}
-					}
-				}
-			}
-
-			/* Check for mixed card pairs. */
-			for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
-
-				/* Ensure it is not shown already. */
-				if (!this->IsCardShown(this->_AI->GetFirst(Idx))) {
-
-					/* Check further through the indexes. */
-					for (size_t Idx2 = 0; Idx2 < this->_AI->GetSize(); Idx2++) {
-						if (this->_AI->GetFirst(Idx) != this->_AI->GetSecond(Idx2)) { // Ensure it is not the same card.
-
-							/* Check if CardType matches. */
-							if (this->GetCardType(this->_AI->GetFirst(Idx)) == this->GetCardType(this->_AI->GetSecond(Idx2))) {
-								return this->_AI->GetFirst(Idx);
+							if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->_AI->GetMind(Idx2))) {
+								return this->_AI->GetMind(Idx);
 							}
 						}
 					}

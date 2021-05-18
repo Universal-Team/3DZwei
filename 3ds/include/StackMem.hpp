@@ -108,16 +108,18 @@ private:
 		void ClearMind();
 		void UpdateMind(const int Idx1, const int Idx2);
 
-		/* Return first and second cards. */
-		int GetFirst(const size_t Idx = 0) const;
-		int GetSecond(const size_t Idx = 0) const;
+		/* Return an index from the mind. */
+		int GetMind(const size_t Idx = 0) const;
+
+		/* Erase, if included. */
+		void EraseMind(const int Idx1, const int Idx2);
 
 		/* Some other Get and Set's. */
 		size_t GetSize() const { return this->Mind.size(); };
 		AIMethod GetMethod() const { return this->Method; };
 		void SetMethod(const AIMethod Method) { this->Method = Method; };
 	private:
-		std::vector<std::pair<int, int>> Mind = { }; // The mind for the Hard + Extreme AI Method.
+		std::vector<int> Mind = { }; // The mind for the Hard + Extreme AI Method.
 		AIMethod Method = AIMethod::Random; // The Method of the AI.
 	};
 
