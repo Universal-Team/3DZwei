@@ -41,7 +41,7 @@
 
 
 /* Constructor. */
-GameSettings::GameSettings(const GameSettings::GameParams &Defaults) : Params(Defaults) {
+GameSettings::GameSettings(const GameSettings::GameParams &Defaults, const bool IsSetting) : Params(Defaults), IsSetting(IsSetting) {
 	if (!_3DZwei::CFG->DoAnimation()) this->FAlpha = 0;
 };
 
@@ -199,9 +199,9 @@ void GameSettings::SetName(const bool AI) {
 
 
 /* Draw the Overlay. */
-void GameSettings::Draw() {
+void GameSettings::Draw(const bool IsSetting) {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_TITLE"), 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, (IsSetting ? Lang::Get("SETTINGS_GAME_DEFAULTS") : Lang::Get("GAME_SETTINGS_TITLE")), 395);
 	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
@@ -363,12 +363,16 @@ GameSettings::GameParams GameSettings::Action() {
 	if (this->Params.Names[0] == "%Player1%") this->Params.Names[0] = Lang::Get("PLAYER_1");
 	if (this->Params.Names[1] == "%Player2%") this->Params.Names[1] = Lang::Get("PLAYER_2");
 
+	/* Check for in range, and if out of range, set to 0. */
+	if (this->Params.Characters[0] >= Utils::GetCharSheetSize()) this->Params.Characters[0] = 0;
+	if (this->Params.Characters[1] >= Utils::GetCharSheetSize()) this->Params.Characters[1] = 0;
+
 	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-		this->Draw();
+		this->Draw(this->IsSetting);
 		C3D_FrameEnd(0);
 		this->TabLogic();
 	};
@@ -412,10 +416,10 @@ void GameSettings::TabLogic() {
 
 		} else {
 			if (this->T1Offs <= 0) {
-				this->Cubic = std::lerp(this->Cubic, 320.0f, 0.1f);
+				this->Cubic = std::lerp(this->Cubic, 321.0f, 0.1f);
 				this->T1Offs = -320 + this->Cubic;
 
-				if (this->Cubic >= 319.9f) {
+				if (this->Cubic >= 320.0f) {
 					this->T1Offs = 0;
 					this->Cubic = 0.0f;
 					this->Tab = Tabs::General;
@@ -435,15 +439,16 @@ void GameSettings::TabLogic() {
 				this->T2Offs = 0;
 				this->Tab = Tabs::Player;
 				this->DoSwipe = false;
+				this->Cubic = 0.0f;
 
 			} else {
-				if (this->Cubic < 320) {
-					this->Cubic = std::lerp(this->Cubic, 320.0f, 0.1f);
+				if (this->Cubic < 320.0f) {
+					this->Cubic = std::lerp(this->Cubic, 321.0f, 0.1f);
 
 					this->T1Offs = 0 - this->Cubic;
 					this->T2Offs = 320 - this->Cubic;
 
-					if (this->Cubic >= 319.9f) {
+					if (this->Cubic >= 320.0f) {
 						this->T1Offs = -320;
 						this->T2Offs = 0;
 						this->Cubic = 0.0f;
@@ -459,14 +464,15 @@ void GameSettings::TabLogic() {
 				this->T2Offs = 320;
 				this->Tab = Tabs::General;
 				this->DoSwipe = false;
+				this->Cubic = 0.0f;
 
 			} else {
-				if (this->Cubic < 320) {
-					this->Cubic = std::lerp(this->Cubic, 320.0f, 0.1f);
+				if (this->Cubic < 320.0f) {
+					this->Cubic = std::lerp(this->Cubic, 321.0f, 0.1f);
 					this->T2Offs = this->Cubic;
 					this->T1Offs = -320 + this->Cubic;
 
-					if (this->Cubic >= 319.9f) {
+					if (this->Cubic >= 320.0f) {
 						this->T1Offs = 0;
 						this->T2Offs = 320;
 						this->Tab = Tabs::General;

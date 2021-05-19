@@ -35,8 +35,9 @@ public:
 	LanguageSelector() { };
 	void Action();
 private:
-	bool Done = false, FullDone = false, FadeIn = true;
-	uint8_t FAlpha = 255;
+	bool Done = false, FullDone = false, Start = true;
+	int16_t Delay = 255;
+	float Cubic = 0.0f;
 
 	void SelectLang(const uint8_t Idx);
 	void Cancel();

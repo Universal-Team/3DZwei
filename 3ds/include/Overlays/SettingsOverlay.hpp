@@ -75,10 +75,10 @@ private:
 		{ 107, 0, 106, 20, [this]() { this->AnimationTab(); } },
 		{ 213, 0, 106, 20, [this]() { this->AppinfoTab(); } },
 
-		{ 150, 35, 24, 24, [this]() { this->ToggleAnimation(); } },
-		{ 150, 70, 24, 24, [this]() { this->SwitchGameAnim(); } },
-		{ 150, 105, 24, 24, [this]() { this->TogglePageSwitch(); } },
-		{ 150, 140, 24, 24, [this]() { this->ToggleFade(); } },
+		{ 150, 30, 24, 24, [this]() { this->ToggleAnimation(); } },
+		{ 150, 65, 24, 24, [this]() { this->SwitchGameAnim(); } },
+		{ 150, 100, 24, 24, [this]() { this->TogglePageSwitch(); } },
+		{ 150, 135, 24, 24, [this]() { this->ToggleFade(); } },
 
 		{ 0, 223, 17, 17, [this]() { this->Back(); } }
 	};
@@ -88,13 +88,13 @@ private:
 		{ 107, 0, 106, 20, [this]() { this->AnimationTab(); } },
 		{ 213, 0, 106, 20, [this]() { this->AppinfoTab(); } },
 
-		{ 150, 35, 24, 24, [this]() { this->SelectLang(); } },
-		{ 150, 70, 24, 24, [this]() { this->SelectCardSet(); } },
-		{ 150, 105, 24, 24, [this]() { this->SelectCharSet(); } },
-		{ 150, 140, 24, 24, [this]() { this->ToggleSplash(); } },
-		{ 200, 140, 24, 24, [this]() { this->ShowSplash(); } },
-		{ 150, 175, 24, 24, [this]() { this->SetPointerSpeed(); } },
-		{ 150, 210, 24, 24, [this]() { this->SetGameDefaults(); } },
+		{ 150, 30, 24, 24, [this]() { this->SelectLang(); } },
+		{ 150, 65, 24, 24, [this]() { this->SelectCardSet(); } },
+		{ 150, 100, 24, 24, [this]() { this->SelectCharSet(); } },
+		{ 150, 135, 24, 24, [this]() { this->ToggleSplash(); } },
+		{ 200, 135, 24, 24, [this]() { this->ShowSplash(); } },
+		{ 150, 170, 24, 24, [this]() { this->SetPointerSpeed(); } },
+		{ 150, 205, 24, 24, [this]() { this->SetGameDefaults(); } },
 
 		{ 0, 223, 17, 17, [this]() { this->Back(); } }
 	};

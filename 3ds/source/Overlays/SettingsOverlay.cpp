@@ -188,7 +188,7 @@ void SettingsOverlay::SetPointerSpeed() {
 /* Set Game Defaults. */
 void SettingsOverlay::SetGameDefaults() {
 	if (this->Tab == SettingsTab::Configuration) {
-		std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault());
+		std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault(), true);
 		const GameSettings::GameParams P = Ovl->Action();
 		if (!P.CancelGame) _3DZwei::CFG->SetDefault(P); // Only set if NOT cancelled.
 	};

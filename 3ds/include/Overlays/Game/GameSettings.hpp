@@ -54,14 +54,14 @@ public:
 		bool CancelGame = false; // If Game should be cancelled or not.
 	};
 
-	GameSettings(const GameParams &Defaults);
+	GameSettings(const GameParams &Defaults, const bool IsSetting = false);
 	GameParams Action();
 private:
 	enum class Tabs : uint8_t { General = 0, Player = 1 };
 
 	GameParams Params;
 	Tabs Tab = Tabs::General;
-	bool Done = false, FullDone = false, DoSwipe = false, SwipeDirection = false, InitialSwipe = true;
+	bool Done = false, FullDone = false, DoSwipe = false, SwipeDirection = false, InitialSwipe = true, IsSetting = false;
 	int FAlpha = 255, T1Offs = -320, T2Offs = 320;
 	float Cubic = 0.0f;
 
@@ -76,7 +76,7 @@ private:
 		if (this->Tab != Tabs::Player) this->SwipeDirection = true, this->DoSwipe = true;
 	};
 
-	void Draw();
+	void Draw(const bool IsSetting = false);
 	void FadeOut();
 	void TabLogic();
 

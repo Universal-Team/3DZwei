@@ -80,7 +80,7 @@ _3DZwei::_3DZwei() {
 void _3DZwei::PrepareGame() {
 	this->FadeOutHandler(); // Fade out.
 
-	std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault());
+	std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault(), false);
 	const GameSettings::GameParams Params = Ovl->Action();
 
 	if (Utils::Cards.size() > 0 && !Params.CancelGame) { // At least 1 pair should exist and the game NOT cancelled!!!

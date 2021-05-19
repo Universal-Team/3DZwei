@@ -110,77 +110,93 @@ void LanguageSelector::Action() {
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("LANG_SELECTOR_TITLE"), 395);
-		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
+		Gui::DrawStringCentered(0 - this->Delay, 3, 0.6f, TEXT_COLOR, Lang::Get("LANG_SELECTOR_TITLE"), 395);
+		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72 - this->Delay, 69); // Display Logo.
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
-			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		}
+			if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
+		};
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 
 		/* Bruh. */
-		Gui::DrawString(this->Positions[0].X - 70, this->Positions[0].Y + 5, 0.5f, TEXT_COLOR, "Bruh");
-		GFX::DrawCheckbox(this->Positions[0].X, this->Positions[0].Y, _3DZwei::CFG->Lang() == "br");
+		Gui::DrawString(this->Positions[0].X - 70 - this->Delay, this->Positions[0].Y + 5, 0.5f, TEXT_COLOR, "Bruh");
+		GFX::DrawCheckbox(this->Positions[0].X - this->Delay, this->Positions[0].Y, _3DZwei::CFG->Lang() == "br");
 
 		/* Deutsch. */
-		Gui::DrawString(this->Positions[1].X - 70, this->Positions[1].Y + 5, 0.5f, TEXT_COLOR, "Deutsch");
-		GFX::DrawCheckbox(this->Positions[1].X, this->Positions[1].Y, _3DZwei::CFG->Lang() == "de");
+		Gui::DrawString(this->Positions[1].X - 70 - this->Delay, this->Positions[1].Y + 5, 0.5f, TEXT_COLOR, "Deutsch");
+		GFX::DrawCheckbox(this->Positions[1].X - this->Delay, this->Positions[1].Y, _3DZwei::CFG->Lang() == "de");
 
 		/* English. */
-		Gui::DrawString(this->Positions[2].X - 70, this->Positions[2].Y + 5, 0.5f, TEXT_COLOR, "English");
-		GFX::DrawCheckbox(this->Positions[2].X, this->Positions[2].Y, _3DZwei::CFG->Lang() == "en");
+		Gui::DrawString(this->Positions[2].X - 70 - this->Delay, this->Positions[2].Y + 5, 0.5f, TEXT_COLOR, "English");
+		GFX::DrawCheckbox(this->Positions[2].X - this->Delay, this->Positions[2].Y, _3DZwei::CFG->Lang() == "en");
 
 		/* Español. */
-		Gui::DrawString(this->Positions[3].X - 70, this->Positions[3].Y + 5, 0.5f, TEXT_COLOR, "Español");
-		GFX::DrawCheckbox(this->Positions[3].X, this->Positions[3].Y, _3DZwei::CFG->Lang() == "es");
+		Gui::DrawString(this->Positions[3].X - 70 - this->Delay, this->Positions[3].Y + 5, 0.5f, TEXT_COLOR, "Español");
+		GFX::DrawCheckbox(this->Positions[3].X - this->Delay, this->Positions[3].Y, _3DZwei::CFG->Lang() == "es");
 
 		/* Français. */
-		Gui::DrawString(this->Positions[4].X - 70, this->Positions[4].Y + 5, 0.5f, TEXT_COLOR, "Français");
-		GFX::DrawCheckbox(this->Positions[4].X, this->Positions[4].Y, _3DZwei::CFG->Lang() == "fr");
+		Gui::DrawString(this->Positions[4].X - 70 - this->Delay, this->Positions[4].Y + 5, 0.5f, TEXT_COLOR, "Français");
+		GFX::DrawCheckbox(this->Positions[4].X - this->Delay, this->Positions[4].Y, _3DZwei::CFG->Lang() == "fr");
 
 		/* Italiano. */
-		Gui::DrawString(this->Positions[5].X - 70, this->Positions[5].Y + 5, 0.5f, TEXT_COLOR, "Italiano");
-		GFX::DrawCheckbox(this->Positions[5].X, this->Positions[5].Y, _3DZwei::CFG->Lang() == "it");
+		Gui::DrawString(this->Positions[5].X - 70 + this->Delay, this->Positions[5].Y + 5, 0.5f, TEXT_COLOR, "Italiano");
+		GFX::DrawCheckbox(this->Positions[5].X + this->Delay, this->Positions[5].Y, _3DZwei::CFG->Lang() == "it");
 
 		/* 日本語. */
-		Gui::DrawString(this->Positions[6].X - 70, this->Positions[6].Y + 5, 0.5f, TEXT_COLOR, "日本語");
-		GFX::DrawCheckbox(this->Positions[6].X, this->Positions[6].Y, _3DZwei::CFG->Lang() == "ja");
+		Gui::DrawString(this->Positions[6].X - 70 + this->Delay, this->Positions[6].Y + 5, 0.5f, TEXT_COLOR, "日本語");
+		GFX::DrawCheckbox(this->Positions[6].X + this->Delay, this->Positions[6].Y, _3DZwei::CFG->Lang() == "ja");
 
 		/* Polski. */
-		Gui::DrawString(this->Positions[7].X - 70, this->Positions[7].Y + 5, 0.5f, TEXT_COLOR, "Polski");
-		GFX::DrawCheckbox(this->Positions[7].X, this->Positions[7].Y, _3DZwei::CFG->Lang() == "pl");
+		Gui::DrawString(this->Positions[7].X - 70 + this->Delay, this->Positions[7].Y + 5, 0.5f, TEXT_COLOR, "Polski");
+		GFX::DrawCheckbox(this->Positions[7].X + this->Delay, this->Positions[7].Y, _3DZwei::CFG->Lang() == "pl");
 
 		/* Português. */
-		Gui::DrawString(this->Positions[8].X - 70, this->Positions[8].Y + 5, 0.5f, TEXT_COLOR, "Português");
-		GFX::DrawCheckbox(this->Positions[8].X, this->Positions[8].Y, _3DZwei::CFG->Lang() == "pt");
+		Gui::DrawString(this->Positions[8].X - 70 + this->Delay, this->Positions[8].Y + 5, 0.5f, TEXT_COLOR, "Português");
+		GFX::DrawCheckbox(this->Positions[8].X + this->Delay, this->Positions[8].Y, _3DZwei::CFG->Lang() == "pt");
 
 		/* Русский. */
-		Gui::DrawString(this->Positions[9].X - 70, this->Positions[9].Y + 5, 0.5f, TEXT_COLOR, "Русский");
-		GFX::DrawCheckbox(this->Positions[9].X, this->Positions[9].Y, _3DZwei::CFG->Lang() == "ru");
+		Gui::DrawString(this->Positions[9].X - 70 + this->Delay, this->Positions[9].Y + 5, 0.5f, TEXT_COLOR, "Русский");
+		GFX::DrawCheckbox(this->Positions[9].X + this->Delay, this->Positions[9].Y, _3DZwei::CFG->Lang() == "ru");
 
 		Gui::Draw_Rect(this->Positions[10].X, this->Positions[10].Y, this->Positions[10].W, this->Positions[10].H, KBD_KEYPRESSED); // Back.
 		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[10].X, this->Positions[10].Y);
 
 		Pointer::Draw();
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
-			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		}
+			if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
+		};
 		C3D_FrameEnd(0);
 
-		if (this->FadeIn) {
-			if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->FAlpha = 0, this->FadeIn = false;
-			if (this->FAlpha > 0) this->FAlpha -= 5;
-			if (this->FAlpha <= 0) this->FadeIn = false;
+		if (this->Start) {
+			if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->Delay = 0, this->Start = false;
+			else {
+				if (this->Cubic < 255.0f) {
+					this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
+					this->Delay = 255 - this->Cubic;
+
+					if (this->Cubic >= 255.0f) {
+						this->Delay = 0, this->Cubic = 0.0f, this->Start = false;
+					}
+				}
+			}
 
 		} else {
 			if (this->Done) {
 				hidScanInput();
 				const uint32_t Down = hidKeysDown();
 
-				if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade() || Down) this->FullDone = true;
-				if (this->FAlpha < 255) this->FAlpha += 5;
-				if (this->FAlpha >= 255) this->FullDone = true;
+				if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade() || Down) this->Delay = 255, this->FullDone = true;
+				else {
+					if (this->Cubic < 255.0f) {
+						this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
+						this->Delay = this->Cubic;
+
+						if (this->Cubic >= 255.0f) {
+							this->Delay = 255, this->Cubic = 0.0f, this->FullDone = true;
+						}
+					}
+				}
 
 			} else {
 				hidScanInput();
