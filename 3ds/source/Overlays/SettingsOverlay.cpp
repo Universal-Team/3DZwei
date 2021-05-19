@@ -27,6 +27,7 @@
 #include "CardSetSelector.hpp"
 #include "CharacterSetSelector.hpp"
 #include "Common.hpp"
+#include "GameSettings.hpp"
 #include "LanguageSelector.hpp"
 #include "Numpad.hpp"
 #include "SettingsOverlay.hpp"
@@ -184,6 +185,14 @@ void SettingsOverlay::SetPointerSpeed() {
 	}
 };
 
+/* Set Game Defaults. */
+void SettingsOverlay::SetGameDefaults() {
+	if (this->Tab == SettingsTab::Configuration) {
+		std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault());
+		const GameSettings::GameParams P = Ovl->Action();
+		if (!P.CancelGame) _3DZwei::CFG->SetDefault(P); // Only set if NOT cancelled.
+	};
+};
 
 /* Toggle if animations are allowed. */
 void SettingsOverlay::ToggleAnimation() {
@@ -232,6 +241,22 @@ void SettingsOverlay::DrawTop() const {
 	}
 };
 
+/* Return the proper config language. */
+std::string SettingsOverlay::GetLanguage() const {
+	if (_3DZwei::CFG->Lang() == "br") return "Bruh";
+	if (_3DZwei::CFG->Lang() == "de") return "Deutsch";
+	if (_3DZwei::CFG->Lang() == "en") return "English";
+	if (_3DZwei::CFG->Lang() == "es") return "Español";
+	if (_3DZwei::CFG->Lang() == "fr") return "Français";
+	if (_3DZwei::CFG->Lang() == "it") return "Italiano";
+	if (_3DZwei::CFG->Lang() == "ja") return "日本語";
+	if (_3DZwei::CFG->Lang() == "pl") return "Polski";
+	if (_3DZwei::CFG->Lang() == "pt") return "Português";
+	if (_3DZwei::CFG->Lang() == "ru") return "Русский";
+
+	return "";
+};
+
 
 /* Draw the Tabs. */
 void SettingsOverlay::DrawTabs() const {
@@ -242,72 +267,72 @@ void SettingsOverlay::DrawTabs() const {
 	if (this->Tab != SettingsTab::AppInfo) Gui::Draw_Rect(213, 0, 106, 20, KBD_KEYUNPRESSED);
 
 	/* I'm too lazy to center right now, so TODO. */
-	Gui::DrawStringCentered(-106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_CONFIG"));
-	Gui::DrawStringCentered(0, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_ANIMATION"));
-	Gui::DrawStringCentered(106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_APPINFO"));
+	Gui::DrawStringCentered(-106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_CONFIG"), 100);
+	Gui::DrawStringCentered(0, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_ANIMATION"), 100);
+	Gui::DrawStringCentered(106, 3, 0.45f, TEXT_COLOR, Lang::Get("SETTINGS_TAB_APPINFO"), 100);
 
 	/* Only draw between -320 and 320. */
 	if (this->CurTabOffs[0] >= -320 && this->CurTabOffs[0] <= 320) { // Configuration.
 		/* Language. */
-		Gui::DrawString(30 + this->CurTabOffs[0], this->Positions[3].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_LANGUAGE"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[3].Y + 5 - (Lang::Get("SETTINGS_LANGUAGE").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_LANGUAGE"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[3].X + this->CurTabOffs[0], this->Positions[3].Y);
-
-		/* Current Language Display. */
-		if (_3DZwei::CFG->Lang() == "en") Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[3].Y + 5, 0.4f, TEXT_COLOR, "English"); // English.
-		else if (_3DZwei::CFG->Lang() == "de") Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[3].Y + 5, 0.4f, TEXT_COLOR, "Deutsch"); // Deutsch.
+		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[3].Y + 5, 0.4f, TEXT_COLOR, this->GetLanguage());
 
 		/* Active Cardset. */
-		Gui::DrawString(30 + this->CurTabOffs[0], this->Positions[4].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ACTIVE_CARDSET"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[4].Y + 5 - (Lang::Get("SETTINGS_ACTIVE_CARDSET").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ACTIVE_CARDSET"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[4].X + this->CurTabOffs[0], this->Positions[4].Y);
-		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[4].Y + 5, 0.4f, TEXT_COLOR, _3DZwei::CFG->CardSet(), 110);
+		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[4].Y + 5 - (_3DZwei::CFG->CardSet().length() / 23 * 10 / 2), 0.4f, TEXT_COLOR, _3DZwei::CFG->CardSet(), 110, 15, nullptr, C2D_WordWrap);
 
 		/* Active Charset. */
-		Gui::DrawString(30 + this->CurTabOffs[0], this->Positions[5].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ACTIVE_CHARSET"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[5].Y + 5 - (Lang::Get("SETTINGS_ACTIVE_CHARSET").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ACTIVE_CHARSET"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[5].X + this->CurTabOffs[0], this->Positions[5].Y);
-		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[5].Y + 5, 0.4f, TEXT_COLOR, _3DZwei::CFG->CharSet(), 110);
+		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[5].Y + 5 - (_3DZwei::CFG->CharSet().length() / 23 * 10 / 2), 0.4f, TEXT_COLOR, _3DZwei::CFG->CharSet(), 110, 15, nullptr, C2D_WordWrap);
 
 		/* If showing splash on startup, or nah. */
-		Gui::DrawString(30 + this->CurTabOffs[0], this->Positions[6].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_SHOW_SPLASH"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[6].Y + 5 - (Lang::Get("SETTINGS_SHOW_SPLASH").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_SHOW_SPLASH"), 125, 15, nullptr, C2D_WordWrap);
 		GFX::DrawCheckbox(this->Positions[6].X + this->CurTabOffs[0], this->Positions[6].Y, _3DZwei::CFG->ShowSplash());
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[7].X + this->CurTabOffs[0], this->Positions[7].Y);
 
 		/* Pointer Speed. */
-		Gui::DrawString(30 + this->CurTabOffs[0], this->Positions[8].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_POINTER_SPEED"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[8].Y + 5 - (Lang::Get("SETTINGS_POINTER_SPEED").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_POINTER_SPEED"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[8].X + this->CurTabOffs[0], this->Positions[8].Y);
 		Gui::DrawString(200 + this->CurTabOffs[0], this->Positions[8].Y + 5, 0.4f, TEXT_COLOR, std::to_string(_3DZwei::CFG->PointerSpeed()), 110);
+
+		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[9].Y + 5 - (Lang::Get("SETTINGS_GAME_DEFAULTS").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_DEFAULTS"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[9].X + this->CurTabOffs[0], this->Positions[9].Y);
 	};
 
 	/* Only draw between -320 and 320. */
 	if (this->CurTabOffs[1] >= -320 && this->CurTabOffs[1] <= 320) { // Animations.
 		/* If doing Animation or nah. */
-		Gui::DrawString(30 + this->CurTabOffs[1], this->AnimPos[3].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ANIMATION"), 100);
+		Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[3].Y + 5 - (Lang::Get("SETTINGS_ANIMATION").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_ANIMATION"), 125, 15, nullptr, C2D_WordWrap);
 		GFX::DrawCheckbox(this->AnimPos[3].X + this->CurTabOffs[1], this->AnimPos[3].Y, _3DZwei::CFG->DoAnimation());
 
 		if (_3DZwei::CFG->DoAnimation()) { // Only show those options, if Animations are globally enabled.
 			/* The Game Animation, which to use. */
-			Gui::DrawString(30 + this->CurTabOffs[1], this->AnimPos[4].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION"), 100);
+			Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[4].Y + 5 - (Lang::Get("SETTINGS_GAME_ANIMATION").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION"), 125, 15, nullptr, C2D_WordWrap);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->AnimPos[4].X + this->CurTabOffs[1], this->AnimPos[4].Y);
 
 			switch(_3DZwei::CFG->GameAnimation()) {
 				case 0: // Random.
-					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_RANDOM"), 110);
+					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5 - (Lang::Get("SETTINGS_GAME_ANIMATION_RANDOM").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_RANDOM"), 110);
 					break;
 
 				case 1: // Falling cards.
-					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_FALL"), 110);
+					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5 - (Lang::Get("SETTINGS_GAME_ANIMATION_FALL").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_FALL"), 110);
 					break;
 
 				case 2: // Growing Cards.
-					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_GROW"), 110);
+					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5 - (Lang::Get("SETTINGS_GAME_ANIMATION_GROW").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_GAME_ANIMATION_GROW"), 110);
 					break;
 			};
 
 			/* Visual Page Switch. */
-			Gui::DrawString(30 + this->CurTabOffs[1], this->AnimPos[5].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_PAGE_SWITCH"), 100);
+			Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[5].Y + 5 - (Lang::Get("SETTINGS_PAGE_SWITCH").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_PAGE_SWITCH"), 125, 15, nullptr, C2D_WordWrap);
 			GFX::DrawCheckbox(this->AnimPos[5].X + this->CurTabOffs[1], this->AnimPos[5].Y, _3DZwei::CFG->PageSwitch());
 
 			/* Do Fade. */
-			Gui::DrawString(30 + this->CurTabOffs[1], this->AnimPos[6].Y + 5, 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_FADE"), 100);
+			Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[6].Y + 5 - (Lang::Get("SETTINGS_FADE").length() / 25 * 10 / 2), 0.4f, TEXT_COLOR, Lang::Get("SETTINGS_FADE"), 125, 15, nullptr, C2D_WordWrap);
 			GFX::DrawCheckbox(this->AnimPos[6].X + this->CurTabOffs[1], this->AnimPos[6].Y, _3DZwei::CFG->DoFade());
 		}
 	};
@@ -331,8 +356,8 @@ void SettingsOverlay::DrawTabs() const {
 	};
 
 	/* Back Icon. */
-	Gui::Draw_Rect(this->Positions[9].X, this->Positions[9].Y, this->Positions[9].W, this->Positions[9].H, KBD_KEYPRESSED);
-	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[9].X, this->Positions[9].Y);
+	Gui::Draw_Rect(this->Positions[10].X, this->Positions[10].Y, this->Positions[10].W, this->Positions[10].H, KBD_KEYPRESSED);
+	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[10].X, this->Positions[10].Y);
 
 	Pointer::Draw();
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {

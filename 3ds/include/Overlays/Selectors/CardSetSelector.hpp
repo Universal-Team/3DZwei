@@ -62,7 +62,7 @@ private:
 	void LastSet();
 	void NextSet();
 	void NextSetPage();
-	void HandleSet(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+	void HandleSet(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T);
 
 	/* Preview. */
 	void PrevCardPage();
@@ -71,7 +71,7 @@ private:
 	void ToggleCard(const uint8_t Idx);
 	void DrawCardPage(const size_t Pg, const int AddOffs);
 	void DrawCardBottom(const int AddOffs);
-	void HandleCard(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+	void HandleCard(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T);
 
 	/* Both. */
 	void PreviewSelection(const size_t Idx, const bool SetSelection = false, const bool First = false);

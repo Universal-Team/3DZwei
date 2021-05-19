@@ -48,9 +48,10 @@ void GameOverlay::Action() {
 		hidTouchRead(&T);
 		const uint32_t Down = hidKeysDown();
 		const uint32_t Held = hidKeysHeld();
+		const uint32_t Repeat = hidKeysDownRepeat();
 
 		/* Logic. */
-		const GameHelper::LogicState State = this->Helper->Logic(Down, Held, T);
+		const GameHelper::LogicState State = this->Helper->Logic(Down, Held, Repeat, T);
 		if (State != GameHelper::LogicState::Nothing) { // Someone won already.
 			std::unique_ptr<GameResult> Ovl = std::make_unique<GameResult>();
 

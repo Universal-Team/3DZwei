@@ -39,7 +39,13 @@ CardSetSelector::CardSetSelector() {
 	const std::vector<std::string> S = B->GetList();
 
 	this->CardSets.push_back("3DZwei-RomFS"); // Push back the 3DZwei-RomFS default set. :p
-	for (size_t Idx = 0; Idx < S.size(); Idx++) this->CardSets.push_back(S[Idx]);
+
+	for (size_t Idx = 0; Idx < S.size(); Idx++) {
+		if (S[Idx].size() > 4) { // Ensure larger than 4.
+			/* Make sure it has the .t3x file extension. */
+			if (S[Idx].substr(S[Idx].size() - 4) == ".t3x") this->CardSets.push_back(S[Idx]);
+		}
+	};
 };
 
 
@@ -101,9 +107,9 @@ void CardSetSelector::OldCardsetOut() {
 		this->Draw();
 
 		hidScanInput();
-		const uint32_t Down = hidKeysDown();
+		const uint32_t Repeat = hidKeysDownRepeat();
 
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CardSwipeOut = false, this->CurCardPos = 0, this->Cubic = 0.0f;
 			return;
 		}
@@ -366,12 +372,12 @@ std::string CardSetSelector::Action() {
 	const uint32_t Held: The hidKeysHeld() variable.
 	const touchPosition &T: A reference to the touchPosition variable.
 */
-void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const touchPosition &T) {
+void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T) {
 	if (Down & KEY_B) this->Done = true; // Exit completely.
 	Pointer::ScrollHandling(Held, true); // Only Circle-Pad.
 
-	if (Down & KEY_DDOWN) this->NextSet();
-	if (Down & KEY_DUP) this->LastSet();
+	if (Repeat & KEY_DDOWN) this->NextSet();
+	if (Repeat & KEY_DUP) this->LastSet();
 
 	if (Down & KEY_DRIGHT) {
 		if (this->SetGood) {
@@ -384,16 +390,16 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 		if (this->SetGood) this->Confirm();
 	};
 
-	if (Down & KEY_L) this->PrevCardPage();
-	if (Down & KEY_R) this->NextCardPage();
+	if (Repeat & KEY_L) this->PrevCardPage();
+	if (Repeat & KEY_R) this->NextCardPage();
 
-	if (Down & KEY_A) {
+	if (Repeat & KEY_A) {
 		for (auto &Pos : this->Positions) {
 			if (Pointer::Clicked(Pos, true)) break;
 		}
 	};
 
-	if (Down & KEY_TOUCH) {
+	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->SetPos) {
 			if (Touched(Pos, T, true)) break;
 		}
@@ -412,24 +418,24 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 	const uint32_t Held: The hidKeysHeld() variable.
 	const touchPosition &T: A reference to the touchPosition variable.
 */
-void CardSetSelector::HandleCard(const uint32_t Down, const uint32_t Held, const touchPosition &T) {
-	if (Down & KEY_B || Down & KEY_DLEFT) this->Cancel(); // Return to set selector.
+void CardSetSelector::HandleCard(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T) {
+	if (Down & KEY_B || Repeat & KEY_DLEFT) this->Cancel(); // Return to set selector.
 	Pointer::ScrollHandling(Held, true); // Only with the Circle-Pad.
 
-	if (Down & KEY_L) this->PrevCardPage();
-	if (Down & KEY_R) this->NextCardPage();
+	if (Repeat & KEY_L) this->PrevCardPage();
+	if (Repeat & KEY_R) this->NextCardPage();
 
 	if (Down & KEY_START) {
 		if (this->SetGood) this->Confirm();
 	};
 
-	if (Down & KEY_A) {
+	if (Repeat & KEY_A) {
 		for (auto &Pos : this->Positions) {
 			if (Pointer::Clicked(Pos, true)) break;
 		}
 	};
 
-	if (Down & KEY_TOUCH) {
+	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->BottomPos) {
 			if (Touched(Pos, T, true)) break;
 		}
@@ -444,6 +450,7 @@ void CardSetSelector::Handler() {
 	hidTouchRead(&T);
 	const uint32_t Down = hidKeysDown();
 	const uint32_t Held = hidKeysHeld();
+	const uint32_t Repeat = hidKeysDownRepeat();
 
 	/* Handle FADE-INs. */
 	if (this->FadeIn) {
@@ -477,7 +484,7 @@ void CardSetSelector::Handler() {
 
 
 	if (this->CardSwipeIn) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CardSwipeIn = false, this->CurCardPos = 0, this->Cubic = 0.0f;
 			return;
 		}
@@ -509,7 +516,7 @@ void CardSetSelector::Handler() {
 
 	/* Handle Mode SWIPEs. */
 	if (this->ModeSwitch) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->Cubic = 0.0f, this->ModeSwitch = false;
 			return;
 		};
@@ -554,7 +561,7 @@ void CardSetSelector::Handler() {
 
 	/* Handle CARD SWIPEs. */
 	if (this->CardSwipe) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CurCardPos = 0.0f, this->PrevCardPos = -400.0f, this->NextCardPos = 400.0f;
 			this->Cubic = 0.0f, this->CardSwipe = false;
 			this->CardPage = (this->CardSwipeDir ? (this->CardPage - 1) : (this->CardPage + 1));
@@ -577,6 +584,6 @@ void CardSetSelector::Handler() {
 		return;
 	};
 
-	if (this->IsSelecting) this->HandleSet(Down, Held, T);
-	else this->HandleCard(Down, Held, T);
+	if (this->IsSelecting) this->HandleSet(Down, Held, Repeat, T);
+	else this->HandleCard(Down, Held, Repeat, T);
 };

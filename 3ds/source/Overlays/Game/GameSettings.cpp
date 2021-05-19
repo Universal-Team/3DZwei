@@ -41,7 +41,7 @@
 
 
 /* Constructor. */
-GameSettings::GameSettings() {
+GameSettings::GameSettings(const GameSettings::GameParams &Defaults) : Params(Defaults) {
 	if (!_3DZwei::CFG->DoAnimation()) this->FAlpha = 0;
 };
 
@@ -218,38 +218,38 @@ void GameSettings::Draw() {
 	/* Only draw General Tab, if the Tab is larger as -320. */
 	if (this->T1Offs > -320) {
 		/* Game Mode. */
-		Gui::DrawString(15 + this->T1Offs, 40, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM"), 130);
+		Gui::DrawString(15 + this->T1Offs, 40 - (Lang::Get("GAME_SETTINGS_GM").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 35);
 
 		switch(this->Params.GameMode) {
 			case GameSettings::GameModes::Versus:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
+				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
 				break;
 
 			case GameSettings::GameModes::Solo:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
+				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
 				break;
 		};
 
 
 		/* Using Card Delay. */
-		Gui::DrawString(15 + this->T1Offs, 80, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 130);
+		Gui::DrawString(15 + this->T1Offs, 80 - (Lang::Get("GAME_SETTINGS_CARD_DELAY").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 125, 15, nullptr, C2D_WordWrap);
 		GFX::DrawCheckbox(150 + this->T1Offs, 75, this->Params.CardDelayUsed);
 
 		/* Card Delay Value. */
 		if (this->Params.CardDelayUsed) { // Only show if Card Delay enabled.
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, 75);
-			Gui::DrawString(240 + this->T1Offs, 80, 0.5f, TEXT_COLOR, std::to_string(this->Params.CardDelay));
+			Gui::DrawString(240 + this->T1Offs, 80, 0.45f, TEXT_COLOR, std::to_string(this->Params.CardDelay));
 		}
 
 		/* Card Pairs. */
-		Gui::DrawString(15 + this->T1Offs, 120, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 130);
+		Gui::DrawString(15 + this->T1Offs, 120 - (Lang::Get("GAME_SETTINGS_CARD_PAIRS").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 115);
-		Gui::DrawString(190 + this->T1Offs, 120, 0.5f, TEXT_COLOR, std::to_string(Utils::Cards.size()));
+		Gui::DrawString(190 + this->T1Offs, 120, 0.45f, TEXT_COLOR, std::to_string(Utils::Cards.size()));
 
 		/* Using AI. */
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
-			Gui::DrawString(15 + this->T1Offs, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_METHOD"), 130);
+			Gui::DrawString(15 + this->T1Offs, 160 - (Lang::Get("GAME_SETTINGS_AI_METHOD").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_METHOD"), 125, 15, nullptr, C2D_WordWrap);
 			GFX::DrawCheckbox(150 + this->T1Offs, 155, this->Params.AIUsed);
 
 			/* AI Method. */
@@ -258,23 +258,23 @@ void GameSettings::Draw() {
 
 				switch(this->Params.Method) {
 					case StackMem::AIMethod::Random:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
 						break;
 
 					case StackMem::AIMethod::Hard:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
 						break;
 
 					case StackMem::AIMethod::Extreme:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
 						break;
 				};
 			}
 
 			/* Rounds to win Value. */
-			Gui::DrawString(15 + this->T1Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 130);
+			Gui::DrawString(15 + this->T1Offs, 200 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 195);
-			Gui::DrawString(190 + this->T1Offs, 200, 0.5f, TEXT_COLOR, std::to_string(this->Params.RoundsToWin));
+			Gui::DrawString(190 + this->T1Offs, 200, 0.45f, TEXT_COLOR, std::to_string(this->Params.RoundsToWin));
 		};
 	};
 
@@ -359,9 +359,9 @@ GameSettings::GameParams GameSettings::Action() {
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
 
-	/* Get the Player Names from the Translations. */
-	this->Params.Names[0] = Lang::Get("PLAYER_1");
-	this->Params.Names[1] = Lang::Get("PLAYER_2");
+	/* Get the Player Names from the Translations if not from the defaults. */
+	if (this->Params.Names[0] == "%Player1%") this->Params.Names[0] = Lang::Get("PLAYER_1");
+	if (this->Params.Names[1] == "%Player2%") this->Params.Names[1] = Lang::Get("PLAYER_2");
 
 	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();

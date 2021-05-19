@@ -39,7 +39,7 @@ void CreditsOverlay::PrevPage() {
 
 /* Go to the next Page. */
 void CreditsOverlay::NextPage() {
-	if (this->Page < 4) {
+	if (this->Page < 6) {
 		this->SwipeDirection = false;
 		this->DoSwipe = true;
 	}
@@ -59,7 +59,7 @@ void CreditsOverlay::OK() { this->Done = true; };
 void CreditsOverlay::DrawPage(const int16_t Pg, const int AddOffs) {
 	switch(Pg) {
 		case 0: // Contributors.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_CONTRIBUTORS"), 100);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_CONTRIBUTORS"), 380);
 
 			Gui::DrawString(40 + AddOffs, 50, 0.5f, TEXT_COLOR, "devkitPro: ");
 			Gui::DrawStringCentered(0 + AddOffs, 70, 0.45f, TEXT_COLOR, "devkitARM, libctru, citro2d, citro3d.", 300, 20, nullptr, C2D_WordWrap);
@@ -72,23 +72,59 @@ void CreditsOverlay::DrawPage(const int16_t Pg, const int AddOffs) {
 			break;
 
 		case 1: // StackMem-Core.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "StackMem-Core", 100);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "StackMem-Core", 380);
 			Gui::DrawSprite(GFX::Sprites, sprites_stackmemcore_idx, 40 + AddOffs, 60);
 			break;
 
 		case 2: // Universal-Core.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "Universal-Core", 100);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "Universal-Core", 380);
 			Gui::DrawSprite(GFX::Sprites, sprites_universal_core_idx, 92 + AddOffs, 69);
 			break;
 
-		case 3: // Translators.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS"), 100);
-			Gui::DrawString(40 + AddOffs, 40, 0.5f, TEXT_COLOR, "SuperSaiyajinStackZ: ");
-			Gui::DrawStringCentered(0 + AddOffs, 60, 0.45f, TEXT_COLOR, "Deutsch, English", 300, 20, nullptr, C2D_WordWrap);
+		case 3: // Translators 1 / 3.
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 1 / 3", 380);
+
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Bruh: ");
+			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "Dhalian", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "Deutsch: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "Crafto 1337, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_COLOR, "English: ");
+			Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_COLOR, "Pk11, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_COLOR, "Español: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
 			break;
 
-		case 4: // Special Thanks.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS"), 100);
+		case 4: // Translators 2 / 3.
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 2 / 3", 380);
+
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Français: ");
+			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "LinuxCat", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "Italiano: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_COLOR, "Polski: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_COLOR, "Português: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			break;
+
+		case 5: // Translators 3 / 3.
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 3 / 3", 380);
+
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Русский: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "日本語: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "Pk11", 300, 20, nullptr, C2D_WordWrap);
+			break;
+
+		case 6: // Special Thanks.
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS"), 380);
 
 			Gui::DrawString(40 + AddOffs, 40, 0.5f, TEXT_COLOR, "NightScript: ");
 			Gui::DrawStringCentered(0 + AddOffs, 60, 0.45f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS_NS"), 300, 20, nullptr, C2D_WordWrap);
@@ -126,7 +162,7 @@ void CreditsOverlay::Action() {
 		}
 
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Page > 0);
-		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Page < 4);
+		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Page < 5);
 		Pointer::Draw();
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -137,7 +173,7 @@ void CreditsOverlay::Action() {
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Page > 0);
-		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Page < 4);
+		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Page < 5);
 
 		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
 		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
@@ -162,6 +198,7 @@ void CreditsOverlay::Handler() {
 	hidTouchRead(&T);
 	const uint32_t Down = hidKeysDown();
 	const uint32_t Held = hidKeysHeld();
+	const uint32_t Repeat = hidKeysDownRepeat();
 
 	/* Fade-In Handler. */
 	if (this->FadeIn) {
@@ -209,7 +246,7 @@ void CreditsOverlay::Handler() {
 
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
 			this->Cubic = 0.0f;
 			this->DoSwipe = false;
@@ -243,16 +280,16 @@ void CreditsOverlay::Handler() {
 	};
 
 	Pointer::ScrollHandling(Held);
-	if (Down & KEY_L) this->PrevPage();
-	if (Down & KEY_R) this->NextPage();
+	if (Repeat & KEY_L) this->PrevPage();
+	if (Repeat & KEY_R) this->NextPage();
 
-	if (Down & KEY_A) {
+	if (Repeat & KEY_A) {
 		for (auto &Position : this->Positions) {
 			if (Pointer::Clicked(Position, true)) break;
 		}
 	}
 
-	if (Down & KEY_TOUCH) {
+	if (Repeat & KEY_TOUCH) {
 		for (auto &Position : this->BottomPos) {
 			if (Touched(Position, T, true)) break;
 		}

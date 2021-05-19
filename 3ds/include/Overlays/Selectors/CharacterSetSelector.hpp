@@ -59,7 +59,7 @@ private:
 	void LastSet();
 	void NextSet();
 	void NextSetPage();
-	void HandleSet(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+	void HandleSet(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T);
 
 	/* Preview. */
 	void PrevChar();
@@ -67,7 +67,7 @@ private:
 	bool CanGoNext() const;
 	void DrawCharacter(const int Page, const int AddOffs);
 	void DrawCharBottom(const int AddOffs);
-	void HandleChar(const uint32_t Down, const uint32_t Held, const touchPosition &T);
+	void HandleChar(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T);
 
 	/* Both. */
 	void PreviewSelection(const size_t Idx, const bool SetSelection = false, const bool First = false);

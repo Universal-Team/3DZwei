@@ -43,6 +43,7 @@ private:
 	int CurTabOffs[3] = { -320, 320, 640 }, PrevTabOffs[3] = { -320, 320, 640 }, FAlpha = 255;
 	float Swipe = 0.0f, ToSwipe = 0.0f;
 
+	std::string GetLanguage() const;
 	void DrawTop() const;
 	void DrawTabs() const;
 
@@ -58,6 +59,7 @@ private:
 	void ToggleSplash();
 	void ShowSplash();
 	void SetPointerSpeed();
+	void SetGameDefaults();
 
 	void ToggleAnimation();
 	void SwitchGameAnim();
@@ -92,6 +94,7 @@ private:
 		{ 150, 140, 24, 24, [this]() { this->ToggleSplash(); } },
 		{ 200, 140, 24, 24, [this]() { this->ShowSplash(); } },
 		{ 150, 175, 24, 24, [this]() { this->SetPointerSpeed(); } },
+		{ 150, 210, 24, 24, [this]() { this->SetGameDefaults(); } },
 
 		{ 0, 223, 17, 17, [this]() { this->Back(); } }
 	};

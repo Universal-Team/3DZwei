@@ -108,7 +108,7 @@ void GameHelper::DrawTryPlay(void) const {
 	Gui::DrawString(200, 100, 0.5f, TEXT_COLOR, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawString(150, 130, 0.5f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 200);
+		Gui::DrawString(180, 130, 0.5f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 200);
 	}
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
@@ -786,6 +786,10 @@ void GameHelper::PageAnimation(const bool Forward) {
 		};
 
 		C3D_FrameEnd(0);
+		hidScanInput();
+		const uint32_t Down = hidKeysDown();
+		if (Down) Done = true;
+
 		if (Cubic < 320.0f) { // Page Switch handle.
 			Cubic = std::lerp(Cubic, 321.0f, 0.1f);
 
@@ -1087,13 +1091,23 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 /*
 	Normal Player Logic.
 */
-GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32_t Held, const touchPosition T) {
+GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T) {
 	Pointer::ScrollHandling(Held, true); // Scrolling handle.
 
-	if (Down & KEY_L) this->PrevPage();
-	if (Down & KEY_R) this->NextPage();
+	if (Repeat & KEY_L) this->PrevPage();
+	if (Repeat & KEY_R) {
+		if (this->NextPage()) {
+			if ((this->Page * 20) + this->Selection + 1 > this->Game->GetPairs() * 2) { // Ensureness.
+				this->Selection = ((this->Game->GetPairs() * 2) - 1) % 20;
+			}
 
-	if (Down & KEY_DDOWN) {
+			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
+		};
+	};
+
+	if (Repeat & KEY_DDOWN) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (this->Selection < 15) { // 15 --> 4th row first card.
 			if ((this->Page * 20) + this->Selection + 5 < this->Game->GetPairs() * 2) { // Ensureness.
 				this->Selection += 5;
@@ -1102,14 +1116,18 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 		}
 	};
 
-	if (Down & KEY_DUP) {
+	if (Repeat & KEY_DUP) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (this->Selection > 4) { // 4 --> 1st row last card.
 			this->Selection -= 5;
 			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 		}
 	};
 
-	if (Down & KEY_DLEFT) {
+	if (Repeat & KEY_DLEFT) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (this->Selection == 0 || this->Selection == 5 || this->Selection == 10 || this->Selection == 15) {
 			this->PrevPage();
 			this->Selection += 4; // Go to the whole right.
@@ -1123,7 +1141,9 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 		}
 	};
 
-	if (Down & KEY_DRIGHT) {
+	if (Repeat & KEY_DRIGHT) {
+		if (!Pointer::Show) Pointer::Show = true;
+
 		if (this->Selection < 20) {
 			if (this->Selection == 4 || this->Selection == 9 || this->Selection == 14 || this->Selection == 19) {
 				if (this->NextPage()) {
@@ -1145,17 +1165,17 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 		}
 	};
 
-	if (Down & KEY_A) {
+	if (Repeat & KEY_A) {
 		for (auto &Position : this->CPos) {
 			if (Pointer::Clicked(Position, true)) return GameHelper::LogicState::Nothing;
 		}
-	}
+	};
 
-	if (Down & KEY_TOUCH) {
+	if (Repeat & KEY_TOUCH) {
 		for (auto &Position : this->CPos) {
 			if (Touched(Position, T, true)) return GameHelper::LogicState::Nothing;
 		}
-	}
+	};
 
 	return GameHelper::LogicState::Nothing;
 };
@@ -1215,6 +1235,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 
 	const uint32_t Down: The hidKeysDown() variable.
 	const uint32_t Held: The hidKeysHeld() variable.
+	const uint32_t Repeat: The hidKeysDownRepeat variable.
 	const touchPosition T: The touchPosition variable.
 
 	This returns the following states:
@@ -1223,10 +1244,10 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 		No one Wins: GameHelper::LogicState::Tie.
 		Not even over yet: GameHelper::LogicState::Nothing.
 */
-GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Held, const touchPosition T) {
+GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T) {
 	if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Least amount of tries play mode.
 		if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
-			this->PlayerLogic(Down, Held, T);
+			this->PlayerLogic(Down, Held, Repeat, T);
 
 		} else { // We are in the DoCheck state, so check.
 			if (this->Params.CardDelayUsed && this->Params.CardDelay > 0) { // Use the card delay.
@@ -1254,12 +1275,12 @@ GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Hel
 	} else {
 		if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
 			/* Player 1 is ALWAYS a player. */
-			if (this->Game->GetCurrentPlayer() == StackMem::Players::Player1) return this->PlayerLogic(Down, Held, T);
+			if (this->Game->GetCurrentPlayer() == StackMem::Players::Player1) return this->PlayerLogic(Down, Held, Repeat, T);
 
 			/* Player 2 Logic. */
 			else {
 				if (this->Game->AIEnabled()) return this->AILogic(Down); // It's the AI's turn.
-				else return this->PlayerLogic(Down, Held, T); // It's the second player's turn.
+				else return this->PlayerLogic(Down, Held, Repeat, T); // It's the second player's turn.
 			}
 
 		} else { // State -> DoCheck.

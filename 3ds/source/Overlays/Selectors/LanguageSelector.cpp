@@ -31,15 +31,63 @@
 /* Select a Language. */
 void LanguageSelector::SelectLang(const uint8_t Idx) {
 	switch(Idx) {
-		case 0: // English.
+		case 0: // Bruh.
+			if (_3DZwei::CFG->Lang() == "br") break;
+			_3DZwei::CFG->Lang("br");
+			Lang::Load();
+			break;
+
+		case 1: // Deutsch.
+			if (_3DZwei::CFG->Lang() == "de") break;
+			_3DZwei::CFG->Lang("de");
+			Lang::Load();
+			break;
+
+		case 2: // English.
 			if (_3DZwei::CFG->Lang() == "en") break;
 			_3DZwei::CFG->Lang("en");
 			Lang::Load();
 			break;
 
-		case 1: // German.
-			if (_3DZwei::CFG->Lang() == "de") break;
-			_3DZwei::CFG->Lang("de");
+		case 3: // Español.
+			if (_3DZwei::CFG->Lang() == "es") break;
+			_3DZwei::CFG->Lang("es");
+			Lang::Load();
+			break;
+
+		case 4: // Français.
+			if (_3DZwei::CFG->Lang() == "fr") break;
+			_3DZwei::CFG->Lang("fr");
+			Lang::Load();
+			break;
+
+		case 5: // Italiano.
+			if (_3DZwei::CFG->Lang() == "it") break;
+			_3DZwei::CFG->Lang("it");
+			Lang::Load();
+			break;
+
+		case 6: // 日本語.
+			if (_3DZwei::CFG->Lang() == "ja") break;
+			_3DZwei::CFG->Lang("ja");
+			Lang::Load();
+			break;
+
+		case 7: // Polski.
+			if (_3DZwei::CFG->Lang() == "pl") break;
+			_3DZwei::CFG->Lang("pl");
+			Lang::Load();
+			break;
+
+		case 8: // Português.
+			if (_3DZwei::CFG->Lang() == "pt") break;
+			_3DZwei::CFG->Lang("pt");
+			Lang::Load();
+			break;
+
+		case 9: // Русский.
+			if (_3DZwei::CFG->Lang() == "ru") break;
+			_3DZwei::CFG->Lang("ru");
 			Lang::Load();
 			break;
 	}
@@ -71,16 +119,48 @@ void LanguageSelector::Action() {
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 
-		/* English. */
-		Gui::DrawString(10, 40, 0.5f, TEXT_COLOR, "English");
-		GFX::DrawCheckbox(this->Positions[0].X, this->Positions[0].Y, _3DZwei::CFG->Lang() == "en");
+		/* Bruh. */
+		Gui::DrawString(this->Positions[0].X - 70, this->Positions[0].Y + 5, 0.5f, TEXT_COLOR, "Bruh");
+		GFX::DrawCheckbox(this->Positions[0].X, this->Positions[0].Y, _3DZwei::CFG->Lang() == "br");
 
 		/* Deutsch. */
-		Gui::DrawString(10, 80, 0.5f, TEXT_COLOR, "Deutsch");
+		Gui::DrawString(this->Positions[1].X - 70, this->Positions[1].Y + 5, 0.5f, TEXT_COLOR, "Deutsch");
 		GFX::DrawCheckbox(this->Positions[1].X, this->Positions[1].Y, _3DZwei::CFG->Lang() == "de");
 
-		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, KBD_KEYPRESSED); // Back.
-		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[2].X, this->Positions[2].Y);
+		/* English. */
+		Gui::DrawString(this->Positions[2].X - 70, this->Positions[2].Y + 5, 0.5f, TEXT_COLOR, "English");
+		GFX::DrawCheckbox(this->Positions[2].X, this->Positions[2].Y, _3DZwei::CFG->Lang() == "en");
+
+		/* Español. */
+		Gui::DrawString(this->Positions[3].X - 70, this->Positions[3].Y + 5, 0.5f, TEXT_COLOR, "Español");
+		GFX::DrawCheckbox(this->Positions[3].X, this->Positions[3].Y, _3DZwei::CFG->Lang() == "es");
+
+		/* Français. */
+		Gui::DrawString(this->Positions[4].X - 70, this->Positions[4].Y + 5, 0.5f, TEXT_COLOR, "Français");
+		GFX::DrawCheckbox(this->Positions[4].X, this->Positions[4].Y, _3DZwei::CFG->Lang() == "fr");
+
+		/* Italiano. */
+		Gui::DrawString(this->Positions[5].X - 70, this->Positions[5].Y + 5, 0.5f, TEXT_COLOR, "Italiano");
+		GFX::DrawCheckbox(this->Positions[5].X, this->Positions[5].Y, _3DZwei::CFG->Lang() == "it");
+
+		/* 日本語. */
+		Gui::DrawString(this->Positions[6].X - 70, this->Positions[6].Y + 5, 0.5f, TEXT_COLOR, "日本語");
+		GFX::DrawCheckbox(this->Positions[6].X, this->Positions[6].Y, _3DZwei::CFG->Lang() == "ja");
+
+		/* Polski. */
+		Gui::DrawString(this->Positions[7].X - 70, this->Positions[7].Y + 5, 0.5f, TEXT_COLOR, "Polski");
+		GFX::DrawCheckbox(this->Positions[7].X, this->Positions[7].Y, _3DZwei::CFG->Lang() == "pl");
+
+		/* Português. */
+		Gui::DrawString(this->Positions[8].X - 70, this->Positions[8].Y + 5, 0.5f, TEXT_COLOR, "Português");
+		GFX::DrawCheckbox(this->Positions[8].X, this->Positions[8].Y, _3DZwei::CFG->Lang() == "pt");
+
+		/* Русский. */
+		Gui::DrawString(this->Positions[9].X - 70, this->Positions[9].Y + 5, 0.5f, TEXT_COLOR, "Русский");
+		GFX::DrawCheckbox(this->Positions[9].X, this->Positions[9].Y, _3DZwei::CFG->Lang() == "ru");
+
+		Gui::Draw_Rect(this->Positions[10].X, this->Positions[10].Y, this->Positions[10].W, this->Positions[10].H, KBD_KEYPRESSED); // Back.
+		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->Positions[10].X, this->Positions[10].Y);
 
 		Pointer::Draw();
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {

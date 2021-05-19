@@ -117,11 +117,11 @@ int CharacterSelector::Action() {
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Res >= 1);
-		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Res + 1 < (int)Utils::GetCharSheetSize());
+		GFX::DrawCornerEdge(false, this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].H, this->Res + 1 < (int)Utils::GetCharSheetSize());
 
 		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
-		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
-		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
+		Gui::Draw_Rect(this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].W, this->BottomPos[2].H, CORNER_COLOR);
+		Gui::DrawStringCentered(0, this->BottomPos[2].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
 
 		Gui::Draw_Rect(this->BottomPos[3].X, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, KBD_KEYPRESSED); // Back.
 		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->BottomPos[3].X, this->BottomPos[3].Y);
@@ -147,6 +147,7 @@ void CharacterSelector::CharLogic() {
 	hidTouchRead(&T);
 	const uint32_t Down = hidKeysDown();
 	const uint32_t Held = hidKeysHeld();
+	const uint32_t Repeat = hidKeysDownRepeat();
 
 	/* Fade-In Handler. */
 	if (this->FadeIn) {
@@ -191,7 +192,7 @@ void CharacterSelector::CharLogic() {
 
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
 			this->Cubic = 0.0f, this->DoSwipe = false;
 			this->Res = (this->SwipeDir ? (this->Res - 1) : (this->Res + 1));
@@ -215,20 +216,45 @@ void CharacterSelector::CharLogic() {
 	};
 
 	Pointer::ScrollHandling(Held);
-	if (Down & KEY_L) this->PrevChar();
-	if (Down & KEY_R) this->NextChar();
+	if (Repeat & KEY_L) this->PrevChar();
+	if (Repeat & KEY_R) this->NextChar();
 	if (Down & KEY_B) this->Cancel();
 	if (Down & KEY_START) this->Select();
 
-	if (Down & KEY_A) {
-		for (auto &Position : this->Positions) {
-			if (Pointer::Clicked(Position, true)) break;
+
+	if (Repeat & KEY_A) {
+		bool Clicked = false;
+
+		for (size_t Idx = 0; Idx < 2; Idx++) {
+			if (Pointer::Clicked(this->Positions[Idx], true)) {
+				Clicked = true;
+				break;
+			}
 		}
-	}
+
+		if (Clicked) return;
+	};
+
+	if (Down & KEY_A) {
+		Pointer::Clicked(this->Positions[2], true);
+	};
+
+	if (Repeat & KEY_TOUCH) {
+		bool Clicked = false;
+
+		for (size_t Idx = 0; Idx < 2; Idx++) {
+			if (Touched(this->BottomPos[Idx], T, true)) {
+				Clicked = true;
+				break;
+			}
+		}
+
+		if (Clicked) return;
+	};
 
 	if (Down & KEY_TOUCH) {
-		for (auto &Position : this->BottomPos) {
-			if (Touched(Position, T, true)) break;
+		for (size_t Idx = 0; Idx < 2; Idx++) {
+			if (Touched(this->BottomPos[2 + Idx], T, true)) break;
 		}
-	}
+	};
 };

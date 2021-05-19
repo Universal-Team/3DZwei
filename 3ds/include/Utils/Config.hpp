@@ -27,6 +27,7 @@
 #ifndef _3DZWEI_CONFIG_HPP
 #define _3DZWEI_CONFIG_HPP
 
+#include "GameSettings.hpp"
 #include "JSON.hpp"
 
 class Config {
@@ -75,6 +76,10 @@ public:
 	/* If using the fade effect or nah. */
 	bool DoFade() const { return this->VDoFade; };
 	void DoFade(const bool V) { this->VDoFade = V; if (!this->ChangesMade) this->ChangesMade = true; };
+
+	void FetchDefaults();
+	GameSettings::GameParams GetDefault() const { return this->VDefaultParams; };
+	void SetDefault(const GameSettings::GameParams &Defaults);
 private:
 	template <typename T>
 	T Get(const std::string &Key, const T IfNotFound) {
@@ -88,6 +93,7 @@ private:
 		if (!this->CFG.is_discarded()) this->CFG[Key] = Data;
 	};
 
+	GameSettings::GameParams VDefaultParams; // Store default game settings as well into config.
 	bool ChangesMade = false, VShowSplash = true, VAnimation = true, VPageSwitch = true, VDoFade = true;
 	nlohmann::json CFG = nullptr;
 	uint8_t VPointerSpeed = 4, VGameAnimation = 1;

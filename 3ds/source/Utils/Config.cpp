@@ -25,6 +25,7 @@
 */
 
 #include "Config.hpp"
+#include "Utils.hpp" // Required for 'Utils::GetCharSheetSize()'.
 #include <unistd.h>
 
 
@@ -119,4 +120,118 @@ bool Config::CardIndexIncluded(const size_t Idx) {
 */
 void Config::ActivatedCards(const std::vector<size_t> &Cards) {
 	if (!this->CFG.is_discarded()) this->CFG["ActivatedCards"] = Cards;
+};
+
+
+/*
+	Fetch the content from the config for the default Game Settings.
+*/
+void Config::FetchDefaults() {
+	if (!this->CFG.is_discarded()) {
+		/* Ensure it is an object and exist. */
+		if (this->CFG.contains("GameDefaults") && this->CFG["GameDefaults"].is_object()) {
+			/* Here we begin the fetch! Fetch Game Mode. */
+			if (this->CFG["GameDefaults"].contains("GameMode") && this->CFG["GameDefaults"]["GameMode"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["GameMode"];
+				if (Res >= 0 && Res < 2) this->VDefaultParams.GameMode = (GameSettings::GameModes)Res; // 0 - 1 valid.
+			};
+
+			/* Card Delay. */
+			if (this->CFG["GameDefaults"].contains("CardDelay") && this->CFG["GameDefaults"]["CardDelay"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["CardDelay"];
+				if (Res > 0 && Res < 256) { // Exist, between 1 and 255 -> Good.
+					this->VDefaultParams.CardDelay = Res;
+					this->VDefaultParams.CardDelayUsed = true;
+				}
+			};
+
+			/* AI Mode. */
+			if (this->CFG["GameDefaults"].contains("AIMode") && this->CFG["GameDefaults"]["AIMode"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["AIMode"];
+				if (Res >= 0 && Res < 3) { // Exist, between 0 - 2 (Random, Hard, Default) == good.
+					this->VDefaultParams.Method = (StackMem::AIMethod)Res;
+					this->VDefaultParams.AIUsed = true;
+				}
+			};
+
+			/* Rounds to win the game. */
+			if (this->CFG["GameDefaults"].contains("RoundsToWin") && this->CFG["GameDefaults"]["RoundsToWin"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["RoundsToWin"];
+				if (Res > 0 && Res < 256) this->VDefaultParams.RoundsToWin = Res; // Exist, 1 and 255 -> Good.
+			};
+
+			/* First character index. */
+			if (this->CFG["GameDefaults"].contains("Player1Idx") && this->CFG["GameDefaults"]["Player1Idx"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["Player1Idx"];
+				if (Res >= 0 && Res < (int)Utils::GetCharSheetSize()) this->VDefaultParams.Characters[0] = Res; // Smaller than the max amount -> Good.
+			};
+
+			/* Second character index. */
+			if (this->CFG["GameDefaults"].contains("Player2Idx") && this->CFG["GameDefaults"]["Player2Idx"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["Player2Idx"];
+				if (Res >= 0 && Res < (int)Utils::GetCharSheetSize()) this->VDefaultParams.Characters[1] = Res; // Smaller than the max amount -> Good.
+			};
+
+			/* First character name. */
+			if (this->CFG["GameDefaults"].contains("Player1Name") && this->CFG["GameDefaults"]["Player1Name"].is_string()) {
+				const std::string Res = this->CFG["GameDefaults"]["Player1Name"];
+
+				if (Res.size() < 17) this->VDefaultParams.Names[0] = Res; // Smaller than 17 characters -> Good.
+			};
+
+			/* Second character name. */
+			if (this->CFG["GameDefaults"].contains("Player2Name") && this->CFG["GameDefaults"]["Player2Name"].is_string()) {
+				const std::string Res = this->CFG["GameDefaults"]["Player2Name"];
+
+				if (Res.size() < 17) this->VDefaultParams.Names[1] = Res; // Smaller than 17 characters -> Good.
+			};
+
+			/* Round Starter. */
+			if (this->CFG["GameDefaults"].contains("RoundStarter") && this->CFG["GameDefaults"]["RoundStarter"].is_number()) {
+				const int Res = this->CFG["GameDefaults"]["RoundStarter"];
+				if (Res >= 0 && Res < 5) this->VDefaultParams.Starter = (GameSettings::RoundStarter)Res; // Smaller than the max amount -> Good.
+			};
+		}
+	}
+};
+
+/*
+	Set Default Game Config.
+
+	const GameSettings::GameParams &Defaults: The config to set to default.
+*/
+void Config::SetDefault(const GameSettings::GameParams &Defaults) {
+	if (!this->CFG.is_discarded()) {
+		this->CFG["GameDefaults"]["GameMode"] = (uint8_t)Defaults.GameMode; // Game Mode.
+
+		/* Card Delay. */
+		if (Defaults.CardDelayUsed && Defaults.CardDelay > 0) this->CFG["GameDefaults"]["CardDelay"] = Defaults.CardDelay;
+		else {
+			if (this->CFG.contains("GameDefaults") && this->CFG["GameDefaults"].is_object()) {
+				if (this->CFG["GameDefaults"].contains("CardDelay") && this->CFG["GameDefaults"]["CardDelay"].is_number()) {
+					this->CFG["GameDefaults"]["CardDelay"] = 0; // That'd work as well just fine, since we check the amount too.
+				}
+			}
+		};
+
+		/* AI Mode. */
+		if (Defaults.AIUsed) this->CFG["GameDefaults"]["AIMode"] = (uint8_t)Defaults.Method;
+		else {
+			if (this->CFG.contains("GameDefaults") && this->CFG["GameDefaults"].is_object()) {
+				if (this->CFG["GameDefaults"].contains("AIMode") && this->CFG["GameDefaults"]["AIMode"].is_number()) {
+					this->CFG["GameDefaults"]["AIMode"] = -1; // Set to -1 because unused.
+				}
+			}
+		};
+
+		if (Defaults.RoundsToWin > 0) this->CFG["GameDefaults"]["RoundsToWin"] = Defaults.RoundsToWin; // Rounds needed to win the game.
+		this->CFG["GameDefaults"]["Player1Idx"] = Defaults.Characters[0]; // First character image index.
+		this->CFG["GameDefaults"]["Player2Idx"] = Defaults.Characters[1]; // Second character image index.
+		this->CFG["GameDefaults"]["Player1Name"] = Defaults.Names[0]; // First player name.
+		this->CFG["GameDefaults"]["Player2Name"] = Defaults.Names[1]; // Second player name.
+		this->CFG["GameDefaults"]["RoundStarter"] = (uint8_t)Defaults.Starter; // Round Starter.
+
+		this->VDefaultParams = Defaults; // Set new defaults to current session as well.
+		if (!this->ChangesMade) this->ChangesMade = true; // We modified it.
+	};
 };

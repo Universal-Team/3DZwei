@@ -44,7 +44,7 @@ public:
 	void DrawTop(void) const;
 	void DrawField(const bool ShowPointer = true) const;
 
-	LogicState Logic(const uint32_t Down, const uint32_t Held, const touchPosition T);
+	LogicState Logic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T);
 	GameSettings::GameParams &ReturnParams() { return this->Params; };
 private:
 	std::unique_ptr<StackMem> Game = nullptr;
@@ -69,7 +69,7 @@ private:
 	/* Turn based related. */
 	LogicState TurnChecks();
 	LogicState AILogic(const uint32_t Down);
-	LogicState PlayerLogic(const uint32_t Down, const uint32_t Held, const touchPosition T);
+	LogicState PlayerLogic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T);
 
 	/* Include all Animations here. */
 	void StartGameAnimationFalling();

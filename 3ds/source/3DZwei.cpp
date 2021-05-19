@@ -63,6 +63,7 @@ _3DZwei::_3DZwei() {
 	Utils::LoadCardSet(CFG->CardSet());
 	Utils::LoadCharSet(CFG->CharSet());
 	Utils::InitCards(true);
+	_3DZwei::CFG->FetchDefaults(); // Need to do this after init, because relies on Utils::GetCharSheetSize().
 
 	/* Display Splash, if enabled. */
 	if (_3DZwei::CFG->ShowSplash()) {
@@ -70,6 +71,7 @@ _3DZwei::_3DZwei() {
 		Ovl->Action();
 	};
 
+	hidSetRepeatParameters(25, 5);
 	srand(time(nullptr)); // Seed for rand() usage on animation.
 };
 
@@ -78,7 +80,7 @@ _3DZwei::_3DZwei() {
 void _3DZwei::PrepareGame() {
 	this->FadeOutHandler(); // Fade out.
 
-	std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>();
+	std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault());
 	const GameSettings::GameParams Params = Ovl->Action();
 
 	if (Utils::Cards.size() > 0 && !Params.CancelGame) { // At least 1 pair should exist and the game NOT cancelled!!!

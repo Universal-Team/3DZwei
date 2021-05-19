@@ -106,7 +106,7 @@ bool Utils::CheckSetContent(const std::string &Set, const bool CheckChars) {
 
 		if (Set.size() > 4) {
 			/* Ensure it is '.t3x'. */
-			if (Set[Set.size() - 4] == '.' && Set[Set.size() - 3] == 't' && Set[Set.size() - 2] == '3' && Set[Set.size() - 1] == 'x') {
+			if (Set.substr(Set.size() - 4) == ".t3x") {
 				if (CheckChars) {
 					if (Set != "3DZwei-RomFS" && (access((std::string("sdmc:/3ds/ut-games/sets/characters/") + Set).c_str(), F_OK) == 0)) return true;
 

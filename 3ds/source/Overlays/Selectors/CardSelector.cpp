@@ -80,6 +80,7 @@ bool CardSelector::CanGoNext() const {
 void CardSelector::PageFadeHandler() {
 	hidScanInput();
 	const uint32_t Down = hidKeysDown();
+	const uint32_t Repeat = hidKeysDownRepeat();
 
 	/* Fade-In Handler. */
 	if (this->FadeIn) {
@@ -127,7 +128,7 @@ void CardSelector::PageFadeHandler() {
 
 	/* Page Swipe Handler. */
 	if (this->DoSwipe) {
-		if (!_3DZwei::CFG->DoAnimation() || Down) {
+		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
 			this->Cubic = 0.0f;
 			this->DoSwipe = false;
@@ -248,18 +249,19 @@ void CardSelector::Action() {
 			hidTouchRead(&T);
 			const uint32_t Down = hidKeysDown();
 			const uint32_t Held = hidKeysHeld();
+			const uint32_t Repeat = hidKeysDownRepeat();
 			Pointer::ScrollHandling(Held);
 
-			if (Down & KEY_L) this->PrevPage();
-			if (Down & KEY_R) this->NextPage();
+			if (Repeat & KEY_L) this->PrevPage();
+			if (Repeat & KEY_R) this->NextPage();
 
-			if (Down & KEY_A) {
+			if (Repeat & KEY_A) {
 				for (auto &Position : this->Positions) {
 					if (Pointer::Clicked(Position, true)) break;
 				}
 			}
 
-			if (Down & KEY_TOUCH) {
+			if (Repeat & KEY_TOUCH) {
 				for (auto &Position : this->BottomPos) {
 					if (Touched(Position, T, true)) break;
 				}

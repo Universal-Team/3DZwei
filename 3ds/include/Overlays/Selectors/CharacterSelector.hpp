@@ -55,8 +55,8 @@ private:
 
 	const std::vector<FuncCallback> BottomPos = {
 		{ 70, 75, 25, 90, [this]() { this->PrevChar(); } },
-		{ 123, 109, 74, 22, [this]() { this->Select(); } },
 		{ 225, 75, 25, 90, [this]() { this->NextChar(); } },
+		{ 123, 109, 74, 22, [this]() { this->Select(); } },
 		{ 0, 223, 17, 17, [this]() { this->Cancel(); } }
 	};
 };

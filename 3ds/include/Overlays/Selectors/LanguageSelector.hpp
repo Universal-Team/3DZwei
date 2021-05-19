@@ -42,8 +42,17 @@ private:
 	void Cancel();
 
 	const std::vector<FuncCallback> Positions = {
-		{ 80, 35, 24, 24, [this]() { this->SelectLang(0); } }, // English.
-		{ 80, 75, 24, 24, [this]() { this->SelectLang(1); } }, // Deutsch.
+		{ 120, 25, 24, 24, [this]() { this->SelectLang(0); } }, // Bruh.
+		{ 120, 65, 24, 24, [this]() { this->SelectLang(1); } }, // Deutsch.
+		{ 120, 105, 24, 24, [this]() { this->SelectLang(2); } }, // English.
+		{ 120, 145, 24, 24, [this]() { this->SelectLang(3); } }, // Español.
+		{ 120, 185, 24, 24, [this]() { this->SelectLang(4); } }, // Français.
+		{ 240, 25, 24, 24, [this]() { this->SelectLang(5); } }, // Italiano.
+		{ 240, 65, 24, 24, [this]() { this->SelectLang(6); } }, // 日本語.
+		{ 240, 105, 24, 24, [this]() { this->SelectLang(7); } }, // Polski.
+		{ 240, 145, 24, 24, [this]() { this->SelectLang(8); } }, // Português.
+		{ 240, 185, 24, 24, [this]() { this->SelectLang(9); } }, // Русский.
+
 		{ 0, 223, 17, 17, [this]() { this->Cancel(); } }
 	};
 };

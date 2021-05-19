@@ -45,7 +45,7 @@ public:
 		uint8_t CardDelay = 0; // The card delay before the card gets hidden again after a turn.
 		uint8_t RoundsToWin = 3; // Rounds to win the game.
 		uint8_t Characters[2] = { 0 }; // Avatar Indexes.
-		std::string Names[2] = { "Player1", "Player2" }; // Player Names.
+		std::string Names[2] = { "%Player1%", "%Player2%" }; // Player Names.
 		GameSettings::GameModes GameMode = GameSettings::GameModes::Versus; // Game Mode.
 		uint8_t Wins[2] = { 0 }; // Wins of both players.
 		size_t PlayerPairs[2] = { 0 }; // Player Pairs for both players.
@@ -54,7 +54,7 @@ public:
 		bool CancelGame = false; // If Game should be cancelled or not.
 	};
 
-	GameSettings();
+	GameSettings(const GameParams &Defaults);
 	GameParams Action();
 private:
 	enum class Tabs : uint8_t { General = 0, Player = 1 };
