@@ -28,36 +28,73 @@
 #include "CharacterSelector.hpp"
 #include "Utils.hpp"
 
+#define CHARS_PER_PAGE 15
 
-/* Go to the previous Character. */
-void CharacterSelector::PrevChar() {
-	if (this->Res > 0) {
-		this->SwipeDir = true;
-		this->DoSwipe = true;
+
+/*
+	Draw a page of 15 characters.
+
+	const size_t Page: The page to draw.
+	const int AddOffs: The additional offsets to draw to.
+*/
+void CharacterSelector::DrawPage(const size_t Page, const int AddOffs) {
+	for (size_t Idx = (Page * CHARS_PER_PAGE), Idx2 = 0; Idx < (Page * CHARS_PER_PAGE) + CHARS_PER_PAGE && Idx < Utils::GetCharSheetSize(); Idx++, Idx2++) {
+		Gui::DrawSprite(GFX::Characters, Idx, this->Characters[Idx2].X + AddOffs, this->Characters[Idx2].Y, 0.4f, 0.4f);
 	};
 };
 
 
-/* Go to the next Character. */
-void CharacterSelector::NextChar() {
-	if (this->Res < (int)Utils::GetCharSheetSize() - 1) {
+/*
+	Main character select logic.
+
+	const uint8_t Idx: The click index.
+
+	If 15: It will randomly select the character.
+*/
+void CharacterSelector::SelectCharacter(const uint8_t Idx) {
+	if (Idx == 15) {
+		this->Res = (rand() % (Utils::GetCharSheetSize() - 1));
+		this->Done = true;
+		return;
+	};
+
+	if ((this->Page * CHARS_PER_PAGE) + Idx < Utils::GetCharSheetSize()) {
+		this->Res = (this->Page * CHARS_PER_PAGE) + Idx;
+		this->Done = true;
+	}
+};
+
+
+/* Go to the previous page. */
+void CharacterSelector::PrevPage() {
+	if (this->Page > 0) {
+		this->SwipeDir = true;
+		this->DoSwipe = true;
+	}
+};
+
+
+/* Go to the next page. */
+void CharacterSelector::NextPage() {
+	if (this->CanGoNext()) {
 		this->SwipeDir = false;
 		this->DoSwipe = true;
 	}
 };
 
 
-/* Set the Select State. */
-void CharacterSelector::Select() { this->Done = true; };
-void CharacterSelector::Cancel() { this->Res = -1, this->Done = true; };
+void CharacterSelector::Cancel() { this->Done = true; };
 
 
+/* Returns, if you can go to the next page. */
+bool CharacterSelector::CanGoNext() const {
+	return ((this->Page * CHARS_PER_PAGE) + CHARS_PER_PAGE < Utils::GetCharSheetSize());
+};
+
+
+/* Main action. */
 int CharacterSelector::Action() {
-	if (Utils::GetCharSheetSize() == 0) return -1;
-
-	Pointer::OnTop = true;
-	Pointer::SetPos(0, 0);
-	if (this->Res > (int)Utils::GetCharSheetSize() - 1) this->Res = Utils::GetCharSheetSize() - 1;
+	if (Utils::GetCharSheetSize() == 0) return 0;
 
 	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();
@@ -68,80 +105,45 @@ int CharacterSelector::Action() {
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CHARACTER_SELECT_TITLE"), 395);
 
-		/* Display Characters. */
 		if (this->Res < (int)Utils::GetCharSheetSize()) {
-			/* Current Character. */
-			if (this->DoSwipe || this->InitialSwipe) {
-				if (this->SwipeDir) { // Swipe to -> (Last).
-					Gui::DrawSprite(GFX::Characters, this->Res, 140 + this->CurPos, 72);
-					Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138 + this->CurPos, 70);
-
-				} else { // Swipe to <- (Next).
-					Gui::DrawSprite(GFX::Characters, this->Res, 140 + this->CurPos, 72);
-					Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138 + this->CurPos, 70);
-				}
-
-			} else { // No Swipe.
-				Gui::DrawSprite(GFX::Characters, this->Res, 140, 72);
-				Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138, 70);
-			}
-
-
-			if (this->DoSwipe) {
-				/* Prev Character. */
-				if (this->Res >= 1) {
-					Gui::DrawSprite(GFX::Characters, this->Res - 1, 140 + this->PrevPos, 72);
-					Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138 + this->PrevPos, 70);
-				};
-
-				/* Next Character. */
-				if (this->Res + 1 < (int)Utils::GetCharSheetSize()) {
-					Gui::DrawSprite(GFX::Characters, this->Res + 1, 140 + this->NextPos, 72);
-					Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 138 + this->NextPos, 70);
-				};
-			}
-		};
-
-		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, KBD_KEYUNPRESSED);
-		Gui::DrawStringCentered(0, this->Positions[2].Y + 2, 0.5f, TEXT_COLOR, Lang::Get("SELECT"), 395);
-
-		/* Draw Edge boxes. */
-		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Res >= 1);
-		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Res + 1 < (int)Utils::GetCharSheetSize());
-		Pointer::Draw();
+			Gui::DrawSprite(GFX::Characters, this->Res, 100, 40, 1.5f, 1.5f);
+		}
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		}
+		};
 
 		GFX::DrawBottom();
-		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
-		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Res >= 1);
-		GFX::DrawCornerEdge(false, this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].H, this->Res + 1 < (int)Utils::GetCharSheetSize());
 
-		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
-		Gui::Draw_Rect(this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].W, this->BottomPos[2].H, CORNER_COLOR);
-		Gui::DrawStringCentered(0, this->BottomPos[2].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
+		if (this->DoSwipe || this->InitialSwipe) { // We swipe.
+			this->DrawPage(this->Page, this->CurPos); // Draw current page.
 
-		Gui::Draw_Rect(this->BottomPos[3].X, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, KBD_KEYPRESSED); // Back.
-		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->BottomPos[3].X, this->BottomPos[3].Y);
+			if (this->SwipeDir) this->DrawPage(this->Page - 1, this->PrevPos);
+			else this->DrawPage(this->Page + 1, this->NextPos);
+
+		} else { // No swipe.
+			this->DrawPage(this->Page, 0); // Draw current page only.
+		};
+
+		Gui::DrawSprite(GFX::Sprites, sprites_random_idx, this->Characters[15].X, this->Characters[15].Y);
+		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Page > 0);
+		GFX::DrawCornerEdge(false, this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].H, this->CanGoNext());
+		Pointer::Draw();
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		}
+		};
 
 		C3D_FrameEnd(0);
-		this->CharLogic();
+		this->Handler();
 	}
 
-	Pointer::OnTop = false;
-	Pointer::SetPos(0, 0);
 	return this->Res;
 };
 
 
-/* The Main Logic of this Overlay. */
-void CharacterSelector::CharLogic() {
+/* Action Handler. */
+void CharacterSelector::Handler() {
 	hidScanInput();
 	touchPosition T;
 	hidTouchRead(&T);
@@ -169,7 +171,7 @@ void CharacterSelector::CharLogic() {
 
 			if (this->FAlpha >= 255) this->FullDone = true;
 		}
-	}
+	};
 
 	/* Initial Swipe. */
 	if (this->InitialSwipe) {
@@ -178,11 +180,11 @@ void CharacterSelector::CharLogic() {
 			return;
 		}
 
-		if (this->Cubic < 400.0f) {
-			this->Cubic = std::lerp(this->Cubic, 401.0f, 0.2f);
-			this->CurPos = -400 + this->Cubic;
+		if (this->Cubic < 320.0f) {
+			this->Cubic = std::lerp(this->Cubic, 321.0f, 0.1f);
+			this->CurPos = -320 + this->Cubic;
 
-			if (this->Cubic >= 400.0f) {
+			if (this->Cubic >= 320.0f) {
 				this->CurPos = 0.0f, this->Cubic = 0.0f, this->InitialSwipe = false;
 			}
 		}
@@ -193,22 +195,22 @@ void CharacterSelector::CharLogic() {
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
 		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
-			this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
+			this->CurPos = 0.0f, this->PrevPos = -320.0f, this->NextPos = 320.0f;
 			this->Cubic = 0.0f, this->DoSwipe = false;
-			this->Res = (this->SwipeDir ? (this->Res - 1) : (this->Res + 1));
+			this->Page = (this->SwipeDir ? (this->Page - 1) : (this->Page + 1));
 			return;
 		}
 
-		if (this->Cubic < 400.0f) {
-			this->Cubic = std::lerp(this->Cubic, 401.0f, 0.2f);
+		if (this->Cubic < 320.0f) {
+			this->Cubic = std::lerp(this->Cubic, 321.0f, 0.1f);
 
-			if (this->SwipeDir) this->CurPos = this->Cubic, this->PrevPos = -400 + this->Cubic; // -> (Last).
-			else this->CurPos = 0 - this->Cubic, this->NextPos = 400 - this->Cubic; // <- (Next).
+			if (this->SwipeDir) this->CurPos = this->Cubic, this->PrevPos = -320 + this->Cubic; // -> (Last).
+			else this->CurPos = 0 - this->Cubic, this->NextPos = 320 - this->Cubic; // <- (Next).
 
-			if (this->Cubic >= 400.0f) {
-				this->CurPos = 0.0f, this->PrevPos = -400.0f, this->NextPos = 400.0f;
+			if (this->Cubic >= 320.0f) {
+				this->CurPos = 0.0f, this->PrevPos = -320.0f, this->NextPos = 320.0f;
 				this->Cubic = 0.0f, this->DoSwipe = false;
-				this->Res = (this->SwipeDir ? (this->Res - 1) : (this->Res + 1));
+				this->Page = (this->SwipeDir ? (this->Page - 1) : (this->Page + 1));
 			}
 		}
 
@@ -216,17 +218,14 @@ void CharacterSelector::CharLogic() {
 	};
 
 	Pointer::ScrollHandling(Held);
-	if (Repeat & KEY_L) this->PrevChar();
-	if (Repeat & KEY_R) this->NextChar();
-	if (Down & KEY_B) this->Cancel();
-	if (Down & KEY_START) this->Select();
-
+	if (Down & KEY_B || Down & KEY_START) this->Cancel();
+	if (Repeat & KEY_L) this->PrevPage();
+	if (Repeat & KEY_R) this->NextPage();
 
 	if (Repeat & KEY_A) {
 		bool Clicked = false;
-
-		for (size_t Idx = 0; Idx < 2; Idx++) {
-			if (Pointer::Clicked(this->Positions[Idx], true)) {
+		for (auto &Position : this->BottomPos) {
+			if (Pointer::Clicked(Position, true)) {
 				Clicked = true;
 				break;
 			}
@@ -236,25 +235,27 @@ void CharacterSelector::CharLogic() {
 	};
 
 	if (Down & KEY_A) {
-		Pointer::Clicked(this->Positions[2], true);
+		for (auto &Position : this->Characters) {
+			if (Pointer::Clicked(Position, true)) break;
+		}
 	};
 
 	if (Repeat & KEY_TOUCH) {
 		bool Clicked = false;
 
-		for (size_t Idx = 0; Idx < 2; Idx++) {
-			if (Touched(this->BottomPos[Idx], T, true)) {
+		for (auto &Position : this->BottomPos) {
+			if (Touched(Position, T, true)) {
 				Clicked = true;
 				break;
-			}
+			};
 		}
 
 		if (Clicked) return;
 	};
 
 	if (Down & KEY_TOUCH) {
-		for (size_t Idx = 0; Idx < 2; Idx++) {
-			if (Touched(this->BottomPos[2 + Idx], T, true)) break;
+		for (auto &Position : this->Characters) {
+			if (Touched(Position, T, true)) break;
 		}
 	};
 };

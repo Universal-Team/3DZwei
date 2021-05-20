@@ -33,31 +33,48 @@
 
 class CharacterSelector {
 public:
-	CharacterSelector(const int8_t OldSelection) : Res(OldSelection) { };
+	CharacterSelector(const int OldSelection) : Res(OldSelection) { };
 	int Action();
 private:
-	int Res = 0, PrevPos = -400, CurPos = -400, NextPos = 400;
+	size_t Page = 0;
+	int Res = 0, PrevPos = -320, CurPos = -320, NextPos = 320;
 	bool Done = false, FullDone = false, FadeIn = true, SwipeDir = true, DoSwipe = false, InitialSwipe = true;
 	float Cubic = 0.0f;
-	uint8_t FAlpha = 255;
+	int16_t FAlpha = 255;
 
-	void PrevChar();
-	void NextChar();
-	void Select();
+	void DrawPage(const size_t Page, const int AddOffs);
+	void SelectCharacter(const uint8_t Idx);
+	void PrevPage();
+	void NextPage();
+	bool CanGoNext() const;
 	void Cancel();
-	void CharLogic();
-
-	const std::vector<FuncCallback> Positions = {
-		{ 0, 25, 25, 215, [this]() { this->PrevChar(); } },
-		{ 375, 25, 25, 215, [this]() { this->NextChar(); } },
-		{ 147, 200, 106, 20, [this]() { this->Select(); } }
-	};
+	void Handler();
 
 	const std::vector<FuncCallback> BottomPos = {
-		{ 70, 75, 25, 90, [this]() { this->PrevChar(); } },
-		{ 225, 75, 25, 90, [this]() { this->NextChar(); } },
-		{ 123, 109, 74, 22, [this]() { this->Select(); } },
-		{ 0, 223, 17, 17, [this]() { this->Cancel(); } }
+		{ 0, 15, 25, 215, [this]() { this->PrevPage(); } },
+		{ 295, 15, 25, 215, [this]() { this->NextPage(); } }
+	};
+
+	const std::vector<FuncCallback> Characters = {
+		{ 40, 9, 48, 48, [this]() { this->SelectCharacter(0); } },
+		{ 103, 9, 48, 48, [this]() { this->SelectCharacter(1); } },
+		{ 166, 9, 48, 48, [this]() { this->SelectCharacter(2); } },
+		{ 229, 9, 48, 48, [this]() { this->SelectCharacter(3); } },
+
+		{ 40, 66, 48, 48, [this]() { this->SelectCharacter(4); } },
+		{ 103, 66, 48, 48, [this]() { this->SelectCharacter(5); } },
+		{ 166, 66, 48, 48, [this]() { this->SelectCharacter(6); } },
+		{ 229, 66, 48, 48, [this]() { this->SelectCharacter(7); } },
+
+		{ 40, 123, 48, 48, [this]() { this->SelectCharacter(8); } },
+		{ 103, 123, 48, 48, [this]() { this->SelectCharacter(9); } },
+		{ 166, 123, 48, 48, [this]() { this->SelectCharacter(10); } },
+		{ 229, 123, 48, 48, [this]() { this->SelectCharacter(11); } },
+
+		{ 40, 180, 48, 48, [this]() { this->SelectCharacter(12); } },
+		{ 103, 180, 48, 48, [this]() { this->SelectCharacter(13); } },
+		{ 166, 180, 48, 48, [this]() { this->SelectCharacter(14); } },
+		{ 229, 180, 48, 48, [this]() { this->SelectCharacter(15); } }
 	};
 };
 

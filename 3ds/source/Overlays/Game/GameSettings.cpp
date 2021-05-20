@@ -144,7 +144,7 @@ void GameSettings::SelectPicture(const bool AI) {
 
 			std::unique_ptr<CharacterSelector> Ovl = std::make_unique<CharacterSelector>(this->Params.Characters[1]);
 			const int Res = Ovl->Action();
-			if (Res != -1)  this->Params.Characters[1] = Res;
+			if (Res > -1 && Res < 256) this->Params.Characters[1] = Res;
 
 			this->FAlpha = 255;
 		};
@@ -154,7 +154,7 @@ void GameSettings::SelectPicture(const bool AI) {
 
 		std::unique_ptr<CharacterSelector> Ovl = std::make_unique<CharacterSelector>(this->Params.Characters[0]);
 		const int Res = Ovl->Action();
-		if (Res != -1)  this->Params.Characters[0] = Res;
+		if (Res > -1 && Res < 256) this->Params.Characters[0] = Res;
 
 		this->FAlpha = 255;
 	}
