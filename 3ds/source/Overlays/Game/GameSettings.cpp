@@ -201,7 +201,7 @@ void GameSettings::SetName(const bool AI) {
 /* Draw the Overlay. */
 void GameSettings::Draw(const bool IsSetting) {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, (IsSetting ? Lang::Get("SETTINGS_GAME_DEFAULTS") : Lang::Get("GAME_SETTINGS_TITLE")), 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, (IsSetting ? Lang::Get("SETTINGS_GAME_DEFAULTS") : Lang::Get("GAME_SETTINGS_TITLE")), 395);
 	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
@@ -210,46 +210,46 @@ void GameSettings::Draw(const bool IsSetting) {
 	GFX::DrawBottom();
 
 	/* Draw Tabs. */
-	if (this->Tab != Tabs::General) Gui::Draw_Rect(0, 0, 160, 20, KBD_KEYUNPRESSED);
-	if (this->Tab != Tabs::Player) Gui::Draw_Rect(160, 0, 160, 20, KBD_KEYUNPRESSED);
-	Gui::DrawStringCentered(-80, 3, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_TAB_GENERAL"), 150);
-	Gui::DrawStringCentered(80, 3, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_TAB_PLAYERS"), 150);
+	if (this->Tab != Tabs::General) Gui::Draw_Rect(0, 0, 160, 20, BAR_BLUE);
+	if (this->Tab != Tabs::Player) Gui::Draw_Rect(160, 0, 160, 20, BAR_BLUE);
+	Gui::DrawStringCentered(-80, 3, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_TAB_GENERAL"), 150);
+	Gui::DrawStringCentered(80, 3, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_TAB_PLAYERS"), 150);
 
 	/* Only draw General Tab, if the Tab is larger as -320. */
 	if (this->T1Offs > -320) {
 		/* Game Mode. */
-		Gui::DrawString(15 + this->T1Offs, 40 - (Lang::Get("GAME_SETTINGS_GM").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawString(15 + this->T1Offs, 40 - (Lang::Get("GAME_SETTINGS_GM").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 35);
 
 		switch(this->Params.GameMode) {
 			case GameSettings::GameModes::Versus:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
+				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
 				break;
 
 			case GameSettings::GameModes::Solo:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
+				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
 				break;
 		};
 
 
 		/* Using Card Delay. */
-		Gui::DrawString(15 + this->T1Offs, 80 - (Lang::Get("GAME_SETTINGS_CARD_DELAY").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawString(15 + this->T1Offs, 80 - (Lang::Get("GAME_SETTINGS_CARD_DELAY").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 125, 15, nullptr, C2D_WordWrap);
 		GFX::DrawCheckbox(150 + this->T1Offs, 75, this->Params.CardDelayUsed);
 
 		/* Card Delay Value. */
 		if (this->Params.CardDelayUsed) { // Only show if Card Delay enabled.
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, 75);
-			Gui::DrawString(240 + this->T1Offs, 80, 0.45f, TEXT_COLOR, std::to_string(this->Params.CardDelay));
+			Gui::DrawString(240 + this->T1Offs, 80, 0.45f, TEXT_WHITE, std::to_string(this->Params.CardDelay));
 		}
 
 		/* Card Pairs. */
-		Gui::DrawString(15 + this->T1Offs, 120 - (Lang::Get("GAME_SETTINGS_CARD_PAIRS").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawString(15 + this->T1Offs, 120 - (Lang::Get("GAME_SETTINGS_CARD_PAIRS").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 115);
-		Gui::DrawString(190 + this->T1Offs, 120, 0.45f, TEXT_COLOR, std::to_string(Utils::Cards.size()));
+		Gui::DrawString(190 + this->T1Offs, 120, 0.45f, TEXT_WHITE, std::to_string(Utils::Cards.size()));
 
 		/* Using AI. */
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
-			Gui::DrawString(15 + this->T1Offs, 160 - (Lang::Get("GAME_SETTINGS_AI_METHOD").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_METHOD"), 125, 15, nullptr, C2D_WordWrap);
+			Gui::DrawString(15 + this->T1Offs, 160 - (Lang::Get("GAME_SETTINGS_AI_METHOD").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_METHOD"), 125, 15, nullptr, C2D_WordWrap);
 			GFX::DrawCheckbox(150 + this->T1Offs, 155, this->Params.AIUsed);
 
 			/* AI Method. */
@@ -258,23 +258,23 @@ void GameSettings::Draw(const bool IsSetting) {
 
 				switch(this->Params.Method) {
 					case StackMem::AIMethod::Random:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
 						break;
 
 					case StackMem::AIMethod::Hard:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
 						break;
 
 					case StackMem::AIMethod::Extreme:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
+						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
 						break;
 				};
 			}
 
 			/* Rounds to win Value. */
-			Gui::DrawString(15 + this->T1Offs, 200 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.45f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
+			Gui::DrawString(15 + this->T1Offs, 200 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 195);
-			Gui::DrawString(190 + this->T1Offs, 200, 0.45f, TEXT_COLOR, std::to_string(this->Params.RoundsToWin));
+			Gui::DrawString(190 + this->T1Offs, 200, 0.45f, TEXT_WHITE, std::to_string(this->Params.RoundsToWin));
 		};
 	};
 
@@ -283,48 +283,48 @@ void GameSettings::Draw(const bool IsSetting) {
 		/* Player 1. */
 		if (this->Params.Characters[0] < Utils::GetCharSheetSize()) Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30 + this->T2Offs, 30);
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 28 + this->T2Offs, 28);
-		Gui::Draw_Rect(37 + this->T2Offs, 159, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(40 + this->T2Offs, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
+		Gui::Draw_Rect(37 + this->T2Offs, 159, 106, 20, BAR_BLUE);
+		Gui::DrawString(40 + this->T2Offs, 162, 0.45f, TEXT_WHITE, this->Params.Names[0], 100);
 
 		/* Player 2. */
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
 			if (this->Params.Characters[1] < Utils::GetCharSheetSize()) Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 170 + this->T2Offs, 30);
 			Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 168 + this->T2Offs, 28);
-			Gui::Draw_Rect(177 + this->T2Offs, 159, 106, 20, KBD_KEYUNPRESSED);
-			Gui::DrawString(180 + this->T2Offs, 162, 0.45f, TEXT_COLOR, this->Params.Names[1], 100);
+			Gui::Draw_Rect(177 + this->T2Offs, 159, 106, 20, BAR_BLUE);
+			Gui::DrawString(180 + this->T2Offs, 162, 0.45f, TEXT_WHITE, this->Params.Names[1], 100);
 		};
 
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
-			Gui::DrawString(15 + this->T2Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("GAME_SETTINGS_STARTER"), 130);
+			Gui::DrawString(15 + this->T2Offs, 200, 0.5f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_STARTER"), 130);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T2Offs, 195);
 
 			switch(this->Params.Starter) {
 				case GameSettings::RoundStarter::Player1:
-					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_COLOR, this->Params.Names[0], 120);
+					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_WHITE, this->Params.Names[0], 120);
 					break;
 
 				case GameSettings::RoundStarter::Player2:
-					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_COLOR, this->Params.Names[1], 120);
+					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_WHITE, this->Params.Names[1], 120);
 					break;
 
 				case GameSettings::RoundStarter::Random:
-					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("RANDOM"), 120);
+					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_WHITE, Lang::Get("RANDOM"), 120);
 					break;
 
 				case GameSettings::RoundStarter::Loser:
-					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("LOSER"), 120);
+					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_WHITE, Lang::Get("LOSER"), 120);
 					break;
 
 				case GameSettings::RoundStarter::Winner:
-					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_COLOR, Lang::Get("WINNER"), 120);
+					Gui::DrawString(190 + this->T2Offs, 200, 0.5f, TEXT_WHITE, Lang::Get("WINNER"), 120);
 					break;
 			}
 		}
 	};
 
-	Gui::Draw_Rect(this->GeneralPos[9].X, this->GeneralPos[9].Y, this->GeneralPos[9].W, this->GeneralPos[9].H, KBD_KEYPRESSED); // Back.
+	Gui::Draw_Rect(this->GeneralPos[9].X, this->GeneralPos[9].Y, this->GeneralPos[9].W, this->GeneralPos[9].H, BAR_BLUE); // Back.
 	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->GeneralPos[9].X, this->GeneralPos[9].Y);
-	Gui::Draw_Rect(this->GeneralPos[10].X, this->GeneralPos[10].Y, this->GeneralPos[10].W, this->GeneralPos[10].H, KBD_KEYPRESSED); // Next.
+	Gui::Draw_Rect(this->GeneralPos[10].X, this->GeneralPos[10].Y, this->GeneralPos[10].W, this->GeneralPos[10].H, BAR_BLUE); // Next.
 	Gui::DrawSprite(GFX::Sprites, sprites_next_btn_idx, this->GeneralPos[10].X, this->GeneralPos[10].Y);
 	Pointer::Draw();
 

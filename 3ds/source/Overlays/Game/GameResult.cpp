@@ -41,7 +41,7 @@ GameResult::GameResult() {
 */
 void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Params) {
 	char Buffer[100]; snprintf(Buffer, sizeof(Buffer), Lang::Get("WON").c_str(), Params.Names[P2Wins].c_str());
-	Gui::DrawStringCentered(0 + this->Delay, 28, 0.6f, TEXT_COLOR, Buffer, 380);
+	Gui::DrawStringCentered(0 + this->Delay, 28, 0.6f, BAR_BLUE, Buffer, 380);
 
 	/* Draw Winner. */
 	if (Params.Characters[P2Wins] < Utils::GetCharSheetSize()) {
@@ -50,12 +50,12 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + this->Delay, 49);
 
 		/* Name bar. */
-		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_COLOR, Params.Names[P2Wins], 100);
+		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, BAR_BLUE);
+		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
-		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_COLOR, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
+		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
+		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -70,12 +70,12 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 		Gui::DrawSprite(GFX::Characters, Params.Characters[!P2Wins], 96 - this->Delay, 31);
 
 		/* Name bar. */
-		Gui::Draw_Rect(103 - this->Delay, 160, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(107 - this->Delay, 163, 0.45f, TEXT_COLOR, Params.Names[!P2Wins], 100);
+		Gui::Draw_Rect(103 - this->Delay, 160, 106, 20, BAR_BLUE);
+		Gui::DrawString(107 - this->Delay, 163, 0.45f, TEXT_WHITE, Params.Names[!P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(103 - this->Delay, 185, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[!P2Wins]), 150);
-		Gui::DrawString(103 - this->Delay, 205, 0.45f, TEXT_COLOR, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
+		Gui::DrawString(103 - this->Delay, 185, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[!P2Wins]), 150);
+		Gui::DrawString(103 - this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -99,12 +99,12 @@ void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &P
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + this->Delay, 49);
 
 		/* Name bar. */
-		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_COLOR, Params.Names[P2Wins], 100);
+		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, BAR_BLUE);
+		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
-		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_COLOR, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
+		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
+		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -126,14 +126,14 @@ void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &P
 		}
 
 		/* Name bar. */
-		Gui::Draw_Rect(103 - this->Delay, 150, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(107 - this->Delay, 153, 0.45f, TEXT_COLOR, Params.Names[!P2Wins], 100);
+		Gui::Draw_Rect(103 - this->Delay, 150, 106, 20, BAR_BLUE);
+		Gui::DrawString(107 - this->Delay, 153, 0.45f, TEXT_WHITE, Params.Names[!P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(103 - this->Delay, 175, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[!P2Wins]), 150);
-		Gui::DrawString(103 - this->Delay, 195, 0.45f, TEXT_COLOR, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
+		Gui::DrawString(103 - this->Delay, 175, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[!P2Wins]), 150);
+		Gui::DrawString(103 - this->Delay, 195, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
 
-		Gui::DrawStringCentered(0 + this->Delay, 215, 0.5f, TEXT_COLOR, Lang::Get("WINS_WIN") + std::to_string(Params.RoundsToWin), 310);
+		Gui::DrawStringCentered(0 + this->Delay, 215, 0.5f, TEXT_WHITE, Lang::Get("WINS_WIN") + std::to_string(Params.RoundsToWin), 310);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -151,12 +151,12 @@ void GameResult::DrawSolo(const GameSettings::GameParams &Params) {
 	if (Params.Characters[0] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, Params.Characters[0], 30 - this->Delay, 30);
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 28 - this->Delay, 28);
-		Gui::Draw_Rect(37 - this->Delay, 159, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(40 - this->Delay, 162, 0.45f, TEXT_COLOR, Params.Names[0], 100);
+		Gui::Draw_Rect(37 - this->Delay, 159, 106, 20, BAR_BLUE);
+		Gui::DrawString(40 - this->Delay, 162, 0.45f, TEXT_WHITE, Params.Names[0], 100);
 	}
 
-	Gui::DrawString(220, 80 - this->Delay, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[0]), 150);
-	Gui::DrawString(220, 100 + this->Delay, 0.45f, TEXT_COLOR, Lang::Get("YOUR_TRIES") + std::to_string(Params.Tries), 100);
+	Gui::DrawString(220, 80 - this->Delay, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[0]), 150);
+	Gui::DrawString(220, 100 + this->Delay, 0.45f, TEXT_WHITE, Lang::Get("YOUR_TRIES") + std::to_string(Params.Tries), 100);
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
@@ -192,7 +192,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, (this->Over ? Lang::Get("GAME_RESULT_TITLE") : Lang::Get("GAME_RESULT_ROUND")), 395);
+		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, (this->Over ? Lang::Get("GAME_RESULT_TITLE") : Lang::Get("GAME_RESULT_ROUND")), 395);
 
 		if (this->Over) this->DrawOver(Params.Wins[0] < Params.Wins[1], Params); // Game is fully over.
 		else {

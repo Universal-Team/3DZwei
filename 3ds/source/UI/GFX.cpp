@@ -49,15 +49,15 @@ void GFX::UnloadSheets() {
 /* Draws the Top Screen base. */
 void GFX::DrawTop() {
 	Gui::ScreenDraw(Top);
-	Gui::Draw_Rect(0, 0, 400, 25, BAR_COLOR);
-	Gui::Draw_Rect(0, 25, 400, 215, BG_COLOR);
+	Gui::Draw_Rect(0, 0, 400, 25, BAR_BLUE);
+	Gui::Draw_Rect(0, 25, 400, 215, BG_BLUE);
 };
 
 
 /* Draws the Bottom Screen base. */
 void GFX::DrawBottom() {
 	Gui::ScreenDraw(Bottom);
-	Gui::Draw_Rect(0, 0, 320, 240, BG_COLOR);
+	Gui::Draw_Rect(0, 0, 320, 240, BG_BLUE);
 };
 
 
@@ -73,13 +73,13 @@ void GFX::DrawBottom() {
 void GFX::DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, const int YSize, const bool DrawArrow) {
 	if (LeftSide) {
 		Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, XPos, YPos);
-		Gui::Draw_Rect(XPos, YPos + 25, 25, YSize - 50, CORNER_COLOR);
+		Gui::Draw_Rect(XPos, YPos + 25, 25, YSize - 50, BAR_BLUE);
 		Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, XPos, YPos + YSize - 25, 1.0f, -1.0f);
 		if (DrawArrow) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, XPos + 5, YPos + ((YSize / 2) - (39 / 2)));
 
 	} else {
 		Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, XPos, YPos, -1.0f, 1.0f);
-		Gui::Draw_Rect(XPos, YPos + 25, 25, YSize - 50, CORNER_COLOR);
+		Gui::Draw_Rect(XPos, YPos + 25, 25, YSize - 50, BAR_BLUE);
 		Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, XPos, YPos + YSize - 25, -1.0f, -1.0f);
 		if (DrawArrow) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, XPos, YPos + ((YSize / 2) - (39 / 2)), -1.0f, 1.0f);
 	}
@@ -92,9 +92,10 @@ void GFX::DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, co
 	const int PosX: The X Start Position where to draw the checkbox.
 	const int PosY: The Y Start Position where to draw the checkbox.
 	const bool Checked: If it's checked or not.
+	const bool OnList: If on the list or not. List uses the lighter checkbox, while otherwise the darker one.
 */
-void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked) {
-	Gui::DrawSprite(GFX::Sprites, sprites_checkbox_idx, PosX, PosY);
+void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked, const bool OnList) {
+	Gui::DrawSprite(GFX::Sprites, (OnList ? sprites_checkbox_light_idx : sprites_checkbox_dark_idx), PosX, PosY);
 	if (Checked) Gui::DrawSprite(GFX::Sprites, sprites_mark_idx, PosX + 4, PosY + 4);
 };
 

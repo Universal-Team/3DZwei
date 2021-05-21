@@ -165,7 +165,7 @@ void CardSelector::PageFadeHandler() {
 /* Draw the top. */
 void CardSelector::DrawTop() {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CARD_SELECTOR_TITLE"), 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CARD_SELECTOR_TITLE"), 395);
 
 	/* Current Page. */
 	if (this->DoSwipe || this->InitialSwipe) {
@@ -220,8 +220,8 @@ void CardSelector::DrawBottom() {
 		GFX::DrawCheckbox(this->BottomPos[Idx2 + 2].X, this->BottomPos[Idx2 + 2].Y, this->Cards[Idx].first);
 	}
 
-	Gui::Draw_Rect(this->BottomPos[11].X, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, KBD_KEYPRESSED);
-	Gui::DrawStringCentered(0, this->BottomPos[11].Y + 3, 0.6f, TEXT_COLOR, Lang::Get("OK"));
+	Gui::Draw_Rect(this->BottomPos[11].X, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, BAR_BLUE);
+	Gui::DrawStringCentered(0, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("OK"));
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}

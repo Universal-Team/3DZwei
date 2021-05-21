@@ -182,14 +182,14 @@ void _3DZwei::Draw() {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, "3DZwei", 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, "3DZwei", 395);
 	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
 	if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 
 	GFX::DrawBottom();
 	for (uint8_t Idx = 0; Idx < (int)this->Positions.size(); Idx++) {
-		Gui::Draw_Rect(this->Positions[Idx].X, this->Positions[Idx].Y, this->Positions[Idx].W, this->Positions[Idx].H, KBD_KEYPRESSED);
-		Gui::DrawStringCentered(0, this->Positions[Idx].Y + 8, 0.6f, TEXT_COLOR, Lang::Get(this->ButtonNames[Idx]), 130);
+		Gui::Draw_Rect(this->Positions[Idx].X, this->Positions[Idx].Y, this->Positions[Idx].W, this->Positions[Idx].H, BAR_BLUE);
+		Gui::DrawStringCentered(0, this->Positions[Idx].Y + 8, 0.6f, TEXT_WHITE, Lang::Get(this->ButtonNames[Idx]), 130);
 	}
 
 	Pointer::Draw();

@@ -31,13 +31,9 @@
 #include "sprites.h"
 #include <vector>
 
-#define BAR_COLOR C2D_Color32(44, 64, 100, 255)
-#define BG_COLOR C2D_Color32(52, 64, 120, 255)
-#define TEXT_COLOR C2D_Color32(216, 228, 228, 255)
-#define BUTTON_COLOR C2D_Color32(80, 128, 128, 255)
-#define KBD_KEYPRESSED C2D_Color32(60, 70, 113, 255)
-#define KBD_KEYUNPRESSED C2D_Color32(40, 40, 40, 255)
-#define CORNER_COLOR C2D_Color32(44, 64, 100, 255)
+#define BAR_BLUE C2D_Color32(36, 52, 81, 255) // Darker Blue.
+#define BG_BLUE C2D_Color32(52, 64, 120, 255) // Lighter Blue.
+#define TEXT_WHITE C2D_Color32(216, 228, 228, 255) // Not #FFFFFF, it's a bit darker White.
 
 namespace GFX {
 	extern C2D_SpriteSheet Cards, Characters, Sprites;
@@ -49,7 +45,7 @@ namespace GFX {
 	void DrawBottom();
 
 	void DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, const int YSize, const bool DrawArrow = true);
-	void DrawCheckbox(const int PosX, const int PosY, const bool Checked = false);
+	void DrawCheckbox(const int PosX, const int PosY, const bool Checked = false, const bool OnList = false);
 	void DrawCard(const size_t Idx, const int X, const int Y);
 };
 

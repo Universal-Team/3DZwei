@@ -95,25 +95,25 @@ void GameHelper::StartGame(const bool AlreadyInitialized, const GameSettings::Ga
 /* Least amount of tries Play Draw. */
 void GameHelper::DrawTryPlay(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("GAME_SCREEN_TITLE"), 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("GAME_SCREEN_TITLE"), 395);
 
 	/* Draw Player 1. */
 	if (this->Params.Characters[0] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30, 30);
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 28, 28);
-		Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
+		Gui::Draw_Rect(37, 159, 106, 20, BAR_BLUE);
+		Gui::DrawString(40, 162, 0.45f, TEXT_WHITE, this->Params.Names[0], 100);
 	}
 
-	Gui::DrawString(200, 100, 0.5f, TEXT_COLOR, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
+	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawString(180, 130, 0.5f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 200);
+		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 200);
 	}
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		if (this->Game->GetState() == StackMem::TurnState::DoCheck) {
-			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
+			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
 		}
 	}
 };
@@ -122,44 +122,44 @@ void GameHelper::DrawTryPlay(void) const {
 /* Normal Play Draw. */
 void GameHelper::DrawNormalPlay(void) const {
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("GAME_SCREEN_TITLE"), 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("GAME_SCREEN_TITLE"), 395);
 
 	/* Draw Player 1. */
 	if (this->Params.Characters[0] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[0], 30, 30);
-		Gui::Draw_Rect(37, 159, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(40, 162, 0.45f, TEXT_COLOR, this->Params.Names[0], 100);
+		Gui::Draw_Rect(37, 159, 106, 20, BAR_BLUE);
+		Gui::DrawString(40, 162, 0.45f, TEXT_WHITE, this->Params.Names[0], 100);
 
-		Gui::DrawString(37, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player1)), 100);
+		Gui::DrawString(37, 190, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player1)), 100);
 	}
 
 	/* Draw Player 2. */
 	if (this->Params.Characters[1] < Utils::GetCharSheetSize()) {
 		Gui::DrawSprite(GFX::Characters, this->Params.Characters[1], 250, 30);
-		Gui::Draw_Rect(257, 159, 106, 20, KBD_KEYUNPRESSED);
-		Gui::DrawString(260, 162, 0.45f, TEXT_COLOR, this->Params.Names[1], 100);
+		Gui::Draw_Rect(257, 159, 106, 20, BAR_BLUE);
+		Gui::DrawString(260, 162, 0.45f, TEXT_WHITE, this->Params.Names[1], 100);
 
-		Gui::DrawString(257, 190, 0.45f, TEXT_COLOR, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player2)), 100);
+		Gui::DrawString(257, 190, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(this->Game->GetPlayerPairs(StackMem::Players::Player2)), 100);
 	}
 
 	/* Draw Current Player. */
 	if (this->Game->GetCurrentPlayer() == StackMem::Players::Player1) {
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 28, 28);
-		Gui::DrawStringCentered(0, 205, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PLAYER") + this->Params.Names[0], 390);
+		Gui::DrawStringCentered(0, 205, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PLAYER") + this->Params.Names[0], 390);
 
 	} else {
 		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 248, 28);
-		Gui::DrawStringCentered(0, 205, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PLAYER") + this->Params.Names[1], 390);
+		Gui::DrawStringCentered(0, 205, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PLAYER") + this->Params.Names[1], 390);
 	}
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 390);
+		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 390);
 	}
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		/* Only display if current State is the check state.. OR the AI's turn. */
 		if ((this->Game->GetState() == StackMem::TurnState::DoCheck) || (this->Game->GetCurrentPlayer() == StackMem::Players::Player2 && this->Game->AIEnabled())) {
-			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_COLOR, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
+			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
 		}
 	}
 };
@@ -184,14 +184,14 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 	if (this->Game->GetPairs() > 10) {
 		if (this->Page > 0) { // Because we can go back.
 			Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 0); // Draw the small top corner.
-			Gui::Draw_Rect(0, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+			Gui::Draw_Rect(0, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 			Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 			Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0, 110); // Now the arrow!
 		}
 
 		if (this->CanGoForward(this->Page)) { // Because we can go forward.
 			Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300, 0, -1.0f, 1.0f); // Draw the small top corner.
-			Gui::Draw_Rect(300, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+			Gui::Draw_Rect(300, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 			Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 			Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300, 110, -1.0f, 1.0f); // Now the arrow!
 		}
@@ -694,13 +694,13 @@ void GameHelper::PageAnimation(const bool Forward) {
 		if (this->Page > 0) { // Because we can go back.
 			if (Forward) { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - SwipePos, 0); // Draw the small top corner.
-				Gui::Draw_Rect(0 - SwipePos, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(0 - SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - SwipePos, 110); // Now the arrow!
 
 			} else { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 0); // Draw the small top corner.
-				Gui::Draw_Rect(0 + SwipePos, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(0 + SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + SwipePos, 110); // Now the arrow!
 			}
@@ -708,13 +708,13 @@ void GameHelper::PageAnimation(const bool Forward) {
 		if (this->CanGoForward(this->Page)) { // Because we can go forward.
 			if (Forward) { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
-				Gui::Draw_Rect(300 - SwipePos, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(300 - SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
 
 			} else { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
-				Gui::Draw_Rect(300 + SwipePos, 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(300 + SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
 			}
@@ -724,13 +724,13 @@ void GameHelper::PageAnimation(const bool Forward) {
 		if (NewPage > 0) { // Because we can go back.
 			if (Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + (320 - SwipePos), 0); // Draw the small top corner.
-				Gui::Draw_Rect(0 + (320 - SwipePos), 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(0 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + (320 - SwipePos), 110); // Now the arrow!
 
 			} else {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 0); // Draw the small top corner.
-				Gui::Draw_Rect(0 - (320 - SwipePos), 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(0 - (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - (320 - SwipePos), 110); // Now the arrow!
 			}
@@ -738,13 +738,13 @@ void GameHelper::PageAnimation(const bool Forward) {
 		if (this->CanGoForward(NewPage)) { // Because we can go forward.
 			if (Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
-				Gui::Draw_Rect(300 + (320 - SwipePos), 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(300 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
 
 			} else {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
-				Gui::Draw_Rect(300 - (320 - SwipePos), 20, 20, 200, CORNER_COLOR); // Draw the Middle corner bar.
+				Gui::Draw_Rect(300 - (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
 			}

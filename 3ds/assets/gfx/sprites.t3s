@@ -2,7 +2,8 @@
 
 sprites/misc/arrow.png
 sprites/misc/back_btn.png
-sprites/misc/checkbox.png
+sprites/misc/checkbox_dark.png
+sprites/misc/checkbox_light.png
 sprites/misc/corner.png
 sprites/misc/mark.png
 sprites/misc/next_btn.png

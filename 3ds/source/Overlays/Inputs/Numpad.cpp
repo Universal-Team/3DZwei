@@ -56,7 +56,7 @@ int Numpad::Action() {
 	Gui::clearTextBufs();
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	GFX::DrawTop();
-	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, this->Text, 395);
+	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, this->Text, 395);
 	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69);
 	GFX::DrawBottom();
 	C3D_FrameEnd(0);

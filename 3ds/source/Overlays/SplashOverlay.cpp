@@ -180,7 +180,6 @@ void SplashOverlay::Action() {
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
-
 		GFX::DrawTop();
 
 		/* First real card. */
@@ -206,7 +205,7 @@ void SplashOverlay::Action() {
 		Gui::DrawSprite(GFX::Sprites, sprites_universal_core_idx, 320 - this->CoreMoved, 56);
 
 		if (this->State == States::FadeOut) { // The last State -> Copyright + StackZ Image.
-			Gui::DrawStringCentered(0, 190, 0.55f, TEXT_COLOR, "3DZwei\nCopyright (C) Universal-Team 2020 - 2021");
+			Gui::DrawStringCentered(0, 190, 0.55f, TEXT_WHITE, "3DZwei\nCopyright (C) Universal-Team 2020 - 2021");
 			Gui::DrawSprite(GFX::Sprites, sprites_stackz_idx, 213, 50);
 		}
 
@@ -215,7 +214,6 @@ void SplashOverlay::Action() {
 		};
 
 		C3D_FrameEnd(0);
-
 		hidScanInput();
 		const uint32_t Down = hidKeysDown();
 		if (Down) this->Done = true; // Any key -> Skip.

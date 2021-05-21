@@ -59,81 +59,81 @@ void CreditsOverlay::OK() { this->Done = true; };
 void CreditsOverlay::DrawPage(const int16_t Pg, const int AddOffs) {
 	switch(Pg) {
 		case 0: // Contributors.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_CONTRIBUTORS"), 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("CREDITS_CONTRIBUTORS"), 380);
 
-			Gui::DrawString(40 + AddOffs, 50, 0.5f, TEXT_COLOR, "devkitPro: ");
-			Gui::DrawStringCentered(0 + AddOffs, 70, 0.45f, TEXT_COLOR, "devkitARM, libctru, citro2d, citro3d.", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 50, 0.5f, TEXT_WHITE, "devkitPro: ");
+			Gui::DrawStringCentered(0 + AddOffs, 70, 0.45f, TEXT_WHITE, "devkitARM, libctru, citro2d, citro3d.", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "SuperSaiyajinStackZ: ");
-			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, Lang::Get("CREDITS_CONTRIBUTORS_SZ"), 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_WHITE, "SuperSaiyajinStackZ: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_CONTRIBUTORS_SZ"), 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 150, 0.5f, TEXT_COLOR, "Universal-Team: ");
-			Gui::DrawStringCentered(0 + AddOffs, 170, 0.45f, TEXT_COLOR, "Universal-Core.", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 150, 0.5f, TEXT_WHITE, "Universal-Team: ");
+			Gui::DrawStringCentered(0 + AddOffs, 170, 0.45f, TEXT_WHITE, "Universal-Core.", 300, 20, nullptr, C2D_WordWrap);
 			break;
 
 		case 1: // StackMem-Core.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "StackMem-Core", 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, "StackMem-Core", 380);
 			Gui::DrawSprite(GFX::Sprites, sprites_stackmemcore_idx, 40 + AddOffs, 60);
 			break;
 
 		case 2: // Universal-Core.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, "Universal-Core", 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, "Universal-Core", 380);
 			Gui::DrawSprite(GFX::Sprites, sprites_universal_core_idx, 92 + AddOffs, 69);
 			break;
 
 		case 3: // Translators 1 / 3.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 1 / 3", 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("CREDITS_TRANSLATORS") + " 1 / 3", 380);
 
-			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Bruh: ");
-			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "Dhalian", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_WHITE, "Bruh: ");
+			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_WHITE, "Dhalian", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "Deutsch: ");
-			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "Crafto 1337, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_WHITE, "Deutsch: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_WHITE, "Crafto1337, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_COLOR, "English: ");
-			Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_COLOR, "Pk11, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_WHITE, "English: ");
+			Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_WHITE, "Pk11, SuperSaiyajinStackZ", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_COLOR, "Español: ");
-			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_WHITE, "Español: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_WHITE, "", 300, 20, nullptr, C2D_WordWrap);
 			break;
 
 		case 4: // Translators 2 / 3.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 2 / 3", 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("CREDITS_TRANSLATORS") + " 2 / 3", 380);
 
-			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Français: ");
-			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "LinuxCat", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_WHITE, "Français: ");
+			Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_WHITE, "LinuxCat", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "Italiano: ");
-			//Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_WHITE, "Italiano: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_WHITE, "", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_COLOR, "Polski: ");
-			//Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 140, 0.5f, TEXT_WHITE, "Polski: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 160, 0.45f, TEXT_WHITE, "", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_COLOR, "Português: ");
-			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 180, 0.5f, TEXT_WHITE, "Português: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 200, 0.45f, TEXT_WHITE, "", 300, 20, nullptr, C2D_WordWrap);
 			break;
 
 		case 5: // Translators 3 / 3.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_TRANSLATORS") + " 3 / 3", 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("CREDITS_TRANSLATORS") + " 3 / 3", 380);
 
-			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_COLOR, "Русский: ");
-			//Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_COLOR, "", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 60, 0.5f, TEXT_WHITE, "Русский: ");
+			//Gui::DrawStringCentered(0 + AddOffs, 80, 0.45f, TEXT_WHITE, "", 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "日本語: ");
-			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, "Pk11", 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_WHITE, "日本語: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_WHITE, "Pk11", 300, 20, nullptr, C2D_WordWrap);
 			break;
 
 		case 6: // Special Thanks.
-			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS"), 380);
+			Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS"), 380);
 
-			Gui::DrawString(40 + AddOffs, 40, 0.5f, TEXT_COLOR, "NightScript: ");
-			Gui::DrawStringCentered(0 + AddOffs, 60, 0.45f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS_NS"), 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 40, 0.5f, TEXT_WHITE, "NightScript: ");
+			Gui::DrawStringCentered(0 + AddOffs, 60, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS_NS"), 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_COLOR, "Pk11: ");
-			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS_PK11"), 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 100, 0.5f, TEXT_WHITE, "Pk11: ");
+			Gui::DrawStringCentered(0 + AddOffs, 120, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS_PK11"), 300, 20, nullptr, C2D_WordWrap);
 
-			Gui::DrawString(40 + AddOffs, 160, 0.5f, TEXT_COLOR, "Universal-Microwave: ");
-			Gui::DrawStringCentered(0 + AddOffs, 180, 0.45f, TEXT_COLOR, Lang::Get("CREDITS_SPECIAL_THANKS_UM"), 300, 20, nullptr, C2D_WordWrap);
+			Gui::DrawString(40 + AddOffs, 160, 0.5f, TEXT_WHITE, "Universal-Microwave: ");
+			Gui::DrawStringCentered(0 + AddOffs, 180, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS_UM"), 300, 20, nullptr, C2D_WordWrap);
 	};
 };
 
@@ -162,7 +162,7 @@ void CreditsOverlay::Action() {
 		}
 
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Page > 0);
-		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Page < 5);
+		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Page < 6);
 		Pointer::Draw();
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -173,11 +173,11 @@ void CreditsOverlay::Action() {
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Page > 0);
-		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Page < 5);
+		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Page < 6);
 
-		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
-		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
-		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("OK"));
+		Gui::Draw_Rect(95, 105, 130, 30, BAR_BLUE);
+		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, BG_BLUE);
+		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_WHITE, Lang::Get("OK"));
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));

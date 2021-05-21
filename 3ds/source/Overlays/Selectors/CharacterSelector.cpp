@@ -103,7 +103,7 @@ int CharacterSelector::Action() {
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CHARACTER_SELECT_TITLE"), 395);
+		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CHARACTER_SELECT_TITLE"), 395);
 
 		if (this->Res < (int)Utils::GetCharSheetSize()) {
 			Gui::DrawSprite(GFX::Characters, this->Res, 100, 40, 1.5f, 1.5f);

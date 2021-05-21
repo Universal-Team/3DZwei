@@ -235,9 +235,9 @@ void CardSetSelector::DrawCardPage(const size_t Pg, const int AddOffs) {
 */
 void CardSetSelector::DrawSetList(const int AddOffs) {
 	for(size_t Idx = 0; Idx < SETS_PER_SCREEN && Idx < this->CardSets.size(); Idx++) {
-		Gui::Draw_Rect(this->SetPos[1 + Idx].X + AddOffs, this->SetPos[1 + Idx].Y, this->SetPos[1 + Idx].W, this->SetPos[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
-		Gui::DrawStringCentered(0 + AddOffs, this->SetPos[1 + Idx].Y + 8, 0.45f, TEXT_COLOR, this->CardSets[this->SetListPos + Idx], 160);
-		GFX::DrawCheckbox(this->SetPos[Idx + 1].X + 194 + AddOffs, this->SetPos[Idx + 1].Y + 4, (this->SetListPos + (int)Idx == this->SelectedSet));
+		Gui::Draw_Rect(this->SetPos[1 + Idx].X + AddOffs, this->SetPos[1 + Idx].Y, this->SetPos[1 + Idx].W, this->SetPos[1 + Idx].H, BAR_BLUE);
+		Gui::DrawStringCentered(0 + AddOffs, this->SetPos[1 + Idx].Y + 8, 0.45f, TEXT_WHITE, this->CardSets[this->SetListPos + Idx], 160);
+		GFX::DrawCheckbox(this->SetPos[Idx + 1].X + 194 + AddOffs, this->SetPos[Idx + 1].Y + 4, (this->SetListPos + (int)Idx == this->SelectedSet), true);
 	}
 
 	GFX::DrawCornerEdge(true, this->SetPos[0].X + AddOffs, this->SetPos[0].Y, this->SetPos[0].H, this->SelectedSet > 0);
@@ -250,13 +250,13 @@ void CardSetSelector::DrawSetList(const int AddOffs) {
 	const int AddOffs: The Offsets to add to the base position.
 */
 void CardSetSelector::DrawCardBottom(const int AddOffs) {
-	Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("AMOUNT_OF_CARDS") + std::to_string(this->CardFlipped.size()) , 310);
+	Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("AMOUNT_OF_CARDS") + std::to_string(this->CardFlipped.size()) , 310);
 
 	/* Draw Cancel and Confirm buttons. */
-	Gui::Draw_Rect(this->BottomPos[11].X + AddOffs, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, KBD_KEYPRESSED);
-	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[11].Y + 3, 0.6f, TEXT_COLOR, Lang::Get("CANCEL"));
-	Gui::Draw_Rect(this->BottomPos[12].X + AddOffs, this->BottomPos[12].Y, this->BottomPos[12].W, this->BottomPos[12].H, KBD_KEYPRESSED);
-	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[12].Y + 3, 0.6f, TEXT_COLOR, Lang::Get("CONFIRM"));
+	Gui::Draw_Rect(this->BottomPos[11].X + AddOffs, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, BAR_BLUE);
+	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"));
+	Gui::Draw_Rect(this->BottomPos[12].X + AddOffs, this->BottomPos[12].Y, this->BottomPos[12].W, this->BottomPos[12].H, BAR_BLUE);
+	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[12].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"));
 
 	/* Draw the Checkboxes for toggling the back cover. */
 	for (size_t Idx = (this->CardPage * CARDS_PER_SCREEN), Idx2 = 0; Idx < ((size_t)this->CardPage * CARDS_PER_SCREEN) + CARDS_PER_SCREEN && Idx < this->CardFlipped.size(); Idx++, Idx2++) {
@@ -279,8 +279,8 @@ void CardSetSelector::Draw() {
 	GFX::DrawTop();
 
 	/* Top bar text. */
-	if (this->IsSelecting) Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CARDSET_SELECTOR_TITLE"), 395);
-	else Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CARDSET_SELECTOR_CONFIRM"), 395);
+	if (this->IsSelecting) Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CARDSET_SELECTOR_TITLE"), 395);
+	else Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CARDSET_SELECTOR_CONFIRM"), 395);
 
 	/* Display Preview of the current set. */
 	if (this->SetGood) {

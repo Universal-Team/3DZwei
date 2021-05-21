@@ -73,8 +73,8 @@ void AISelector::Cancel() {
 
 void AISelector::DrawPage(const int16_t Pg, const int AddOffs) {
 	if (Pg < 3) {
-		Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_COLOR, Lang::Get("AI_METHOD") + Lang::Get(this->Modes[Pg]), 395);
-		Gui::DrawStringCentered(0 + AddOffs, 70, 0.5f, TEXT_COLOR, Lang::Get(this->ModeDesc[Pg]), 330, 140, nullptr, C2D_WordWrap);
+		Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("AI_METHOD") + Lang::Get(this->Modes[Pg]), 395);
+		Gui::DrawStringCentered(0 + AddOffs, 70, 0.5f, TEXT_WHITE, Lang::Get(this->ModeDesc[Pg]), 330, 140, nullptr, C2D_WordWrap);
 	}
 };
 
@@ -103,8 +103,8 @@ StackMem::AIMethod AISelector::Action() {
 
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Mode > 0);
 		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Mode < 2);
-		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, KBD_KEYUNPRESSED);
-		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
+		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, BAR_BLUE);
+		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.5f, TEXT_WHITE, Lang::Get("SELECT"));
 
 		Pointer::Draw();
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -116,11 +116,11 @@ StackMem::AIMethod AISelector::Action() {
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Mode > 0);
 		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Mode < 2);
 
-		Gui::Draw_Rect(95, 105, 130, 30, KBD_KEYUNPRESSED);
-		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, CORNER_COLOR);
-		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_COLOR, Lang::Get("SELECT"));
+		Gui::Draw_Rect(95, 105, 130, 30, BAR_BLUE);
+		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, BG_BLUE);
+		Gui::DrawStringCentered(0, this->BottomPos[1].Y + 3, 0.5f, TEXT_WHITE, Lang::Get("SELECT"));
 
-		Gui::Draw_Rect(this->BottomPos[3].X, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, KBD_KEYPRESSED); // Back.
+		Gui::Draw_Rect(this->BottomPos[3].X, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, BAR_BLUE); // Back.
 		Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->BottomPos[3].X, this->BottomPos[3].Y);
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {

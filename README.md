@@ -39,7 +39,7 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/characterSelector.png)
 
 ### Credits
-![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsTranslators.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsSpecialThanks.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsContributors.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsStackMemCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsUniversalCore.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsTranslators1.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsTranslators2.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsTranslators3.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/creditsSpecialThanks.png)
 
 ### Game Result
 ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameResult.png)
@@ -121,7 +121,7 @@ This also exists in the form of a UniStore for [Universal-Updater](https://githu
 
 ### Others
 - [devkitPro](https://github.com/devkitPro): devkitARM, Libctru, Citro2D & Citro3D.
-- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): StackMem-Core + 3DZwei developement.
+- [SuperSaiyajinStackZ](https://github.com/SuperSaiyajinStackZ): StackMem-Core, Coding, Design.
 - [Universal-Team](https://github.com/Universal-Team): Universal-Core.
 
 ### Special Thanks

@@ -212,9 +212,9 @@ void CharacterSetSelector::DrawCharacter(const int Page, const int AddOffs) {
 */
 void CharacterSetSelector::DrawSetList(const int AddOffs) {
 	for(size_t Idx = 0; Idx < SETS_PER_SCREEN && Idx < this->CharSets.size(); Idx++) {
-		Gui::Draw_Rect(this->SetPos[1 + Idx].X + AddOffs, this->SetPos[1 + Idx].Y, this->SetPos[1 + Idx].W, this->SetPos[1 + Idx].H, (Idx % 2 == 0 ? KBD_KEYPRESSED : KBD_KEYUNPRESSED));
-		Gui::DrawStringCentered(0 + AddOffs, this->SetPos[1 + Idx].Y + 8, 0.45f, TEXT_COLOR, this->CharSets[this->SetListPos + Idx], 160);
-		GFX::DrawCheckbox(this->SetPos[Idx + 1].X + 194 + AddOffs, this->SetPos[Idx + 1].Y + 4, (this->SetListPos + (int)Idx == this->SelectedSet));
+		Gui::Draw_Rect(this->SetPos[1 + Idx].X + AddOffs, this->SetPos[1 + Idx].Y, this->SetPos[1 + Idx].W, this->SetPos[1 + Idx].H, BAR_BLUE);
+		Gui::DrawStringCentered(0 + AddOffs, this->SetPos[1 + Idx].Y + 8, 0.45f, TEXT_WHITE, this->CharSets[this->SetListPos + Idx], 160);
+		GFX::DrawCheckbox(this->SetPos[Idx + 1].X + 194 + AddOffs, this->SetPos[Idx + 1].Y + 4, (this->SetListPos + (int)Idx == this->SelectedSet), true);
 	}
 
 	GFX::DrawCornerEdge(true, this->SetPos[0].X + AddOffs, this->SetPos[0].Y, this->SetPos[0].H, this->SelectedSet > 0);
@@ -229,10 +229,10 @@ void CharacterSetSelector::DrawSetList(const int AddOffs) {
 */
 void CharacterSetSelector::DrawCharBottom(const int AddOffs) {
 	/* Draw Cancel and Confirm buttons. */
-	Gui::Draw_Rect(this->BottomPos[2].X + AddOffs, this->BottomPos[2].Y, this->BottomPos[2].W, this->BottomPos[2].H, KBD_KEYPRESSED);
-	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[2].Y + 15, 0.6f, TEXT_COLOR, Lang::Get("CANCEL"));
-	Gui::Draw_Rect(this->BottomPos[3].X + AddOffs, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, KBD_KEYPRESSED);
-	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[3].Y + 15, 0.6f, TEXT_COLOR, Lang::Get("CONFIRM"));
+	Gui::Draw_Rect(this->BottomPos[2].X + AddOffs, this->BottomPos[2].Y, this->BottomPos[2].W, this->BottomPos[2].H, BAR_BLUE);
+	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[2].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"));
+	Gui::Draw_Rect(this->BottomPos[3].X + AddOffs, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, BAR_BLUE);
+	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[3].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"));
 
 	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->CharPage >= 1);
 	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->CanGoNext());
@@ -246,8 +246,8 @@ void CharacterSetSelector::Draw() {
 	C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 	GFX::DrawTop();
 
-	if (this->IsSelecting) Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CHARSET_SELECTOR_TITLE"), 395);
-	else Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("CHARSET_SELECTOR_CONFIRM"), 395);
+	if (this->IsSelecting) Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CHARSET_SELECTOR_TITLE"), 395);
+	else Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("CHARSET_SELECTOR_CONFIRM"), 395);
 
 
 	/* Display Preview of the current set. */
@@ -265,17 +265,17 @@ void CharacterSetSelector::Draw() {
 			if (!this->CharSwipeIn && !this->CharSwipeOut) this->DrawCharacter(this->CharPage, 0); // Draw current page only.
 		}
 
-		if (this->PreviewSheet) Gui::DrawStringCentered(0, 200, 0.6f, TEXT_COLOR, Lang::Get("AMOUNT_OF_CHARACTERS") + std::to_string(C2D_SpriteSheetCount(this->PreviewSheet)), 395);
+		if (this->PreviewSheet) Gui::DrawStringCentered(0, 200, 0.6f, TEXT_WHITE, Lang::Get("AMOUNT_OF_CHARACTERS") + std::to_string(C2D_SpriteSheetCount(this->PreviewSheet)), 395);
 
 		/* Previous page. */
 		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 25); // Draw the small top corner.
-		Gui::Draw_Rect(0, 45, 20, 175, CORNER_COLOR); // Draw the Middle corner bar.
+		Gui::Draw_Rect(0, 45, 20, 175, BAR_BLUE); // Draw the Middle corner bar.
 		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 		if (this->CharPage > 0) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0, 113); // Now the arrow!
 
 		/* Next page. */
 		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 380, 25, -1.0f, 1.0f); // Draw the small top corner.
-		Gui::Draw_Rect(380, 45, 20, 175, CORNER_COLOR); // Draw the Middle corner bar.
+		Gui::Draw_Rect(380, 45, 20, 175, BAR_BLUE); // Draw the Middle corner bar.
 		Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 380, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 		if (this->CanGoNext()) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 380, 113, -1.0f, 1.0f); // Now the arrow!
 

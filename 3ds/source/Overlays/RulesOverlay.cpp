@@ -230,8 +230,8 @@ void RulesOverlay::Action() {
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_COLOR, Lang::Get("RULES_TITLE"), 395);
-		Gui::DrawStringCentered(0, 40, 0.55f, TEXT_COLOR, Lang::Get("RULES_DESC"), 380, 160, nullptr, C2D_WordWrap);
+		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("RULES_TITLE"), 395);
+		Gui::DrawStringCentered(0, 40, 0.55f, TEXT_WHITE, Lang::Get("RULES_DESC"), 380, 160, nullptr, C2D_WordWrap);
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 		};
