@@ -376,8 +376,15 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 	if (Down & KEY_B) this->Done = true; // Exit completely.
 	Pointer::ScrollHandling(Held, true); // Only Circle-Pad.
 
-	if (Repeat & KEY_DDOWN) this->NextSet();
-	if (Repeat & KEY_DUP) this->LastSet();
+	if (Repeat & KEY_DDOWN) {
+		this->NextSet();
+		if (Pointer::Show) Pointer::Show = false;
+	};
+
+	if (Repeat & KEY_DUP) {
+		this->LastSet();
+		if (Pointer::Show) Pointer::Show = false;
+	};
 
 	if (Down & KEY_DRIGHT) {
 		if (this->SetGood) {
@@ -394,8 +401,16 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 	if (Repeat & KEY_R) this->NextCardPage();
 
 	if (Repeat & KEY_A) {
-		for (auto &Pos : this->Positions) {
-			if (Pointer::Clicked(Pos, true)) break;
+		if (Pointer::Show) { // Pointer show -> Handle top.
+			for (auto &Pos : this->Positions) {
+				if (Pointer::Clicked(Pos, true)) break;
+			}
+
+		} else { // Since the pointer is not shown -> Straight go into preview, if good.
+			if (this->SetGood) {
+				this->IsSelecting = false;
+				this->ModeSwitch = true;
+			}
 		}
 	};
 
