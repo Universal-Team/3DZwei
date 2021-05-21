@@ -24,24 +24,18 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_UTILS_HPP
-#define _3DZWEI_UTILS_HPP
+#ifndef _3DZWEI_EXIT_COMBINATION_HPP
+#define _3DZWEI_EXIT_COMBINATION_HPP
 
-#include <vector>
+#include <string>
 
-namespace Utils {
-	extern std::vector<size_t> Cards;
-
-	void InitCards(const bool Init = false);
-	void InitNewCardSheet();
-	size_t GetCardSheetSize();
-	size_t GetCharSheetSize();
-
-	bool CheckSetContent(const std::string &Set, const bool CheckChars = false);
-	void LoadCardSet(const std::string &Set);
-	void LoadCharSet(const std::string &Set);
-
-	std::string GetCombiString(const uint32_t Combi);
+class ExitCombination {
+public:
+	ExitCombination(const uint32_t OldCombi) : Res(OldCombi) { };
+	uint32_t Action();
+private:
+	uint32_t Res = 0x0, Delay = 150;
+	bool Done = false;
 };
 
 #endif

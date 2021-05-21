@@ -84,5 +84,11 @@ void GameOverlay::Action() {
 				this->Helper->StartGame(true, { }, State == GameHelper::LogicState::P2Won);
 			}
 		}
+
+		if (this->Helper->ReturnParams().ExitCombination != 0x0) {
+			if (Down == this->Helper->ReturnParams().ExitCombination) {
+				this->Running = false;
+			}
+		}
 	};
 };

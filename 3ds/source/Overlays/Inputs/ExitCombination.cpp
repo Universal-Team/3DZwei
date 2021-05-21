@@ -24,24 +24,29 @@
 *         reasonable ways as different from the original version.
 */
 
-#ifndef _3DZWEI_UTILS_HPP
-#define _3DZWEI_UTILS_HPP
+#include "Common.hpp"
+#include "ExitCombination.hpp"
+#include "Utils.hpp"
 
-#include <vector>
+uint32_t ExitCombination::Action() {
+	while(aptMainLoop() && !Done) {
+		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+		Gui::clearTextBufs();
+		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		GFX::DrawTop();
+		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("EXIT_COMBINATION_TITLE"), 395);
+		Gui::Draw_Rect(0, 215, 400, 25, BAR_BLUE);
+		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_WHITE, Lang::Get("EXIT_COMBINATION_TEXT") + Utils::GetCombiString(this->Res), 395);
+		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 57);
+		GFX::DrawBottom();
+		C3D_FrameEnd(0);
 
-namespace Utils {
-	extern std::vector<size_t> Cards;
+		hidScanInput();
+		this->Res = hidKeysHeld();
+		this->Delay--;
+		if (this->Delay == 0) this->Done = true;
+	}
 
-	void InitCards(const bool Init = false);
-	void InitNewCardSheet();
-	size_t GetCardSheetSize();
-	size_t GetCharSheetSize();
-
-	bool CheckSetContent(const std::string &Set, const bool CheckChars = false);
-	void LoadCardSet(const std::string &Set);
-	void LoadCharSet(const std::string &Set);
-
-	std::string GetCombiString(const uint32_t Combi);
+	return this->Res;
 };
-
-#endif

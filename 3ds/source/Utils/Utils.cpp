@@ -169,3 +169,34 @@ void Utils::LoadCharSet(const std::string &Set) {
 		}
 	}
 };
+
+
+/*
+	Print out the combination of keys from an uint32_t.
+
+	const uint32_t Combi: The combination to return as a string.
+*/
+std::string Utils::GetCombiString(const uint32_t Combi) {
+	std::string CombiString = "";
+
+	if (Combi & KEY_DOWN) CombiString += "\uE07A, ";
+	if (Combi & KEY_RIGHT) CombiString += "\uE07C, ";
+	if (Combi & KEY_UP) CombiString += "\uE079, ";
+	if (Combi & KEY_LEFT) CombiString += "\uE07B, ";
+	if (Combi & KEY_A) CombiString += "\uE000, ";
+	if (Combi & KEY_B) CombiString += "\uE001, ";
+	if (Combi & KEY_X) CombiString += "\uE002, ";
+	if (Combi & KEY_Y) CombiString += "\uE003, ";
+	if (Combi & KEY_START) CombiString += "\uE045, ";
+	if (Combi & KEY_SELECT) CombiString += "\uE046, ";
+	if (Combi & KEY_L) CombiString += "\uE052, ";
+	if (Combi & KEY_R) CombiString += "\uE053, ";
+	if (Combi & KEY_ZL) CombiString += "\uE054, ";
+	if (Combi & KEY_ZR) CombiString += "\uE055";
+
+	if (CombiString[CombiString.size() - 2] == ',' && CombiString[CombiString.size() - 1] == ' ') {
+		CombiString.pop_back(); CombiString.pop_back(); // Remove last two.
+	};
+
+	return CombiString;
+};

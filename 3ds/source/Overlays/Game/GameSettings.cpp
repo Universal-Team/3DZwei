@@ -33,6 +33,7 @@
 #include "GameSettings.hpp"
 
 /* Inputs. */
+#include "ExitCombination.hpp"
 #include "Keyboard.hpp"
 #include "Numpad.hpp"
 
@@ -132,6 +133,13 @@ void GameSettings::OK() { this->Done = true; };
 void GameSettings::Cancel() { this->Params.CancelGame = true, this->Done = true; };
 
 
+/* Set the game's exit combination. */
+void GameSettings::SetExitCombi() {
+	std::unique_ptr<ExitCombination> Ovl = std::make_unique<ExitCombination>(this->Params.ExitCombination);
+	this->Params.ExitCombination = Ovl->Action();
+};
+
+
 /*
 	Selects the Character Picture.
 
@@ -218,63 +226,68 @@ void GameSettings::Draw(const bool IsSetting) {
 	/* Only draw General Tab, if the Tab is larger as -320. */
 	if (this->T1Offs > -320) {
 		/* Game Mode. */
-		Gui::DrawString(15 + this->T1Offs, 40 - (Lang::Get("GAME_SETTINGS_GM").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM"), 125, 15, nullptr, C2D_WordWrap);
-		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 35);
+		Gui::DrawString(15 + this->T1Offs, this->GeneralPos[2].Y + 5 - (Lang::Get("GAME_SETTINGS_GM").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, this->GeneralPos[2].Y);
 
 		switch(this->Params.GameMode) {
 			case GameSettings::GameModes::Versus:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
+				Gui::DrawString(190 + this->T1Offs, this->GeneralPos[2].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_NORMAL"), 120);
 				break;
 
 			case GameSettings::GameModes::Solo:
-				Gui::DrawString(190 + this->T1Offs, 40, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
+				Gui::DrawString(190 + this->T1Offs, this->GeneralPos[2].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
 				break;
 		};
 
 
 		/* Using Card Delay. */
-		Gui::DrawString(15 + this->T1Offs, 80 - (Lang::Get("GAME_SETTINGS_CARD_DELAY").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 125, 15, nullptr, C2D_WordWrap);
-		GFX::DrawCheckbox(150 + this->T1Offs, 75, this->Params.CardDelayUsed);
+		Gui::DrawString(15 + this->T1Offs, this->GeneralPos[3].Y + 5 - (Lang::Get("GAME_SETTINGS_CARD_DELAY").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_DELAY"), 125, 15, nullptr, C2D_WordWrap);
+		GFX::DrawCheckbox(150 + this->T1Offs, this->GeneralPos[3].Y, this->Params.CardDelayUsed);
 
 		/* Card Delay Value. */
 		if (this->Params.CardDelayUsed) { // Only show if Card Delay enabled.
-			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, 75);
-			Gui::DrawString(240 + this->T1Offs, 80, 0.45f, TEXT_WHITE, std::to_string(this->Params.CardDelay));
+			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, this->GeneralPos[3].Y);
+			Gui::DrawString(240 + this->T1Offs, this->GeneralPos[3].Y + 5, 0.4f, TEXT_WHITE, std::to_string(this->Params.CardDelay));
 		}
 
 		/* Card Pairs. */
-		Gui::DrawString(15 + this->T1Offs, 120 - (Lang::Get("GAME_SETTINGS_CARD_PAIRS").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 125, 15, nullptr, C2D_WordWrap);
-		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 115);
-		Gui::DrawString(190 + this->T1Offs, 120, 0.45f, TEXT_WHITE, std::to_string(Utils::Cards.size()));
+		Gui::DrawString(15 + this->T1Offs, this->GeneralPos[5].Y + 5 - (Lang::Get("GAME_SETTINGS_CARD_PAIRS").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_CARD_PAIRS"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, this->GeneralPos[5].Y);
+		Gui::DrawString(190 + this->T1Offs, this->GeneralPos[5].Y + 5, 0.4f, TEXT_WHITE, std::to_string(Utils::Cards.size()));
+
+		/* Exit Combination. */
+		Gui::DrawString(15 + this->T1Offs, this->GeneralPos[6].Y + 5 - (Lang::Get("GAME_SETTINGS_EXIT_COMBINATION").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_EXIT_COMBINATION"), 125, 15, nullptr, C2D_WordWrap);
+		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, this->GeneralPos[6].Y);
+		Gui::DrawString(190 + this->T1Offs, this->GeneralPos[6].Y + 5, 0.45f, TEXT_WHITE, Utils::GetCombiString(this->Params.ExitCombination), 120);
 
 		/* Using AI. */
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
-			Gui::DrawString(15 + this->T1Offs, 160 - (Lang::Get("GAME_SETTINGS_AI_METHOD").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_METHOD"), 125, 15, nullptr, C2D_WordWrap);
-			GFX::DrawCheckbox(150 + this->T1Offs, 155, this->Params.AIUsed);
+			Gui::DrawString(15 + this->T1Offs, this->GeneralPos[7].Y + 5 - (Lang::Get("GAME_SETTINGS_AI_METHOD").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_METHOD"), 125, 15, nullptr, C2D_WordWrap);
+			GFX::DrawCheckbox(150 + this->T1Offs, this->GeneralPos[7].Y, this->Params.AIUsed);
 
 			/* AI Method. */
 			if (this->Params.AIUsed) { // Only show if AI enabled.
-				Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, 155);
+				Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 200 + this->T1Offs, this->GeneralPos[7].Y);
 
 				switch(this->Params.Method) {
 					case StackMem::AIMethod::Random:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
+						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[7].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
 						break;
 
 					case StackMem::AIMethod::Hard:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
+						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[7].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_HARD"), 70);
 						break;
 
 					case StackMem::AIMethod::Extreme:
-						Gui::DrawString(240 + this->T1Offs, 160, 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
+						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[7].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
 						break;
 				};
 			}
 
 			/* Rounds to win Value. */
-			Gui::DrawString(15 + this->T1Offs, 200 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.45f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
-			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, 195);
-			Gui::DrawString(190 + this->T1Offs, 200, 0.45f, TEXT_WHITE, std::to_string(this->Params.RoundsToWin));
+			Gui::DrawString(15 + this->T1Offs, this->GeneralPos[9].Y + 5 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
+			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, this->GeneralPos[9].Y);
+			Gui::DrawString(190 + this->T1Offs, this->GeneralPos[9].Y + 5, 0.4f, TEXT_WHITE, std::to_string(this->Params.RoundsToWin));
 		};
 	};
 
@@ -322,10 +335,10 @@ void GameSettings::Draw(const bool IsSetting) {
 		}
 	};
 
-	Gui::Draw_Rect(this->GeneralPos[9].X, this->GeneralPos[9].Y, this->GeneralPos[9].W, this->GeneralPos[9].H, BAR_BLUE); // Back.
-	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->GeneralPos[9].X, this->GeneralPos[9].Y);
-	Gui::Draw_Rect(this->GeneralPos[10].X, this->GeneralPos[10].Y, this->GeneralPos[10].W, this->GeneralPos[10].H, BAR_BLUE); // Next.
-	Gui::DrawSprite(GFX::Sprites, sprites_next_btn_idx, this->GeneralPos[10].X, this->GeneralPos[10].Y);
+	Gui::Draw_Rect(this->GeneralPos[10].X, this->GeneralPos[10].Y, this->GeneralPos[10].W, this->GeneralPos[10].H, BAR_BLUE); // Back.
+	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->GeneralPos[10].X, this->GeneralPos[10].Y);
+	Gui::Draw_Rect(this->GeneralPos[11].X, this->GeneralPos[11].Y, this->GeneralPos[11].W, this->GeneralPos[11].H, BAR_BLUE); // Next.
+	Gui::DrawSprite(GFX::Sprites, sprites_next_btn_idx, this->GeneralPos[11].X, this->GeneralPos[11].Y);
 	Pointer::Draw();
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
