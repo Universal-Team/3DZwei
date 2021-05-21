@@ -104,7 +104,7 @@ StackMem::AIMethod AISelector::Action() {
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Mode > 0);
 		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Mode < 2);
 		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, BAR_BLUE);
-		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.5f, TEXT_WHITE, Lang::Get("SELECT"));
+		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("SELECT"));
 
 		Pointer::Draw();
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {

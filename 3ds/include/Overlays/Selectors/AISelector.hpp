@@ -56,7 +56,7 @@ private:
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 25, 25, 215, [this]() { this->PrevMode(); } },
 		{ 375, 25, 25, 215, [this]() { this->NextMode(); } },
-		{ 160, 205, 74, 22, [this]() { this->OK(); } }
+		{ 145, 200, 110, 25, [this]() { this->OK(); } }
 	};
 
 	const std::vector<FuncCallback> BottomPos = {
