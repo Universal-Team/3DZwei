@@ -29,23 +29,63 @@
 #include "Utils.hpp"
 
 uint32_t ExitCombination::Action() {
-	while(aptMainLoop() && !Done) {
+	while(aptMainLoop() && !this->FullDone) {
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		Gui::clearTextBufs();
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("EXIT_COMBINATION_TITLE"), 395);
 		Gui::Draw_Rect(0, 215, 400, 25, BAR_BLUE);
 		Gui::DrawStringCentered(0, 218, 0.6f, TEXT_WHITE, Lang::Get("EXIT_COMBINATION_TEXT") + Utils::GetCombiString(this->Res), 395);
 		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 57);
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
+
 		GFX::DrawBottom();
+		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
+			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
+		};
 		C3D_FrameEnd(0);
 
-		hidScanInput();
-		this->Res = hidKeysHeld();
-		this->Delay--;
-		if (this->Delay == 0) this->Done = true;
+		/* Fade In. */
+		if (this->FadeIn) {
+			hidScanInput();
+			const uint32_t Down = hidKeysDown();
+
+			if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) || Down) this->FadeIn = false, this->FAlpha = 0;
+			else {
+				if (this->FAlpha > 0) {
+					this->FAlpha -= 5;
+
+					if (this->FAlpha == 0) this->FadeIn = false;
+				}
+			}
+		};
+
+		/* Fade Out. */
+		if (this->Done) {
+			hidScanInput();
+			const uint32_t Down = hidKeysDown();
+
+			if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) || Down) this->FullDone = true, this->FAlpha = 255;
+			else {
+				if (this->FAlpha < 255) {
+					this->FAlpha += 5;
+
+					if (this->FAlpha == 255) this->FullDone = true;
+				}
+			}
+		};
+
+		if (!this->Done && !this->FadeIn) {
+			hidScanInput();
+			this->Res = hidKeysHeld();
+			this->Delay--;
+			if (this->Delay == 0) this->Done = true;
+		}
 	}
 
 	return this->Res;

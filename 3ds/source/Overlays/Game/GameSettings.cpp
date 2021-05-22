@@ -125,19 +125,23 @@ void GameSettings::SelectCards() {
 };
 
 
+/* Set the game's exit combination. */
+void GameSettings::SetExitCombi() {
+	this->FadeOut();
+
+	std::unique_ptr<ExitCombination> Ovl = std::make_unique<ExitCombination>(this->Params.ExitCombination);
+	this->Params.ExitCombination = Ovl->Action();
+
+	this->FAlpha = 255;
+};
+
+
 /* Give an OK for the Settings and start the game. */
 void GameSettings::OK() { this->Done = true; };
 
 
 /* Cancel the Game and return back to the Main Overlay. */
 void GameSettings::Cancel() { this->Params.CancelGame = true, this->Done = true; };
-
-
-/* Set the game's exit combination. */
-void GameSettings::SetExitCombi() {
-	std::unique_ptr<ExitCombination> Ovl = std::make_unique<ExitCombination>(this->Params.ExitCombination);
-	this->Params.ExitCombination = Ovl->Action();
-};
 
 
 /*

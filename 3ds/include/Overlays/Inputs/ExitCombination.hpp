@@ -35,7 +35,8 @@ public:
 	uint32_t Action();
 private:
 	uint32_t Res = 0x0, Delay = 150;
-	bool Done = false;
+	bool Done = false, FullDone = false, FadeIn = true;
+	int16_t FAlpha = 255;
 };
 
 #endif
