@@ -30,7 +30,10 @@
 
 
 /* Initialize with the Game Parameters. */
-GameOverlay::GameOverlay(const GameSettings::GameParams Params) { this->Helper = std::make_unique<GameHelper>(Params); };
+GameOverlay::GameOverlay(const GameSettings::GameParams Params) {
+	this->Helper = std::make_unique<GameHelper>(Params);
+	hidScanInput();
+};
 
 
 void GameOverlay::Action() {
@@ -82,13 +85,10 @@ void GameOverlay::Action() {
 
 			} else {
 				this->Helper->StartGame(true, { }, State == GameHelper::LogicState::P2Won);
+				hidScanInput();
 			}
 		}
 
-		if (this->Helper->ReturnParams().ExitCombination != 0x0) {
-			if (Down == this->Helper->ReturnParams().ExitCombination) {
-				this->Running = false;
-			}
-		}
+		if (this->Helper->ReturnParams().CancelGame) this->Running = false;
 	};
 };

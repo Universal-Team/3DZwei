@@ -2,7 +2,8 @@
 
 With this you can generate your own Card and Character Sets for 3DZwei.
 
-The theoretically maximum of cardset cards would be 345, because `1024/55 * 1024/55 --> 346.636694215` and one card is needed as the `back / empty` one.
+- [x] The maximum cards you can store into a Spritesheet is 323 front covers and 1 back cover.
+- [x] The maximum character you can store into a Spritesheet is 64.
 
 **The cards must be 55x55 and the Characters must be 120x120!**
 

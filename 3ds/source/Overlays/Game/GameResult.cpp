@@ -30,8 +30,25 @@
 
 
 GameResult::GameResult() {
-	if (!_3DZwei::CFG->DoAnimation()) this->DoSwipe = false, this->Delay = 0; // No animation.
+	if (!_3DZwei::CFG->DoAnimation()) {
+		this->DoSwipe = false, this->Delay = 0;
+		this->InitialScroll = false, this->ScrollIdx = 0; // No animation.
+	}
 };
+
+
+/*
+	Draws a card background on the top screen, when the game is over.
+
+	const size_t Page: The page to draw. (12 cards per page).
+	const int AddOffs: The additional offsets to draw to.
+*/
+void GameResult::DrawCardBG(const size_t Page, const int AddOffs) {
+	for (size_t Idx = (Page * 12), Idx2 = 0; Idx < (Page * 12) + 12 && Idx < Utils::Cards.size(); Idx++, Idx2++) {
+		GFX::DrawCard(Idx, this->InitialScrollPos[Idx2].X, this->InitialScrollPos[Idx2].Y + AddOffs);
+	};
+};
+
 
 /*
 	Draw this, when the game is fully over aka rounds to win match the full win.
@@ -41,7 +58,7 @@ GameResult::GameResult() {
 */
 void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Params) {
 	char Buffer[100]; snprintf(Buffer, sizeof(Buffer), Lang::Get("WON").c_str(), Params.Names[P2Wins].c_str());
-	Gui::DrawStringCentered(0 + this->Delay, 28, 0.6f, BAR_BLUE, Buffer, 380);
+	Gui::DrawStringCentered(0 + this->Delay, 28, 0.6f, TEXT_WHITE, Buffer, 380);
 
 	/* Draw Winner. */
 	if (Params.Characters[P2Wins] < Utils::GetCharSheetSize()) {
@@ -78,6 +95,7 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 		Gui::DrawString(103 - this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
 	};
 
+	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
 	};
@@ -184,6 +202,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 
 	/* Get if the game is fully over. */
 	this->Over = ((Params.GameMode == GameSettings::GameModes::Versus) && (Params.Wins[0] == Params.RoundsToWin || Params.Wins[1] == Params.RoundsToWin));
+	this->ScrollMode = (this->Over && Utils::Cards.size() > 12);
 
 	while(aptMainLoop() && !this->FullDone) {
 		Gui::clearTextBufs();
@@ -191,11 +210,35 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
 		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
 
-		GFX::DrawTop();
-		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, (this->Over ? Lang::Get("GAME_RESULT_TITLE") : Lang::Get("GAME_RESULT_ROUND")), 395);
+		if (this->Over) {
+			Gui::ScreenDraw(Top);
+			Gui::Draw_Rect(0, 25, 400, 215, BG_BLUE); // Draw BG.
+			/* Then the cards. */
+			if (this->DoScrollSwipe || this->InitialScroll) {
+				if (!this->InitialScroll) {
+					if ((this->ScrollPage * 12) + 12 < Utils::Cards.size()) {
+						this->DrawCardBG(this->ScrollPage + 1, this->ScrollIdx - 240);
 
-		if (this->Over) this->DrawOver(Params.Wins[0] < Params.Wins[1], Params); // Game is fully over.
-		else {
+					} else {
+						this->DrawCardBG(0, this->ScrollIdx - 240);
+					}
+				}
+
+				this->DrawCardBG(this->ScrollPage, this->ScrollIdx);
+
+			} else {
+				this->DrawCardBG(this->ScrollPage, 0);
+			}
+
+			Gui::Draw_Rect(0, 0, 400, 25, BAR_BLUE); // Then the Bar, so the cards don't go over it.
+			Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, 190)); // Then the darken.
+			Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("GAME_RESULT_TITLE"), 395);
+			this->DrawOver(Params.Wins[0] < Params.Wins[1], Params); // Game is fully over.
+
+		} else {
+			GFX::DrawTop();
+			Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("GAME_RESULT_ROUND"), 395);
+
 			if (Params.GameMode == GameSettings::GameModes::Solo) this->DrawSolo(Params); // Solo Mode.
 			else {
 				/* Versus Mode. */
@@ -205,50 +248,91 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 		}
 
 		C3D_FrameEnd(0);
-
-		hidScanInput();
-		const uint32_t Down = hidKeysDown();
-
-		if (Down & KEY_A || Down & KEY_TOUCH) {
-			if (!_3DZwei::CFG->DoAnimation()) this->FullDone = true; // No animation -> Directly go to FullDone.
-			else {
-				if (!this->Done) this->Done = true;
-				else this->FullDone = true;
-				this->DoSwipe = true;
-			}
-		};
-
-		/* Fade and Move Logic. */
-		if (!this->Done && this->DoSwipe) {
-			if (this->Cubic < 255.0f) {
-				this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
-				this->Delay = 255 - this->Cubic;
-
-				if (this->Cubic >= 255.0f) {
-					this->Delay = 0;
-					this->Cubic = 0;
-					this->DoSwipe = false;
-				}
-			}
-		};
-
-		if (this->Done && this->DoSwipe) {
-			if (this->Cubic < 255.0f) {
-				this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
-				this->Delay = this->Cubic;
-
-				if (this->Cubic >= 255.0f) {
-					this->Delay = 0;
-					this->Cubic = 0;
-					this->DoSwipe = false;
-					this->FullDone = true;
-				}
-			}
-		};
+		this->Handler();
 	};
 
 	/* Reset Pairs. */
 	if (Params.GameMode == GameSettings::GameModes::Versus) {
 		for (uint8_t Idx = 0; Idx < 2; Idx++) Params.PlayerPairs[Idx] = 0;
-	}
+	};
+};
+
+
+/* The Handler. */
+void GameResult::Handler() {
+	hidScanInput();
+	const uint32_t Down = hidKeysDown();
+
+	if (Down & KEY_A || Down & KEY_TOUCH) {
+		if (!_3DZwei::CFG->DoAnimation()) this->FullDone = true; // No animation -> Directly go to FullDone.
+		else {
+			if (!this->Done) this->Done = true;
+			else this->FullDone = true;
+			this->DoSwipe = true;
+		}
+	};
+
+	/* Fade and Move Logic. */
+	if (!this->Done && this->DoSwipe) {
+		if (this->Cubic < 255.0f) {
+			this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
+			this->Delay = 255 - this->Cubic;
+
+			if (this->Cubic >= 255.0f) {
+				this->Delay = 0;
+				this->Cubic = 0;
+				this->DoSwipe = false;
+			}
+		}
+	};
+
+	if (this->Done && this->DoSwipe) {
+		if (this->Cubic < 255.0f) {
+			this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
+			this->Delay = this->Cubic;
+
+			if (this->Cubic >= 255.0f) this->Delay = 0, this->Cubic = 0, this->DoSwipe = false, this->FullDone = true;
+		}
+	};
+
+	if (this->Over) {
+		if (this->InitialScroll) {
+			if (this->ScrollCubic < 240.0f) {
+				this->ScrollCubic = std::lerp(this->ScrollCubic, 241.0f, 0.1f);
+				this->ScrollIdx = (-240) + this->ScrollCubic;
+
+				if (this->ScrollCubic >= 240.0f) {
+					this->ScrollCubic = 0.0f, this->ScrollIdx = 0;
+					this->InitialScroll = false;
+				}
+			}
+
+			return;
+		};
+
+		if (this->ScrollMode) { // Only allow scrolls, if 13+ cards.
+			if (!_3DZwei::CFG->DoAnimation()) return;
+
+			if (this->DoScrollSwipe) {
+				if (this->ScrollCubic < 240.0f) {
+					this->ScrollCubic = std::lerp(this->ScrollCubic, 241.0f, 0.1f);
+					this->ScrollIdx = this->ScrollCubic;
+
+					if (this->ScrollCubic >= 240.0f) {
+						this->ScrollCubic = 0.0f, this->ScrollIdx = 0;
+						this->ScrollPage = (((this->ScrollPage * 12) + 12 < Utils::Cards.size()) ? this->ScrollPage + 1 : 0);
+						this->DoScrollSwipe = false;
+					}
+				}
+
+				return;
+			};
+
+			if (this->ScrollDelay > 0) {
+				this->ScrollDelay--;
+
+				if (this->ScrollDelay == 0) this->DoScrollSwipe = true, this->ScrollDelay = 60;
+			};
+		};
+	};
 };

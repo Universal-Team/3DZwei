@@ -36,14 +36,35 @@ public:
 	GameResult();
 	void Action(GameSettings::GameParams &Params, const uint8_t Won);
 private:
+	void DrawCardBG(const size_t Page, const int AddOffs);
+	void Handler();
+
 	/* Draw Modes. */
 	void DrawOver(const bool P2Wins, const GameSettings::GameParams &Params);
 	void DrawVersus(const bool P2Wins, const GameSettings::GameParams &Params, const bool Tie);
 	void DrawSolo(const GameSettings::GameParams &Params);
 
-	bool Done = false, FullDone = false, Over = false, DoSwipe = true;
-	int Delay = 255;
-	float Cubic = 0.0f;
+	bool Done = false, FullDone = false, Over = false, DoSwipe = true, DoScrollSwipe = false, InitialScroll = true, ScrollMode = false;
+	int16_t Delay = 255, ScrollIdx = -240, ScrollDelay = 60;
+	size_t ScrollPage = 0;
+	float Cubic = 0.0f, ScrollCubic = 0.0f;
+
+	const std::vector<FuncCallback> InitialScrollPos = {
+		{ 36, 37, 55, 55 },
+		{ 127, 37, 55, 55 },
+		{ 218, 37, 55, 55 },
+		{ 309, 37, 55, 55 },
+
+		{ 36, 104, 55, 55 },
+		{ 127, 104, 55, 55 },
+		{ 218, 104, 55, 55 },
+		{ 309, 104, 55, 55 },
+
+		{ 36, 171, 55, 55 },
+		{ 127, 171, 55, 55 },
+		{ 218, 171, 55, 55 },
+		{ 309, 171, 55, 55 }
+	};
 };
 
 #endif

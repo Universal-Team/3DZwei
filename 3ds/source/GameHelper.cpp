@@ -108,8 +108,8 @@ void GameHelper::DrawTryPlay(void) const {
 	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 200);
-	}
+		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20)), 200);
+	};
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		if (this->Game->GetState() == StackMem::TurnState::DoCheck) {
@@ -153,8 +153,8 @@ void GameHelper::DrawNormalPlay(void) const {
 	}
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20) + 1), 390);
-	}
+		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20)), 390);
+	};
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		/* Only display if current State is the check state.. OR the AI's turn. */
@@ -1245,6 +1245,14 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 		Not even over yet: GameHelper::LogicState::Nothing.
 */
 GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T) {
+	if (this->Params.ExitCombination != 0x0) {
+		if (Held == this->Params.ExitCombination) {
+			this->Params.CancelGame = true;
+			return GameHelper::LogicState::Nothing;
+		}
+	};
+
+
 	if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Least amount of tries play mode.
 		if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
 			this->PlayerLogic(Down, Held, Repeat, T);

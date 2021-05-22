@@ -45,7 +45,7 @@ This is a more improved version of the Hard Method. It already does the thing wh
 ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/exitOverlay.png)
 
 ### Game Result
-![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameResult.png)
+![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/roundResult.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameResult.png)
 
 ### Game Screen
 ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameScreenVersus.png) ![](https://github.com/Universal-Team/3DZwei/blob/master/resources/screenshots/gameScreenSolo.png)
