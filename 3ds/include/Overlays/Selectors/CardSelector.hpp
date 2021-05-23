@@ -47,6 +47,8 @@ private:
 	bool CanGoNext() const;
 	void OK();
 	void ToggleCard(const uint8_t Idx);
+	void SelectAll();
+	void SelectNone();
 
 	void DrawTop();
 	void DrawBottom();
@@ -99,7 +101,9 @@ private:
 		{ 148, 170, 24, 24, [this]() { this->ToggleCard(7); } },
 		{ 208, 170, 24, 24, [this]() { this->ToggleCard(8); } },
 
-		{ 105, 210, 110, 25, [this]() { this->OK(); } }
+		{ 105, 210, 110, 25, [this]() { this->OK(); } },
+		{ 45, 10, 110, 26, [this]() { this->SelectAll(); } },
+		{ 165, 10, 110, 26, [this]() { this->SelectNone(); } }
 	};
 };
 

@@ -230,9 +230,9 @@ void CharacterSetSelector::DrawSetList(const int AddOffs) {
 void CharacterSetSelector::DrawCharBottom(const int AddOffs) {
 	/* Draw Cancel and Confirm buttons. */
 	Gui::Draw_Rect(this->BottomPos[2].X + AddOffs, this->BottomPos[2].Y, this->BottomPos[2].W, this->BottomPos[2].H, BAR_BLUE);
-	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[2].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"));
+	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[2].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"), 100);
 	Gui::Draw_Rect(this->BottomPos[3].X + AddOffs, this->BottomPos[3].Y, this->BottomPos[3].W, this->BottomPos[3].H, BAR_BLUE);
-	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[3].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"));
+	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[3].Y + 15, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"), 100);
 
 	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->CharPage >= 1);
 	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->CanGoNext());

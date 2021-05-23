@@ -254,9 +254,9 @@ void CardSetSelector::DrawCardBottom(const int AddOffs) {
 
 	/* Draw Cancel and Confirm buttons. */
 	Gui::Draw_Rect(this->BottomPos[11].X + AddOffs, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, BAR_BLUE);
-	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"));
+	Gui::DrawStringCentered(-60 + AddOffs, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CANCEL"), 100);
 	Gui::Draw_Rect(this->BottomPos[12].X + AddOffs, this->BottomPos[12].Y, this->BottomPos[12].W, this->BottomPos[12].H, BAR_BLUE);
-	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[12].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"));
+	Gui::DrawStringCentered(60 + AddOffs, this->BottomPos[12].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("CONFIRM"), 100);
 
 	/* Draw the Checkboxes for toggling the back cover. */
 	for (size_t Idx = (this->CardPage * CARDS_PER_SCREEN), Idx2 = 0; Idx < ((size_t)this->CardPage * CARDS_PER_SCREEN) + CARDS_PER_SCREEN && Idx < this->CardFlipped.size(); Idx++, Idx2++) {
