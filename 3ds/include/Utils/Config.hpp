@@ -93,6 +93,9 @@ private:
 		if (!this->CFG.is_discarded()) this->CFG[Key] = Data;
 	};
 
+	/* Returns the language code of the system language. */
+	std::string sysLang(void);
+
 	GameSettings::GameParams VDefaultParams; // Store default game settings as well into config.
 	bool ChangesMade = false, VShowSplash = true, VAnimation = true, VPageSwitch = true, VDoFade = true;
 	nlohmann::json CFG = nullptr;

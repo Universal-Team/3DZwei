@@ -56,6 +56,8 @@ _3DZwei::_3DZwei() {
 	mkdir("sdmc:/3ds/ut-games/sets/3DZwei", 0x777); // For the Card Sets.
 	mkdir("sdmc:/3ds/ut-games/sets/characters", 0x777); // For the Character Sets.
 
+	cfguInit();
+
 	_3DZwei::CFG = std::make_unique<Config>();
 	Lang::Load();
 	GFX::LoadSheets();

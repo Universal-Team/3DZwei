@@ -29,6 +29,53 @@
 #include <unistd.h>
 
 
+/*
+	Detects system language and is used later to set app language to system language.
+*/
+std::string Config::sysLang(void) {
+	u8 language = 1;
+	CFGU_GetSystemLanguage(&language);
+
+	switch(language) {
+		case 0:
+			return "ja"; // Japanese
+
+		case 1:
+		default:
+			return "en"; // English
+
+		case 2:
+			return "fr"; // French
+
+		case 3:
+			return "de"; // German
+
+		case 4:
+			return "it"; // Italian
+
+		case 5:
+			return "es"; // Spanish
+
+		case 6:
+			return "zh-CN"; // Chinese (Simplified)
+
+		case 7:
+			return "ko"; // Korean
+
+		case 8:
+			return "nl"; // Dutch
+
+		case 9:
+			return "pt"; // Portuguese
+
+		case 10:
+			return "ru"; // Russian
+
+		case 11:
+			return "zh-TW"; // Chinese (Traditional)
+	}
+}
+
 /* Loads the Configuration file. */
 void Config::Load() {
 	if (access("sdmc:/3ds/ut-games/3DZwei/Config.json", F_OK) != 0) this->Initialize();
@@ -62,7 +109,7 @@ void Config::Initialize() {
 		{ "DoFade", this->DoFade() }, // If fade effects are activated.
 		{ "GameAnimation", 1 }, // Game Animation Type.
 		{ "PageSwitch", true }, // Page Switch.
-		{ "Lang", this->Lang() }, // Language.
+		{ "Lang", sysLang() }, // Language.
 		{ "PointerSpeed", this->PointerSpeed() }, // Pointer Speed.
 		{ "ShowSplash", this->ShowSplash() }, // Show the Startup Splash.
 		{ "ActivatedCards", { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 } } // Activated Indexes.
