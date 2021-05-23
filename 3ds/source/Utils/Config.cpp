@@ -160,12 +160,6 @@ void Config::FetchDefaults() {
 				if (Res > 0 && Res < 256) this->VDefaultParams.RoundsToWin = Res; // Exist, 1 and 255 -> Good.
 			};
 
-			/* Exit combination for the game. */
-			if (this->CFG["GameDefaults"].contains("ExitCombination") && this->CFG["GameDefaults"]["ExitCombination"].is_number()) {
-				const int Res = this->CFG["GameDefaults"]["ExitCombination"];
-				this->VDefaultParams.ExitCombination = Res;
-			};
-
 			/* First character index. */
 			if (this->CFG["GameDefaults"].contains("Player1Idx") && this->CFG["GameDefaults"]["Player1Idx"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["Player1Idx"];
@@ -231,7 +225,6 @@ void Config::SetDefault(const GameSettings::GameParams &Defaults) {
 		};
 
 		if (Defaults.RoundsToWin > 0) this->CFG["GameDefaults"]["RoundsToWin"] = Defaults.RoundsToWin; // Rounds needed to win the game.
-		this->CFG["GameDefaults"]["ExitCombination"] = Defaults.ExitCombination; // Exit combination for the game.
 		this->CFG["GameDefaults"]["Player1Idx"] = Defaults.Characters[0]; // First character image index.
 		this->CFG["GameDefaults"]["Player2Idx"] = Defaults.Characters[1]; // Second character image index.
 		this->CFG["GameDefaults"]["Player1Name"] = Defaults.Names[0]; // First player name.

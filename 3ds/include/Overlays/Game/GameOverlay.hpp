@@ -28,6 +28,8 @@
 #define _3DZWEI_GAME_OVERLAY_HPP
 
 #include "GameHelper.hpp"
+#include "Pointer.hpp"
+#include <vector>
 
 class GameOverlay {
 public:
@@ -35,7 +37,19 @@ public:
 	void Action();
 private:
 	std::unique_ptr<GameHelper> Helper = nullptr;
-	bool Running = true;
+	bool Running = true, SwipeIn = false, SwipeOut = false, PromptHandle = false, PromptAnswer = false;
+	int16_t SwipePos = 320, FAlpha = 0;
+	float Cubic = 0.0f;
+
+	void Draw();
+	void PromptLogic();
+	void Confirm();
+	void Cancel();
+
+	const std::vector<FuncCallback> Prompt = {
+		{ 24, 140, 124, 48, [this]() { this->Cancel(); } },
+		{ 172, 140, 124, 48, [this]() { this->Confirm(); } }
+	};
 };
 
 #endif

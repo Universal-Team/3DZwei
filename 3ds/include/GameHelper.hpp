@@ -76,6 +76,7 @@ private:
 	void StartGameAnimationGrowing();
 	void StartGameAnimation();
 	void PageAnimation(const bool Forward);
+	void AIPageAnimation(const int Page);
 	void PickAnimation(const size_t Idx);
 	void HideAnimation();
 	void ShrinkAnimation();

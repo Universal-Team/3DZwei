@@ -791,7 +791,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 		if (Down) Done = true;
 
 		if (Cubic < 320.0f) { // Page Switch handle.
-			Cubic = std::lerp(Cubic, 321.0f, 0.1f);
+			Cubic = std::lerp(Cubic, 321.0f, 0.3f);
 
 			SwipePos = Cubic;
 			if (Cubic >= 320.0f) Done = true;
@@ -799,6 +799,151 @@ void GameHelper::PageAnimation(const bool Forward) {
 	}
 
 	this->Page = NewPage; // Set the new page.
+};
+
+
+/*
+	The Page Switching Animation for the AI.
+
+	const int Page: The page which to go to.
+
+	TODO: Make this better???
+*/
+void GameHelper::AIPageAnimation(const int Page) {
+	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->PageSwitch()) {
+		this->Page = Page;
+		return; // No Animation.
+	};
+
+	const bool Forward = ((int)this->Page < Page);
+	size_t Pages = (Forward ? (Page - (int)this->Page) : ((int)this->Page - Page)); // The amount of pages to go forward / backward.
+	int SwipePos = 0;
+	float Cubic = 0.0f, ScrollSpeed = 0.3f;
+
+	/* Set Scroll speed. TODO: Do this better? */
+	if (Pages < 10) ScrollSpeed = 0.4f;
+	else if (Pages > 9 && Pages < 20) ScrollSpeed = 0.5f;
+	else ScrollSpeed = 0.7f;
+
+	while(aptMainLoop() && Pages > 0) {
+		Gui::clearTextBufs();
+		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
+		C2D_TargetClear(Bottom, C2D_Color32(0, 0, 0, 0));
+		C3D_FrameBegin(C3D_FRAME_SYNCDRAW);
+		this->DrawTop();
+		GFX::DrawBottom();
+
+		/* Current Page site navigators. */
+		if (this->Page > 0) { // Because we can go back.
+			if (Forward) { // Goes from <- to ->.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - SwipePos, 0); // Draw the small top corner.
+				Gui::Draw_Rect(0 - SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - SwipePos, 110); // Now the arrow!
+
+			} else { // Goes from <- to ->.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 0); // Draw the small top corner.
+				Gui::Draw_Rect(0 + SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + SwipePos, 110); // Now the arrow!
+			}
+		};
+		if (this->CanGoForward(this->Page)) { // Because we can go forward.
+			if (Forward) { // Goes from <- to ->.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
+				Gui::Draw_Rect(300 - SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
+
+			} else { // Goes from <- to ->.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
+				Gui::Draw_Rect(300 + SwipePos, 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
+			}
+		};
+
+		/* Prev / Next Page site navigators. */
+		if ((Forward ? this->Page + 1 : this->Page - 1) > 0) { // Because we can go back.
+			if (Forward) {
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + (320 - SwipePos), 0); // Draw the small top corner.
+				Gui::Draw_Rect(0 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + (320 - SwipePos), 110); // Now the arrow!
+
+			} else {
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 0); // Draw the small top corner.
+				Gui::Draw_Rect(0 - (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - (320 - SwipePos), 110); // Now the arrow!
+			}
+		};
+		if (this->CanGoForward((Forward ? this->Page + 1 : this->Page - 1))) { // Because we can go forward.
+			if (Forward) {
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
+				Gui::Draw_Rect(300 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
+
+			} else {
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
+				Gui::Draw_Rect(300 - (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
+				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
+				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
+			}
+		};
+
+
+		/* Draw current Page cards. */
+		for (size_t Idx = (this->Page * 20), Idx2 = 0; Idx < (this->Page * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
+			if (!this->Game->IsCardCollected(Idx)) {
+				if (Forward) { // Goes from <- to ->.
+					if (this->Game->IsCardShown(Idx)) GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X - SwipePos, this->CPos[Idx2].Y);
+					else Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X - SwipePos, this->CPos[Idx2].Y); // Back cover because hidden.
+
+
+				} else { // Goes from -> to <-.
+					if (this->Game->IsCardShown(Idx))
+						GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X + SwipePos, this->CPos[Idx2].Y);
+					else
+						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + SwipePos, this->CPos[Idx2].Y); // Back cover because hidden.
+				}
+			}
+		};
+
+		/* Draw next Page cards. */
+		for (size_t Idx = ((Forward ? this->Page + 1 : this->Page - 1) * 20), Idx2 = 0; Idx < ((Forward ? this->Page + 1 : this->Page - 1) * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
+			if (!this->Game->IsCardCollected(Idx)) {
+				if (Forward) { // Goes from -> to <-.
+					if (this->Game->IsCardShown(Idx)) GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X + (320 - SwipePos), this->CPos[Idx2].Y);
+					else Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + (320 - SwipePos), this->CPos[Idx2].Y); // Back cover because hidden.
+
+
+				} else { // Goes from <- to ->.
+					if (this->Game->IsCardShown(Idx))
+						GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X - (320 - SwipePos), this->CPos[Idx2].Y);
+					else
+						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X - (320 - SwipePos), this->CPos[Idx2].Y); // Back cover because hidden.
+				}
+			}
+		};
+
+		C3D_FrameEnd(0);
+		hidScanInput();
+		const uint32_t Down = hidKeysDown();
+		if (Down) break; // Stop Animation if any key pressed.
+
+		if (Cubic < 320.0f) { // Page Switch handle.
+			Cubic = std::lerp(Cubic, 321.0f, ScrollSpeed);
+			SwipePos = Cubic;
+
+			if (Cubic >= 320.0f) {
+				SwipePos = 0, Cubic = 0.0f, this->Page = (Forward ? this->Page + 1 : this->Page - 1), Pages--;
+			}
+		}
+	};
+
+	this->Page = Page; // Set the new page.
 };
 
 
@@ -1196,12 +1341,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 
 		/* Switch to proper pages. */
 		const size_t NewPage = (Card / 20);
-		if (NewPage > this->Page) {
-			while(aptMainLoop() && (this->Page < NewPage)) { this->PageAnimation(true); }; // Go forward.
-
-		} else if (NewPage < this->Page) {
-			while(aptMainLoop() && (this->Page > NewPage)) { this->PageAnimation(false); }; // Go backward.
-		};
+		if (NewPage != this->Page) this->AIPageAnimation(NewPage);
 
 		this->PickAnimation(Card);
 		this->Selection = (Card % 20);
@@ -1213,12 +1353,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 
 			/* Switch to proper pages. */
 			const size_t NewPage = (Card / 20);
-			if (NewPage > this->Page) {
-				while(aptMainLoop() && (this->Page < NewPage)) { this->PageAnimation(true); }; // Go forward.
-
-			} else if (NewPage < this->Page) {
-				while(aptMainLoop() && (this->Page > NewPage)) { this->PageAnimation(false); }; // Go backward.
-			};
+			if (NewPage != this->Page) this->AIPageAnimation(NewPage);
 
 			this->PickAnimation(Card);
 			this->Selection = (Card % 20);
@@ -1245,11 +1380,9 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 		Not even over yet: GameHelper::LogicState::Nothing.
 */
 GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T) {
-	if (this->Params.ExitCombination != 0x0) {
-		if (Held == this->Params.ExitCombination) {
-			this->Params.CancelGame = true;
-			return GameHelper::LogicState::Nothing;
-		}
+	if (Down & KEY_START || Down & KEY_SELECT) {
+		this->Params.CancelGame = true;
+		return GameHelper::LogicState::Nothing;
 	};
 
 

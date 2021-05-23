@@ -44,15 +44,14 @@ public:
 		StackMem::AIMethod Method = StackMem::AIMethod::Random; // AI Method / Difficulty.
 		uint8_t CardDelay = 0; // The card delay before the card gets hidden again after a turn.
 		uint8_t RoundsToWin = 3; // Rounds to win the game.
-		uint8_t Characters[2] = { 0 }; // Avatar Indexes.
+		uint8_t Characters[2] = { 0, 1 }; // Avatar Indexes.
 		std::string Names[2] = { "%Player1%", "%Player2%" }; // Player Names.
 		GameSettings::GameModes GameMode = GameSettings::GameModes::Versus; // Game Mode.
-		uint8_t Wins[2] = { 0 }; // Wins of both players.
-		size_t PlayerPairs[2] = { 0 }; // Player Pairs for both players.
+		uint8_t Wins[2] = { 0, 0 }; // Wins of both players.
+		size_t PlayerPairs[2] = { 0, 0 }; // Player Pairs for both players.
 		size_t Tries = 0; // Amount of tries.
 		RoundStarter Starter = RoundStarter::Player1; // The Round Starter of the game.
 		bool CancelGame = false; // If Game should be cancelled or not.
-		uint32_t ExitCombination = 0x0; // Exit the game with this combination.
 	};
 
 	GameSettings(const GameParams &Defaults, const bool IsSetting = false);
@@ -89,7 +88,6 @@ private:
 	void SelectCards();
 	void SetCardDelay();
 	void SetWinRounds();
-	void SetExitCombi();
 
 	/* Player Tab operations. */
 	void SetName(const bool AI);
@@ -108,12 +106,10 @@ private:
 
 		{ 150, 100, 24, 24, [this]() { this->SelectCards(); } },
 
-		{ 150, 135, 24, 24, [this]() { this->SetExitCombi(); } },
+		{ 150, 135, 24, 24, [this]() { this->ToggleAI(); } },
+		{ 200, 135, 24, 24, [this]() { this->SelectAIMethod(); } },
 
-		{ 150, 170, 24, 24, [this]() { this->ToggleAI(); } },
-		{ 200, 170, 24, 24, [this]() { this->SelectAIMethod(); } },
-
-		{ 150, 205, 24, 24, [this]() { this->SetWinRounds(); } },
+		{ 150, 170, 24, 24, [this]() { this->SetWinRounds(); } },
 
 		{ 0, 223, 17, 17, [this]() { this->Cancel(); } },
 		{ 303, 223, 17, 17, [this]() { this->OK(); } }

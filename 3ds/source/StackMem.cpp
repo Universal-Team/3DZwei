@@ -539,7 +539,28 @@ int StackMem::AIHardMethod() {
 			if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->PlayCards[0])) {
 				if (!this->IsCardShown(this->_AI->GetMind(Idx))) return this->_AI->GetMind(Idx);
 			}
-		}
+		};
+
+		/* A different variant of random: Only play not known and available cards. */
+		std::vector<size_t> AvlIndexes;
+		bool IsKnown = false;
+
+		for (int Idx = 0; Idx < (int)this->GetPairs() * 2; Idx++) {
+			if (!this->IsCardShown(Idx)) { // Ensure it is NOT shown and hence, available.
+				IsKnown = false; // Reset each card.
+
+				for (size_t Idx2 = 0; Idx2 < this->_AI->GetSize(); Idx2++) {
+					if (this->_AI->GetMind(Idx2) == Idx) { // That card is known!
+						IsKnown = true;
+						break;
+					}
+				}
+
+				if (!IsKnown) AvlIndexes.push_back(Idx); // Push back indexes.
+			}
+		};
+
+		if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
 	}
 
 	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
@@ -578,7 +599,28 @@ int StackMem::AIExtremeMethod() {
 						}
 					}
 				}
-			}
+			};
+
+			/* A different variant of random: Only play not known and available cards. */
+			std::vector<size_t> AvlIndexes;
+			bool IsKnown = false;
+
+			for (int Idx = 0; Idx < (int)this->GetPairs() * 2; Idx++) {
+				if (!this->IsCardShown(Idx)) { // Ensure it is NOT shown and hence, available.
+					IsKnown = false; // Reset each card.
+
+					for (size_t Idx2 = 0; Idx2 < this->_AI->GetSize(); Idx2++) {
+						if (this->_AI->GetMind(Idx2) == Idx) { // That card is known!
+							IsKnown = true;
+							break;
+						}
+					}
+
+					if (!IsKnown) AvlIndexes.push_back(Idx); // Push back indexes.
+				}
+			};
+
+			if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
 
 			/* That should solve it for us. You ONLY need the Extreme Method on the DrawFirst State. */
 		} else if (this->GetState() == StackMem::TurnState::DrawSecond) return this->AIHardMethod();

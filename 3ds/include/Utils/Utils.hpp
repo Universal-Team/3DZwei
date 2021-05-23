@@ -40,8 +40,6 @@ namespace Utils {
 	bool CheckSetContent(const std::string &Set, const bool CheckChars = false);
 	void LoadCardSet(const std::string &Set);
 	void LoadCharSet(const std::string &Set);
-
-	std::string GetCombiString(const uint32_t Combi);
 };
 
 #endif
