@@ -108,7 +108,7 @@ void GameHelper::DrawTryPlay(void) const {
 	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20)), 200);
+		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 200);
 	};
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
@@ -153,7 +153,7 @@ void GameHelper::DrawNormalPlay(void) const {
 	}
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string(((this->Game->GetPairs() * 2) / 20)), 390);
+		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 390);
 	};
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
@@ -673,7 +673,7 @@ void GameHelper::StartGameAnimation() {
 void GameHelper::PageAnimation(const bool Forward) {
 	const size_t NewPage = (Forward ? (this->Page + 1) : (this->Page - 1));
 
-	if (!_3DZwei::CFG->PageSwitch()) {
+	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->PageSwitch()) {
 		this->Page = NewPage;
 		return; // No Animation.
 	};

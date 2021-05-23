@@ -36,6 +36,8 @@
 
 
 void SettingsOverlay::Action() {
+	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->FAlpha = 0;
+
 	while(aptMainLoop() && !this->Done) {
 		Gui::clearTextBufs();
 		C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
