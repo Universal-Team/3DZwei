@@ -287,11 +287,11 @@ void GameResult::Handler() {
 	};
 
 	if (this->Done && this->DoSwipe) {
-		if (this->Cubic < 255.0f) {
-			this->Cubic = std::lerp(this->Cubic, 256.0f, 0.1f);
+		if (this->Cubic < 265.0f) {
+			this->Cubic = std::lerp(this->Cubic, 266.0f, 0.1f);
 			this->Delay = this->Cubic;
 
-			if (this->Cubic >= 255.0f) this->Delay = 0, this->Cubic = 0, this->DoSwipe = false, this->FullDone = true;
+			if (this->Cubic >= 265.0f) this->Delay = 0, this->Cubic = 0, this->DoSwipe = false, this->FullDone = true;
 		}
 	};
 
