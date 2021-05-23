@@ -236,10 +236,10 @@ void CardSelector::DrawBottom() {
 	Gui::DrawStringCentered(0, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("OK"));
 
 	/* Select All / Deselect All. */
-	Gui::Draw_Rect(this->BottomPos[12].X, this->BottomPos[12].Y, this->BottomPos[12].W, this->BottomPos[12].H, BAR_BLUE, 100);
-	Gui::DrawStringCentered(-60, this->BottomPos[12].Y + 5, 0.5f, TEXT_WHITE, Lang::Get("SELECT_ALL"));
-	Gui::Draw_Rect(this->BottomPos[13].X, this->BottomPos[13].Y, this->BottomPos[13].W, this->BottomPos[13].H, BAR_BLUE, 100);
-	Gui::DrawStringCentered(60, this->BottomPos[13].Y + 5, 0.5f, TEXT_WHITE, Lang::Get("DESELECT_ALL"));
+	Gui::Draw_Rect(this->BottomPos[12].X, this->BottomPos[12].Y, this->BottomPos[12].W, this->BottomPos[12].H, BAR_BLUE);
+	Gui::DrawStringCentered(-60, this->BottomPos[12].Y + 5, 0.5f, TEXT_WHITE, Lang::Get("SELECT_ALL"), 100);
+	Gui::Draw_Rect(this->BottomPos[13].X, this->BottomPos[13].Y, this->BottomPos[13].W, this->BottomPos[13].H, BAR_BLUE);
+	Gui::DrawStringCentered(60, this->BottomPos[13].Y + 5, 0.5f, TEXT_WHITE, Lang::Get("DESELECT_ALL"), 100);
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
