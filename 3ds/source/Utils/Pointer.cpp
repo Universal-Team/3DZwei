@@ -47,49 +47,49 @@ bool Pointer::OnTop = false, Pointer::Show = true;
 	const bool InGame: If in game (true) or not (false).
 */
 void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
-	if (Held & KEY_TOUCH) {
-		if (Pointer::Show) Pointer::Show = false;
-	};
+	if (!Pointer::Show && (Held & (InGame ? (KEY_CPAD_UP | KEY_CPAD_DOWN | KEY_CPAD_LEFT | KEY_CPAD_RIGHT) : (KEY_UP | KEY_DOWN | KEY_LEFT | KEY_RIGHT)))) {
+		Pointer::Show = true;
+	} else if (Pointer::Show && (Held & KEY_TOUCH)) {
+		Pointer::Show = false;
+	}
 
-	if (Held & (InGame ? KEY_CPAD_LEFT : KEY_LEFT)) {
-		if (!Pointer::Show) Pointer::Show = true;
+	if (!InGame) {
+		if (Held & KEY_DLEFT) {
+			if (Pointer::X >= 0) {
+				Pointer::X -= PTR_SPEED;
+			}
+		}
 
-		if (Pointer::X >= 0) {
-			Pointer::X -= PTR_SPEED;
+		if (Held & KEY_DRIGHT) {
+			if (Pointer::X <= ((Pointer::OnTop ? 400 : 320) - PTR_X_SIZE)) {
+				Pointer::X += PTR_SPEED;
+			}
+		}
 
-			if (Pointer::X < 0) Pointer::X = 0; // Make it not go below the limit.
+		if (Held & KEY_DUP) {
+			if (Pointer::Y >= -Y_DIST) {
+				Pointer::Y -= PTR_SPEED;
+			}
+		}
+
+		if (Held & KEY_DDOWN) {
+			if (Pointer::Y <= (240 - PTR_Y_SIZE)) {
+				Pointer::Y += PTR_SPEED;
+			}
 		}
 	}
 
-	if (Held & (InGame ? KEY_CPAD_RIGHT : KEY_RIGHT)) {
-		if (!Pointer::Show) Pointer::Show = true;
+	/* Analog movement with the circle pad. */
+	circlePosition cPos;
+	hidCircleRead(&cPos);
+	if(cPos.dx > 15 || cPos.dx < -15) Pointer::X += PTR_SPEED * 2 * cPos.dx / 165.0f;
+	if(cPos.dy > 15 || cPos.dy < -15) Pointer::Y += PTR_SPEED * 2 * -cPos.dy / 165.0f;
 
-		if (Pointer::X <= ((Pointer::OnTop ? 400 : 320) - PTR_X_SIZE)) {
-			Pointer::X += PTR_SPEED;
-
-			if (Pointer::X > (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE) Pointer::X = (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE; // Make it not go over the limit.
-		}
-	}
-
-	if (Held & (InGame ? KEY_CPAD_UP : KEY_UP)) {
-		if (!Pointer::Show) Pointer::Show = true;
-
-		if (Pointer::Y >= -Y_DIST) {
-			Pointer::Y -= PTR_SPEED;
-
-			if (Pointer::Y < -Y_DIST) Pointer::Y = -Y_DIST; // Make it not go below the limit.
-		}
-	}
-
-	if (Held & (InGame ? KEY_CPAD_DOWN : KEY_DOWN)) {
-		if (!Pointer::Show) Pointer::Show = true;
-
-		if (Pointer::Y <= (240 - PTR_Y_SIZE)) {
-			Pointer::Y += PTR_SPEED;
-
-			if (Pointer::Y > (240 - PTR_Y_SIZE)) Pointer::Y = (240 - PTR_Y_SIZE); // Make it not go over the limit.
-		}
-	}
+	/* Ensure pointer doesn't go beyond the screen. */
+	if (Pointer::X < 0) Pointer::X = 0;
+	if (Pointer::X > (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE) Pointer::X = (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE;
+	if (Pointer::Y < -Y_DIST) Pointer::Y = -Y_DIST;
+	if (Pointer::Y > (240 - PTR_Y_SIZE)) Pointer::Y = (240 - PTR_Y_SIZE);
 };
 
 
