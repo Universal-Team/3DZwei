@@ -106,7 +106,9 @@ void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked, const
 	const size_t Idx: The card index.
 	const int X: The X-Position where to draw the card.
 	const int Y: The Y-Position where to draw the card.
+	const float ScaleX: The X-Scale of the card.
+	const float ScaleY: The Y-Scale of the card.
 */
-void GFX::DrawCard(const size_t Idx, const int X, const int Y) {
-	if (Idx <= Utils::Cards.size()) Gui::DrawSprite(GFX::Cards, Idx, X, Y);
+void GFX::DrawCard(const size_t Idx, const int X, const int Y, const float ScaleX, const float ScaleY) {
+	if (Idx <= Utils::Cards.size()) Gui::DrawSprite(GFX::Cards, Utils::Cards[Idx], X, Y, ScaleX, ScaleY);
 };

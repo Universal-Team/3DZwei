@@ -46,7 +46,7 @@ namespace GFX {
 
 	void DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, const int YSize, const bool DrawArrow = true);
 	void DrawCheckbox(const int PosX, const int PosY, const bool Checked = false, const bool OnList = false);
-	void DrawCard(const size_t Idx, const int X, const int Y);
+	void DrawCard(const size_t Idx, const int X, const int Y, const float ScaleX = 1.0f, const float ScaleY = 1.0f);
 };
 
 #endif

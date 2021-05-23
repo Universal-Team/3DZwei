@@ -204,7 +204,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 			/* This is a turn card, hence we draw it with scale. */
 			if (this->Game->GetTurnCard(0) != -1 && this->Game->GetTurnCard(0) == (int)Idx) {
 				if (this->CardClicked[0]) { // Animation is done, soo draw front cover.
-					Gui::DrawSprite(GFX::Cards, this->Game->GetCardType(this->Game->GetTurnCard(0)), this->CPos[Idx2].X + (1.0f - this->ClickedScale[0]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[0], 1.0f);
+					GFX::DrawCard(this->Game->GetCardType(this->Game->GetTurnCard(0)), this->CPos[Idx2].X + (1.0f - this->ClickedScale[0]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[0], 1.0f);
 
 				} else { // Draw Back cover.
 					Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + (1.0f - this->ClickedScale[0]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[0], 1.0f);
@@ -214,7 +214,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 			/* This is a turn card, hence we draw it with scale. */
 			if (this->Game->GetTurnCard(1) != -1 && this->Game->GetTurnCard(1) == (int)Idx) {
 				if (this->CardClicked[1]) { // Animation is done, soo draw front cover.
-					Gui::DrawSprite(GFX::Cards, this->Game->GetCardType(this->Game->GetTurnCard(1)), this->CPos[Idx2].X + (1.0f - this->ClickedScale[1]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[1], 1.0f);
+					GFX::DrawCard(this->Game->GetCardType(this->Game->GetTurnCard(1)), this->CPos[Idx2].X + (1.0f - this->ClickedScale[1]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[1], 1.0f);
 
 				} else { // Draw Back cover.
 					Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + (1.0f - this->ClickedScale[1]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[1], 1.0f);

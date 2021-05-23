@@ -30,11 +30,11 @@
 
 
 CardSelector::CardSelector() {
-	for (size_t Idx = 0; Idx < Utils::GetCardSheetSize(); Idx++) this->Cards.push_back(std::make_pair(false, Idx));
+	for (size_t Idx = 0; Idx < Utils::GetCardSheetSize(); Idx++) this->Cards.push_back(false);
 
 	/* Enable all current enabled cards. */
 	if (!Utils::Cards.empty()) {
-		for (size_t Idx = 0; Idx < Utils::Cards.size(); Idx++) this->Cards[Utils::Cards[Idx]].first = true;
+		for (size_t Idx = 0; Idx < Utils::Cards.size(); Idx++) this->Cards[Utils::Cards[Idx]] = true;
 	}
 };
 
@@ -42,7 +42,7 @@ CardSelector::CardSelector() {
 /* Toggle the specified indexes card. */
 void CardSelector::ToggleCard(const uint8_t Idx) {
 	if (((this->Page * 9) + Idx) < this->Cards.size()) {
-		this->Cards[(this->Page * 9) + Idx].first = !this->Cards[(this->Page * 9) + Idx].first;
+		this->Cards[(this->Page * 9) + Idx] = !this->Cards[(this->Page * 9) + Idx];
 		if (!this->Changed) this->Changed = true;
 	}
 };
@@ -50,13 +50,15 @@ void CardSelector::ToggleCard(const uint8_t Idx) {
 
 /* Select ALL cards. */
 void CardSelector::SelectAll() {
-	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx].first = true;
+	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx] = true;
+	if (!this->Changed) this->Changed = true;
 };
 
 
 /* De-Select ALL cards. */
 void CardSelector::SelectNone() {
-	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx].first = false;
+	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx] = false;
+	if (!this->Changed) this->Changed = true;
 };
 
 
@@ -183,14 +185,14 @@ void CardSelector::DrawTop() {
 	if (this->DoSwipe || this->InitialSwipe) {
 		for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 			Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X + this->CurPos, this->Positions[Idx2 + 2].Y);
-			GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->CurPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx].first);
+			GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->CurPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 		}
 
 		/* Prev Page. */
 		if (this->Page >= 1) {
 			for (size_t Idx = ((this->Page - 1) * 9), Idx2 = 0; Idx < ((this->Page - 1) * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 				Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X + this->PrevPos, this->Positions[Idx2 + 2].Y);
-				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->PrevPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx].first);
+				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->PrevPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 			}
 		};
 
@@ -198,14 +200,14 @@ void CardSelector::DrawTop() {
 		if (this->CanGoNext()) {
 			for (size_t Idx = ((this->Page + 1) * 9), Idx2 = 0; Idx < ((this->Page + 1) * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 				Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X + this->NextPos, this->Positions[Idx2 + 2].Y);
-				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->NextPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx].first);
+				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->NextPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 			}
 		};
 
 	} else { // No switch in progress, display normally.
 		for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 			Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X, this->Positions[Idx2 + 2].Y);
-			GFX::DrawCheckbox(this->Positions[Idx2 + 11].X, this->Positions[Idx2 + 11].Y, this->Cards[Idx].first);
+			GFX::DrawCheckbox(this->Positions[Idx2 + 11].X, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 		}
 	}
 
@@ -229,7 +231,7 @@ void CardSelector::DrawBottom() {
 
 	/* Draw the Checkboxes. */
 	for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
-		GFX::DrawCheckbox(this->BottomPos[Idx2 + 2].X, this->BottomPos[Idx2 + 2].Y, this->Cards[Idx].first);
+		GFX::DrawCheckbox(this->BottomPos[Idx2 + 2].X, this->BottomPos[Idx2 + 2].Y, this->Cards[Idx]);
 	};
 
 	Gui::Draw_Rect(this->BottomPos[11].X, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, BAR_BLUE);
@@ -299,11 +301,11 @@ void CardSelector::Action() {
 
 		for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) {
 			/* If card enabled -> Push. */
-			if (this->Cards[Idx].first) Utils::Cards.push_back(this->Cards[Idx].second);
+			if (this->Cards[Idx]) Utils::Cards.push_back(Idx);
 		}
 
 		_3DZwei::CFG->ActivatedCards(Utils::Cards); // Set the activated cards to config.
-	}
+	};
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);

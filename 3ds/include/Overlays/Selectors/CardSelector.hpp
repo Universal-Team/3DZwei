@@ -35,7 +35,7 @@ public:
 	CardSelector();
 	void Action();
 private:
-	std::vector<std::pair<bool, size_t>> Cards = { };
+	std::vector<bool> Cards = { };
 	bool Done = false, FullDone = false, Changed = false, FadeIn = true, DoSwipe = false, SwipeDir = false, InitialSwipe = true;
 	uint8_t FAlpha = 255;
 	int PrevPos = -400, CurPos = -400, NextPos = 400;
