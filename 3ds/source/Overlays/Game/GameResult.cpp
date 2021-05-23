@@ -57,22 +57,25 @@ void GameResult::DrawCardBG(const size_t Page, const int AddOffs) {
 	const GameSettings::GameParams &Params: The parameters of the game.
 */
 void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Params) {
+	float topDelay = this->Delay * 1.1f; // Speed up delay on top so character makes it off screen.
+
 	char Buffer[100]; snprintf(Buffer, sizeof(Buffer), Lang::Get("WON").c_str(), Params.Names[P2Wins].c_str());
-	Gui::DrawStringCentered(0 + this->Delay, 28, 0.6f, TEXT_WHITE, Buffer, 380);
+	Gui::DrawStringCentered(0 + topDelay, 28, 0.6f, TEXT_WHITE, Buffer, 380);
 
 	/* Draw Winner. */
 	if (Params.Characters[P2Wins] < Utils::GetCharSheetSize()) {
+
 		/* Draw Winner + Outline. */
-		Gui::DrawSprite(GFX::Characters, Params.Characters[P2Wins], 141 + this->Delay, 51);
-		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + this->Delay, 49);
+		Gui::DrawSprite(GFX::Characters, Params.Characters[P2Wins], 141 + topDelay, 51);
+		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + topDelay, 49);
 
 		/* Name bar. */
-		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, BAR_BLUE);
-		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
+		Gui::Draw_Rect(148 + topDelay, 180, 106, 20, BAR_BLUE);
+		Gui::DrawString(151 + topDelay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
-		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
+		Gui::DrawString(148 + topDelay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
+		Gui::DrawString(148 + topDelay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
@@ -112,17 +115,19 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &Params, const bool Tie) {
 	/* Draw Winner. */
 	if (Params.Characters[P2Wins] < Utils::GetCharSheetSize()) {
+		float topDelay = this->Delay * 1.1f; // Speed up delay on top so character makes it off screen.
+
 		/* Draw Winner + Outline. */
-		Gui::DrawSprite(GFX::Characters, Params.Characters[P2Wins], 141 + this->Delay, 51);
-		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + this->Delay, 49);
+		Gui::DrawSprite(GFX::Characters, Params.Characters[P2Wins], 141 + topDelay, 51);
+		Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 139 + topDelay, 49);
 
 		/* Name bar. */
-		Gui::Draw_Rect(148 + this->Delay, 180, 106, 20, BAR_BLUE);
-		Gui::DrawString(151 + this->Delay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
+		Gui::Draw_Rect(148 + topDelay, 180, 106, 20, BAR_BLUE);
+		Gui::DrawString(151 + topDelay, 183, 0.45f, TEXT_WHITE, Params.Names[P2Wins], 100);
 
 		/* Wins. */
-		Gui::DrawString(148 + this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
-		Gui::DrawString(148 + this->Delay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
+		Gui::DrawString(148 + topDelay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
+		Gui::DrawString(148 + topDelay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
 	};
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
