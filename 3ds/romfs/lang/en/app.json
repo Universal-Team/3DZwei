@@ -32,6 +32,7 @@
 	"GAME_SCREEN_CURRENT_PLAYER": "Current Player: ",
 	"GAME_SCREEN_TITLE": "Game Screen",
 	"GAME_SCREEN_TRIES": "Guesses: ",
+	"GAME_SCREEN_MISSES": "Misses: ",
 	"GAME_SETTINGS_AI_EXTREME": "Extreme",
 	"GAME_SETTINGS_AI_HARD": "Hard",
 	"GAME_SETTINGS_AI_METHOD": "AI Mode",
@@ -89,5 +90,6 @@
 	"WINS": "Rounds won: ",
 	"WINS_WIN": "Rounds needed to win: ",
 	"WON": "%s wins!",
-	"YOUR_TRIES": "Guess count: "
+	"YOUR_TRIES": "Guess count: ",
+	"YOUR_MISSES": "Miss count: "
 }
