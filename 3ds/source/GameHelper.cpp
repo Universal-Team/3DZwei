@@ -105,7 +105,7 @@ void GameHelper::DrawTryPlay(void) const {
 		Gui::DrawString(40, 162, 0.45f, TEXT_WHITE, this->Params.Names[0], 100);
 	}
 
-	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("TRIES") + std::to_string(this->Params.Tries), 200);
+	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_TRIES") + std::to_string(this->Params.Tries), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
 		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 200);
