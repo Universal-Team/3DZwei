@@ -49,7 +49,7 @@ public:
 		GameSettings::GameModes GameMode = GameSettings::GameModes::Versus; // Game Mode.
 		uint8_t Wins[2] = { 0, 0 }; // Wins of both players.
 		size_t PlayerPairs[2] = { 0, 0 }; // Player Pairs for both players.
-		size_t Tries = 0; // Amount of tries.
+		size_t Guesses[2] = { 0, 0 }; // Amount of guesses.
 		RoundStarter Starter = RoundStarter::Player1; // The Round Starter of the game.
 		bool CancelGame = false; // If Game should be cancelled or not.
 	};

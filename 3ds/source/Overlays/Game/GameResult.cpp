@@ -179,7 +179,9 @@ void GameResult::DrawSolo(const GameSettings::GameParams &Params) {
 	}
 
 	Gui::DrawString(220, 80 - this->Delay, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[0]), 150);
-	Gui::DrawString(220, 100 + this->Delay, 0.45f, TEXT_WHITE, Lang::Get("YOUR_TRIES") + std::to_string(Params.Tries), 100);
+	Gui::DrawString(220, 100 + this->Delay, 0.45f, TEXT_WHITE, Lang::Get("YOUR_TRIES") + std::to_string(Params.Guesses[0]), 100);
+	Gui::DrawString(220, 120 + this->Delay, 0.45f, TEXT_WHITE, Lang::Get("YOUR_MISSES") + std::to_string(Params.Guesses[1]), 100);
+
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));

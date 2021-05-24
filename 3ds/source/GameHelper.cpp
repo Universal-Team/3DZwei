@@ -105,10 +105,11 @@ void GameHelper::DrawTryPlay(void) const {
 		Gui::DrawString(40, 162, 0.45f, TEXT_WHITE, this->Params.Names[0], 100);
 	}
 
-	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_TRIES") + std::to_string(this->Params.Tries), 200);
+	Gui::DrawString(200, 100, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_TRIES") + std::to_string(this->Params.Guesses[0]), 200);
+	Gui::DrawString(200, 120, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_MISSES") + std::to_string(this->Params.Guesses[1]), 200);
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
-		Gui::DrawString(180, 130, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 200);
+		Gui::DrawString(180, 150, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 200);
 	};
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
@@ -1218,9 +1219,9 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 		this->HideAnimation();
 		this->Game->ResetTurn(false); // Hide cards, reset state.
 
-		/* At this point, we need to make an exception for Try and Normal Mode. */
-		if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Try Mode.
-			this->Params.Tries++; // Increase the Tries.
+		/* At this point, we need to make an exception for Solo and Versus Mode. */
+		if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Solo Mode.
+			this->Params.Guesses[1]++; // Increase the missed guesses.
 			this->Game->SetState(StackMem::TurnState::DrawFirst); // Set first State again.
 
 		} else { // Normal Mode.
@@ -1228,6 +1229,7 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 		}
 	}
 
+	if (this->Params.GameMode == GameSettings::GameModes::Solo) this->Params.Guesses[0]++; // Increase the total guesses.
 	this->RefreshFrame = true; // Refresh frame.
 	return GameHelper::LogicState::Nothing; // Nothing special.
 };
