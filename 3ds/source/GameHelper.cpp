@@ -294,7 +294,8 @@ uint8_t GameHelper::GetIndexCount() const {
 		case 2: return 4;
 
 		case 3:
-		case 4:
+		case 4: return 5;
+
 		case 5:
 		case 6:
 		case 7: return 6;
@@ -388,20 +389,20 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 			case 4:
 				switch(Round) {
 					case 0: return { 4 };
-					case 2: return { 7, 3 };
-					case 3: return { 6, 2 };
-					case 4: return { 5, 1 };
-					case 5: return { 0 };
+					case 1: return { 7, 3 };
+					case 2: return { 6, 2 };
+					case 3: return { 5, 1 };
+					case 4: return { 0 };
 				};
 				break;
 
 			case 3:
 				switch(Round) {
 					case 0: return { 4 };
-					case 2: return { 3 };
-					case 3: return { 2 };
-					case 4: return { 5, 1 };
-					case 5: return { 0 };
+					case 1: return { 3 };
+					case 2: return { 2 };
+					case 3: return { 5, 1 };
+					case 4: return { 0 };
 				};
 				break;
 

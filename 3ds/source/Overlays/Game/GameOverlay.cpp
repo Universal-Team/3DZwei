@@ -61,15 +61,15 @@ void GameOverlay::Draw() {
 		for (size_t Idx = 0; Idx < 2; Idx++) {
 			if (this->SwipeIn) {
 				Gui::Draw_Rect(this->Prompt[Idx].X, this->Prompt[Idx].Y + 190 - this->FAlpha, this->Prompt[Idx].W, this->Prompt[Idx].H, BAR_BLUE);
-				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15 + 190 - this->FAlpha, 0.6f, TEXT_WHITE, Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
+				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15 + 190 - this->FAlpha, 0.6f, TEXT_WHITE, (Idx == 0 ? "\uE001 " : "\uE000 ") + Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
 
 			} else if (this->SwipeOut) {
 				Gui::Draw_Rect(this->Prompt[Idx].X, this->Prompt[Idx].Y + 190 - this->FAlpha, this->Prompt[Idx].W, this->Prompt[Idx].H, BAR_BLUE);
-				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15 + 190 - this->FAlpha, 0.6f, TEXT_WHITE, Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
+				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15 + 190 - this->FAlpha, 0.6f, TEXT_WHITE, (Idx == 0 ? "\uE001 " : "\uE000 ") + Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
 
 			} else {
 				Gui::Draw_Rect(this->Prompt[Idx].X, this->Prompt[Idx].Y, this->Prompt[Idx].W, this->Prompt[Idx].H, BAR_BLUE);
-				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15, 0.6f, TEXT_WHITE, Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
+				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15, 0.6f, TEXT_WHITE, (Idx == 0 ? "\uE001 " : "\uE000 ") + Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
 			}
 		}
 	};
@@ -137,6 +137,9 @@ void GameOverlay::PromptLogic() {
 
 		return;
 	};
+
+	if (Down & KEY_A) this->Confirm();
+	if (Down & KEY_B) this->Cancel();
 
 	if (Down & KEY_TOUCH) {
 		for (auto Pos : this->Prompt) {
