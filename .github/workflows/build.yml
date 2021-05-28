@@ -2,7 +2,7 @@ name: Build 3DZwei
 
 on:
   push:
-    branches-ignore: [translation, Rewrite]
+    branches-ignore: [translation]
   pull_request:
     branches: ["*"]
   release:
@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: universalteam/devkitarm
+    container: devkitpro/devkitarm
     name: Build with Docker using devkitARM
     outputs:
       commit_tag: ${{ steps.build.outputs.commit_tag }}
