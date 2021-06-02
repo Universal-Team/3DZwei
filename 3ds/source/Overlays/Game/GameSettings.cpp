@@ -50,7 +50,7 @@ GameSettings::GameSettings(const GameSettings::GameParams &Defaults, const bool 
 void GameSettings::ToggleAI() {
 	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		this->Params.AIUsed = !this->Params.AIUsed;
-	}
+	};
 };
 
 
@@ -68,7 +68,7 @@ void GameSettings::ToggleGameMode() {
 		case GameSettings::GameModes::Solo:
 			this->Params.GameMode = GameSettings::GameModes::Versus;
 			break;
-	}
+	};
 };
 
 
@@ -94,7 +94,7 @@ void GameSettings::ToggleStarter() {
 		case GameSettings::RoundStarter::Winner:
 			this->Params.Starter = GameSettings::RoundStarter::Player1;
 			break;
-	}
+	};
 };
 
 
@@ -106,10 +106,9 @@ void GameSettings::SelectAIMethod() {
 
 			std::unique_ptr<AISelector> Ovl = std::make_unique<AISelector>(this->Params.Method);
 			this->Params.Method = Ovl->Action();
-
 			this->FAlpha = 255;
 		};
-	}
+	};
 };
 
 
@@ -119,7 +118,6 @@ void GameSettings::SelectCards() {
 
 	std::unique_ptr<CardSelector> Ovl = std::make_unique<CardSelector>();
 	Ovl->Action();
-
 	this->FAlpha = 255;
 };
 
@@ -157,7 +155,7 @@ void GameSettings::SelectPicture(const bool AI) {
 		if (Res > -1 && Res < 256) this->Params.Characters[0] = Res;
 
 		this->FAlpha = 255;
-	}
+	};
 };
 
 
@@ -259,6 +257,10 @@ void GameSettings::Draw(const bool IsSetting) {
 				switch(this->Params.Method) {
 					case StackMem::AIMethod::Random:
 						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[6].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_RANDOM"), 70);
+						break;
+
+					case StackMem::AIMethod::Medium:
+						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[6].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_MEDIUM"), 70);
 						break;
 
 					case StackMem::AIMethod::Hard:

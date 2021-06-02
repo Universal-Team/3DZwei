@@ -821,11 +821,11 @@ void GameHelper::AIPageAnimation(const int Page) {
 	size_t Pages = (Forward ? (Page - (int)this->Page) : ((int)this->Page - Page)); // The amount of pages to go forward / backward.
 	int SwipePos = 0;
 	float Cubic = 0.0f, ScrollSpeed = 0.3f;
+	const bool JumpDirect = Pages >= 16; // 16+ -> Jump DIRECTLY to the page.
 
-	/* Set Scroll speed. TODO: Do this better? */
-	if (Pages < 10) ScrollSpeed = 0.4f;
-	else if (Pages > 9 && Pages < 20) ScrollSpeed = 0.5f;
-	else ScrollSpeed = 0.7f;
+	/* Set Scroll speed. */
+	if (Pages <= 5) ScrollSpeed = 0.3f; // 1 - 5 -> Normal speed.
+	else if (Pages >= 6 && Pages <= 15) ScrollSpeed = 0.6f; // Fast speed.
 
 	while(aptMainLoop() && Pages > 0) {
 		Gui::clearTextBufs();
@@ -865,8 +865,12 @@ void GameHelper::AIPageAnimation(const int Page) {
 			}
 		};
 
+
 		/* Prev / Next Page site navigators. */
-		if ((Forward ? this->Page + 1 : this->Page - 1) > 0) { // Because we can go back.
+		/* Check if we can go back. */
+		bool Check = (JumpDirect ? Page > 0 : ((Forward ? this->Page + 1 : this->Page - 1) > 0));
+
+		if (Check) {
 			if (Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + (320 - SwipePos), 0); // Draw the small top corner.
 				Gui::Draw_Rect(0 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
@@ -880,7 +884,11 @@ void GameHelper::AIPageAnimation(const int Page) {
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - (320 - SwipePos), 110); // Now the arrow!
 			}
 		};
-		if (this->CanGoForward((Forward ? this->Page + 1 : this->Page - 1))) { // Because we can go forward.
+
+		/* Check if we can go forward. */
+		Check = (JumpDirect ? this->CanGoForward(Page) : this->CanGoForward((Forward ? this->Page + 1 : this->Page -1)));
+
+		if (Check) {
 			if (Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
 				Gui::Draw_Rect(300 + (320 - SwipePos), 20, 20, 200, BAR_BLUE); // Draw the Middle corner bar.
@@ -913,8 +921,10 @@ void GameHelper::AIPageAnimation(const int Page) {
 			}
 		};
 
+		const size_t PG = (JumpDirect ? Page : (Forward ? this->Page + 1 : this->Page - 1)); // Get page to draw.
+
 		/* Draw next Page cards. */
-		for (size_t Idx = ((Forward ? this->Page + 1 : this->Page - 1) * 20), Idx2 = 0; Idx < ((Forward ? this->Page + 1 : this->Page - 1) * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
+		for (size_t Idx = (PG * 20), Idx2 = 0; Idx < (PG * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
 			if (!this->Game->IsCardCollected(Idx)) {
 				if (Forward) { // Goes from -> to <-.
 					if (this->Game->IsCardShown(Idx)) GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X + (320 - SwipePos), this->CPos[Idx2].Y);
@@ -940,7 +950,8 @@ void GameHelper::AIPageAnimation(const int Page) {
 			SwipePos = Cubic;
 
 			if (Cubic >= 320.0f) {
-				SwipePos = 0, Cubic = 0.0f, this->Page = (Forward ? this->Page + 1 : this->Page - 1), Pages--;
+				if (JumpDirect) Pages = 0; // Direct Jump.
+				else SwipePos = 0, Cubic = 0.0f, this->Page = (Forward ? this->Page + 1 : this->Page - 1), Pages--;
 			}
 		}
 	};

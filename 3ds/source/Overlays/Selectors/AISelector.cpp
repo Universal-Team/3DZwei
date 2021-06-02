@@ -36,12 +36,16 @@ AISelector::AISelector(const StackMem::AIMethod Method) {
 			this->Mode = 0;
 			break;
 
-		case StackMem::AIMethod::Hard:
+		case StackMem::AIMethod::Medium:
 			this->Mode = 1;
 			break;
 
-		case StackMem::AIMethod::Extreme:
+		case StackMem::AIMethod::Hard:
 			this->Mode = 2;
+			break;
+
+		case StackMem::AIMethod::Extreme:
+			this->Mode = 3;
 			break;
 	}
 };
@@ -56,7 +60,7 @@ void AISelector::PrevMode() {
 
 
 void AISelector::NextMode() {
-	if (this->Mode < 2) {
+	if (this->Mode < 3) {
 		this->SwipeDirection = false;
 		this->DoSwipe = true;
 	}
@@ -72,7 +76,7 @@ void AISelector::Cancel() {
 
 
 void AISelector::DrawPage(const int16_t Pg, const int AddOffs) {
-	if (Pg < 3) {
+	if (Pg < 4) {
 		Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("AI_METHOD") + Lang::Get(this->Modes[Pg]), 395);
 		Gui::DrawStringCentered(0 + AddOffs, 70, 0.5f, TEXT_WHITE, Lang::Get(this->ModeDesc[Pg]), 330, 140, nullptr, C2D_WordWrap);
 	}
@@ -102,7 +106,7 @@ StackMem::AIMethod AISelector::Action() {
 		}
 
 		GFX::DrawCornerEdge(true, this->Positions[0].X, this->Positions[0].Y, this->Positions[0].H, this->Mode > 0);
-		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Mode < 2);
+		GFX::DrawCornerEdge(false, this->Positions[1].X, this->Positions[1].Y, this->Positions[1].H, this->Mode < 3);
 		Gui::Draw_Rect(this->Positions[2].X, this->Positions[2].Y, this->Positions[2].W, this->Positions[2].H, BAR_BLUE);
 		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("SELECT"));
 
@@ -114,7 +118,7 @@ StackMem::AIMethod AISelector::Action() {
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Mode > 0);
-		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Mode < 2);
+		GFX::DrawCornerEdge(false, this->BottomPos[2].X, this->BottomPos[2].Y, this->BottomPos[2].H, this->Mode < 3);
 
 		Gui::Draw_Rect(95, 105, 130, 30, BAR_BLUE);
 		Gui::Draw_Rect(this->BottomPos[1].X, this->BottomPos[1].Y, this->BottomPos[1].W, this->BottomPos[1].H, BG_BLUE);

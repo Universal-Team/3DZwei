@@ -50,8 +50,8 @@ private:
 	void DrawPage(const int16_t Pg, const int AddOffs);
 	void Handler();
 
-	const std::vector<std::string> Modes = { "AI_MODE_RANDOM", "AI_MODE_HARD", "AI_MODE_EXTREME" };
-	const std::vector<std::string> ModeDesc = { "AI_MODE_RANDOM_DESC", "AI_MODE_HARD_DESC", "AI_MODE_EXTREME_DESC" };
+	const std::vector<std::string> Modes = { "AI_MODE_RANDOM", "AI_MODE_MEDIUM", "AI_MODE_HARD", "AI_MODE_EXTREME" };
+	const std::vector<std::string> ModeDesc = { "AI_MODE_RANDOM_DESC", "AI_MODE_MEDIUM_DESC", "AI_MODE_HARD_DESC", "AI_MODE_EXTREME_DESC" };
 
 	const std::vector<FuncCallback> Positions = {
 		{ 0, 25, 25, 215, [this]() { this->PrevMode(); } },

@@ -5,15 +5,18 @@
 </p>
 
 ## Main Features
-* 3DZwei includes 3 AI Methods / Difficulties, and those are explained below!
+* 3DZwei includes 4 AI Methods / Difficulties, and those are explained below!
 
 ### Method 1: Random
 This method does what it says -> playing randomly.
 
-### Method 2: Hard
-This method stores the last played cards as a vector of pairs. On the second Turn State, it checks through all the cards in that vector to see, if a card matches the one of the first Turn State. If it does, it plays it -> Otherwise it uses the Random Method.
+### Method 2: Medium
+This method stores the last played cards as a vector of indexes. On the second Turn State, it checks through all the cards in that vector to see, if a card matches the one of the first Turn State. If it does, it plays it -> Otherwise it uses the Random Method.
 
-### Method 3: Extreme
+### Method 3: Hard
+Basically the same as Medium, however if no matches are found, it plays a card that hasn't been played before.
+
+### Method 4: Extreme
 This is a more improved version of the Hard Method. It already does the thing what the Hard Method does on it's first Turn State. NOTE, that it may take longer the more turns have passed, because it does check for the first card pairs, second card pairs and mixed.. if it can find a valid pair already which got played. On the second Turn State, it switches over to the Hard Method, because we don't need more checks than really required.
 
 

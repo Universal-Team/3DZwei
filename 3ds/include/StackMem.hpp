@@ -38,7 +38,7 @@
 class StackMem {
 public:
 	/* All used enum classes, which also need to be accessible for outside this class because of checks, here. */
-	enum class AIMethod : uint8_t { Random = 0, Hard = 1, Extreme = 2 }; // AI Methods.
+	enum class AIMethod : uint8_t { Random = 0, Medium = 1, Hard = 2, Extreme = 3 }; // AI Methods.
 	enum class TurnState : uint8_t { DrawFirst = 0, DrawSecond = 1, DoCheck = 2 }; // The Current Turn State.
 	enum class GameState : uint8_t { NotOver = 0, Tie = 1, Player1 = 2, Player2 = 3 }; // The Game State.
 	enum class Players : uint8_t { Player1 = 0, Player2 = 1 }; // The Current Player.
@@ -135,6 +135,7 @@ private:
 	bool CheckMatch() const;
 	void GenerateField(const size_t Pairs);
 	int AIRandomMethod();
+	int AIMediumMethod();
 	int AIHardMethod();
 	int AIExtremeMethod();
 };
