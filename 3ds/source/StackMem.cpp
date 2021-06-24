@@ -215,6 +215,8 @@ void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
 				for (size_t Idx = 0; Idx < 2; Idx++) {
 					if (!Included[Idx]) this->Mind.push_back(Idxs[Idx]); // If not included -> Push it.
 				};
+
+				this->Mind.shrink_to_fit();
 			};
 			break;
 	};
@@ -253,6 +255,8 @@ void StackMem::AI::EraseMind(const int Idx1, const int Idx2) {
 				this->Mind.erase(this->Mind.begin() + Idx); // Included, so erase.
 			};
 		};
+
+		this->Mind.shrink_to_fit();
 	};
 };
 
@@ -296,6 +300,7 @@ void StackMem::GenerateField(const size_t Pairs) {
 
 	for (size_t Idx = 0; Idx < TempCards.size(); Idx++) this->Gamefield.push_back({ TempCards[Idx], false, false }); // Index, Shown, Collected.
 
+	this->Gamefield.shrink_to_fit(); // No need for useless allocation here.
 	this->Pairs = Pairs; // Also properly update the Pair amount.
 };
 
