@@ -79,7 +79,7 @@ void GameHelper::StartGame(const bool AlreadyInitialized, const GameSettings::Ga
 				if (P2Won) this->Game->SetCurrentPlayer(StackMem::Players::Player2);
 				else this->Game->SetCurrentPlayer(StackMem::Players::Player1);
 				break;
-		};
+		}
 	}
 
 	/* Set both of them to their initial values. */
@@ -110,7 +110,7 @@ void GameHelper::DrawTryPlay(void) const {
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
 		Gui::DrawString(180, 150, 0.5f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 200);
-	};
+	}
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		if (this->Game->GetState() == StackMem::TurnState::DoCheck) {
@@ -155,7 +155,7 @@ void GameHelper::DrawNormalPlay(void) const {
 
 	if (this->Game->GetPairs() > 10) { // Only 11+ Pairs have pages.
 		Gui::DrawStringCentered(0, 215, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_CURRENT_PAGE") + std::to_string(this->Page + 1) + " / " + std::to_string((this->Game->GetPairs() + 9) * 2 / 20), 390);
-	};
+	}
 
 	if (!this->Params.CardDelayUsed || this->Params.CardDelay == 0) { // The checks only exist on non delay mode.
 		/* Only display if current State is the check state.. OR the AI's turn. */
@@ -210,7 +210,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 				} else { // Draw Back cover.
 					Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + (1.0f - this->ClickedScale[0]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[0], 1.0f);
 				}
-			};
+			}
 
 			/* This is a turn card, hence we draw it with scale. */
 			if (this->Game->GetTurnCard(1) != -1 && this->Game->GetTurnCard(1) == (int)Idx) {
@@ -220,7 +220,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 				} else { // Draw Back cover.
 					Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + (1.0f - this->ClickedScale[1]) * 55 / 2, this->CPos[Idx2].Y, this->ClickedScale[1], 1.0f);
 				}
-			};
+			}
 
 			if (this->Game->GetTurnCard(0) != (int)Idx && this->Game->GetTurnCard(1) != (int)Idx) {
 				if (this->Game->IsCardShown(Idx)) GFX::DrawCard(this->Game->GetCardType(Idx), this->CPos[Idx2].X, this->CPos[Idx2].Y);
@@ -302,7 +302,7 @@ uint8_t GameHelper::GetIndexCount() const {
 
 		case 8:
 		case 9: return 9;
-	};
+	}
 
 	if (this->Game->GetPairs() >= 10) return 8;
 	else return 0;
@@ -325,7 +325,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 			case 5: return { 10, 6, 2 };
 			case 6: return { 5, 1 };
 			case 7: return { 0 };
-		};
+		}
 
 	} else { // 9 - 0.
 		switch(this->Game->GetPairs()) {
@@ -338,7 +338,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 4: return { 10, 6, 2 };
 					case 5: return { 5, 1 };
 					case 6: return { 0 };
-				};
+				}
 				break;
 
 			case 8:
@@ -350,7 +350,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 4: return { 10, 6, 2 };
 					case 5: return { 5, 1 };
 					case 6: return { 0 };
-				};
+				}
 				break;
 
 			case 7:
@@ -361,7 +361,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 3: return { 10, 6, 2 };
 					case 4: return { 5, 1 };
 					case 5: return { 0 };
-				};
+				}
 				break;
 
 			case 6:
@@ -372,7 +372,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 3: return { 10, 6, 2 };
 					case 4: return { 5, 1 };
 					case 5: return { 0 };
-				};
+				}
 				break;
 
 			case 5:
@@ -383,7 +383,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 3: return { 6, 2 };
 					case 4: return { 5, 1 };
 					case 5: return { 0 };
-				};
+				}
 				break;
 
 			case 4:
@@ -393,7 +393,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 2: return { 6, 2 };
 					case 3: return { 5, 1 };
 					case 4: return { 0 };
-				};
+				}
 				break;
 
 			case 3:
@@ -403,7 +403,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 2: return { 2 };
 					case 3: return { 5, 1 };
 					case 4: return { 0 };
-				};
+				}
 				break;
 
 			case 2:
@@ -412,19 +412,19 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 					case 1: return { 2 };
 					case 2: return { 1 };
 					case 3: return { 0 };
-				};
+				}
 				break;
 
 			case 1:
 				switch(Round) {
 					case 0: return { 1 };
 					case 1: return { 0 };
-				};
+				}
 				break;
 
 			case 0: return { 0 };
 		}
-	};
+	}
 
 	return { 0 };
 };
@@ -455,7 +455,7 @@ void GameHelper::StartGameAnimationFalling() {
 		AnimationIdxs.push_back(GetAnimationIdx(Idx)); // Indexes.
 		AnimPos.push_back(320); // Animation Position.
 		Anim2.push_back(0.0f);
-	};
+	}
 
 	while(aptMainLoop() && !Done) {
 		Gui::clearTextBufs();
@@ -478,20 +478,20 @@ void GameHelper::StartGameAnimationFalling() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, Delay));
-		};
+		}
 
 		GFX::DrawBottom();
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, Delay));
-		};
+		}
 
 		/* Display Card Animation. */
 		for (size_t Idx = 0; Idx < AnimationIdxs.size(); Idx++) { // Loop through the amount of animations.
 			for (size_t Idx2 = 0; Idx2 < AnimationIdxs[Idx].size(); Idx2++) { // Loop through their contents.
 				Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[AnimationIdxs[Idx][Idx2]].X - AnimPos[Idx], this->CPos[AnimationIdxs[Idx][Idx2]].Y - AnimPos[Idx]);
 			}
-		};
+		}
 
 		C3D_FrameEnd(0);
 		hidScanInput();
@@ -544,7 +544,7 @@ void GameHelper::StartGameAnimationFalling() {
 		}
 
 		if ((Dones == (int)AnimationIdxs.size()) && (!DoSwipe)) Done = true; // Set to done when the move / fade delay is over.. and the cards too.
-	};
+	}
 };
 
 
@@ -632,7 +632,7 @@ void GameHelper::StartGameAnimationGrowing() {
 		}
 
 		if ((CCard == ToInit) && (!DoSwipe)) Done = true; // Set to done when the move / fade delay is over.. and the cards too.
-	};
+	}
 };
 
 
@@ -651,7 +651,7 @@ void GameHelper::StartGameAnimation() {
 						case 2:
 							this->StartGameAnimationGrowing(); // Growing.
 							break;
-					};
+					}
 				}
 				break;
 
@@ -662,7 +662,7 @@ void GameHelper::StartGameAnimation() {
 			case 2:
 				this->StartGameAnimationGrowing(); // Growing.
 				break;
-		};
+		}
 	}
 };
 
@@ -678,7 +678,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->PageSwitch()) {
 		this->Page = NewPage;
 		return; // No Animation.
-	};
+	}
 
 	bool Done = false;
 	int SwipePos = 0;
@@ -706,7 +706,8 @@ void GameHelper::PageAnimation(const bool Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + SwipePos, 110); // Now the arrow!
 			}
-		};
+		}
+
 		if (this->CanGoForward(this->Page)) { // Because we can go forward.
 			if (Forward) { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
@@ -720,7 +721,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
 			}
-		};
+		}
 
 		/* Prev / Next Page site navigators. */
 		if (NewPage > 0) { // Because we can go back.
@@ -736,7 +737,8 @@ void GameHelper::PageAnimation(const bool Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - (320 - SwipePos), 110); // Now the arrow!
 			}
-		};
+		}
+
 		if (this->CanGoForward(NewPage)) { // Because we can go forward.
 			if (Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + (320 - SwipePos), 0, -1.0f, 1.0f); // Draw the small top corner.
@@ -750,8 +752,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
 			}
-		};
-
+		}
 
 		/* Draw current Page cards. */
 		for (size_t Idx = (this->Page * 20), Idx2 = 0; Idx < (this->Page * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
@@ -768,7 +769,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + SwipePos, this->CPos[Idx2].Y); // Back cover because hidden.
 				}
 			}
-		};
+		}
 
 		/* Draw new Page cards. */
 		for (size_t Idx = (NewPage * 20), Idx2 = 0; Idx < (NewPage * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
@@ -785,7 +786,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X - (320 - SwipePos), this->CPos[Idx2].Y); // Back cover because hidden.
 				}
 			}
-		};
+		}
 
 		C3D_FrameEnd(0);
 		hidScanInput();
@@ -815,7 +816,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 	if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->PageSwitch()) {
 		this->Page = Page;
 		return; // No Animation.
-	};
+	}
 
 	const bool Forward = ((int)this->Page < Page);
 	size_t Pages = (Forward ? (Page - (int)this->Page) : ((int)this->Page - Page)); // The amount of pages to go forward / backward.
@@ -849,7 +850,8 @@ void GameHelper::AIPageAnimation(const int Page) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 + SwipePos, 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 + SwipePos, 110); // Now the arrow!
 			}
-		};
+		}
+
 		if (this->CanGoForward(this->Page)) { // Because we can go forward.
 			if (Forward) { // Goes from <- to ->.
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - SwipePos, 0, -1.0f, 1.0f); // Draw the small top corner.
@@ -863,7 +865,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 + SwipePos, 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 + SwipePos, 110, -1.0f, 1.0f); // Now the arrow!
 			}
-		};
+		}
 
 
 		/* Prev / Next Page site navigators. */
@@ -883,7 +885,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 0 - (320 - SwipePos), 220, 1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 0 - (320 - SwipePos), 110); // Now the arrow!
 			}
-		};
+		}
 
 		/* Check if we can go forward. */
 		Check = (JumpDirect ? this->CanGoForward(Page) : this->CanGoForward((Forward ? this->Page + 1 : this->Page -1)));
@@ -901,8 +903,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 				Gui::DrawSprite(GFX::Sprites, sprites_small_corner_idx, 300 - (320 - SwipePos), 220, -1.0f, -1.0f); // Draw the small bottom corner.
 				Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, 300 - (320 - SwipePos), 110, -1.0f, 1.0f); // Now the arrow!
 			}
-		};
-
+		}
 
 		/* Draw current Page cards. */
 		for (size_t Idx = (this->Page * 20), Idx2 = 0; Idx < (this->Page * 20) + 20 && Idx < (this->Game->GetPairs() * 2); Idx++, Idx2++) {
@@ -919,7 +920,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X + SwipePos, this->CPos[Idx2].Y); // Back cover because hidden.
 				}
 			}
-		};
+		}
 
 		const size_t PG = (JumpDirect ? Page : (Forward ? this->Page + 1 : this->Page - 1)); // Get page to draw.
 
@@ -938,7 +939,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 						Gui::DrawSprite(GFX::Cards, Utils::GetCardSheetSize(), this->CPos[Idx2].X - (320 - SwipePos), this->CPos[Idx2].Y); // Back cover because hidden.
 				}
 			}
-		};
+		}
 
 		C3D_FrameEnd(0);
 		hidScanInput();
@@ -954,7 +955,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 				else SwipePos = 0, Cubic = 0.0f, this->Page = (Forward ? this->Page + 1 : this->Page - 1), Pages--;
 			}
 		}
-	};
+	}
 
 	this->Page = Page; // Set the new page.
 };
@@ -973,7 +974,7 @@ void GameHelper::PickAnimation(const size_t Idx) {
 		if (!_3DZwei::CFG->DoAnimation()) {
 			this->CardClicked[Idx] = true;
 			return; // No Animation.
-		};
+		}
 
 		float Cubic = 0.0f;
 		bool Done = false;
@@ -1081,7 +1082,7 @@ void GameHelper::ShrinkAnimation() {
 		this->ClickedScale[0] = 0.0f, this->ClickedScale[1] = 0.0f;
 		this->RefreshFrame = true;
 		return; // No Animation.
-	};
+	}
 
 	bool Done = false;
 	float Cubic = 0.0f;
@@ -1166,8 +1167,8 @@ void GameHelper::EndGameAnimation() {
 					Done = true;
 				}
 			}
-		};
-	};
+		}
+	}
 };
 
 
@@ -1193,8 +1194,7 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 
 				case StackMem::GameState::Tie:
 				case StackMem::GameState::Player1:
-				case StackMem::GameState::Player2: // All 3 states are valid end states.
-				{
+				case StackMem::GameState::Player2: { // All 3 states are valid end states.
 					/* Set Pairs. */
 					this->Params.PlayerPairs[0] = this->Game->GetPlayerPairs(StackMem::Players::Player1);
 					this->Params.PlayerPairs[1] = this->Game->GetPlayerPairs(StackMem::Players::Player2);
@@ -1212,11 +1212,11 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 
 						case StackMem::GameState::NotOver:
 							return GameHelper::LogicState::Nothing;
-					};
-				}
+					}
 
-				break;
-			};
+					break;
+				}
+			}
 
 		} else { // A pair is collected, so shrink the cards + reset the state.
 			this->ShrinkAnimation();
@@ -1261,8 +1261,8 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 			}
 
 			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
-		};
-	};
+		}
+	}
 
 	if (Repeat & KEY_DDOWN) {
 		if (!Pointer::Show) Pointer::Show = true;
@@ -1273,7 +1273,7 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 				Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 			}
 		}
-	};
+	}
 
 	if (Repeat & KEY_DUP) {
 		if (!Pointer::Show) Pointer::Show = true;
@@ -1282,7 +1282,7 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 			this->Selection -= 5;
 			Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 		}
-	};
+	}
 
 	if (Repeat & KEY_DLEFT) {
 		if (!Pointer::Show) Pointer::Show = true;
@@ -1298,7 +1298,7 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 				Pointer::SetPos(this->CPos[this->Selection].X + 18, this->CPos[this->Selection].Y + 19);
 			}
 		}
-	};
+	}
 
 	if (Repeat & KEY_DRIGHT) {
 		if (!Pointer::Show) Pointer::Show = true;
@@ -1322,19 +1322,19 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 				}
 			}
 		}
-	};
+	}
 
 	if (Repeat & KEY_A) {
 		for (auto &Position : this->CPos) {
 			if (Pointer::Clicked(Position, true)) return GameHelper::LogicState::Nothing;
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		for (auto &Position : this->CPos) {
 			if (Touched(Position, T, true)) return GameHelper::LogicState::Nothing;
 		}
-	};
+	}
 
 	return GameHelper::LogicState::Nothing;
 };
@@ -1348,7 +1348,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 		if (this->RefreshFrame) {
 			this->RefreshFrame = false;
 			return GameHelper::LogicState::Nothing;
-		};
+		}
 
 		for (size_t Idx = 0; Idx < this->Params.CardDelay; Idx++) { gspWaitForVBlank(); }; // Delay.
 		const size_t Card = this->Game->AIPlay();
@@ -1397,8 +1397,7 @@ GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Hel
 	if (Down & KEY_START || Down & KEY_SELECT) {
 		this->Params.CancelGame = true;
 		return GameHelper::LogicState::Nothing;
-	};
-
+	}
 
 	if (this->Params.GameMode == GameSettings::GameModes::Solo) { // Least amount of tries play mode.
 		if (this->Game->GetState() != StackMem::TurnState::DoCheck) { // As long as the State is not check, we can play.
@@ -1409,7 +1408,7 @@ GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Hel
 				if (this->RefreshFrame) {
 					this->RefreshFrame = false;
 					return GameHelper::LogicState::Nothing;
-				};
+				}
 
 				if (this->Params.CardDelayUsed && this->Params.CardDelay > 0) {
 					for (size_t Idx = 0; Idx < this->Params.CardDelay; Idx++) { gspWaitForVBlank(); }; // Do the delay, if enabled.
@@ -1443,7 +1442,7 @@ GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Hel
 				if (this->RefreshFrame) {
 					this->RefreshFrame = false;
 					return GameHelper::LogicState::Nothing;
-				};
+				}
 
 				if (this->Params.CardDelayUsed && this->Params.CardDelay > 0) {
 					for (uint8_t Idx = 0; Idx < this->Params.CardDelay; Idx++) { gspWaitForVBlank(); }; // Do the delay, if enabled.

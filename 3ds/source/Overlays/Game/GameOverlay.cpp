@@ -35,6 +35,7 @@ GameOverlay::GameOverlay(const GameSettings::GameParams Params) {
 	hidScanInput();
 };
 
+
 void GameOverlay::Draw() {
 	Gui::clearTextBufs();
 	C2D_TargetClear(Top, C2D_Color32(0, 0, 0, 0));
@@ -72,7 +73,7 @@ void GameOverlay::Draw() {
 				Gui::DrawStringCentered(this->Prompt[Idx].X - 160 + this->Prompt[Idx].W / 2, this->Prompt[Idx].Y + 15, 0.6f, TEXT_WHITE, (Idx == 0 ? "\uE001 " : "\uE000 ") + Lang::Get((Idx == 0 ? "CANCEL" : "CONFIRM")), this->Prompt[Idx].W - 10);
 			}
 		}
-	};
+	}
 
 	C3D_FrameEnd(0);
 };
@@ -105,7 +106,7 @@ void GameOverlay::PromptLogic() {
 		}
 
 		return;
-	};
+	}
 
 	if (this->SwipeOut) {
 		if (this->PromptAnswer) {
@@ -119,7 +120,7 @@ void GameOverlay::PromptLogic() {
 						this->FAlpha = 0, this->Cubic = 0.0f, this->SwipeOut = false, this->Running = false;
 					}
 				}
-			};
+			}
 
 		} else {
 			if (!_3DZwei::CFG->DoAnimation()) this->FAlpha = 0, this->SwipeOut = false, this->PromptAnswer = false;
@@ -133,10 +134,10 @@ void GameOverlay::PromptLogic() {
 					}
 				}
 			}
-		};
+		}
 
 		return;
-	};
+	}
 
 	if (Down & KEY_A) this->Confirm();
 	if (Down & KEY_B) this->Cancel();
@@ -145,7 +146,7 @@ void GameOverlay::PromptLogic() {
 		for (auto Pos : this->Prompt) {
 			if (Touched(Pos, T, true)) break;
 		}
-	};
+	}
 };
 
 
@@ -184,7 +185,7 @@ void GameOverlay::Action() {
 
 					case GameHelper::LogicState::Nothing:
 						break; // Should never happen.
-				};
+				}
 
 				/* If we reached the needed win amount, are on Solo Mode -> go the screen back to the MainMenu again. */
 				if ((this->Helper->ReturnParams().Wins[0] >= this->Helper->ReturnParams().RoundsToWin)
@@ -202,7 +203,7 @@ void GameOverlay::Action() {
 			if (this->Helper->ReturnParams().CancelGame) {
 				this->PromptHandle = true;
 				this->SwipeIn = true;
-			};
-		};
-	};
+			}
+		}
+	}
 };

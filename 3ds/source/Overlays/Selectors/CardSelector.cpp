@@ -105,7 +105,7 @@ void CardSelector::PageFadeHandler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Fade-Out Handler. */
 	if (this->Done) {
@@ -138,7 +138,7 @@ void CardSelector::PageFadeHandler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Page Swipe Handler. */
 	if (this->DoSwipe) {
@@ -194,7 +194,7 @@ void CardSelector::DrawTop() {
 				Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X + this->PrevPos, this->Positions[Idx2 + 2].Y);
 				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->PrevPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 			}
-		};
+		}
 
 		/* Next Page. */
 		if (this->CanGoNext()) {
@@ -202,7 +202,7 @@ void CardSelector::DrawTop() {
 				Gui::DrawSprite(GFX::Cards, Idx, this->Positions[Idx2 + 2].X + this->NextPos, this->Positions[Idx2 + 2].Y);
 				GFX::DrawCheckbox(this->Positions[Idx2 + 11].X + this->NextPos, this->Positions[Idx2 + 11].Y, this->Cards[Idx]);
 			}
-		};
+		}
 
 	} else { // No switch in progress, display normally.
 		for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
@@ -232,7 +232,7 @@ void CardSelector::DrawBottom() {
 	/* Draw the Checkboxes. */
 	for (size_t Idx = (this->Page * 9), Idx2 = 0; Idx < (this->Page * 9) + 9 && Idx < this->Cards.size(); Idx++, Idx2++) {
 		GFX::DrawCheckbox(this->BottomPos[Idx2 + 2].X, this->BottomPos[Idx2 + 2].Y, this->Cards[Idx]);
-	};
+	}
 
 	Gui::Draw_Rect(this->BottomPos[11].X, this->BottomPos[11].Y, this->BottomPos[11].W, this->BottomPos[11].H, BAR_BLUE);
 	Gui::DrawStringCentered(0, this->BottomPos[11].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("OK"));
@@ -245,7 +245,7 @@ void CardSelector::DrawBottom() {
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-	};
+	}
 };
 
 
@@ -293,7 +293,7 @@ void CardSelector::Action() {
 
 			if (Down & KEY_START) this->OK();
 		}
-	};
+	}
 
 	/* Set the cards now, that we finished. */
 	if (this->Changed) {
@@ -305,7 +305,7 @@ void CardSelector::Action() {
 		}
 
 		_3DZwei::CFG->ActivatedCards(Utils::Cards); // Set the activated cards to config.
-	};
+	}
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);

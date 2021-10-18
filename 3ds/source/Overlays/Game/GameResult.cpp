@@ -46,7 +46,7 @@ GameResult::GameResult() {
 void GameResult::DrawCardBG(const size_t Page, const int AddOffs) {
 	for (size_t Idx = (Page * 12), Idx2 = 0; Idx < (Page * 12) + 12 && Idx < Utils::Cards.size(); Idx++, Idx2++) {
 		GFX::DrawCard(Idx, this->InitialScrollPos[Idx2].X, this->InitialScrollPos[Idx2].Y + AddOffs);
-	};
+	}
 };
 
 
@@ -76,11 +76,11 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 		/* Wins. */
 		Gui::DrawString(148 + topDelay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
 		Gui::DrawString(148 + topDelay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
-	};
+	}
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 
 	GFX::DrawBottom();
 
@@ -96,12 +96,12 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 		/* Wins. */
 		Gui::DrawString(103 - this->Delay, 185, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[!P2Wins]), 150);
 		Gui::DrawString(103 - this->Delay, 205, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
-	};
+	}
 
 	Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190));
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 };
 
 /*
@@ -128,11 +128,11 @@ void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &P
 		/* Wins. */
 		Gui::DrawString(148 + topDelay, 205, 0.45f, TEXT_WHITE, Lang::Get("PAIRS") + std::to_string(Params.PlayerPairs[P2Wins]), 200);
 		Gui::DrawString(148 + topDelay, 225, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[P2Wins]), 200);
-	};
+	}
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 
 	GFX::DrawBottom();
 
@@ -157,11 +157,11 @@ void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &P
 		Gui::DrawString(103 - this->Delay, 195, 0.45f, TEXT_WHITE, Lang::Get("WINS") + std::to_string(Params.Wins[!P2Wins]), 150);
 
 		Gui::DrawStringCentered(0 + this->Delay, 215, 0.5f, TEXT_WHITE, Lang::Get("WINS_WIN") + std::to_string(Params.RoundsToWin), 310);
-	};
+	}
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 };
 
 /*
@@ -185,12 +185,12 @@ void GameResult::DrawSolo(const GameSettings::GameParams &Params) {
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 
 	GFX::DrawBottom();
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
-	};
+	}
 };
 
 
@@ -205,7 +205,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 	if (Params.GameMode == GameSettings::GameModes::Versus) {
 		if (Won == 1) Params.Wins[0]++;
 		else if (Won == 2) Params.Wins[1]++;
-	};
+	}
 
 	/* Get if the game is fully over. */
 	this->Over = ((Params.GameMode == GameSettings::GameModes::Versus) && (Params.Wins[0] == Params.RoundsToWin || Params.Wins[1] == Params.RoundsToWin));
@@ -256,12 +256,12 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 
 		C3D_FrameEnd(0);
 		this->Handler();
-	};
+	}
 
 	/* Reset Pairs. */
 	if (Params.GameMode == GameSettings::GameModes::Versus) {
 		for (uint8_t Idx = 0; Idx < 2; Idx++) Params.PlayerPairs[Idx] = 0;
-	};
+	}
 };
 
 
@@ -277,7 +277,7 @@ void GameResult::Handler() {
 			else this->FullDone = true;
 			this->DoSwipe = true;
 		}
-	};
+	}
 
 	/* Fade and Move Logic. */
 	if (!this->Done && this->DoSwipe) {
@@ -291,7 +291,7 @@ void GameResult::Handler() {
 				this->DoSwipe = false;
 			}
 		}
-	};
+	}
 
 	if (this->Done && this->DoSwipe) {
 		if (this->Cubic < 255.0f) {
@@ -300,7 +300,7 @@ void GameResult::Handler() {
 
 			if (this->Cubic >= 255.0f) this->Delay = 0, this->Cubic = 0, this->DoSwipe = false, this->FullDone = true;
 		}
-	};
+	}
 
 	if (this->Over) {
 		if (this->InitialScroll) {
@@ -315,7 +315,7 @@ void GameResult::Handler() {
 			}
 
 			return;
-		};
+		}
 
 		if (this->ScrollMode) { // Only allow scrolls, if 13+ cards.
 			if (!_3DZwei::CFG->DoAnimation()) return;
@@ -333,13 +333,13 @@ void GameResult::Handler() {
 				}
 
 				return;
-			};
+			}
 
 			if (this->ScrollDelay > 0) {
 				this->ScrollDelay--;
 
 				if (this->ScrollDelay == 0) this->DoScrollSwipe = true, this->ScrollDelay = 60;
-			};
-		};
-	};
+			}
+		}
+	}
 };

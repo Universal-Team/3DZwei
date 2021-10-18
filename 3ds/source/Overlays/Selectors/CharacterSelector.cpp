@@ -40,7 +40,7 @@
 void CharacterSelector::DrawPage(const size_t Page, const int AddOffs) {
 	for (size_t Idx = (Page * CHARS_PER_PAGE), Idx2 = 0; Idx < (Page * CHARS_PER_PAGE) + CHARS_PER_PAGE && Idx < Utils::GetCharSheetSize(); Idx++, Idx2++) {
 		Gui::DrawSprite(GFX::Characters, Idx, this->Characters[Idx2].X + AddOffs, this->Characters[Idx2].Y, 0.4f, 0.4f);
-	};
+	}
 };
 
 
@@ -56,7 +56,7 @@ void CharacterSelector::SelectCharacter(const uint8_t Idx) {
 		this->Res = (rand() % (Utils::GetCharSheetSize() - 1));
 		this->Done = true;
 		return;
-	};
+	}
 
 	if ((this->Page * CHARS_PER_PAGE) + Idx < Utils::GetCharSheetSize()) {
 		this->Res = (this->Page * CHARS_PER_PAGE) + Idx;
@@ -111,7 +111,7 @@ int CharacterSelector::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		GFX::DrawBottom();
 
@@ -123,7 +123,7 @@ int CharacterSelector::Action() {
 
 		} else { // No swipe.
 			this->DrawPage(this->Page, 0); // Draw current page only.
-		};
+		}
 
 		Gui::DrawSprite(GFX::Sprites, sprites_random_idx, this->Characters[15].X, this->Characters[15].Y);
 		GFX::DrawCornerEdge(true, this->BottomPos[0].X, this->BottomPos[0].Y, this->BottomPos[0].H, this->Page > 0);
@@ -132,7 +132,7 @@ int CharacterSelector::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		C3D_FrameEnd(0);
 		this->Handler();
@@ -160,7 +160,7 @@ void CharacterSelector::Handler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Fade-Out Handler. */
 	if (this->Done) {
@@ -171,7 +171,7 @@ void CharacterSelector::Handler() {
 
 			if (this->FAlpha >= 255) this->FullDone = true;
 		}
-	};
+	}
 
 	/* Initial Swipe. */
 	if (this->InitialSwipe) {
@@ -190,7 +190,7 @@ void CharacterSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
@@ -215,7 +215,7 @@ void CharacterSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	Pointer::ScrollHandling(Held);
 	if (Down & KEY_B || Down & KEY_START) this->Cancel();
@@ -232,13 +232,13 @@ void CharacterSelector::Handler() {
 		}
 
 		if (Clicked) return;
-	};
+	}
 
 	if (Down & KEY_A) {
 		for (auto &Position : this->Characters) {
 			if (Pointer::Clicked(Position, true)) break;
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		bool Clicked = false;
@@ -251,11 +251,11 @@ void CharacterSelector::Handler() {
 		}
 
 		if (Clicked) return;
-	};
+	}
 
 	if (Down & KEY_TOUCH) {
 		for (auto &Position : this->Characters) {
 			if (Touched(Position, T, true)) break;
 		}
-	};
+	}
 };

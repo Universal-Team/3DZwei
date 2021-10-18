@@ -128,7 +128,7 @@ void RulesOverlay::State4() {
 				}
 			}
 		}
-	};
+	}
 
 	if (this->FlipDone[1]) this->State = States::WaitDelay;
 };
@@ -165,14 +165,14 @@ void RulesOverlay::State5() {
 				}
 			}
 		}
-	};
+	}
 
 	if (this->Delay == 0 && !this->FlipDone[0] && !this->FlipDone[1]) {
 		this->Delay = 100;
 
 		this->Cubic = 0.0f;
 		this->State = States::GotoFirst;
-	};
+	}
 };
 
 
@@ -187,7 +187,7 @@ void RulesOverlay::StateHandler() {
 		else {
 			if (this->FAlpha < 255) this->FAlpha += 5;
 			if (this->FAlpha == 255) this->FullDone = true;
-		};
+		}
 
 		return;
 
@@ -196,8 +196,8 @@ void RulesOverlay::StateHandler() {
 		if (!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) this->FAlpha = 0;
 		else {
 			if (this->FAlpha > 0) this->FAlpha -= 5;
-		};
-	};
+		}
+	}
 
 	switch(this->State) {
 		case States::GotoFirst:
@@ -232,9 +232,10 @@ void RulesOverlay::Action() {
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, Lang::Get("RULES_TITLE"), 395);
 		Gui::DrawStringCentered(0, 40, 0.55f, TEXT_WHITE, Lang::Get("RULES_DESC"), 380, 160, nullptr, C2D_WordWrap);
+
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
@@ -256,7 +257,7 @@ void RulesOverlay::Action() {
 		Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, this->X, this->Y);
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		C3D_FrameEnd(0);
 
@@ -264,5 +265,5 @@ void RulesOverlay::Action() {
 		const uint32_t Down = hidKeysDown();
 		if (Down) this->Done = true; // Any key -> Skip.
 		this->StateHandler();
-	};
+	}
 };

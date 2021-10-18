@@ -33,10 +33,10 @@
 	Detects system language and is used later to set app language to system language.
 */
 std::string Config::sysLang(void) {
-	u8 language = 1;
-	CFGU_GetSystemLanguage(&language);
+	uint8_t Language = 1;
+	CFGU_GetSystemLanguage(&Language);
 
-	switch(language) {
+	switch(Language) {
 		case 0:
 			return "ja"; // Japanese
 
@@ -81,8 +81,11 @@ void Config::Load() {
 	if (access("sdmc:/3ds/ut-games/3DZwei/Config.json", F_OK) != 0) this->Initialize();
 
 	FILE *File = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "r");
-	this->CFG = nlohmann::json::parse(File, nullptr, false);
-	fclose(File);
+
+	if (File) {
+		this->CFG = nlohmann::json::parse(File, nullptr, false);
+		fclose(File);
+	}
 
 	if (!this->CFG.is_discarded()) {
 		this->CardSet(this->Get<std::string>("Cardset", this->CardSet()));
@@ -100,8 +103,6 @@ void Config::Load() {
 
 /* Initializes the Configuration file properly as a JSON. */
 void Config::Initialize() {
-	FILE *Temp = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "w");
-
 	const nlohmann::json OBJ = {
 		{ "Cardset", this->CardSet() }, // Cardset.
 		{ "Charset", this->CharSet() }, // Character Set.
@@ -115,9 +116,13 @@ void Config::Initialize() {
 		{ "ActivatedCards", { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 } } // Activated Indexes.
 	};
 
-	const std::string Dump = OBJ.dump(1, '\t');
-	fwrite(Dump.c_str(), 1, Dump.size(), Temp);
-	fclose(Temp);
+	FILE *Temp = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "w");
+
+	if (Temp) {
+		const std::string Dump = OBJ.dump(1, '\t');
+		fwrite(Dump.c_str(), 1, Dump.size(), Temp);
+		fclose(Temp);
+	}
 };
 
 
@@ -136,10 +141,12 @@ void Config::Sav() {
 
 		FILE *Out = fopen("sdmc:/3ds/ut-games/3DZwei/Config.json", "w");
 
-		/* Write changes to file. */
-		const std::string Dump = this->CFG.dump(1, '\t');
-		fwrite(Dump.c_str(), 1, Dump.size(), Out);
-		fclose(Out);
+		if (Out) {
+			/* Write changes to file. */
+			const std::string Dump = this->CFG.dump(1, '\t');
+			fwrite(Dump.c_str(), 1, Dump.size(), Out);
+			fclose(Out);
+		}
 	}
 };
 
@@ -181,7 +188,7 @@ void Config::FetchDefaults() {
 			if (this->CFG["GameDefaults"].contains("GameMode") && this->CFG["GameDefaults"]["GameMode"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["GameMode"];
 				if (Res >= 0 && Res < 2) this->VDefaultParams.GameMode = (GameSettings::GameModes)Res; // 0 - 1 valid.
-			};
+			}
 
 			/* Card Delay. */
 			if (this->CFG["GameDefaults"].contains("CardDelay") && this->CFG["GameDefaults"]["CardDelay"].is_number()) {
@@ -190,7 +197,7 @@ void Config::FetchDefaults() {
 					this->VDefaultParams.CardDelay = Res;
 					this->VDefaultParams.CardDelayUsed = true;
 				}
-			};
+			}
 
 			/* AI Mode. */
 			if (this->CFG["GameDefaults"].contains("AIMode") && this->CFG["GameDefaults"]["AIMode"].is_number()) {
@@ -199,48 +206,49 @@ void Config::FetchDefaults() {
 					this->VDefaultParams.Method = (StackMem::AIMethod)Res;
 					this->VDefaultParams.AIUsed = true;
 				}
-			};
+			}
 
 			/* Rounds to win the game. */
 			if (this->CFG["GameDefaults"].contains("RoundsToWin") && this->CFG["GameDefaults"]["RoundsToWin"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["RoundsToWin"];
 				if (Res > 0 && Res < 256) this->VDefaultParams.RoundsToWin = Res; // Exist, 1 and 255 -> Good.
-			};
+			}
 
 			/* First character index. */
 			if (this->CFG["GameDefaults"].contains("Player1Idx") && this->CFG["GameDefaults"]["Player1Idx"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["Player1Idx"];
 				if (Res >= 0 && Res < (int)Utils::GetCharSheetSize()) this->VDefaultParams.Characters[0] = Res; // Smaller than the max amount -> Good.
-			};
+			}
 
 			/* Second character index. */
 			if (this->CFG["GameDefaults"].contains("Player2Idx") && this->CFG["GameDefaults"]["Player2Idx"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["Player2Idx"];
 				if (Res >= 0 && Res < (int)Utils::GetCharSheetSize()) this->VDefaultParams.Characters[1] = Res; // Smaller than the max amount -> Good.
-			};
+			}
 
 			/* First character name. */
 			if (this->CFG["GameDefaults"].contains("Player1Name") && this->CFG["GameDefaults"]["Player1Name"].is_string()) {
 				const std::string Res = this->CFG["GameDefaults"]["Player1Name"];
 
 				if (Res.size() < 17) this->VDefaultParams.Names[0] = Res; // Smaller than 17 characters -> Good.
-			};
+			}
 
 			/* Second character name. */
 			if (this->CFG["GameDefaults"].contains("Player2Name") && this->CFG["GameDefaults"]["Player2Name"].is_string()) {
 				const std::string Res = this->CFG["GameDefaults"]["Player2Name"];
 
 				if (Res.size() < 17) this->VDefaultParams.Names[1] = Res; // Smaller than 17 characters -> Good.
-			};
+			}
 
 			/* Round Starter. */
 			if (this->CFG["GameDefaults"].contains("RoundStarter") && this->CFG["GameDefaults"]["RoundStarter"].is_number()) {
 				const int Res = this->CFG["GameDefaults"]["RoundStarter"];
 				if (Res >= 0 && Res < 5) this->VDefaultParams.Starter = (GameSettings::RoundStarter)Res; // Smaller than the max amount -> Good.
-			};
+			}
 		}
 	}
 };
+
 
 /*
 	Set Default Game Config.
@@ -259,7 +267,7 @@ void Config::SetDefault(const GameSettings::GameParams &Defaults) {
 					this->CFG["GameDefaults"]["CardDelay"] = 0; // That'd work as well just fine, since we check the amount too.
 				}
 			}
-		};
+		}
 
 		/* AI Mode. */
 		if (Defaults.AIUsed) this->CFG["GameDefaults"]["AIMode"] = (uint8_t)Defaults.Method;
@@ -269,7 +277,7 @@ void Config::SetDefault(const GameSettings::GameParams &Defaults) {
 					this->CFG["GameDefaults"]["AIMode"] = -1; // Set to -1 because unused.
 				}
 			}
-		};
+		}
 
 		if (Defaults.RoundsToWin > 0) this->CFG["GameDefaults"]["RoundsToWin"] = Defaults.RoundsToWin; // Rounds needed to win the game.
 		this->CFG["GameDefaults"]["Player1Idx"] = Defaults.Characters[0]; // First character image index.
@@ -280,5 +288,5 @@ void Config::SetDefault(const GameSettings::GameParams &Defaults) {
 
 		this->VDefaultParams = Defaults; // Set new defaults to current session as well.
 		if (!this->ChangesMade) this->ChangesMade = true; // We modified it.
-	};
+	}
 };

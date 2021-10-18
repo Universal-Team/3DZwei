@@ -134,7 +134,7 @@ void CreditsOverlay::DrawPage(const int16_t Pg, const int AddOffs) {
 
 			Gui::DrawString(40 + AddOffs, 160, 0.5f, TEXT_WHITE, "Universal-Microwave: ");
 			Gui::DrawStringCentered(0 + AddOffs, 180, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS_UM"), 300, 20, nullptr, C2D_WordWrap);
-	};
+	}
 };
 
 
@@ -167,7 +167,7 @@ void CreditsOverlay::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		/* Bottom. */
 		GFX::DrawBottom();
@@ -181,7 +181,8 @@ void CreditsOverlay::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
+
 		C3D_FrameEnd(0);
 		this->Handler();
 	}
@@ -209,7 +210,7 @@ void CreditsOverlay::Handler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Fade-Out Handler. */
 	if (this->Done) {
@@ -220,7 +221,7 @@ void CreditsOverlay::Handler() {
 
 			if (this->FAlpha >= 255) this->FullDone = true;
 		}
-	};
+	}
 
 	/* Initial Swipe. */
 	if (this->InitialSwipe) {
@@ -242,7 +243,7 @@ void CreditsOverlay::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
@@ -277,7 +278,7 @@ void CreditsOverlay::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	Pointer::ScrollHandling(Held);
 	if (Repeat & KEY_L) this->PrevPage();

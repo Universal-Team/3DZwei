@@ -112,9 +112,10 @@ void LanguageSelector::Action() {
 		GFX::DrawTop();
 		Gui::DrawStringCentered(0 - this->Delay, 3, 0.6f, TEXT_WHITE, Lang::Get("LANG_SELECTOR_TITLE"), 395);
 		Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72 - this->Delay, 69); // Display Logo.
+
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->Delay > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->Delay));
-		};
+		}
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
@@ -165,7 +166,8 @@ void LanguageSelector::Action() {
 		Pointer::Draw();
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
-		};
+		}
+
 		C3D_FrameEnd(0);
 
 		if (this->Start) {
@@ -221,7 +223,7 @@ void LanguageSelector::Action() {
 				}
 			}
 		}
-	};
+	}
 
 	Pointer::SetPos(0, 0);
 };

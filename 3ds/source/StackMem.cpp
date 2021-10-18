@@ -180,7 +180,7 @@ void StackMem::AI::ClearMind() {
 		case StackMem::AIMethod::Extreme:
 			this->Mind.clear(); // The Medium, Hard and Extreme Method use the vector mind and hence needs to be cleared.
 			break;
-	};
+	}
 };
 
 
@@ -197,29 +197,28 @@ void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
 
 		case StackMem::AIMethod::Medium:
 		case StackMem::AIMethod::Hard:
-		case StackMem::AIMethod::Extreme:
-			{
-				bool Included[2] = { false }; // Included state.
-				const int Idxs[2] = { Idx1, Idx2 }; // The index to check.
+		case StackMem::AIMethod::Extreme: {
+			bool Included[2] = { false }; // Included state.
+			const int Idxs[2] = { Idx1, Idx2 }; // The index to check.
 
-				/* Check if that card is already included, so we don't have multiple of the same card. */
-				for (size_t Idx = 0; Idx < 2; Idx++) {
-					for (size_t Idx3 = 0; Idx3 < this->GetSize(); Idx3++) {
-						if (this->Mind[Idx3] == Idxs[Idx]) {
-							Included[Idx] = true;
-							break;
-						};
-					};
-				};
+			/* Check if that card is already included, so we don't have multiple of the same card. */
+			for (size_t Idx = 0; Idx < 2; Idx++) {
+				for (size_t Idx3 = 0; Idx3 < this->GetSize(); Idx3++) {
+					if (this->Mind[Idx3] == Idxs[Idx]) {
+						Included[Idx] = true;
+						break;
+					}
+				}
+			}
 
-				for (size_t Idx = 0; Idx < 2; Idx++) {
-					if (!Included[Idx]) this->Mind.push_back(Idxs[Idx]); // If not included -> Push it.
-				};
+			for (size_t Idx = 0; Idx < 2; Idx++) {
+				if (!Included[Idx]) this->Mind.push_back(Idxs[Idx]); // If not included -> Push it.
+			}
 
-				this->Mind.shrink_to_fit();
-			};
+			this->Mind.shrink_to_fit();
 			break;
-	};
+		}
+	}
 };
 
 
@@ -234,7 +233,7 @@ int StackMem::AI::GetMind(const size_t Idx) const {
 	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
 		/* Ensure Idx is larger THAN 0, and within the mind size. */
 		if ((Idx >= 0) && (Idx < this->GetSize())) return this->Mind[Idx]; // Return the index.
-	};
+	}
 
 	return -1;
 };
@@ -250,14 +249,14 @@ void StackMem::AI::EraseMind(const int Idx1, const int Idx2) {
 	if (this->GetMethod() != StackMem::AIMethod::Random) { // Ensure the AI is not the Random one.
 		if (this->Mind.empty()) return; // Already empty, so don't.
 
-		for (size_t Idx = this->GetSize() - 1; Idx > 0; Idx--) { // From last index to first, because erase.
+		for (ssize_t Idx = this->GetSize() - 1; Idx >= 0; Idx--) { // From last index to first, because erase.
 			if (this->Mind[Idx] == Idx1 || this->Mind[Idx] == Idx2) {
 				this->Mind.erase(this->Mind.begin() + Idx); // Included, so erase.
-			};
-		};
+			}
+		}
 
 		this->Mind.shrink_to_fit();
-	};
+	}
 };
 
 
@@ -324,11 +323,11 @@ void StackMem::InitializeGame(const size_t Pairs, const bool AIUsed, const Stack
 
 		} else {
 			this->_AI = std::make_unique<StackMem::AI>(Method); // Else initialize the AI.
-		};
+		}
 
 	} else { // In case the AI got disabled, set it to a nullptr.
 		if (this->_AI) this->_AI = nullptr;
-	};
+	}
 
 	/* Re-Seed the Random Engine. */
 	if (DoSeed) this->RandomEngine.seed(time(nullptr));
@@ -373,7 +372,7 @@ bool StackMem::CheckMatch() const {
 	&& (this->PlayCards[1] < ((int)this->GetPairs() * 2)) // Check if Second Play Card is in range.
 	&& (this->GetState() == StackMem::TurnState::DoCheck)) { // Check if TurnState is the Check state.
 		if (this->Gamefield[this->PlayCards[0]].CardType == this->Gamefield[this->PlayCards[1]].CardType) return true; // Match!
-	};
+	}
 
 	return false; // No match or not all requirements match.
 };
@@ -399,17 +398,17 @@ bool StackMem::DoCheck(const bool HideCards) {
 				case StackMem::Players::Player2:
 					this->PlayerPairs[1]++;
 					break;
-			};
+			}
 
 			/* Clean up the played cards from the AI's mind. */
 			if (this->AIEnabled() && this->_AI && this->_AI->GetMethod() != StackMem::AIMethod::Random) {
 				this->_AI->EraseMind(this->GetCardType(this->PlayCards[0]), this->GetCardType(this->PlayCards[1]));
-			};
+			}
 
 			/* Set that we used and collected it. */
 			if (HideCards) {
 				this->SetCardCollected(this->PlayCards[0], true); this->SetCardCollected(this->PlayCards[1], true);
-			};
+			}
 
 			return true;
 
@@ -421,9 +420,9 @@ bool StackMem::DoCheck(const bool HideCards) {
 			/* Optionally hide those automatically. This is set to false though on 3DZwei for animation purposes. */
 			if (HideCards) {
 				this->ResetTurn(false); // Hide the cards again.
-			};
-		};
-	};
+			}
+		}
+	}
 
 	/* Heh nope, index == -1 OR not matched. */
 	return false;
@@ -450,8 +449,8 @@ bool StackMem::DoPlay(const size_t Idx) {
 			this->PlayCards[1] = Idx;
 			this->State = StackMem::TurnState::DoCheck;
 			return true;
-		};
-	};
+		}
+	}
 
 	return false; // Card already shown.
 };
@@ -479,7 +478,7 @@ void StackMem::NextPlayer() {
 		case StackMem::Players::Player2:
 			this->SetCurrentPlayer(StackMem::Players::Player1);
 			break;
-	};
+	}
 
 	this->SetState(StackMem::TurnState::DrawFirst);
 };
@@ -496,7 +495,7 @@ StackMem::GameState StackMem::CheckGameState() const {
 		if (this->PlayerPairs[0] > this->PlayerPairs[1]) return StackMem::GameState::Player1; // Player 1 wins.
 		else if (this->PlayerPairs[1] > this->PlayerPairs[0]) return StackMem::GameState::Player2; // Player 2 wins.
 		else if (this->PlayerPairs[0] == this->PlayerPairs[1]) return StackMem::GameState::Tie; // No one wins.
-	};
+	}
 
 	return StackMem::GameState::NotOver; // Nah, Game is still going.
 };
@@ -526,7 +525,7 @@ int StackMem::AIRandomMethod() {
 	for (size_t Idx = 0; Idx < this->GetPairs() * 2; Idx++) {
 		/* Return available Indexes. */
 		if (!this->IsCardShown(Idx)) AvlIndexes.push_back(Idx); // Push back indexes.
-	};
+	}
 
 	/* Return a random index from the available indexes here. */
 	if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
@@ -548,8 +547,8 @@ int StackMem::AIMediumMethod() {
 			if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->PlayCards[0])) {
 				if (!this->IsCardShown(this->_AI->GetMind(Idx))) return this->_AI->GetMind(Idx);
 			}
-		};
-	};
+		}
+	}
 
 	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
 };
@@ -568,8 +567,8 @@ int StackMem::AIHardMethod() {
 		for (size_t Idx = 0; Idx < this->_AI->GetSize(); Idx++) {
 			if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->PlayCards[0])) {
 				if (!this->IsCardShown(this->_AI->GetMind(Idx))) return this->_AI->GetMind(Idx);
-			};
-		};
+			}
+		}
 
 		/* A different variant of random: Only play not known and available cards. */
 		std::vector<size_t> AvlIndexes;
@@ -583,15 +582,15 @@ int StackMem::AIHardMethod() {
 					if (this->_AI->GetMind(Idx2) == Idx) { // That card is known!
 						IsKnown = true;
 						break;
-					};
-				};
+					}
+				}
 
 				if (!IsKnown) AvlIndexes.push_back(Idx); // Push back indexes.
-			};
-		};
+			}
+		}
 
 		if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
-	};
+	}
 
 	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
 };
@@ -625,11 +624,11 @@ int StackMem::AIExtremeMethod() {
 							/* Check if CardType matches. */
 							if (this->GetCardType(this->_AI->GetMind(Idx)) == this->GetCardType(this->_AI->GetMind(Idx2))) {
 								return this->_AI->GetMind(Idx);
-							};
-						};
-					};
-				};
-			};
+							}
+						}
+					}
+				}
+			}
 
 			/* A different variant of random: Only play not known and available cards. */
 			std::vector<size_t> AvlIndexes;
@@ -643,18 +642,18 @@ int StackMem::AIExtremeMethod() {
 						if (this->_AI->GetMind(Idx2) == Idx) { // That card is known!
 							IsKnown = true;
 							break;
-						};
-					};
+						}
+					}
 
 					if (!IsKnown) AvlIndexes.push_back(Idx); // Push back indexes.
-				};
-			};
+				}
+			}
 
 			if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
 
 			/* That should solve it for us. You ONLY need the Extreme Method on the DrawFirst State. */
 		} else if (this->GetState() == StackMem::TurnState::DrawSecond) return this->AIHardMethod();
-	};
+	}
 
 	return this->AIRandomMethod(); // No AI, or no proper matches found, do Random Method.
 };
@@ -672,8 +671,8 @@ int StackMem::AIPlay() {
 			case StackMem::AIMethod::Medium: return this->AIMediumMethod(); // Predict on second card state and totally randomly if no matches.
 			case StackMem::AIMethod::Hard: return this->AIHardMethod(); // Predict on second card state and not totally randomly if no matches.
 			case StackMem::AIMethod::Extreme: return this->AIExtremeMethod(); // Predict on first card state.
-		};
-	};
+		}
+	}
 
 	return this->AIRandomMethod(); // AI disabled, or invalid -> Random Method.
 };
@@ -688,11 +687,12 @@ int StackMem::GetProperPair() const {
 	if (this->GetState() != StackMem::TurnState::DrawFirst) {
 		for (size_t Idx = 0; Idx < this->GetPairs() * 2; Idx++) {
 			if ((this->GetCardType(Idx) == this->GetCardType(this->PlayCards[0]))) return Idx;
-		};
-	};
+		}
+	}
 
 	return -1; // It would normally only return -1, if you are on the DrawFirst State.
 };
+
 
 /* Sets a random Player as the Current Player using the Random Engine. */
 void StackMem::SelectRandomPlayer() {
@@ -706,8 +706,9 @@ void StackMem::SelectRandomPlayer() {
 		case 2:
 			this->SetCurrentPlayer(StackMem::Players::Player2);
 			break;
-	};
+	}
 };
+
 
 /*
 	Get the AI's Method.
@@ -720,6 +721,7 @@ StackMem::AIMethod StackMem::GetMethod() const {
 	return StackMem::AIMethod::Random;
 };
 
+
 /*
 	Resets a turn by resetting the Playcards and set to hidden
 
@@ -728,7 +730,7 @@ StackMem::AIMethod StackMem::GetMethod() const {
 void StackMem::ResetTurn(const bool Correct) {
 	if (!Correct) {
 		this->SetCardShown(this->PlayCards[0], false); this->SetCardShown(this->PlayCards[1], false);
-	};
+	}
 
 	this->PlayCards[0] = -1, this->PlayCards[1] = -1;
 };

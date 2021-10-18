@@ -73,7 +73,7 @@ void SettingsOverlay::Action() {
 				}
 			}
 		}
-	};
+	}
 };
 
 
@@ -193,7 +193,7 @@ void SettingsOverlay::SetGameDefaults() {
 		std::unique_ptr<GameSettings> Ovl = std::make_unique<GameSettings>(_3DZwei::CFG->GetDefault(), true);
 		const GameSettings::GameParams P = Ovl->Action();
 		if (!P.CancelGame) _3DZwei::CFG->SetDefault(P); // Only set if NOT cancelled.
-	};
+	}
 };
 
 /* Toggle if animations are allowed. */
@@ -207,7 +207,7 @@ void SettingsOverlay::SwitchGameAnim() {
 	if (this->Tab == SettingsTab::Animation && _3DZwei::CFG->DoAnimation()) {
 		if (_3DZwei::CFG->GameAnimation() < 2) _3DZwei::CFG->GameAnimation(_3DZwei::CFG->GameAnimation() + 1);
 		else _3DZwei::CFG->GameAnimation(0);
-	};
+	}
 };
 
 
@@ -302,7 +302,7 @@ void SettingsOverlay::DrawTabs() const {
 
 		Gui::DrawString(15 + this->CurTabOffs[0], this->Positions[9].Y + 5 - (Lang::Get("SETTINGS_GAME_DEFAULTS").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("SETTINGS_GAME_DEFAULTS"), 125, 15, nullptr, C2D_WordWrap);
 		Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, this->Positions[9].X + this->CurTabOffs[0], this->Positions[9].Y);
-	};
+	}
 
 	/* Only draw between -320 and 320. */
 	if (this->CurTabOffs[1] >= -320 && this->CurTabOffs[1] <= 320) { // Animations.
@@ -327,7 +327,7 @@ void SettingsOverlay::DrawTabs() const {
 				case 2: // Growing Cards.
 					Gui::DrawString(200 + this->CurTabOffs[1], this->AnimPos[4].Y + 5 - (Lang::Get("SETTINGS_GAME_ANIMATION_GROW").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("SETTINGS_GAME_ANIMATION_GROW"), 110);
 					break;
-			};
+			}
 
 			/* Visual Page Switch. */
 			Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[5].Y + 5 - (Lang::Get("SETTINGS_PAGE_SWITCH").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("SETTINGS_PAGE_SWITCH"), 125, 15, nullptr, C2D_WordWrap);
@@ -337,7 +337,7 @@ void SettingsOverlay::DrawTabs() const {
 			Gui::DrawString(15 + this->CurTabOffs[1], this->AnimPos[6].Y + 5 - (Lang::Get("SETTINGS_FADE").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("SETTINGS_FADE"), 125, 15, nullptr, C2D_WordWrap);
 			GFX::DrawCheckbox(this->AnimPos[6].X + this->CurTabOffs[1], this->AnimPos[6].Y, _3DZwei::CFG->DoFade());
 		}
-	};
+	}
 
 	/* Only draw between -320 and 320. */
 	if (this->CurTabOffs[2] >= -320 && this->CurTabOffs[2] <= 320) { // App Info.
@@ -349,7 +349,7 @@ void SettingsOverlay::DrawTabs() const {
 		Gui::DrawStringCentered(0 + this->CurTabOffs[2], 130, 0.4f, TEXT_WHITE,
 			"[UI]: Reworking the UI colors a bit.",
 		310);
-	};
+	}
 
 	/* Back Icon. */
 	Gui::Draw_Rect(this->Positions[10].X, this->Positions[10].Y, this->Positions[10].W, this->Positions[10].H, BAR_BLUE);
@@ -387,7 +387,7 @@ void SettingsOverlay::FadeOutHandler() {
 
 			if (this->FAlpha >= 255) this->FadeOut = false;
 		}
-	};
+	}
 };
 
 
@@ -411,7 +411,7 @@ void SettingsOverlay::FadeInHandler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 };
 
 
@@ -454,7 +454,7 @@ void SettingsOverlay::TabHandler() {
 
 			return; // Don't do the below action if initial state.
 		}
-	};
+	}
 
 	hidScanInput();
 	const uint32_t Down = hidKeysDown();
@@ -517,5 +517,5 @@ void SettingsOverlay::TabHandler() {
 				this->ToSwipe = 0.0f, this->Swipe = 0.0f; // Reset.
 			}
 		}
-	};
+	}
 };

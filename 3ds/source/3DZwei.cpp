@@ -71,7 +71,7 @@ _3DZwei::_3DZwei() {
 	if (_3DZwei::CFG->ShowSplash()) {
 		std::unique_ptr<SplashOverlay> Ovl = std::make_unique<SplashOverlay>();
 		Ovl->Action();
-	};
+	}
 
 	hidSetRepeatParameters(25, 5);
 	srand(time(nullptr)); // Seed for rand() usage on animation.
@@ -151,7 +151,7 @@ void _3DZwei::FadeOutHandler() {
 
 			if (this->FAlpha >= 255) this->FadeOut = false;
 		}
-	};
+	}
 };
 
 
@@ -173,7 +173,7 @@ void _3DZwei::FadeInHandler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 };
 
 
@@ -233,7 +233,7 @@ int _3DZwei::Action() {
 				this->FullExit = true;
 			}
 		}
-	};
+	}
 
 	/* De-init everything. */
 	_3DZwei::CFG->Sav();

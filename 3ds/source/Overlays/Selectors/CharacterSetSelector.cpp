@@ -43,7 +43,7 @@ CharacterSetSelector::CharacterSetSelector() {
 			/* Make sure it has the .t3x file extension. */
 			if (S[Idx].substr(S[Idx].size() - 4) == ".t3x") this->CharSets.push_back(S[Idx]);
 		}
-	};
+	}
 };
 
 
@@ -58,7 +58,7 @@ void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSele
 			if (Idx > this->CharSets.size() - 1) return; // Too large.
 			this->SelectedSet = Idx;
 		}
-	};
+	}
 
 	if (Idx < this->CharSets.size()) { // Ensure it's smaller than the size.
 		if (!First) this->OldCharsetOut();
@@ -79,7 +79,7 @@ void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSele
 		/* Swipe new selected charset in. */
 		this->CurPos = -400;
 		this->CharSwipeIn = true;
-	};
+	}
 };
 
 
@@ -110,7 +110,7 @@ void CharacterSetSelector::OldCharsetOut() {
 				Done = true;
 			}
 		}
-	};
+	}
 };
 
 
@@ -254,7 +254,7 @@ void CharacterSetSelector::Draw() {
 	if (this->SetGood) {
 		if (this->CharSwipeIn || this->CharSwipeOut) {
 			this->DrawCharacter(this->CharPage, this->CurPos);
-		};
+		}
 
 		if (this->DoSwipe) { // We swipe.
 			this->DrawCharacter(this->CharPage, this->CurPos);
@@ -283,8 +283,8 @@ void CharacterSetSelector::Draw() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
-	};
+		}
+	}
 
 	GFX::DrawBottom();
 	if (this->ModeSwitch) {
@@ -312,7 +312,7 @@ void CharacterSetSelector::Draw() {
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-	};
+	}
 
 	C3D_FrameEnd(0);
 };
@@ -326,11 +326,11 @@ std::string CharacterSetSelector::Action() {
 	while(aptMainLoop() && !this->FullDone) {
 		this->Draw();
 		this->Handler();
-	};
+	}
 
 	if (this->SetGood) {
 		if (this->PreviewSheet) C2D_SpriteSheetFree(this->PreviewSheet); // We don't need the Preview anymore, so free the Spritesheet.
-	};
+	}
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
@@ -346,22 +346,22 @@ void CharacterSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, c
 	if (Repeat & KEY_DDOWN) {
 		this->NextSet();
 		if (Pointer::Show) Pointer::Show = false;
-	};
+	}
 
 	if (Repeat & KEY_DUP) {
 		this->LastSet();
 		if (Pointer::Show) Pointer::Show = false;
-	};
+	}
 
 	if (Down & KEY_DRIGHT) {
 		if (this->SetGood) {
 			this->IsSelecting = false, this->ModeSwitch = true;
 		}
-	};
+	}
 
 	if (Down & KEY_START) {
 		if (this->SetGood) this->Confirm();
-	};
+	}
 
 	if (Repeat & KEY_L) this->PrevChar();
 	if (Repeat & KEY_R) this->NextChar();
@@ -378,13 +378,13 @@ void CharacterSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, c
 				this->ModeSwitch = true;
 			}
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->SetPos) {
 			if (Touched(Pos, T, true)) break;
 		}
-	};
+	}
 
 	/* Scroll. */
 	if (this->SelectedSet < this->SetListPos) this->SetListPos = this->SelectedSet;
@@ -401,19 +401,19 @@ void CharacterSetSelector::HandleChar(const uint32_t Down, const uint32_t Held, 
 
 	if (Down & KEY_START) {
 		if (this->SetGood) this->Confirm();
-	};
+	}
 
 	if (Repeat & KEY_A) {
 		for (auto &Pos : this->Positions) {
 			if (Pointer::Clicked(Pos, true)) break;
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->BottomPos) {
 			if (Touched(Pos, T, true)) break;
 		}
-	};
+	}
 };
 
 
@@ -435,7 +435,7 @@ void CharacterSetSelector::Handler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Handle initial swipe. */
 	if (this->InitialSwipe) {
@@ -454,7 +454,7 @@ void CharacterSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	if (this->CharSwipeIn) {
 		if (!_3DZwei::CFG->DoAnimation() || Down) {
@@ -472,7 +472,7 @@ void CharacterSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Handle FADE-OUTs. */
 	if (this->Done) {
@@ -485,7 +485,7 @@ void CharacterSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Handle Mode SWIPEs. */
 	if (this->ModeSwitch) {
@@ -493,7 +493,7 @@ void CharacterSetSelector::Handler() {
 			this->Cubic = 0.0f, this->ModeSwitch = false;
 
 			return;
-		};
+		}
 
 		if (this->Cubic < 320.0f) {
 			this->Cubic = std::lerp(this->Cubic, 321.0f, 0.2f);
@@ -502,7 +502,7 @@ void CharacterSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Swipe Handler. */
 	if (this->DoSwipe) {
@@ -528,7 +528,7 @@ void CharacterSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	if (this->IsSelecting) this->HandleSet(Down, Held, Repeat, T);
 	else this->HandleChar(Down, Held, Repeat, T);

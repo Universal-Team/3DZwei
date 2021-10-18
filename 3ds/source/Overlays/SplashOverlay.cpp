@@ -132,7 +132,7 @@ void SplashOverlay::State4() {
 				}
 			}
 		}
-	};
+	}
 
 	if (this->FlipDone[1] && this->CoreMoved == 320) this->State = States::FadeOut;
 };
@@ -198,7 +198,7 @@ void SplashOverlay::Action() {
 		Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, this->X, this->Y);
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		GFX::DrawBottom();
 		if (this->State != States::FadeOut) Gui::DrawSprite(GFX::Sprites, sprites_stackmemcore_idx, 32 - this->CoreMoved, 52);
@@ -211,12 +211,12 @@ void SplashOverlay::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		C3D_FrameEnd(0);
 		hidScanInput();
 		const uint32_t Down = hidKeysDown();
 		if (Down) this->Done = true; // Any key -> Skip.
 		this->StateHandler();
-	};
+	}
 };

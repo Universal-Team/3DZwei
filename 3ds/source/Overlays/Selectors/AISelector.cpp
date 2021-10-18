@@ -111,9 +111,10 @@ StackMem::AIMethod AISelector::Action() {
 		Gui::DrawStringCentered(0, this->Positions[2].Y + 3, 0.6f, TEXT_WHITE, Lang::Get("SELECT"));
 
 		Pointer::Draw();
+
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 
 		GFX::DrawBottom();
 		Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, 190)); // Darker screen.
@@ -129,7 +130,8 @@ StackMem::AIMethod AISelector::Action() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
+
 		C3D_FrameEnd(0);
 		this->Handler();
 	}
@@ -158,7 +160,7 @@ void AISelector::Handler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Fade-Out Handler. */
 	if (this->Done) {
@@ -169,7 +171,7 @@ void AISelector::Handler() {
 
 			if (this->FAlpha >= 255) this->FullDone = true;
 		}
-	};
+	}
 
 	/* Initial Swipe. */
 	if (this->InitialSwipe) {
@@ -188,7 +190,7 @@ void AISelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Swipe Logic. */
 	if (this->DoSwipe) {
@@ -218,7 +220,7 @@ void AISelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	Pointer::ScrollHandling(Held);
 	if (Down & KEY_L) this->PrevMode();

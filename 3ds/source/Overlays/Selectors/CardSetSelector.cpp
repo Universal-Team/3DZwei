@@ -45,7 +45,7 @@ CardSetSelector::CardSetSelector() {
 			/* Make sure it has the .t3x file extension. */
 			if (S[Idx].substr(S[Idx].size() - 4) == ".t3x") this->CardSets.push_back(S[Idx]);
 		}
-	};
+	}
 };
 
 
@@ -60,7 +60,7 @@ void CardSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection
 			if (Idx > this->CardSets.size() - 1) return; // Too large.
 			this->SelectedSet = Idx;
 		}
-	};
+	}
 
 	if (Idx < this->CardSets.size()) { // Ensure it's smaller than the size.
 		if (!First) this->OldCardsetOut();
@@ -87,12 +87,12 @@ void CardSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection
 					this->CardFlipped.push_back(true);
 				}
 			}
-		};
+		}
 
 		/* Swipe new selected cardset in. */
 		this->CurCardPos = -400;
 		this->CardSwipeIn = true;
-	};
+	}
 };
 
 
@@ -123,7 +123,7 @@ void CardSetSelector::OldCardsetOut() {
 				Done = true;
 			}
 		}
-	};
+	}
 };
 
 
@@ -244,6 +244,7 @@ void CardSetSelector::DrawSetList(const int AddOffs) {
 	GFX::DrawCornerEdge(false, this->SetPos[6].X + AddOffs, this->SetPos[6].Y, this->SetPos[6].H, this->SelectedSet < (int)this->CardSets.size() - 1);
 };
 
+
 /*
 	Draws the bottom of the Card Selector.
 
@@ -286,7 +287,7 @@ void CardSetSelector::Draw() {
 	if (this->SetGood) {
 		if (this->CardSwipeIn || this->CardSwipeOut) {
 			this->DrawCardPage(this->CardPage, this->CurCardPos);
-		};
+		}
 
 		if (this->CardSwipe) { // We swipe.
 			this->DrawCardPage(this->CardPage, this->CurCardPos); // Draw current page.
@@ -304,7 +305,7 @@ void CardSetSelector::Draw() {
 
 		if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 			if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-		};
+		}
 	}
 
 	GFX::DrawBottom();
@@ -337,7 +338,7 @@ void CardSetSelector::Draw() {
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-	};
+	}
 
 	C3D_FrameEnd(0);
 };
@@ -352,11 +353,11 @@ std::string CardSetSelector::Action() {
 	while(aptMainLoop() && !this->FullDone) {
 		this->Draw();
 		this->Handler();
-	};
+	}
 
 	if (this->SetGood) {
 		if (this->PreviewSheet) C2D_SpriteSheetFree(this->PreviewSheet); // We don't need the Preview anymore, so free the Spritesheet.
-	};
+	}
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
@@ -379,23 +380,23 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 	if (Repeat & KEY_DDOWN) {
 		this->NextSet();
 		if (Pointer::Show) Pointer::Show = false;
-	};
+	}
 
 	if (Repeat & KEY_DUP) {
 		this->LastSet();
 		if (Pointer::Show) Pointer::Show = false;
-	};
+	}
 
 	if (Down & KEY_DRIGHT) {
 		if (this->SetGood) {
 			this->IsSelecting = false;
 			this->ModeSwitch = true;
 		}
-	};
+	}
 
 	if (Down & KEY_START) {
 		if (this->SetGood) this->Confirm();
-	};
+	}
 
 	if (Repeat & KEY_L) this->PrevCardPage();
 	if (Repeat & KEY_R) this->NextCardPage();
@@ -412,13 +413,13 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 				this->ModeSwitch = true;
 			}
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->SetPos) {
 			if (Touched(Pos, T, true)) break;
 		}
-	};
+	}
 
 	/* Scroll. */
 	if (this->SelectedSet < this->SetListPos) this->SetListPos = this->SelectedSet;
@@ -442,19 +443,19 @@ void CardSetSelector::HandleCard(const uint32_t Down, const uint32_t Held, const
 
 	if (Down & KEY_START) {
 		if (this->SetGood) this->Confirm();
-	};
+	}
 
 	if (Repeat & KEY_A) {
 		for (auto &Pos : this->Positions) {
 			if (Pointer::Clicked(Pos, true)) break;
 		}
-	};
+	}
 
 	if (Repeat & KEY_TOUCH) {
 		for (auto &Pos : this->BottomPos) {
 			if (Touched(Pos, T, true)) break;
 		}
-	};
+	}
 };
 
 
@@ -476,7 +477,7 @@ void CardSetSelector::Handler() {
 
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
-	};
+	}
 
 	/* Handle initial swipe. */
 	if (this->InitialSwipe) {
@@ -495,7 +496,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 
 	if (this->CardSwipeIn) {
@@ -514,7 +515,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Handle FADE-OUTs. */
 	if (this->Done) {
@@ -527,7 +528,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Handle Mode SWIPEs. */
 	if (this->ModeSwitch) {
@@ -543,7 +544,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	/* Handle CARD FLIPs. */
 	if (this->FlipCard && (this->ToFlip != -1) && (this->ToFlip <= (int)this->CardFlipped.size())) { // Focus on card flip.
@@ -572,7 +573,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return; // Do NOT do anything else.
-	};
+	}
 
 	/* Handle CARD SWIPEs. */
 	if (this->CardSwipe) {
@@ -597,7 +598,7 @@ void CardSetSelector::Handler() {
 		}
 
 		return;
-	};
+	}
 
 	if (this->IsSelecting) this->HandleSet(Down, Held, Repeat, T);
 	else this->HandleCard(Down, Held, Repeat, T);

@@ -50,7 +50,7 @@ GameSettings::GameSettings(const GameSettings::GameParams &Defaults, const bool 
 void GameSettings::ToggleAI() {
 	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		this->Params.AIUsed = !this->Params.AIUsed;
-	};
+	}
 };
 
 
@@ -68,7 +68,7 @@ void GameSettings::ToggleGameMode() {
 		case GameSettings::GameModes::Solo:
 			this->Params.GameMode = GameSettings::GameModes::Versus;
 			break;
-	};
+	}
 };
 
 
@@ -94,7 +94,7 @@ void GameSettings::ToggleStarter() {
 		case GameSettings::RoundStarter::Winner:
 			this->Params.Starter = GameSettings::RoundStarter::Player1;
 			break;
-	};
+	}
 };
 
 
@@ -107,8 +107,8 @@ void GameSettings::SelectAIMethod() {
 			std::unique_ptr<AISelector> Ovl = std::make_unique<AISelector>(this->Params.Method);
 			this->Params.Method = Ovl->Action();
 			this->FAlpha = 255;
-		};
-	};
+		}
+	}
 };
 
 
@@ -145,7 +145,7 @@ void GameSettings::SelectPicture(const bool AI) {
 			if (Res > -1 && Res < 256) this->Params.Characters[1] = Res;
 
 			this->FAlpha = 255;
-		};
+		}
 
 	} else {
 		this->FadeOut();
@@ -155,7 +155,7 @@ void GameSettings::SelectPicture(const bool AI) {
 		if (Res > -1 && Res < 256) this->Params.Characters[0] = Res;
 
 		this->FAlpha = 255;
-	};
+	}
 };
 
 
@@ -173,7 +173,7 @@ void GameSettings::SetWinRounds() {
 	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		std::unique_ptr<Numpad> Ovl = std::make_unique<Numpad>(3, this->Params.RoundsToWin, 255, Lang::Get("GAME_SETTINGS_ROUND_WIN_TXT"));
 		this->Params.RoundsToWin = Ovl->Action();
-	};
+	}
 };
 
 
@@ -201,9 +201,10 @@ void GameSettings::Draw(const bool IsSetting) {
 	GFX::DrawTop();
 	Gui::DrawStringCentered(0, 3, 0.6f, TEXT_WHITE, (IsSetting ? Lang::Get("SETTINGS_GAME_DEFAULTS") : Lang::Get("GAME_SETTINGS_TITLE")), 395);
 	Gui::DrawSprite(GFX::Sprites, sprites_logo_idx, 72, 69); // Display Logo.
+
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-	};
+	}
 
 	GFX::DrawBottom();
 
@@ -227,7 +228,7 @@ void GameSettings::Draw(const bool IsSetting) {
 			case GameSettings::GameModes::Solo:
 				Gui::DrawString(190 + this->T1Offs, this->GeneralPos[2].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_GM_TRIES"), 120);
 				break;
-		};
+		}
 
 
 		/* Using Card Delay. */
@@ -270,15 +271,15 @@ void GameSettings::Draw(const bool IsSetting) {
 					case StackMem::AIMethod::Extreme:
 						Gui::DrawString(240 + this->T1Offs, this->GeneralPos[6].Y + 5, 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_AI_EXTREME"), 70);
 						break;
-				};
+				}
 			}
 
 			/* Rounds to win Value. */
 			Gui::DrawString(15 + this->T1Offs, this->GeneralPos[8].Y + 5 - (Lang::Get("GAME_SETTINGS_ROUND_WIN").length() / 25 * 10 / 2), 0.4f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_ROUND_WIN"), 125, 15, nullptr, C2D_WordWrap);
 			Gui::DrawSprite(GFX::Sprites, sprites_stripe_idx, 150 + this->T1Offs, this->GeneralPos[8].Y);
 			Gui::DrawString(190 + this->T1Offs, this->GeneralPos[8].Y + 5, 0.4f, TEXT_WHITE, std::to_string(this->Params.RoundsToWin));
-		};
-	};
+		}
+	}
 
 	/* Only draw Players Tab, if the Tab is smaller as 320. */
 	if (this->T2Offs < 320) {
@@ -294,7 +295,7 @@ void GameSettings::Draw(const bool IsSetting) {
 			Gui::DrawSprite(GFX::Sprites, sprites_outline_idx, 168 + this->T2Offs, 28);
 			Gui::Draw_Rect(177 + this->T2Offs, 159, 106, 20, BAR_BLUE);
 			Gui::DrawString(180 + this->T2Offs, 162, 0.45f, TEXT_WHITE, this->Params.Names[1], 100);
-		};
+		}
 
 		if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available in Versus Mode.
 			Gui::DrawString(15 + this->T2Offs, 200, 0.5f, TEXT_WHITE, Lang::Get("GAME_SETTINGS_STARTER"), 130);
@@ -322,7 +323,7 @@ void GameSettings::Draw(const bool IsSetting) {
 					break;
 			}
 		}
-	};
+	}
 
 	Gui::Draw_Rect(this->GeneralPos[9].X, this->GeneralPos[9].Y, this->GeneralPos[9].W, this->GeneralPos[9].H, BAR_BLUE); // Back.
 	Gui::DrawSprite(GFX::Sprites, sprites_back_btn_idx, this->GeneralPos[9].X, this->GeneralPos[9].Y);
@@ -332,7 +333,7 @@ void GameSettings::Draw(const bool IsSetting) {
 
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
-	};
+	}
 };
 
 
@@ -352,7 +353,7 @@ void GameSettings::FadeOut() {
 		const uint32_t Down = hidKeysDown();
 		if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) || Down) this->FAlpha = 255;
 		else this->FAlpha += 5;
-	};
+	}
 };
 
 
@@ -377,7 +378,7 @@ GameSettings::GameParams GameSettings::Action() {
 		this->Draw(this->IsSetting);
 		C3D_FrameEnd(0);
 		this->TabLogic();
-	};
+	}
 
 	Pointer::SetPos(0, 0);
 	return this->Params;
@@ -401,7 +402,7 @@ void GameSettings::TabLogic() {
 		}
 
 		return;
-	};
+	}
 
 	/* Basically Fade-In handler. */
 	if (this->FAlpha > 0) {
@@ -431,7 +432,7 @@ void GameSettings::TabLogic() {
 		}
 
 		return;
-	};
+	}
 
 	/* Swipe Handling. */
 	if (this->DoSwipe) {
@@ -486,7 +487,7 @@ void GameSettings::TabLogic() {
 		}
 
 		return;
-	};
+	}
 
 	touchPosition T;
 	hidTouchRead(&T);
@@ -526,5 +527,5 @@ void GameSettings::TabLogic() {
 				}
 			}
 			break;
-	};
+	}
 };
