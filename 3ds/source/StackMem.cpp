@@ -1,6 +1,6 @@
 /*
 *   This file is part of StackMem
-*   Copyright (C) 2021 SuperSaiyajinStackZ
+*   Copyright (C) 2021-2023 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -150,8 +150,8 @@
 
 
 #include "StackMem.hpp" // main include.
-#include <algorithm> // std::shuffle.
-#include <ctime> // time().
+#include <algorithm>    // std::shuffle.
+#include <ctime>        // time().
 
 
 /*
@@ -163,7 +163,7 @@
 
 	const StackMem::AIMethod Method: The AI's Method.
 */
-StackMem::AI::AI(const StackMem::AIMethod Method) { this->Method = Method; };
+StackMem::AI::AI(const StackMem::AIMethod Method) { this->Method = Method; }
 
 
 /*
@@ -181,7 +181,7 @@ void StackMem::AI::ClearMind() {
 			this->Mind.clear(); // The Medium, Hard and Extreme Method use the vector mind and hence needs to be cleared.
 			break;
 	}
-};
+}
 
 
 /*
@@ -219,7 +219,7 @@ void StackMem::AI::UpdateMind(const int Idx1, const int Idx2) {
 			break;
 		}
 	}
-};
+}
 
 
 /*
@@ -236,7 +236,7 @@ int StackMem::AI::GetMind(const size_t Idx) const {
 	}
 
 	return -1;
-};
+}
 
 
 /*
@@ -257,7 +257,7 @@ void StackMem::AI::EraseMind(const int Idx1, const int Idx2) {
 
 		this->Mind.shrink_to_fit();
 	}
-};
+}
 
 
 
@@ -276,7 +276,7 @@ void StackMem::AI::EraseMind(const int Idx1, const int Idx2) {
 */
 StackMem::StackMem(const size_t Pairs, const bool AIUsed, const StackMem::AIMethod Method) {
 	this->InitializeGame(Pairs, AIUsed, Method, true); // Initialization.
-};
+}
 
 
 /*
@@ -301,7 +301,7 @@ void StackMem::GenerateField(const size_t Pairs) {
 
 	this->Gamefield.shrink_to_fit(); // No need for useless allocation here.
 	this->Pairs = Pairs; // Also properly update the Pair amount.
-};
+}
 
 
 /*
@@ -338,7 +338,7 @@ void StackMem::InitializeGame(const size_t Pairs, const bool AIUsed, const Stack
 	this->PlayCards[0] = -1, this->PlayCards[1] = -1; // Set both turn play cards to -1.
 	this->CurrentPlayer = StackMem::Players::Player1; // Set to Player 1.
 	this->State = StackMem::TurnState::DrawFirst; // The current State is drawing the first card.
-};
+}
 
 
 /* Get and Set Card Collected State. */
@@ -346,10 +346,10 @@ bool StackMem::IsCardCollected(const size_t Idx) const {
 	if (Idx < (this->GetPairs() * 2)) return this->Gamefield[Idx].Collected;
 
 	return true;
-};
+}
 void StackMem::SetCardCollected(const size_t Idx, const bool Collected) {
 	if (Idx < (this->GetPairs() * 2)) this->Gamefield[Idx].Collected = Collected;
-};
+}
 
 
 /* Get and Set Card Shown State. */
@@ -357,10 +357,10 @@ bool StackMem::IsCardShown(const size_t Idx) const {
 	if (Idx < (this->GetPairs() * 2)) return this->Gamefield[Idx].Shown;
 
 	return false;
-};
+}
 void StackMem::SetCardShown(const size_t Idx, const bool Shown) {
 	if (Idx < (this->GetPairs() * 2)) this->Gamefield[Idx].Shown = Shown;
-};
+}
 
 
 /* Return if both played cards matches. */
@@ -375,7 +375,7 @@ bool StackMem::CheckMatch() const {
 	}
 
 	return false; // No match or not all requirements match.
-};
+}
 
 
 /*
@@ -426,7 +426,7 @@ bool StackMem::DoCheck(const bool HideCards) {
 
 	/* Heh nope, index == -1 OR not matched. */
 	return false;
-};
+}
 
 
 /*
@@ -453,7 +453,7 @@ bool StackMem::DoPlay(const size_t Idx) {
 	}
 
 	return false; // Card already shown.
-};
+}
 
 
 /*
@@ -465,7 +465,7 @@ int StackMem::GetCardType(const size_t Idx) const {
 	if (Idx > (this->GetPairs() * 2) - 1) return -1; // Out of scope.
 
 	return this->Gamefield[Idx].CardType;
-};
+}
 
 
 /* Set the next Player. */
@@ -481,7 +481,7 @@ void StackMem::NextPlayer() {
 	}
 
 	this->SetState(StackMem::TurnState::DrawFirst);
-};
+}
 
 
 /*
@@ -498,7 +498,7 @@ StackMem::GameState StackMem::CheckGameState() const {
 	}
 
 	return StackMem::GameState::NotOver; // Nah, Game is still going.
-};
+}
 
 
 /*
@@ -508,7 +508,7 @@ StackMem::GameState StackMem::CheckGameState() const {
 */
 size_t StackMem::GetPlayerPairs(const StackMem::Players P) const {
 	return (P == StackMem::Players::Player1 ? this->PlayerPairs[0] : this->PlayerPairs[1]);
-};
+}
 
 
 /*
@@ -530,7 +530,7 @@ int StackMem::AIRandomMethod() {
 	/* Return a random index from the available indexes here. */
 	if (!AvlIndexes.empty()) return AvlIndexes[this->RandomEngine() % (AvlIndexes.size() - 1) + 0];
 	return -1;
-};
+}
 
 
 /*
@@ -551,7 +551,7 @@ int StackMem::AIMediumMethod() {
 	}
 
 	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
-};
+}
 
 
 /*
@@ -593,7 +593,7 @@ int StackMem::AIHardMethod() {
 	}
 
 	return this->AIRandomMethod(); // Do Random Method, cause either AI is not used, or no card matches for a proper play.
-};
+}
 
 
 /*
@@ -656,7 +656,7 @@ int StackMem::AIExtremeMethod() {
 	}
 
 	return this->AIRandomMethod(); // No AI, or no proper matches found, do Random Method.
-};
+}
 
 
 /*
@@ -675,7 +675,7 @@ int StackMem::AIPlay() {
 	}
 
 	return this->AIRandomMethod(); // AI disabled, or invalid -> Random Method.
-};
+}
 
 
 /*
@@ -691,7 +691,7 @@ int StackMem::GetProperPair() const {
 	}
 
 	return -1; // It would normally only return -1, if you are on the DrawFirst State.
-};
+}
 
 
 /* Sets a random Player as the Current Player using the Random Engine. */
@@ -707,7 +707,7 @@ void StackMem::SelectRandomPlayer() {
 			this->SetCurrentPlayer(StackMem::Players::Player2);
 			break;
 	}
-};
+}
 
 
 /*
@@ -719,7 +719,7 @@ StackMem::AIMethod StackMem::GetMethod() const {
 	if (this->AIEnabled() && this->_AI) return this->_AI->GetMethod();
 
 	return StackMem::AIMethod::Random;
-};
+}
 
 
 /*
@@ -733,4 +733,4 @@ void StackMem::ResetTurn(const bool Correct) {
 	}
 
 	this->PlayCards[0] = -1, this->PlayCards[1] = -1;
-};
+}

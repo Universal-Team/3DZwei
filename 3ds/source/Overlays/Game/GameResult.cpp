@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ GameResult::GameResult() {
 		this->DoSwipe = false, this->Delay = 0;
 		this->InitialScroll = false, this->ScrollIdx = 0; // No animation.
 	}
-};
+}
 
 
 /*
@@ -47,7 +47,7 @@ void GameResult::DrawCardBG(const size_t Page, const int AddOffs) {
 	for (size_t Idx = (Page * 12), Idx2 = 0; Idx < (Page * 12) + 12 && Idx < Utils::Cards.size(); Idx++, Idx2++) {
 		GFX::DrawCard(Idx, this->InitialScrollPos[Idx2].X, this->InitialScrollPos[Idx2].Y + AddOffs);
 	}
-};
+}
 
 
 /*
@@ -102,7 +102,7 @@ void GameResult::DrawOver(const bool P2Wins, const GameSettings::GameParams &Par
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
 	}
-};
+}
 
 /*
 	Draws the versus results.
@@ -162,7 +162,7 @@ void GameResult::DrawVersus(const bool P2Wins, const GameSettings::GameParams &P
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
 	}
-};
+}
 
 /*
 	Draws the Solo play mode.
@@ -191,7 +191,7 @@ void GameResult::DrawSolo(const GameSettings::GameParams &Params) {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->Delay > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->Delay));
 	}
-};
+}
 
 
 /*
@@ -262,7 +262,7 @@ void GameResult::Action(GameSettings::GameParams &Params, const uint8_t Won) {
 	if (Params.GameMode == GameSettings::GameModes::Versus) {
 		for (uint8_t Idx = 0; Idx < 2; Idx++) Params.PlayerPairs[Idx] = 0;
 	}
-};
+}
 
 
 /* The Handler. */
@@ -342,4 +342,4 @@ void GameResult::Handler() {
 			}
 		}
 	}
-};
+}

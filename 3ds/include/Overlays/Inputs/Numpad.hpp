@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public:
 	Numpad(const int MaxLength, const int OldNum, const int MaxVal, const std::string &Text);
 	int Action();
 private:
-	int MaxLength = 0, MaxVal = 0, Res = 0;
+	int MaxLength    = 0, MaxVal = 0, Res = 0;
 	std::string Text = "";
 	SwkbdState State;
 };

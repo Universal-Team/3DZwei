@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ void CreditsOverlay::PrevPage() {
 		this->SwipeDirection = true;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Go to the next Page. */
@@ -43,11 +43,11 @@ void CreditsOverlay::NextPage() {
 		this->SwipeDirection = false;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Give an OK. */
-void CreditsOverlay::OK() { this->Done = true; };
+void CreditsOverlay::OK() { this->Done = true; }
 
 
 /*
@@ -135,7 +135,7 @@ void CreditsOverlay::DrawPage(const int16_t Pg, const int AddOffs) {
 			Gui::DrawString(40 + AddOffs, 160, 0.5f, TEXT_WHITE, "Universal-Microwave: ");
 			Gui::DrawStringCentered(0 + AddOffs, 180, 0.45f, TEXT_WHITE, Lang::Get("CREDITS_SPECIAL_THANKS_UM"), 300, 20, nullptr, C2D_WordWrap);
 	}
-};
+}
 
 
 /* Main Action. */
@@ -189,7 +189,7 @@ void CreditsOverlay::Action() {
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
-};
+}
 
 
 /* Action Handler. */
@@ -297,4 +297,4 @@ void CreditsOverlay::Handler() {
 	}
 
 	if (Down & KEY_START || Down & KEY_B) this->OK(); // Exit with START or B as well.
-};
+}

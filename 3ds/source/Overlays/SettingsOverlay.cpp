@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ void SettingsOverlay::Action() {
 			}
 		}
 	}
-};
+}
 
 
 /* Switch to the config tab. */
@@ -85,7 +85,7 @@ void SettingsOverlay::ConfigTab() {
 		this->ToSwipe = (this->Tab == SettingsTab::Animation ? 320.0f : 640.0f);
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Switch to the app info tab. */
@@ -96,7 +96,7 @@ void SettingsOverlay::AppinfoTab() {
 		this->ToSwipe = (this->Tab == SettingsTab::Configuration ? 640.0f : 320.0f);
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Switch to the animation tab. */
@@ -107,7 +107,7 @@ void SettingsOverlay::AnimationTab() {
 		this->ToSwipe = 320.0f;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Select the Language. */
@@ -120,7 +120,7 @@ void SettingsOverlay::SelectLang() {
 
 		this->FadeInHandler();
 	}
-};
+}
 
 
 /* Select a cardset. */
@@ -139,7 +139,7 @@ void SettingsOverlay::SelectCardSet() {
 
 		this->FadeInHandler();
 	}
-};
+}
 
 
 /* Select a character set. */
@@ -157,13 +157,13 @@ void SettingsOverlay::SelectCharSet() {
 
 		this->FadeInHandler();
 	}
-};
+}
 
 
 /* Toggle if the splash is shown at startup. */
 void SettingsOverlay::ToggleSplash() {
 	if (this->Tab == SettingsTab::Configuration) _3DZwei::CFG->ShowSplash(!_3DZwei::CFG->ShowSplash());
-};
+}
 
 
 /* Display the Splash cause why not. */
@@ -176,7 +176,7 @@ void SettingsOverlay::ShowSplash() {
 
 		this->FadeInHandler();
 	}
-};
+}
 
 
 /* Set the Pointer movement speed. */
@@ -185,7 +185,7 @@ void SettingsOverlay::SetPointerSpeed() {
 		std::unique_ptr<Numpad> Ovl = std::make_unique<Numpad>(3, _3DZwei::CFG->PointerSpeed(), 255, Lang::Get("SETTINGS_POINTER_SPEED_TXT"));
 		_3DZwei::CFG->PointerSpeed(Ovl->Action());
 	}
-};
+}
 
 /* Set Game Defaults. */
 void SettingsOverlay::SetGameDefaults() {
@@ -194,12 +194,12 @@ void SettingsOverlay::SetGameDefaults() {
 		const GameSettings::GameParams P = Ovl->Action();
 		if (!P.CancelGame) _3DZwei::CFG->SetDefault(P); // Only set if NOT cancelled.
 	}
-};
+}
 
 /* Toggle if animations are allowed. */
 void SettingsOverlay::ToggleAnimation() {
 	if (this->Tab == SettingsTab::Animation) _3DZwei::CFG->DoAnimation(!_3DZwei::CFG->DoAnimation());
-};
+}
 
 
 /* Change the Game-Start Animation. */
@@ -208,26 +208,26 @@ void SettingsOverlay::SwitchGameAnim() {
 		if (_3DZwei::CFG->GameAnimation() < 2) _3DZwei::CFG->GameAnimation(_3DZwei::CFG->GameAnimation() + 1);
 		else _3DZwei::CFG->GameAnimation(0);
 	}
-};
+}
 
 
 /* Toggle if allowing to visually switch the game pages. */
 void SettingsOverlay::TogglePageSwitch() {
 	if (this->Tab == SettingsTab::Animation) _3DZwei::CFG->PageSwitch(!_3DZwei::CFG->PageSwitch());
-};
+}
 
 
 /* Toggle Fade Effects. */
 void SettingsOverlay::ToggleFade() {
 	if (this->Tab == SettingsTab::Animation) _3DZwei::CFG->DoFade(!_3DZwei::CFG->DoFade());
-};
+}
 
 
 /* Go back to the Main 3DZwei Overlay. */
 void SettingsOverlay::Back() {
 	this->FadeOutHandler();
 	this->Done = true;
-};
+}
 
 
 /* Draw the Top. */
@@ -241,7 +241,7 @@ void SettingsOverlay::DrawTop() const {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}
-};
+}
 
 /* Return the proper config language. */
 std::string SettingsOverlay::GetLanguage() const {
@@ -257,7 +257,7 @@ std::string SettingsOverlay::GetLanguage() const {
 	if (_3DZwei::CFG->Lang() == "ru") return "Русский";
 
 	return "";
-};
+}
 
 
 /* Draw the Tabs. */
@@ -359,7 +359,7 @@ void SettingsOverlay::DrawTabs() const {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}
-};
+}
 
 
 /* Fade Handlers. */
@@ -388,7 +388,7 @@ void SettingsOverlay::FadeOutHandler() {
 			if (this->FAlpha >= 255) this->FadeOut = false;
 		}
 	}
-};
+}
 
 
 void SettingsOverlay::FadeInHandler() {
@@ -412,7 +412,7 @@ void SettingsOverlay::FadeInHandler() {
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
 	}
-};
+}
 
 
 void SettingsOverlay::TabHandler() {
@@ -518,4 +518,4 @@ void SettingsOverlay::TabHandler() {
 			}
 		}
 	}
-};
+}

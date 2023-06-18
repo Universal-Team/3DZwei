@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ AISelector::AISelector(const StackMem::AIMethod Method) {
 			this->Mode = 3;
 			break;
 	}
-};
+}
 
 
 void AISelector::PrevMode() {
@@ -56,7 +56,7 @@ void AISelector::PrevMode() {
 		this->SwipeDirection = true;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 void AISelector::NextMode() {
@@ -64,15 +64,15 @@ void AISelector::NextMode() {
 		this->SwipeDirection = false;
 		this->DoSwipe = true;
 	}
-};
+}
 
-void AISelector::OK() { this->Done = true; };
+void AISelector::OK() { this->Done = true; }
 
 
 void AISelector::Cancel() {
 	this->Cancelled = true;
 	this->Done = true;
-};
+}
 
 
 void AISelector::DrawPage(const int16_t Pg, const int AddOffs) {
@@ -80,7 +80,7 @@ void AISelector::DrawPage(const int16_t Pg, const int AddOffs) {
 		Gui::DrawStringCentered(0 + AddOffs, 3, 0.6f, TEXT_WHITE, Lang::Get("AI_METHOD") + Lang::Get(this->Modes[Pg]), 395);
 		Gui::DrawStringCentered(0 + AddOffs, 70, 0.5f, TEXT_WHITE, Lang::Get(this->ModeDesc[Pg]), 330, 140, nullptr, C2D_WordWrap);
 	}
-};
+}
 
 
 StackMem::AIMethod AISelector::Action() {
@@ -140,7 +140,7 @@ StackMem::AIMethod AISelector::Action() {
 	Pointer::SetPos(0, 0);
 	if (!this->Cancelled) this->Res = (StackMem::AIMethod)this->Mode; // Only set if NOT cancelled.
 	return this->Res;
-};
+}
 
 
 /* Action Handler. */
@@ -239,4 +239,4 @@ void AISelector::Handler() {
 	}
 
 	if (Down & KEY_START || Down & KEY_B) this->OK(); // Exit with START or B as well.
-};
+}

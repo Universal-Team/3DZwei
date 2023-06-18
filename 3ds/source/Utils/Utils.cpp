@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ void Utils::InitCards(const bool Init) {
 			}
 		}
 	}
-};
+}
 
 
 /*
@@ -64,7 +64,7 @@ void Utils::InitNewCardSheet() {
 	} else { // 9- -> enable all pairs.
 		for (size_t Idx = 0; Idx < Utils::GetCardSheetSize(); Idx++) Utils::Cards.push_back(Idx);
 	}
-};
+}
 
 
 /*
@@ -78,7 +78,7 @@ size_t Utils::GetCardSheetSize() {
 	}
 
 	return 0;
-};
+}
 
 
 /*
@@ -88,7 +88,7 @@ size_t Utils::GetCharSheetSize() {
 	if (GFX::Characters) return C2D_SpriteSheetCount(GFX::Characters);
 
 	return 0;
-};
+}
 
 
 /*
@@ -118,7 +118,7 @@ bool Utils::CheckSetContent(const std::string &Set, const bool CheckChars) {
 	}
 
 	return ((!Set.empty()) && (Set == "3DZwei-RomFS"));
-};
+}
 
 
 /*
@@ -143,7 +143,7 @@ void Utils::LoadCardSet(const std::string &Set) {
 			_3DZwei::CFG->CardSet("3DZwei-RomFS"); // Set 3DZwei-RomFS else to Cardset.
 		}
 	}
-};
+}
 
 
 /*
@@ -168,4 +168,4 @@ void Utils::LoadCharSet(const std::string &Set) {
 			_3DZwei::CFG->CharSet("3DZwei-RomFS"); // Set 3DZwei-RomFS else to Charset.
 		}
 	}
-};
+}

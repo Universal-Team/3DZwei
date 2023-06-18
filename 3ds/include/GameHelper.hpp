@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ public:
 	void DrawField(const bool ShowPointer = true) const;
 
 	LogicState Logic(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition T);
-	GameSettings::GameParams &ReturnParams() { return this->Params; };
+	GameSettings::GameParams &ReturnParams() { return this->Params; }
 private:
 	std::unique_ptr<StackMem> Game = nullptr;
 	GameSettings::GameParams Params = { };

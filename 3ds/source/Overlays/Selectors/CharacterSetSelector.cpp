@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ CharacterSetSelector::CharacterSetSelector() {
 			if (S[Idx].substr(S[Idx].size() - 4) == ".t3x") this->CharSets.push_back(S[Idx]);
 		}
 	}
-};
+}
 
 
 void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection, const bool First) {
@@ -80,7 +80,7 @@ void CharacterSetSelector::PreviewSelection(const size_t Idx, const bool SetSele
 		this->CurPos = -400;
 		this->CharSwipeIn = true;
 	}
-};
+}
 
 
 /*
@@ -111,7 +111,7 @@ void CharacterSetSelector::OldCharsetOut() {
 			}
 		}
 	}
-};
+}
 
 
 /* Go to the previous character. */
@@ -122,7 +122,7 @@ void CharacterSetSelector::PrevChar() {
 			this->DoSwipe = true;
 		}
 	}
-};
+}
 
 
 /* Go to the last characteset. */
@@ -132,7 +132,7 @@ void CharacterSetSelector::LastSet() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the previous characteset page. */
@@ -143,7 +143,7 @@ void CharacterSetSelector::PrevSetPage() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the next character. */
@@ -154,7 +154,7 @@ void CharacterSetSelector::NextChar() {
 			this->DoSwipe = true;
 		}
 	}
-};
+}
 
 
 /* Go to the next characteset  page. */
@@ -164,7 +164,7 @@ void CharacterSetSelector::NextSet() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the next character set. */
@@ -175,17 +175,17 @@ void CharacterSetSelector::NextSetPage() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Return, if a next character is available. */
 bool CharacterSetSelector::CanGoNext() const {
 	return (((this->CharPage * 3) + 3) < (int)C2D_SpriteSheetCount(this->PreviewSheet));
-};
+}
 
 
-void CharacterSetSelector::Cancel() { this->IsSelecting = true, this->ModeSwitch = true; };
-void CharacterSetSelector::Confirm() { this->Res = true, this->Done = true; };
+void CharacterSetSelector::Cancel() { this->IsSelecting = true, this->ModeSwitch = true; }
+void CharacterSetSelector::Confirm() { this->Res = true, this->Done = true; }
 
 
 /*
@@ -202,7 +202,7 @@ void CharacterSetSelector::DrawCharacter(const int Page, const int AddOffs) {
 			}
 		}
 	}
-};
+}
 
 
 /*
@@ -219,7 +219,7 @@ void CharacterSetSelector::DrawSetList(const int AddOffs) {
 
 	GFX::DrawCornerEdge(true, this->SetPos[0].X + AddOffs, this->SetPos[0].Y, this->SetPos[0].H, this->SelectedSet > 0);
 	GFX::DrawCornerEdge(false, this->SetPos[6].X + AddOffs, this->SetPos[6].Y, this->SetPos[6].H, this->SelectedSet < (int)this->CharSets.size() - 1);
-};
+}
 
 
 /*
@@ -236,7 +236,7 @@ void CharacterSetSelector::DrawCharBottom(const int AddOffs) {
 
 	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->CharPage >= 1);
 	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->CanGoNext());
-};
+}
 
 
 void CharacterSetSelector::Draw() {
@@ -315,7 +315,7 @@ void CharacterSetSelector::Draw() {
 	}
 
 	C3D_FrameEnd(0);
-};
+}
 
 
 std::string CharacterSetSelector::Action() {
@@ -336,7 +336,7 @@ std::string CharacterSetSelector::Action() {
 	Pointer::SetPos(0, 0);
 	if (this->Res) return this->CharSets[this->SelectedSet];
 	return "";
-};
+}
 
 
 void CharacterSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T) {
@@ -389,7 +389,7 @@ void CharacterSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, c
 	/* Scroll. */
 	if (this->SelectedSet < this->SetListPos) this->SetListPos = this->SelectedSet;
 	else if (this->SelectedSet > this->SetListPos + SETS_PER_SCREEN - 1) this->SetListPos = this->SelectedSet - SETS_PER_SCREEN + 1;
-};
+}
 
 
 void CharacterSetSelector::HandleChar(const uint32_t Down, const uint32_t Held, const uint32_t Repeat, const touchPosition &T) {
@@ -414,7 +414,7 @@ void CharacterSetSelector::HandleChar(const uint32_t Down, const uint32_t Held, 
 			if (Touched(Pos, T, true)) break;
 		}
 	}
-};
+}
 
 
 /* Main HANDLER. */
@@ -532,4 +532,4 @@ void CharacterSetSelector::Handler() {
 
 	if (this->IsSelecting) this->HandleSet(Down, Held, Repeat, T);
 	else this->HandleChar(Down, Held, Repeat, T);
-};
+}

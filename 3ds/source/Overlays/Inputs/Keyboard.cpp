@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ Keyboard::Keyboard(const int MaxLength, const std::string &OldString, const std:
 	swkbdInit(&this->State, SWKBD_TYPE_NORMAL, 2, this->MaxLength);
 	swkbdSetHintText(&this->State, this->Text.c_str());
 	swkbdSetValidation(&this->State, SWKBD_NOTBLANK_NOTEMPTY, SWKBD_FILTER_PROFANITY, 0);
-};
+}
 
 
 /* The keyboard action. */
@@ -64,4 +64,4 @@ std::string Keyboard::Action() {
 	SwkbdButton Ret = swkbdInputText(&this->State, Input, sizeof(Input));
 	Input[this->MaxLength] = '\0';
 	return (Ret == SWKBD_BUTTON_CONFIRM ? Input : this->Res);
-};
+}

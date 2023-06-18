@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@
 #include "sprites.h"
 #include <vector>
 
-#define BAR_BLUE C2D_Color32(36, 52, 81, 255) // Darker Blue.
-#define BG_BLUE C2D_Color32(52, 64, 120, 255) // Lighter Blue.
+#define BAR_BLUE   C2D_Color32(36, 52, 81, 255)    // Darker Blue.
+#define BG_BLUE    C2D_Color32(52, 64, 120, 255)   // Lighter Blue.
 #define TEXT_WHITE C2D_Color32(216, 228, 228, 255) // Not #FFFFFF, it's a bit darker White.
 
 namespace GFX {
@@ -47,6 +47,6 @@ namespace GFX {
 	void DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, const int YSize, const bool DrawArrow = true);
 	void DrawCheckbox(const int PosX, const int PosY, const bool Checked = false, const bool OnList = false);
 	void DrawCard(const size_t Idx, const int X, const int Y, const float ScaleX = 1.0f, const float ScaleY = 1.0f);
-};
+}
 
 #endif

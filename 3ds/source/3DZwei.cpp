@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -75,7 +75,7 @@ _3DZwei::_3DZwei() {
 
 	hidSetRepeatParameters(25, 5);
 	srand(time(nullptr)); // Seed for rand() usage on animation.
-};
+}
 
 
 /* Prepare a Game. */
@@ -91,7 +91,7 @@ void _3DZwei::PrepareGame() {
 	}
 
 	this->OverlayReturn();
-};
+}
 
 
 /* Show the 3DZwei Rules. */
@@ -102,7 +102,7 @@ void _3DZwei::ShowRules() {
 	Ovl->Action();
 
 	this->OverlayReturn();
-};
+}
 
 
 /* Access the Settings. */
@@ -114,7 +114,7 @@ void _3DZwei::AccessSettings() {
 
 	this->OverlayReturn();
 	if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) && (this->FAlpha > 0)) this->FAlpha = 0; // Don't blackscreen.
-};
+}
 
 
 /* Show the 3DZwei Credits. */
@@ -125,11 +125,11 @@ void _3DZwei::ShowCredits() {
 	Ovl->Action();
 
 	this->OverlayReturn();
-};
+}
 
 
 /* Returns back to an overlay. */
-void _3DZwei::OverlayReturn() { this->FadeInHandler(); };
+void _3DZwei::OverlayReturn() { this->FadeInHandler(); }
 
 
 /* Fade Handlers. */
@@ -152,7 +152,7 @@ void _3DZwei::FadeOutHandler() {
 			if (this->FAlpha >= 255) this->FadeOut = false;
 		}
 	}
-};
+}
 
 
 void _3DZwei::FadeInHandler() {
@@ -174,7 +174,7 @@ void _3DZwei::FadeInHandler() {
 			if (this->FAlpha <= 0) this->FadeIn = false;
 		}
 	}
-};
+}
 
 
 void _3DZwei::Draw() {
@@ -197,7 +197,7 @@ void _3DZwei::Draw() {
 	Pointer::Draw();
 	if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	C3D_FrameEnd(0);
-};
+}
 
 
 /* MAIN Logic. */
@@ -243,10 +243,10 @@ int _3DZwei::Action() {
 	gfxExit();
 
 	return 0;
-};
+}
 
 
 int main() {
 	std::unique_ptr<_3DZwei> Ovl = std::make_unique<_3DZwei>(); // Init everything.
 	return Ovl->Action(); // Run app + handle main loop.
-};
+}

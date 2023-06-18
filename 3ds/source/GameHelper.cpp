@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 
 	Expects a GameSettings::GameParams to start with.
 */
-GameHelper::GameHelper(const GameSettings::GameParams Params) { this->StartGame(false, Params, true); };
+GameHelper::GameHelper(const GameSettings::GameParams Params) { this->StartGame(false, Params, true); }
 
 
 /*
@@ -89,7 +89,7 @@ void GameHelper::StartGame(const bool AlreadyInitialized, const GameSettings::Ga
 	this->Page = 0;
 	Pointer::SetPos(this->CPos[this->Selection].X + 10, this->CPos[this->Selection].Y + 10);
 	this->StartGameAnimation(); // Initial Animation when starting a game.
-};
+}
 
 
 /* Least amount of tries Play Draw. */
@@ -117,7 +117,7 @@ void GameHelper::DrawTryPlay(void) const {
 			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
 		}
 	}
-};
+}
 
 
 /* Normal Play Draw. */
@@ -163,13 +163,13 @@ void GameHelper::DrawNormalPlay(void) const {
 			Gui::DrawStringCentered(0, 225, 0.4f, TEXT_WHITE, Lang::Get("GAME_SCREEN_ANY_KEY"), 390);
 		}
 	}
-};
+}
 
 
 void GameHelper::DrawTop(void) const {
 	if (this->Params.GameMode == GameSettings::GameModes::Solo) this->DrawTryPlay();
 	else this->DrawNormalPlay();
-};
+}
 
 
 /*
@@ -235,7 +235,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 	} else {
 		Pointer::Draw();
 	}
-};
+}
 
 
 /*
@@ -243,7 +243,7 @@ void GameHelper::DrawField(const bool ShowPointer) const {
 
 	const size_t CurPage: The current page which should be checked, if you can go forward.
 */
-bool GameHelper::CanGoForward(const size_t CurPage) const { return ((CurPage * 20) + 20 < (this->Game->GetPairs() * 2)); };
+bool GameHelper::CanGoForward(const size_t CurPage) const { return ((CurPage * 20) + 20 < (this->Game->GetPairs() * 2)); }
 
 
 /*
@@ -257,7 +257,7 @@ bool GameHelper::PrevPage() {
 	}
 
 	return false;
-};
+}
 
 
 /*
@@ -271,7 +271,7 @@ bool GameHelper::NextPage() {
 	}
 
 	return false;
-};
+}
 
 
 /*
@@ -283,7 +283,7 @@ void GameHelper::CheckCard(const uint8_t Idx) {
 	if (((this->Page * 20) + Idx < this->Game->GetPairs() * 2)) {
 		if (!this->Game->IsCardShown((this->Page * 20) + Idx)) this->PickAnimation((this->Page * 20) + Idx);
 	}
-};
+}
 
 
 /* Get the amount of indexes for a specified Pairs amount. */
@@ -306,7 +306,7 @@ uint8_t GameHelper::GetIndexCount() const {
 
 	if (this->Game->GetPairs() >= 10) return 8;
 	else return 0;
-};
+}
 
 
 /*
@@ -427,7 +427,7 @@ std::vector<uint8_t> GameHelper::GetAnimationIdx(const uint8_t Round) const {
 	}
 
 	return { 0 };
-};
+}
 
 
 /*
@@ -545,7 +545,7 @@ void GameHelper::StartGameAnimationFalling() {
 
 		if ((Dones == (int)AnimationIdxs.size()) && (!DoSwipe)) Done = true; // Set to done when the move / fade delay is over.. and the cards too.
 	}
-};
+}
 
 
 /*
@@ -633,7 +633,7 @@ void GameHelper::StartGameAnimationGrowing() {
 
 		if ((CCard == ToInit) && (!DoSwipe)) Done = true; // Set to done when the move / fade delay is over.. and the cards too.
 	}
-};
+}
 
 
 /* The Start Animation of the game. */
@@ -664,7 +664,7 @@ void GameHelper::StartGameAnimation() {
 				break;
 		}
 	}
-};
+}
 
 
 /*
@@ -802,7 +802,7 @@ void GameHelper::PageAnimation(const bool Forward) {
 	}
 
 	this->Page = NewPage; // Set the new page.
-};
+}
 
 
 /*
@@ -958,7 +958,7 @@ void GameHelper::AIPageAnimation(const int Page) {
 	}
 
 	this->Page = Page; // Set the new page.
-};
+}
 
 
 /*
@@ -1016,7 +1016,7 @@ void GameHelper::PickAnimation(const size_t Idx) {
 	}
 
 	this->RefreshFrame = true; // Refresh the frame.
-};
+}
 
 
 /*
@@ -1026,7 +1026,7 @@ void GameHelper::HideAnimation() {
 	if (!_3DZwei::CFG->DoAnimation()) {
 		this->CardClicked[0] = false, this->CardClicked[1] = false;
 		return; // No Animation.
-	};
+	}
 
 	bool Done = false;
 	float Cubic = 0.0f;
@@ -1070,7 +1070,7 @@ void GameHelper::HideAnimation() {
 	}
 
 	this->RefreshFrame = true;
-};
+}
 
 
 /*
@@ -1114,7 +1114,7 @@ void GameHelper::ShrinkAnimation() {
 	}
 
 	this->RefreshFrame = true; // Refresh the frame.
-};
+}
 
 
 /*
@@ -1169,7 +1169,7 @@ void GameHelper::EndGameAnimation() {
 			}
 		}
 	}
-};
+}
 
 
 /*
@@ -1244,7 +1244,7 @@ GameHelper::LogicState GameHelper::TurnChecks() {
 	if (this->Params.GameMode == GameSettings::GameModes::Solo) this->Params.Guesses[0]++; // Increase the total guesses.
 	this->RefreshFrame = true; // Refresh frame.
 	return GameHelper::LogicState::Nothing; // Nothing special.
-};
+}
 
 
 /*
@@ -1337,7 +1337,7 @@ GameHelper::LogicState GameHelper::PlayerLogic(const uint32_t Down, const uint32
 	}
 
 	return GameHelper::LogicState::Nothing;
-};
+}
 
 
 /*
@@ -1376,7 +1376,7 @@ GameHelper::LogicState GameHelper::AILogic(const uint32_t Down) {
 	}
 
 	return GameHelper::LogicState::Nothing;
-};
+}
 
 
 /*
@@ -1461,4 +1461,4 @@ GameHelper::LogicState GameHelper::Logic(const uint32_t Down, const uint32_t Hel
 	}
 
 	return GameHelper::LogicState::Nothing;
-};
+}

@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -35,9 +35,9 @@ bool Pointer::OnTop = false, Pointer::Show = true;
 /* Sizes of the pointer + distances. */
 #define PTR_X_SIZE 19
 #define PTR_Y_SIZE 16
-#define X_DIST 3
-#define Y_DIST 4
-#define PTR_SPEED _3DZwei::CFG->PointerSpeed() // Pointer Speed.
+#define X_DIST      3
+#define Y_DIST      4
+#define PTR_SPEED  _3DZwei::CFG->PointerSpeed() // Pointer Speed.
 
 
 /*
@@ -90,7 +90,7 @@ void Pointer::ScrollHandling(const uint32_t Held, const bool InGame) {
 	if (Pointer::X > (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE) Pointer::X = (Pointer::OnTop ? 400 : 320) - PTR_X_SIZE;
 	if (Pointer::Y < -Y_DIST) Pointer::Y = -Y_DIST;
 	if (Pointer::Y > (240 - PTR_Y_SIZE)) Pointer::Y = (240 - PTR_Y_SIZE);
-};
+}
 
 
 /*
@@ -108,7 +108,7 @@ bool Pointer::Clicked(const FuncCallback CBack, const bool CallFunc) {
 	}
 
 	return false;
-};
+}
 
 
 /*
@@ -125,13 +125,13 @@ bool Touched(const FuncCallback CBack, touchPosition T, const bool CallFunc) {
 	}
 
 	return false;
-};
+}
 
 
 /* Draw the Pointer. */
-void Pointer::Draw() { if (Pointer::Show) Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, Pointer::X, Pointer::Y); };
+void Pointer::Draw() { if (Pointer::Show) Gui::DrawSprite(GFX::Sprites, sprites_pointer_idx, Pointer::X, Pointer::Y); }
 
 
 /* Set Pointer Position from two float's, or the Pointer Struct. */
-void Pointer::SetPos(const FuncCallback CBack) { Pointer::X = CBack.X, Pointer::Y = CBack.Y; };
-void Pointer::SetPos(const float X, const float Y) { Pointer::X = X, Pointer::Y = Y; };
+void Pointer::SetPos(const FuncCallback CBack) { Pointer::X = CBack.X, Pointer::Y = CBack.Y; }
+void Pointer::SetPos(const float X, const float Y) { Pointer::X = X, Pointer::Y = Y; }

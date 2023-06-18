@@ -1,6 +1,6 @@
 /*
 *   This file is part of StackMem
-*   Copyright (C) 2021 SuperSaiyajinStackZ
+*   Copyright (C) 2021-2023 SuperSaiyajinStackZ
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 #include <random> // std::mt19937.
 #include <vector> // std::vector.
 
+
 /*
 	StackMem's main class implementation.
 	Written by SuperSaiyajinStackZ.
@@ -38,10 +39,10 @@
 class StackMem {
 public:
 	/* All used enum classes, which also need to be accessible for outside this class because of checks, here. */
-	enum class AIMethod : uint8_t { Random = 0, Medium = 1, Hard = 2, Extreme = 3 }; // AI Methods.
-	enum class TurnState : uint8_t { DrawFirst = 0, DrawSecond = 1, DoCheck = 2 }; // The Current Turn State.
+	enum class AIMethod  : uint8_t { Random = 0, Medium = 1, Hard = 2, Extreme = 3 };  // AI Methods.
+	enum class TurnState : uint8_t { DrawFirst = 0, DrawSecond = 1, DoCheck = 2 };     // The Current Turn State.
 	enum class GameState : uint8_t { NotOver = 0, Tie = 1, Player1 = 2, Player2 = 3 }; // The Game State.
-	enum class Players : uint8_t { Player1 = 0, Player2 = 1 }; // The Current Player.
+	enum class Players   : uint8_t { Player1 = 0, Player2 = 1 };                       // The Current Player.
 
 	StackMem(const size_t Pairs = 10, const bool AIUsed = true, const AIMethod Method = AIMethod::Random);
 
@@ -63,18 +64,18 @@ public:
 	bool DoCheck(const bool HideCards = true);
 	bool DoPlay(const size_t Idx = 0);
 	GameState CheckGameState() const;
-	size_t GetPairs() const { return this->Pairs; }; // Get the amount of Pairs used in the Current Game.
+	size_t GetPairs() const { return this->Pairs; } // Get the amount of Pairs used in the Current Game.
 	size_t GetPlayerPairs(const Players P) const;
 	int GetProperPair() const;
-	bool AIEnabled() const { return this->AIUsed; }; // Get if the AI is enabled / used whatever.
+	bool AIEnabled() const { return this->AIUsed; } // Get if the AI is enabled / used whatever.
 
 	/* Turn State related things. */
-	TurnState GetState() const { return this->State; }; // Gets the Current State.
-	void SetState(const TurnState State) { this->State = State; }; // Sets the Current State.
+	TurnState GetState() const { return this->State; } // Gets the Current State.
+	void SetState(const TurnState State) { this->State = State; } // Sets the Current State.
 
 	/* Player related things. */
-	Players GetCurrentPlayer() const { return this->CurrentPlayer; }; // Gets the Current Player.
-	void SetCurrentPlayer(const Players P) { this->CurrentPlayer = P; }; // Sets the Current Player.
+	Players GetCurrentPlayer() const { return this->CurrentPlayer; } // Gets the Current Player.
+	void SetCurrentPlayer(const Players P) { this->CurrentPlayer = P; } // Sets the Current Player.
 	void NextPlayer();
 	void SelectRandomPlayer();
 
@@ -83,7 +84,7 @@ public:
 	AIMethod GetMethod() const;
 
 	/* Returns the Turn cards. */
-	int GetTurnCard(const uint8_t Idx) const { return this->PlayCards[Idx]; };
+	int GetTurnCard(const uint8_t Idx) const { return this->PlayCards[Idx]; }
 	void ResetTurn(const bool Correct);
 private:
 	std::mt19937 RandomEngine;
@@ -115,9 +116,9 @@ private:
 		void EraseMind(const int Idx1, const int Idx2);
 
 		/* Some other Get and Set's. */
-		size_t GetSize() const { return this->Mind.size(); };
-		AIMethod GetMethod() const { return this->Method; };
-		void SetMethod(const AIMethod Method) { this->Method = Method; };
+		size_t GetSize() const { return this->Mind.size(); }
+		AIMethod GetMethod() const { return this->Method; }
+		void SetMethod(const AIMethod Method) { this->Method = Method; }
 	private:
 		std::vector<int> Mind = { }; // The mind for the Hard + Extreme AI Method.
 		AIMethod Method = AIMethod::Random; // The Method of the AI.

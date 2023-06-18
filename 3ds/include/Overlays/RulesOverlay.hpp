@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ public:
 		this->X = this->Cards[7].X + 20, this->Y = this->Cards[7].Y + 20;
 		this->CardScale[0] = 1.0f, this->CardScale[1] = 1.0f;
 		this->CardFlipped[0] = false, this->CardFlipped[1] = false;
-	};
+	}
 	void Action();
 private:
 	enum class States : uint8_t {

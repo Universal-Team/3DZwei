@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ C2D_SpriteSheet GFX::Cards = nullptr, GFX::Characters = nullptr, GFX::Sprites = 
 /* Load all Spritesheets. */
 void GFX::LoadSheets() {
 	Gui::loadSheet("romfs:/gfx/sprites.t3x", GFX::Sprites);
-};
+}
 
 
 /* Unload all Spritesheets. */
@@ -43,7 +43,7 @@ void GFX::UnloadSheets() {
 	if (GFX::Cards) Gui::unloadSheet(GFX::Cards); // Need a special check in place, because it potential could also be not loaded.
 	if (GFX::Characters) Gui::unloadSheet(GFX::Characters); // Need a special check in place, because it potential could also be not loaded.
 	Gui::unloadSheet(GFX::Sprites);
-};
+}
 
 
 /* Draws the Top Screen base. */
@@ -51,14 +51,14 @@ void GFX::DrawTop() {
 	Gui::ScreenDraw(Top);
 	Gui::Draw_Rect(0, 0, 400, 25, BAR_BLUE);
 	Gui::Draw_Rect(0, 25, 400, 215, BG_BLUE);
-};
+}
 
 
 /* Draws the Bottom Screen base. */
 void GFX::DrawBottom() {
 	Gui::ScreenDraw(Bottom);
 	Gui::Draw_Rect(0, 0, 320, 240, BG_BLUE);
-};
+}
 
 
 /*
@@ -83,7 +83,7 @@ void GFX::DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, co
 		Gui::DrawSprite(GFX::Sprites, sprites_corner_idx, XPos, YPos + YSize - 25, -1.0f, -1.0f);
 		if (DrawArrow) Gui::DrawSprite(GFX::Sprites, sprites_arrow_idx, XPos, YPos + ((YSize / 2) - (39 / 2)), -1.0f, 1.0f);
 	}
-};
+}
 
 
 /*
@@ -97,7 +97,7 @@ void GFX::DrawCornerEdge(const bool LeftSide, const int XPos, const int YPos, co
 void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked, const bool OnList) {
 	Gui::DrawSprite(GFX::Sprites, (OnList ? sprites_checkbox_light_idx : sprites_checkbox_dark_idx), PosX, PosY);
 	if (Checked) Gui::DrawSprite(GFX::Sprites, sprites_mark_idx, PosX + 4, PosY + 4);
-};
+}
 
 
 /*
@@ -111,4 +111,4 @@ void GFX::DrawCheckbox(const int PosX, const int PosY, const bool Checked, const
 */
 void GFX::DrawCard(const size_t Idx, const int X, const int Y, const float ScaleX, const float ScaleY) {
 	if (Idx <= Utils::Cards.size()) Gui::DrawSprite(GFX::Cards, Utils::Cards[Idx], X, Y, ScaleX, ScaleY);
-};
+}

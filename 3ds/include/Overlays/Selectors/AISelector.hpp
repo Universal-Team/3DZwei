@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ private:
 	void DrawPage(const int16_t Pg, const int AddOffs);
 	void Handler();
 
-	const std::vector<std::string> Modes = { "AI_MODE_RANDOM", "AI_MODE_MEDIUM", "AI_MODE_HARD", "AI_MODE_EXTREME" };
+	const std::vector<std::string> Modes    = { "AI_MODE_RANDOM", "AI_MODE_MEDIUM", "AI_MODE_HARD", "AI_MODE_EXTREME" };
 	const std::vector<std::string> ModeDesc = { "AI_MODE_RANDOM_DESC", "AI_MODE_MEDIUM_DESC", "AI_MODE_HARD_DESC", "AI_MODE_EXTREME_DESC" };
 
 	const std::vector<FuncCallback> Positions = {

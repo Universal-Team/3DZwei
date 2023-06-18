@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -40,6 +40,6 @@ namespace Utils {
 	bool CheckSetContent(const std::string &Set, const bool CheckChars = false);
 	void LoadCardSet(const std::string &Set);
 	void LoadCharSet(const std::string &Set);
-};
+}
 
 #endif

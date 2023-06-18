@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ public:
 	};
 
 	/* Browser Types. */
-	enum class BrowserType {
+	enum class BrowserType : uint8_t {
 		File, // For File Selection.
 		List // For Vector of Strings as an example.
 	};
@@ -60,12 +60,12 @@ public:
 	bool SetSelection(const int Selection);
 
 	/* Getters. */
-	std::vector<std::string> GetList() { return (this->Type == BrowserType::File ? this->GetFileList() : this->ListEntries); };
-	int GetSelectedIndex() const { return this->Selected; };
-	std::string GetSelectedName() const { return (this->Type == BrowserType::File ? this->DirEntries[this->Selected].Name : this->ListEntries[this->Selected]); };
-	std::string GetSelectedPath() const { return (this->Type == BrowserType::File ? (this->GetPath() + this->DirEntries[this->Selected].Name) : ""); };
-	bool GetRefresh() const { return this->Refresh; };
-	bool GetEmpty() const { return (this->Type == BrowserType::File ? this->DirEntries.empty() : this->ListEntries.empty()); };
+	std::vector<std::string> GetList() { return (this->Type == BrowserType::File ? this->GetFileList() : this->ListEntries); }
+	int GetSelectedIndex() const { return this->Selected; }
+	std::string GetSelectedName() const { return (this->Type == BrowserType::File ? this->DirEntries[this->Selected].Name : this->ListEntries[this->Selected]); }
+	std::string GetSelectedPath() const { return (this->Type == BrowserType::File ? (this->GetPath() + this->DirEntries[this->Selected].Name) : ""); }
+	bool GetRefresh() const { return this->Refresh; }
+	bool GetEmpty() const { return (this->Type == BrowserType::File ? this->DirEntries.empty() : this->ListEntries.empty()); }
 	std::string GetPath() const;
 private:
 	int Selected = 0;

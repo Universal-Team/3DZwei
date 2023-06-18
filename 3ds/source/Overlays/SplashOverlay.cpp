@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ void SplashOverlay::State1() {
 	}
 
 	this->State = States::ClickOnFirst;
-};
+}
 
 
 /* STATE 2: Handle flip on the first card + Swipe the StackMem Logo. */
@@ -80,7 +80,7 @@ void SplashOverlay::State2() {
 	}
 
 	if (this->FlipDone[0] && this->CoreMoved == 160) this->State = States::GotoSecond;
-};
+}
 
 
 /* STATE 3: Handle Going to second card. */
@@ -98,7 +98,7 @@ void SplashOverlay::State3() {
 	}
 
 	this->State = States::ClickOnSecond;
-};
+}
 
 
 /* STATE 4: Swipe the StackMem Logo further, flip the second card and go into the fade-out State. */
@@ -135,14 +135,14 @@ void SplashOverlay::State4() {
 	}
 
 	if (this->FlipDone[1] && this->CoreMoved == 320) this->State = States::FadeOut;
-};
+}
 
 
 /* STATE 5: Fade out. */
 void SplashOverlay::State5() {
 	if (this->FAlpha < 255) this->FAlpha += 2;
 	if (this->FAlpha == 255) this->Done = true;
-};
+}
 
 
 void SplashOverlay::StateHandler() {
@@ -171,7 +171,7 @@ void SplashOverlay::StateHandler() {
 			this->State5();
 			break;
 	}
-};
+}
 
 
 void SplashOverlay::Action() {
@@ -219,4 +219,4 @@ void SplashOverlay::Action() {
 		if (Down) this->Done = true; // Any key -> Skip.
 		this->StateHandler();
 	}
-};
+}

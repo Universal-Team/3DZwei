@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ void CharacterSelector::DrawPage(const size_t Page, const int AddOffs) {
 	for (size_t Idx = (Page * CHARS_PER_PAGE), Idx2 = 0; Idx < (Page * CHARS_PER_PAGE) + CHARS_PER_PAGE && Idx < Utils::GetCharSheetSize(); Idx++, Idx2++) {
 		Gui::DrawSprite(GFX::Characters, Idx, this->Characters[Idx2].X + AddOffs, this->Characters[Idx2].Y, 0.4f, 0.4f);
 	}
-};
+}
 
 
 /*
@@ -62,7 +62,7 @@ void CharacterSelector::SelectCharacter(const uint8_t Idx) {
 		this->Res = (this->Page * CHARS_PER_PAGE) + Idx;
 		this->Done = true;
 	}
-};
+}
 
 
 /* Go to the previous page. */
@@ -71,7 +71,7 @@ void CharacterSelector::PrevPage() {
 		this->SwipeDir = true;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Go to the next page. */
@@ -80,16 +80,16 @@ void CharacterSelector::NextPage() {
 		this->SwipeDir = false;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
-void CharacterSelector::Cancel() { this->Done = true; };
+void CharacterSelector::Cancel() { this->Done = true; }
 
 
 /* Returns, if you can go to the next page. */
 bool CharacterSelector::CanGoNext() const {
 	return ((this->Page * CHARS_PER_PAGE) + CHARS_PER_PAGE < Utils::GetCharSheetSize());
-};
+}
 
 
 /* Main action. */
@@ -139,7 +139,7 @@ int CharacterSelector::Action() {
 	}
 
 	return this->Res;
-};
+}
 
 
 /* Action Handler. */
@@ -247,7 +247,7 @@ void CharacterSelector::Handler() {
 			if (Touched(Position, T, true)) {
 				Clicked = true;
 				break;
-			};
+			}
 		}
 
 		if (Clicked) return;
@@ -258,4 +258,4 @@ void CharacterSelector::Handler() {
 			if (Touched(Position, T, true)) break;
 		}
 	}
-};
+}

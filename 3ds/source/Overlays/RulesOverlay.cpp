@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ void RulesOverlay::State1() {
 	}
 
 	this->State = States::ClickOnFirst;
-};
+}
 
 
 /* STATE 2: Flip the first card and move on to the next card. */
@@ -78,7 +78,7 @@ void RulesOverlay::State2() {
 	}
 
 	if (this->FlipDone[0]) this->State = States::GotoSecond;
-};
+}
 
 
 /* STATE 3: Handle Going to second card. */
@@ -96,7 +96,7 @@ void RulesOverlay::State3() {
 	}
 
 	this->State = States::ClickOnSecond;
-};
+}
 
 
 /* STATE 4: Flip the second card and go into the Wait State. */
@@ -131,7 +131,7 @@ void RulesOverlay::State4() {
 	}
 
 	if (this->FlipDone[1]) this->State = States::WaitDelay;
-};
+}
 
 
 /* STATE 5: Wait for the delay and flip cards back. */
@@ -173,7 +173,7 @@ void RulesOverlay::State5() {
 		this->Cubic = 0.0f;
 		this->State = States::GotoFirst;
 	}
-};
+}
 
 
 /* Handle the States. */
@@ -220,7 +220,7 @@ void RulesOverlay::StateHandler() {
 			this->State5();
 			break;
 	}
-};
+}
 
 
 void RulesOverlay::Action() {
@@ -266,4 +266,4 @@ void RulesOverlay::Action() {
 		if (Down) this->Done = true; // Any key -> Skip.
 		this->StateHandler();
 	}
-};
+}

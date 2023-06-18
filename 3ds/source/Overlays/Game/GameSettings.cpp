@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@
 /* Constructor. */
 GameSettings::GameSettings(const GameSettings::GameParams &Defaults, const bool IsSetting) : Params(Defaults), IsSetting(IsSetting) {
 	if (!_3DZwei::CFG->DoAnimation()) this->FAlpha = 0;
-};
+}
 
 
 /* Toggle if the AI should be used. */
@@ -51,11 +51,11 @@ void GameSettings::ToggleAI() {
 	if (this->Params.GameMode == GameSettings::GameModes::Versus) { // Only available on Versus Mode.
 		this->Params.AIUsed = !this->Params.AIUsed;
 	}
-};
+}
 
 
 /* Toggle if the card delay should be used. */
-void GameSettings::ToggleDelay() { this->Params.CardDelayUsed = !this->Params.CardDelayUsed; };
+void GameSettings::ToggleDelay() { this->Params.CardDelayUsed = !this->Params.CardDelayUsed; }
 
 
 /* Toggle which game mode should be used. */
@@ -69,7 +69,7 @@ void GameSettings::ToggleGameMode() {
 			this->Params.GameMode = GameSettings::GameModes::Versus;
 			break;
 	}
-};
+}
 
 
 /* Toggle who should start. */
@@ -95,7 +95,7 @@ void GameSettings::ToggleStarter() {
 			this->Params.Starter = GameSettings::RoundStarter::Player1;
 			break;
 	}
-};
+}
 
 
 /* Select the AI Method. */
@@ -109,7 +109,7 @@ void GameSettings::SelectAIMethod() {
 			this->FAlpha = 255;
 		}
 	}
-};
+}
 
 
 /* Select the Amount of card pairs. */
@@ -119,15 +119,15 @@ void GameSettings::SelectCards() {
 	std::unique_ptr<CardSelector> Ovl = std::make_unique<CardSelector>();
 	Ovl->Action();
 	this->FAlpha = 255;
-};
+}
 
 
 /* Give an OK for the Settings and start the game. */
-void GameSettings::OK() { this->Done = true; };
+void GameSettings::OK() { this->Done = true; }
 
 
 /* Cancel the Game and return back to the Main Overlay. */
-void GameSettings::Cancel() { this->Params.CancelGame = true, this->Done = true; };
+void GameSettings::Cancel() { this->Params.CancelGame = true, this->Done = true; }
 
 
 /*
@@ -156,7 +156,7 @@ void GameSettings::SelectPicture(const bool AI) {
 
 		this->FAlpha = 255;
 	}
-};
+}
 
 
 /* If Card Delay used -> Set the delay. */
@@ -165,7 +165,7 @@ void GameSettings::SetCardDelay() {
 		std::unique_ptr<Numpad> Ovl = std::make_unique<Numpad>(3, this->Params.CardDelay, 255, Lang::Get("GAME_SETTINGS_CARD_DELAY_TXT"));
 		this->Params.CardDelay = Ovl->Action();
 	}
-};
+}
 
 
 /* Set the amount of wins you need to win the game. */
@@ -174,7 +174,7 @@ void GameSettings::SetWinRounds() {
 		std::unique_ptr<Numpad> Ovl = std::make_unique<Numpad>(3, this->Params.RoundsToWin, 255, Lang::Get("GAME_SETTINGS_ROUND_WIN_TXT"));
 		this->Params.RoundsToWin = Ovl->Action();
 	}
-};
+}
 
 
 /*
@@ -193,7 +193,7 @@ void GameSettings::SetName(const bool AI) {
 		std::unique_ptr<Keyboard> Ovl = std::make_unique<Keyboard>(16, this->Params.Names[0], Lang::Get("GAME_SETTINGS_P1_ENTER_NAME"));
 		this->Params.Names[0] = Ovl->Action();
 	}
-};
+}
 
 
 /* Draw the Overlay. */
@@ -334,7 +334,7 @@ void GameSettings::Draw(const bool IsSetting) {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}
-};
+}
 
 
 /* Handle Fade-Outs. */
@@ -354,7 +354,7 @@ void GameSettings::FadeOut() {
 		if ((!_3DZwei::CFG->DoAnimation() || !_3DZwei::CFG->DoFade()) || Down) this->FAlpha = 255;
 		else this->FAlpha += 5;
 	}
-};
+}
 
 
 /* MAIN Action! */
@@ -382,7 +382,7 @@ GameSettings::GameParams GameSettings::Action() {
 
 	Pointer::SetPos(0, 0);
 	return this->Params;
-};
+}
 
 
 /* Handles the Tab Logic. */
@@ -528,4 +528,4 @@ void GameSettings::TabLogic() {
 			}
 			break;
 	}
-};
+}

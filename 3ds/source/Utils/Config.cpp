@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ void Config::Load() {
 		this->PointerSpeed(this->Get<nlohmann::json::number_integer_t>("PointerSpeed", this->PointerSpeed()));
 		this->ShowSplash(this->Get<bool>("ShowSplash", this->ShowSplash()));
 	}
-};
+}
 
 
 /* Initializes the Configuration file properly as a JSON. */
@@ -123,7 +123,7 @@ void Config::Initialize() {
 		fwrite(Dump.c_str(), 1, Dump.size(), Temp);
 		fclose(Temp);
 	}
-};
+}
 
 
 /* SAV changes to the Configuration, if changes made. */
@@ -148,7 +148,7 @@ void Config::Sav() {
 			fclose(Out);
 		}
 	}
-};
+}
 
 
 /*
@@ -164,7 +164,7 @@ bool Config::CardIndexIncluded(const size_t Idx) {
 	}
 
 	return false;
-};
+}
 
 
 /*
@@ -174,7 +174,7 @@ bool Config::CardIndexIncluded(const size_t Idx) {
 */
 void Config::ActivatedCards(const std::vector<size_t> &Cards) {
 	if (!this->CFG.is_discarded()) this->CFG["ActivatedCards"] = Cards;
-};
+}
 
 
 /*
@@ -247,7 +247,7 @@ void Config::FetchDefaults() {
 			}
 		}
 	}
-};
+}
 
 
 /*
@@ -289,4 +289,4 @@ void Config::SetDefault(const GameSettings::GameParams &Defaults) {
 		this->VDefaultParams = Defaults; // Set new defaults to current session as well.
 		if (!this->ChangesMade) this->ChangesMade = true; // We modified it.
 	}
-};
+}

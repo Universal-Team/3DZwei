@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ Browser::Browser(const std::string &Path, const std::vector<std::string> &Extens
 
 	chdir(Path.c_str());
 	this->FetchDirectoryEntries();
-};
+}
 
 
 /*
@@ -51,7 +51,7 @@ Browser::Browser(const std::string &Path, const std::vector<std::string> &Extens
 
 	const std::vector<std::string> &List: The list of Strings for the List type.
 */
-Browser::Browser(const std::vector<std::string> &List) : ListEntries(List) { this->Type = Browser::BrowserType::List; };
+Browser::Browser(const std::vector<std::string> &List) : ListEntries(List) { this->Type = Browser::BrowserType::List; }
 
 
 /*
@@ -72,7 +72,7 @@ bool Browser::NameEndsWith(const std::string &Name, const std::vector<std::strin
 	}
 
 	return false;
-};
+}
 
 
 /*
@@ -86,7 +86,7 @@ bool DirEntryPredicate(const Browser::DirEntry &First, const Browser::DirEntry &
 	if (First.IsDirectory && !Second.IsDirectory) return true;
 
 	return strcasecmp(First.Name.c_str(), Second.Name.c_str()) < 0;
-};
+}
 
 
 /*
@@ -119,7 +119,7 @@ void Browser::FetchDirectoryEntries(const std::vector<std::string> &ExtList) {
 	}
 
 	std::sort(this->DirEntries.begin(), this->DirEntries.end(), DirEntryPredicate); // Sort this alphabetically.
-};
+}
 
 
 /* Returns the Directory Entry Files as a vector of strings. */
@@ -131,7 +131,7 @@ std::vector<std::string> Browser::GetFileList() {
 	}
 
 	return TMP;
-};
+}
 
 
 /* Up, Down, Left and Right Callbacks. */
@@ -149,7 +149,7 @@ void Browser::Up() {
 			else this->Selected = (int)this->ListEntries.size() - 1;
 			break;
 	}
-};
+}
 
 
 void Browser::Down() {
@@ -166,13 +166,13 @@ void Browser::Down() {
 			else this->Selected = 0;
 			break;
 	}
-};
+}
 
 
 void Browser::Left(const int Amount) {
 	if (this->Selected - Amount >= 0) this->Selected -= Amount;
 	else this->Selected = 0;
-};
+}
 
 
 void Browser::Right(const int Amount) {
@@ -191,7 +191,7 @@ void Browser::Right(const int Amount) {
 			else this->Selected = (int)this->ListEntries.size() - 1;
 			break;
 	}
-};
+}
 
 
 /*
@@ -210,7 +210,7 @@ bool Browser::OpenHandle() {
 	}
 
 	return false;
-};
+}
 
 
 /* Return, if you can go a directory back or not. */
@@ -224,7 +224,7 @@ bool Browser::CanDirBack() {
 	}
 
 	return true;
-};
+}
 
 
 /* Goes a directory back. */
@@ -236,7 +236,7 @@ void Browser::GoDirBack() {
 		this->FetchDirectoryEntries();
 		this->Selected = 0;
 	}
-};
+}
 
 
 /* Goes a directory up. */
@@ -249,7 +249,7 @@ void Browser::GoDirUp() {
 		this->FetchDirectoryEntries();
 		this->Selected = 0;
 	}
-};
+}
 
 
 /*
@@ -280,7 +280,7 @@ bool Browser::SetSelection(const int Selection) {
 	}
 
 	return false;
-};
+}
 
 
 /* Returns the current working directory. */
@@ -289,4 +289,4 @@ std::string Browser::GetPath() const {
 	getcwd(Path, PATH_MAX);
 
 	return Path;
-};
+}

@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ namespace Pointer {
 	void Draw();
 	void SetPos(const FuncCallback CBack);
 	void SetPos(const float X, const float Y);
-};
+}
 
 /* This isn't really pointer related, but also kinda FuncCallback related which is declared at this file. */
 bool Touched(const FuncCallback CBack, touchPosition T, const bool CallFunc = true);

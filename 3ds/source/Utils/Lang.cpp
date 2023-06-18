@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ std::string Lang::Get(const std::string &Key) {
 	if (!AppJSON.contains(Key)) return "";
 
 	return AppJSON.at(Key).get_ref<const std::string &>();
-};
+}
 
 
 /* Loads the Language Strings. */
@@ -78,4 +78,4 @@ void Lang::Load() {
 		fclose(In);
 		_3DZwei::CFG->Lang("en"); // Set back to english too.
 	}
-};
+}

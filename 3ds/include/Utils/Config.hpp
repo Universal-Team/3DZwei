@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -32,53 +32,53 @@
 
 class Config {
 public:
-	Config() { this->Load(); };
+	Config() { this->Load(); }
 	void Load();
 	void Initialize();
 	void Sav();
 
 	/* The Card Set. */
-	std::string CardSet() const { return this->VCardSet; };
-	void CardSet(const std::string &V) { this->VCardSet = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	std::string CardSet() const { return this->VCardSet; }
+	void CardSet(const std::string &V) { this->VCardSet = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* The Character Set. */
-	std::string CharSet() const { return this->VCharSet; };
-	void CharSet(const std::string &V) { this->VCharSet = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	std::string CharSet() const { return this->VCharSet; }
+	void CharSet(const std::string &V) { this->VCharSet = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* The current Language. */
-	std::string Lang() const { return this->VLang; };
-	void Lang(const std::string &V) { this->VLang = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	std::string Lang() const { return this->VLang; }
+	void Lang(const std::string &V) { this->VLang = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* Show the Splash at startup. */
-	bool ShowSplash() const { return this->VShowSplash; };
-	void ShowSplash(const bool V) { this->VShowSplash = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	bool ShowSplash() const { return this->VShowSplash; }
+	void ShowSplash(const bool V) { this->VShowSplash = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* Animation enabled State. */
-	bool DoAnimation() const { return this->VAnimation; };
-	void DoAnimation(const bool V) { this->VAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	bool DoAnimation() const { return this->VAnimation; }
+	void DoAnimation(const bool V) { this->VAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* The Activated Cards. */
 	bool CardIndexIncluded(const size_t Idx);
 	void ActivatedCards(const std::vector<size_t> &Cards);
 
 	/* The Pointer Speed. */
-	uint8_t PointerSpeed() const { return this->VPointerSpeed; };
-	void PointerSpeed(const uint8_t V) { this->VPointerSpeed = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	uint8_t PointerSpeed() const { return this->VPointerSpeed; }
+	void PointerSpeed(const uint8_t V) { this->VPointerSpeed = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* The Game Animation. */
-	uint8_t GameAnimation() const { return this->VGameAnimation; };
-	void GameAnimation(const uint8_t V) { this->VGameAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	uint8_t GameAnimation() const { return this->VGameAnimation; }
+	void GameAnimation(const uint8_t V) { this->VGameAnimation = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* If doing the page switches visually or not. */
-	bool PageSwitch() const { return this->VPageSwitch; };
-	void PageSwitch(const bool V) { this->VPageSwitch = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	bool PageSwitch() const { return this->VPageSwitch; }
+	void PageSwitch(const bool V) { this->VPageSwitch = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	/* If using the fade effect or nah. */
-	bool DoFade() const { return this->VDoFade; };
-	void DoFade(const bool V) { this->VDoFade = V; if (!this->ChangesMade) this->ChangesMade = true; };
+	bool DoFade() const { return this->VDoFade; }
+	void DoFade(const bool V) { this->VDoFade = V; if (!this->ChangesMade) this->ChangesMade = true; }
 
 	void FetchDefaults();
-	GameSettings::GameParams GetDefault() const { return this->VDefaultParams; };
+	GameSettings::GameParams GetDefault() const { return this->VDefaultParams; }
 	void SetDefault(const GameSettings::GameParams &Defaults);
 private:
 	template <typename T>
@@ -86,12 +86,12 @@ private:
 		if (this->CFG.is_discarded() || !this->CFG.contains(Key)) return IfNotFound;
 
 		return this->CFG.at(Key).get_ref<const T &>();
-	};
+	}
 
 	template <typename T>
 	void Set(const std::string &Key, const T Data) {
 		if (!this->CFG.is_discarded()) this->CFG[Key] = Data;
-	};
+	}
 
 	/* Returns the language code of the system language. */
 	std::string sysLang(void);

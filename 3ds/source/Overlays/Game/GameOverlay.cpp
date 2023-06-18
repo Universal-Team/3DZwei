@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@
 GameOverlay::GameOverlay(const GameSettings::GameParams Params) {
 	this->Helper = std::make_unique<GameHelper>(Params);
 	hidScanInput();
-};
+}
 
 
 void GameOverlay::Draw() {
@@ -76,13 +76,13 @@ void GameOverlay::Draw() {
 	}
 
 	C3D_FrameEnd(0);
-};
+}
 
 
-void GameOverlay::Confirm() { this->PromptAnswer = true, this->SwipeOut = true; };
+void GameOverlay::Confirm() { this->PromptAnswer = true, this->SwipeOut = true; }
 void GameOverlay::Cancel() {
 	this->PromptAnswer = false, this->SwipeOut = true, this->Helper->ReturnParams().CancelGame = false;
-};
+}
 
 
 /* Prompt logic. */
@@ -147,7 +147,7 @@ void GameOverlay::PromptLogic() {
 			if (Touched(Pos, T, true)) break;
 		}
 	}
-};
+}
 
 
 void GameOverlay::Action() {
@@ -206,4 +206,4 @@ void GameOverlay::Action() {
 			}
 		}
 	}
-};
+}

@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -35,7 +35,7 @@ public:
 	Keyboard(const int MaxLength, const std::string &OldString, const std::string &Text);
 	std::string Action();
 private:
-	int MaxLength = 0;
+	int MaxLength   = 0;
 	std::string Res = "", Text = "";
 	SwkbdState State;
 };

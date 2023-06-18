@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 #include "Common.hpp"
 #include "Utils.hpp"
 
-#define SETS_PER_SCREEN 5
+#define SETS_PER_SCREEN  5
 #define CARDS_PER_SCREEN 9
 
 
@@ -46,7 +46,7 @@ CardSetSelector::CardSetSelector() {
 			if (S[Idx].substr(S[Idx].size() - 4) == ".t3x") this->CardSets.push_back(S[Idx]);
 		}
 	}
-};
+}
 
 
 void CardSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection, const bool First) {
@@ -93,7 +93,7 @@ void CardSetSelector::PreviewSelection(const size_t Idx, const bool SetSelection
 		this->CurCardPos = -400;
 		this->CardSwipeIn = true;
 	}
-};
+}
 
 
 /*
@@ -124,7 +124,7 @@ void CardSetSelector::OldCardsetOut() {
 			}
 		}
 	}
-};
+}
 
 
 /* Toggle the specified indexed card. */
@@ -133,7 +133,7 @@ void CardSetSelector::ToggleCard(const uint8_t Idx) {
 		this->ToFlip = (this->CardPage * CARDS_PER_SCREEN) + Idx;
 		this->FlipCard = true;
 	}
-};
+}
 
 
 /* Go to the previous card page. */
@@ -142,7 +142,7 @@ void CardSetSelector::PrevCardPage() {
 		this->CardSwipeDir = true;
 		this->CardSwipe = true;
 	}
-};
+}
 
 
 /* Go to the last cardset. */
@@ -152,7 +152,7 @@ void CardSetSelector::LastSet() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the previous cardset page. */
@@ -163,7 +163,7 @@ void CardSetSelector::PrevSetPage() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the next card page. */
@@ -172,7 +172,7 @@ void CardSetSelector::NextCardPage() {
 		this->CardSwipeDir = false;
 		this->CardSwipe = true;
 	}
-};
+}
 
 
 /* Go to the next cardset. */
@@ -182,7 +182,7 @@ void CardSetSelector::NextSet() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Go to the next cardset page. */
@@ -193,17 +193,17 @@ void CardSetSelector::NextSetPage() {
 
 		this->PreviewSelection(this->SelectedSet);
 	}
-};
+}
 
 
 /* Return, if a next card page is available. */
 bool CardSetSelector::CardCanGoNext() const {
 	return (((this->CardPage * CARDS_PER_SCREEN) + CARDS_PER_SCREEN) < (int)this->CardFlipped.size());
-};
+}
 
 
-void CardSetSelector::Cancel() { this->IsSelecting = true, this->ModeSwitch = true; };
-void CardSetSelector::Confirm() { this->Res = true, this->Done = true; };
+void CardSetSelector::Cancel() { this->IsSelecting = true, this->ModeSwitch = true; }
+void CardSetSelector::Confirm() { this->Res = true, this->Done = true; }
 
 
 /*
@@ -225,7 +225,7 @@ void CardSetSelector::DrawCardPage(const size_t Pg, const int AddOffs) {
 			}
 		}
 	}
-};
+}
 
 
 /*
@@ -242,7 +242,7 @@ void CardSetSelector::DrawSetList(const int AddOffs) {
 
 	GFX::DrawCornerEdge(true, this->SetPos[0].X + AddOffs, this->SetPos[0].Y, this->SetPos[0].H, this->SelectedSet > 0);
 	GFX::DrawCornerEdge(false, this->SetPos[6].X + AddOffs, this->SetPos[6].Y, this->SetPos[6].H, this->SelectedSet < (int)this->CardSets.size() - 1);
-};
+}
 
 
 /*
@@ -266,7 +266,7 @@ void CardSetSelector::DrawCardBottom(const int AddOffs) {
 
 	GFX::DrawCornerEdge(true, this->BottomPos[0].X + AddOffs, this->BottomPos[0].Y, this->BottomPos[0].H, this->CardPage > 0);
 	GFX::DrawCornerEdge(false, this->BottomPos[1].X + AddOffs, this->BottomPos[1].Y, this->BottomPos[1].H, this->CardCanGoNext());
-};
+}
 
 
 /*
@@ -341,7 +341,7 @@ void CardSetSelector::Draw() {
 	}
 
 	C3D_FrameEnd(0);
-};
+}
 
 
 /* Main Action. */
@@ -363,7 +363,7 @@ std::string CardSetSelector::Action() {
 	Pointer::SetPos(0, 0);
 	if (this->Res) return this->CardSets[this->SelectedSet];
 	return "";
-};
+}
 
 
 /*
@@ -424,7 +424,7 @@ void CardSetSelector::HandleSet(const uint32_t Down, const uint32_t Held, const 
 	/* Scroll. */
 	if (this->SelectedSet < this->SetListPos) this->SetListPos = this->SelectedSet;
 	else if (this->SelectedSet > this->SetListPos + SETS_PER_SCREEN - 1) this->SetListPos = this->SelectedSet - SETS_PER_SCREEN + 1;
-};
+}
 
 
 /*
@@ -456,7 +456,7 @@ void CardSetSelector::HandleCard(const uint32_t Down, const uint32_t Held, const
 			if (Touched(Pos, T, true)) break;
 		}
 	}
-};
+}
 
 
 /* Handles Effects such as fade and that stuff. */
@@ -535,7 +535,7 @@ void CardSetSelector::Handler() {
 		if (!_3DZwei::CFG->DoAnimation() || Repeat) {
 			this->Cubic = 0.0f, this->ModeSwitch = false;
 			return;
-		};
+		}
 
 		if (this->Cubic < 320.0f) {
 			this->Cubic = std::lerp(this->Cubic, 321.0f, 0.2f);
@@ -602,4 +602,4 @@ void CardSetSelector::Handler() {
 
 	if (this->IsSelecting) this->HandleSet(Down, Held, Repeat, T);
 	else this->HandleCard(Down, Held, Repeat, T);
-};
+}

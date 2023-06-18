@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ Numpad::Numpad(const int MaxLength, const int OldNum, const int MaxVal, const st
 	swkbdInit(&this->State, SWKBD_TYPE_NUMPAD, 2, this->MaxLength);
 	swkbdSetFeatures(&this->State, SWKBD_FIXED_WIDTH);
 	swkbdSetValidation(&this->State, SWKBD_NOTBLANK_NOTEMPTY, 0, 0);
-};
+}
 
 
 /* The numpad action. */
@@ -68,4 +68,4 @@ int Numpad::Action() {
 
 	if (Input[0] < '0' || Input[0] > '9') return this->Res; // Because citra allows you to enter actual characters for dumb reasons.
 	return (Ret == SWKBD_BUTTON_CONFIRM ? (int)std::min(std::stoi(Input), this->MaxVal) : this->Res);
-};
+}

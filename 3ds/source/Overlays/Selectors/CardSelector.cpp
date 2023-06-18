@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ CardSelector::CardSelector() {
 	if (!Utils::Cards.empty()) {
 		for (size_t Idx = 0; Idx < Utils::Cards.size(); Idx++) this->Cards[Utils::Cards[Idx]] = true;
 	}
-};
+}
 
 
 /* Toggle the specified indexes card. */
@@ -45,21 +45,21 @@ void CardSelector::ToggleCard(const uint8_t Idx) {
 		this->Cards[(this->Page * 9) + Idx] = !this->Cards[(this->Page * 9) + Idx];
 		if (!this->Changed) this->Changed = true;
 	}
-};
+}
 
 
 /* Select ALL cards. */
 void CardSelector::SelectAll() {
 	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx] = true;
 	if (!this->Changed) this->Changed = true;
-};
+}
 
 
 /* De-Select ALL cards. */
 void CardSelector::SelectNone() {
 	for (size_t Idx = 0; Idx < this->Cards.size(); Idx++) this->Cards[Idx] = false;
 	if (!this->Changed) this->Changed = true;
-};
+}
 
 
 /* Go to the previous page. */
@@ -68,7 +68,7 @@ void CardSelector::PrevPage() {
 		this->SwipeDir = true;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Go to the next page. */
@@ -77,17 +77,17 @@ void CardSelector::NextPage() {
 		this->SwipeDir = false;
 		this->DoSwipe = true;
 	}
-};
+}
 
 
 /* Give the OK state. */
-void CardSelector::OK() { this->Done = true; };
+void CardSelector::OK() { this->Done = true; }
 
 
 /* Return, if a next page is available. */
 bool CardSelector::CanGoNext() const {
 	return (((this->Page * 9) + 9) < this->Cards.size());
-};
+}
 
 
 /* Handle Page Switches + Fades. */
@@ -173,7 +173,7 @@ void CardSelector::PageFadeHandler() {
 			}
 		}
 	}
-};
+}
 
 
 /* Draw the top. */
@@ -218,7 +218,7 @@ void CardSelector::DrawTop() {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 400, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}
-};
+}
 
 
 /* Draw the Bottom. */
@@ -246,7 +246,7 @@ void CardSelector::DrawBottom() {
 	if (_3DZwei::CFG->DoAnimation() && _3DZwei::CFG->DoFade()) {
 		if (this->FAlpha > 0) Gui::Draw_Rect(0, 0, 320, 240, C2D_Color32(0, 0, 0, this->FAlpha));
 	}
-};
+}
 
 
 /* Main Action Logic. */
@@ -309,4 +309,4 @@ void CardSelector::Action() {
 
 	Pointer::OnTop = false;
 	Pointer::SetPos(0, 0);
-};
+}

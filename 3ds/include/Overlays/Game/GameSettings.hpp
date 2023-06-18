@@ -1,6 +1,6 @@
 /*
 *   This file is part of 3DZwei
-*   Copyright (C) 2020-2021 Universal-Team
+*   Copyright (C) 2020-2023 Universal-Team
 *
 *   This program is free software: you can redistribute it and/or modify
 *   it under the terms of the GNU General Public License as published by
@@ -34,24 +34,24 @@
 
 class GameSettings {
 public:
-	enum class GameModes : uint8_t { Versus = 0, Solo = 1 };
+	enum class GameModes    : uint8_t { Versus = 0, Solo = 1 };
 	enum class RoundStarter : uint8_t { Player1 = 0, Player2 = 1, Random = 2, Loser = 3, Winner = 4 };
 
 	/* Game Parameters. */
 	struct GameParams {
-		bool AIUsed = false; // If an AI is being used at all.
-		bool CardDelayUsed = false; // If the card delay should be used.. or if it's over a button press.
-		StackMem::AIMethod Method = StackMem::AIMethod::Random; // AI Method / Difficulty.
-		uint8_t CardDelay = 0; // The card delay before the card gets hidden again after a turn.
-		uint8_t RoundsToWin = 3; // Rounds to win the game.
-		uint8_t Characters[2] = { 0, 1 }; // Avatar Indexes.
-		std::string Names[2] = { "%Player1%", "%Player2%" }; // Player Names.
+		bool AIUsed = false;                                                // If an AI is being used at all.
+		bool CardDelayUsed = false;                                         // If the card delay should be used.. or if it's over a button press.
+		StackMem::AIMethod Method = StackMem::AIMethod::Random;             // AI Method / Difficulty.
+		uint8_t CardDelay = 0;                                              // The card delay before the card gets hidden again after a turn.
+		uint8_t RoundsToWin = 3;                                            // Rounds to win the game.
+		uint8_t Characters[2] = { 0, 1 };                                   // Avatar Indexes.
+		std::string Names[2] = { "%Player1%", "%Player2%" };                // Player Names.
 		GameSettings::GameModes GameMode = GameSettings::GameModes::Versus; // Game Mode.
-		uint8_t Wins[2] = { 0, 0 }; // Wins of both players.
-		size_t PlayerPairs[2] = { 0, 0 }; // Player Pairs for both players.
-		size_t Guesses[2] = { 0, 0 }; // Amount of guesses.
-		RoundStarter Starter = RoundStarter::Player1; // The Round Starter of the game.
-		bool CancelGame = false; // If Game should be cancelled or not.
+		uint8_t Wins[2] = { 0, 0 };                                         // Wins of both players.
+		size_t PlayerPairs[2] = { 0, 0 };                                   // Player Pairs for both players.
+		size_t Guesses[2] = { 0, 0 };                                       // Amount of guesses.
+		RoundStarter Starter = RoundStarter::Player1;                       // The Round Starter of the game.
+		bool CancelGame = false;                                            // If Game should be cancelled or not.
 	};
 
 	GameSettings(const GameParams &Defaults, const bool IsSetting = false);
@@ -71,10 +71,10 @@ private:
 
 	void GeneralTab() {
 		if (this->Tab != Tabs::General) this->SwipeDirection = false, this->DoSwipe = true;
-	};
+	}
 	void PlayerTab() {
 		if (this->Tab != Tabs::Player) this->SwipeDirection = true, this->DoSwipe = true;
-	};
+	}
 
 	void Draw(const bool IsSetting = false);
 	void FadeOut();
