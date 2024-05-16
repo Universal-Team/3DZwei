@@ -250,10 +250,12 @@ std::string SettingsOverlay::GetLanguage() const {
 	if (_3DZwei::CFG->Lang() == "en") return "English";
 	if (_3DZwei::CFG->Lang() == "es") return "Español";
 	if (_3DZwei::CFG->Lang() == "fr") return "Français";
+	if (_3DZwei::CFG->Lang() == "hu") return "Magyar";
 	if (_3DZwei::CFG->Lang() == "it") return "Italiano";
 	if (_3DZwei::CFG->Lang() == "ja") return "日本語";
 	if (_3DZwei::CFG->Lang() == "pl") return "Polski";
 	if (_3DZwei::CFG->Lang() == "pt") return "Português";
+	if (_3DZwei::CFG->Lang() == "ro") return "Română";
 	if (_3DZwei::CFG->Lang() == "ru") return "Русский";
 
 	return "";
