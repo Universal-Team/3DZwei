@@ -44,25 +44,26 @@ BANNERTOOL 	?= bannertool
 
 endif
 
+GIT_TAG := "$(shell git describe --tags --exclude git)"
 GIT_VER := "$(shell git rev-parse --short=7 HEAD)"
 
 #---------------------------------------------------------------------------------
 # Version number
 #---------------------------------------------------------------------------------
-ifneq ($(shell echo $(shell git describe --tags) | head -c 2 | tail -c 1),)
-VERSION_MAJOR := $(shell echo $(shell git describe --tags) | head -c 2 | tail -c 1)
+ifneq ($(shell echo $(GIT_TAG) | head -c 2 | tail -c 1),)
+VERSION_MAJOR := $(shell echo $(GIT_TAG) | head -c 2 | tail -c 1)
 else
 VERSION_MAJOR := 0
 endif
 
-ifneq ($(shell echo $(shell git describe --tags) | head -c 4 | tail -c 1),)
-VERSION_MINOR := $(shell echo $(shell git describe --tags) | head -c 4 | tail -c 1)
+ifneq ($(shell echo $(GIT_TAG) | head -c 4 | tail -c 1),)
+VERSION_MINOR := $(shell echo $(GIT_TAG) | head -c 4 | tail -c 1)
 else
 VERSION_MINOR := 2
 endif
 
-ifneq ($(shell echo $(shell git describe --tags) | head -c 6 | tail -c 1),)
-VERSION_MICRO := $(shell echo $(shell git describe --tags) | head -c 6 | tail -c 1)
+ifneq ($(shell echo $(GIT_TAG) | head -c 6 | tail -c 1),)
+VERSION_MICRO := $(shell echo $(GIT_TAG) | head -c 6 | tail -c 1)
 else
 VERSION_MICRO := 0
 endif
