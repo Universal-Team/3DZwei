@@ -25,6 +25,7 @@
 */
 
 #include "Browser.hpp"
+#include <algorithm>
 #include <cstring>
 #include <dirent.h>
 #include <functional>
